@@ -7,7 +7,7 @@ const MainContent = styled.main`
   flex: 1;
   padding: 2rem;
   margin: 2rem;
-  background-color: yellow;
+  /* background-color: yellow; */
 `;
 
 export default MainContent;

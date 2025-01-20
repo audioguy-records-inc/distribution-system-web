@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/pretendard": "^5.1.0",
     "moment": "^2.30.1",
     "next": "15.1.4",
     "react": "^19.0.0",

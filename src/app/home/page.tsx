@@ -19,30 +19,45 @@ import X from "@/components/icons/sns/X";
 import Youtube from "@/components/icons/sns/Youtube";
 import YoutubeMusic from "@/components/icons/streaming/YoutubeMusic";
 import styled from "styled-components";
+import theme from "@/styles/theme";
 
 const Container = styled.div``;
+
+const Content = styled.div``;
+
+const Title1 = styled.div`
+  ${theme.fonts.title1.semibold}
+`;
+
+const Title2 = styled.div`
+  ${theme.fonts.title2.semibold}
+`;
 
 export default function Home() {
   return (
     <Container>
-      Home
-      <ArrowDown />
-      <Instagram />
-      <Facebook />
-      <Youtube />
-      <X />
-      <TikTok />
-      <EmptySNS />
-      <Spotify />
-      <Bugs />
-      <YoutubeMusic />
-      <Melon />
-      <Flo />
-      <AppleMusic />
-      <Genie />
-      <Vibe />
-      <KKBOX />
-      <JOOX />
+      <Content>
+        Home
+        <ArrowDown />
+        <Instagram />
+        <Facebook />
+        <Youtube />
+        <X />
+        <TikTok />
+        <EmptySNS />
+        <Spotify />
+        <Bugs />
+        <YoutubeMusic />
+        <Melon />
+        <Flo />
+        <AppleMusic />
+        <Genie />
+        <Vibe />
+        <KKBOX />
+        <JOOX />
+      </Content>
+      <Title1>Title1</Title1>
+      <Title2>Title2</Title2>
     </Container>
   );
 }
