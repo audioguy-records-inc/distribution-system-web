@@ -3,6 +3,7 @@
 import AppleMusic from "@/components/icons/streaming/AppleMusic";
 import ArrowDown from "@/components/icons/ArrowDown";
 import Bugs from "@/components/icons/streaming/Bugs";
+import CustomInput from "@/components/basic/CustomInput";
 import EmptySNS from "@/components/icons/sns/EmptySNS";
 import Facebook from "@/components/icons/sns/Facebook";
 import Facebook2 from "@/components/icons/sns/Youtube";
@@ -58,6 +59,23 @@ export default function Home() {
       </Content>
       <Title1>Title1</Title1>
       <Title2>Title2</Title2>
+      <CustomInput
+        label="Label"
+        helpText="Help Text"
+        placeholder="플레이스홀더 텍스트"
+        required
+        value="Value"
+        // disabled
+        // locked
+      />
+      <CustomInput
+        label="Label"
+        helpText="Help Text"
+        placeholder="플레이스홀더 텍스트"
+        required
+        value="Value"
+        size="small"
+      />
     </Container>
   );
 }
