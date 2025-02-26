@@ -136,7 +136,7 @@ const NormalInput = ({
   size = "normal",
 
   value,
-  onChange,
+  onChange = () => {},
   ...props
 }: InputProps) => {
   return (
