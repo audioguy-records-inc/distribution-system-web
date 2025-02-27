@@ -1,5 +1,7 @@
 "use client";
 
+import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
+import ButtonSection from "./components/buttonSection";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
 import IconSection from "./components/IconSection";
@@ -13,9 +15,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-bottom: 500px;
 `;
-
-const Content = styled.div``;
 
 const Title1 = styled.div`
   ${theme.fonts.title1.semibold}
@@ -60,7 +61,9 @@ export default function Samples() {
         required
         // disabled
         hideScrollbar
+        // isError
       />
+      <ButtonSection />
     </Container>
   );
 }
