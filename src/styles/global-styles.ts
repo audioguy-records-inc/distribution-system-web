@@ -12,12 +12,12 @@ export const GlobalStyles = createGlobalStyle`
   html, body {
     width: 100%;
     height: 100%;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-    line-height: 1.5; /* 기본 가독성을 위한 행간 */
-    -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 */
-    -moz-osx-font-smoothing: grayscale; /* MacOS 렌더링 부드럽게 */
-    background-color: #FFFFFF; /* 기본 배경색 */
-    color: #333333; /* 기본 텍스트 색상 */
+    font-family: var(--font-pretendard);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #FFFFFF;
+    color: #333333;
   }
 
      /* Next.js 루트 컨테이너 스타일 */
@@ -40,13 +40,13 @@ export const GlobalStyles = createGlobalStyle`
   /* 기본 요소 스타일 */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Pretendard', sans-serif;
-    font-weight: 600; /* 기본적으로 semibold */
+    font-weight: 600;
     color: inherit;
   }
 
   p, span, a, li, div {
     font-family: 'Pretendard', sans-serif;
-    font-weight: 400; /* 기본적으로 regular */
+    font-weight: 400;
     color: inherit;
   }
 
@@ -57,7 +57,7 @@ export const GlobalStyles = createGlobalStyle`
 
   button {
     font-family: 'Pretendard', sans-serif;
-    font-weight: 500; /* medium */
+    font-weight: 500;
     background: none;
     border: none;
     cursor: pointer;

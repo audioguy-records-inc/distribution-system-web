@@ -7,6 +7,13 @@ import MainContent from "@/components/layout/MainContent";
 import type { Metadata } from "next";
 import Sidebar from "@/components/layout/Sidebar";
 import StyledComponentsRegistry from "@/lib/registry";
+import localFont from "next/font/local";
+
+const pretendard = localFont({
+  src: "../fonts/PretendardVariable.woff2",
+  variable: "--font-pretendard",
+  display: "swap",
+});
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -29,8 +36,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={pretendard.className}>
+      <body className={pretendard.className}>
         <StyledComponentsRegistry>
           {/* 전역 스타일 적용 */}
           <GlobalStyles />
