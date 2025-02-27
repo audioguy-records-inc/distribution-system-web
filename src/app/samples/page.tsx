@@ -2,6 +2,7 @@
 
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonSection from "./components/buttonSection";
+import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
 import IconSection from "./components/IconSection";
@@ -10,6 +11,7 @@ import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
 import SnsSection from "./components/SnsSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -27,6 +29,8 @@ const Title2 = styled.div`
 `;
 
 export default function Samples() {
+  const [checked, setChecked] = useState(false);
+
   return (
     <Container>
       컴포넌트 모음
@@ -64,6 +68,11 @@ export default function Samples() {
         // isError
       />
       <ButtonSection />
+      <CustomCheckbox
+        checked={checked}
+        onChange={() => setChecked(!checked)}
+        label="Label"
+      />
     </Container>
   );
 }
