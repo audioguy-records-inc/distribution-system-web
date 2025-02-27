@@ -98,13 +98,18 @@ const Input = styled.input<{
   }
 `;
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<{ $size?: "small" | "normal" }>`
   display: flex;
-  width: 40px;
-  height: 40px;
+  width: ${({ $size }) => ($size === "small" ? "32px" : "40px")};
+  height: ${({ $size }) => ($size === "small" ? "32px" : "40px")};
   padding: 8px;
   justify-content: center;
   align-items: center;
+
+  svg {
+    width: ${({ $size }) => ($size === "small" ? "18px" : "24px")};
+    height: ${({ $size }) => ($size === "small" ? "18px" : "24px")};
+  }
 `;
 
 interface InputProps {
@@ -170,7 +175,7 @@ const NormalInput = ({
           $locked={locked}
           $size={size}
         />
-        <IconContainer>{icon}</IconContainer>
+        <IconContainer $size={size}>{icon}</IconContainer>
       </InputContainer>
       {helpText && <HelpText $isError={isError}>{helpText}</HelpText>}
     </Container>
