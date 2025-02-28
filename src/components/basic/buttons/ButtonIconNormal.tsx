@@ -10,17 +10,17 @@ interface ButtonIconNormalProps {
 }
 
 const ButtonWrapper = styled.button<{
-  disabled?: boolean;
-  size?: "large" | "medium" | "small";
+  $disabled?: boolean;
+  $size?: "large" | "medium" | "small";
 }>`
   border: none;
   background-color: ${theme.colors.white};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   display: flex;
   align-items: center;
   justify-content: center;
   width: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return "32px";
       case "small":
@@ -30,7 +30,7 @@ const ButtonWrapper = styled.button<{
     }
   }};
   height: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return "32px";
       case "small":
@@ -40,7 +40,7 @@ const ButtonWrapper = styled.button<{
     }
   }};
   border-radius: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return "8px";
       case "small":
@@ -60,18 +60,18 @@ const ButtonWrapper = styled.button<{
 `;
 
 const IconWrapper = styled.span<{
-  disabled?: boolean;
-  size?: "large" | "medium" | "small";
+  $disabled?: boolean;
+  $size?: "large" | "medium" | "small";
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
 
   svg {
     width: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "medium":
           return "18px";
         case "small":
@@ -81,7 +81,7 @@ const IconWrapper = styled.span<{
       }
     }};
     height: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "medium":
           return "18px";
         case "small":
@@ -91,10 +91,10 @@ const IconWrapper = styled.span<{
       }
     }};
     stroke: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
     path {
       stroke: ${(props) =>
-        props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+        props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
     }
   }
 `;
@@ -108,10 +108,10 @@ const ButtonIconNormal: React.FC<ButtonIconNormalProps> = ({
   return (
     <ButtonWrapper
       onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      size={size}
+      $disabled={disabled}
+      $size={size}
     >
-      <IconWrapper disabled={disabled} size={size}>
+      <IconWrapper $disabled={disabled} $size={size}>
         {icon}
       </IconWrapper>
     </ButtonWrapper>

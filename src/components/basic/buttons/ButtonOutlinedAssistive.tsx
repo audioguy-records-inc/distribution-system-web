@@ -12,11 +12,11 @@ interface ButtonOutlinedAssistiveProps {
 }
 
 const ButtonWrapper = styled.button<{
-  disabled?: boolean;
-  size?: "medium" | "small";
+  $disabled?: boolean;
+  $size?: "medium" | "small";
 }>`
   padding: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "small":
         return "7px 14px";
       default:
@@ -25,7 +25,7 @@ const ButtonWrapper = styled.button<{
   }};
   border: 1px solid ${theme.colors.gray[50]};
   border-radius: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "small":
         return "6px";
       default:
@@ -33,7 +33,7 @@ const ButtonWrapper = styled.button<{
     }
   }};
   background-color: ${theme.colors.white};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,31 +41,31 @@ const ButtonWrapper = styled.button<{
   width: fit-content;
   height: fit-content;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
   ${theme.fonts.body1.semibold}
 
   &:hover {
     background-color: ${(props) =>
-      props.disabled ? theme.colors.white : theme.colors.gray[25]};
+      props.$disabled ? theme.colors.white : theme.colors.gray[25]};
   }
 
   &:active {
     background-color: ${(props) =>
-      props.disabled ? theme.colors.white : theme.colors.gray[50]};
+      props.$disabled ? theme.colors.white : theme.colors.gray[50]};
   }
 `;
 
 const IconWrapper = styled.span<{
-  disabled?: boolean;
-  size?: "medium" | "small";
+  $disabled?: boolean;
+  $size?: "medium" | "small";
 }>`
   display: flex;
   align-items: center;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
   svg {
     width: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "small":
           return "16px";
         default:
@@ -73,7 +73,7 @@ const IconWrapper = styled.span<{
       }
     }};
     height: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "small":
           return "16px";
         default:
@@ -81,17 +81,17 @@ const IconWrapper = styled.span<{
       }
     }};
     stroke: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
     path {
       stroke: ${(props) =>
-        props.disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+        props.$disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
     }
   }
 `;
 
-const LabelWrapper = styled.span<{ size?: "medium" | "small" }>`
+const LabelWrapper = styled.span<{ $size?: "medium" | "small" }>`
   ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "small":
         return theme.fonts.label2.semibold;
       default:
@@ -111,17 +111,17 @@ const ButtonOutlinedAssistive: React.FC<ButtonOutlinedAssistiveProps> = ({
   return (
     <ButtonWrapper
       onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      size={size}
+      $disabled={disabled}
+      $size={size}
     >
       {leftIcon && (
-        <IconWrapper disabled={disabled} size={size}>
+        <IconWrapper $disabled={disabled} $size={size}>
           {leftIcon}
         </IconWrapper>
       )}
-      <LabelWrapper size={size}>{label}</LabelWrapper>
+      <LabelWrapper $size={size}>{label}</LabelWrapper>
       {rightIcon && (
-        <IconWrapper disabled={disabled} size={size}>
+        <IconWrapper $disabled={disabled} $size={size}>
           {rightIcon}
         </IconWrapper>
       )}

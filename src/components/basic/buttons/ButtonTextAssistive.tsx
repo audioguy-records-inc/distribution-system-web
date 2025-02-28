@@ -12,11 +12,11 @@ interface ButtonTextAssistiveProps {
 }
 
 const ButtonWrapper = styled.button<{
-  disabled?: boolean;
-  size?: "medium" | "small";
+  $disabled?: boolean;
+  $size?: "medium" | "small";
 }>`
   padding: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "small":
         return "7px 14px";
       default:
@@ -25,7 +25,7 @@ const ButtonWrapper = styled.button<{
   }};
   border: none;
   border-radius: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "small":
         return "6px";
       default:
@@ -33,7 +33,7 @@ const ButtonWrapper = styled.button<{
     }
   }};
   background-color: transparent;
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,31 +41,31 @@ const ButtonWrapper = styled.button<{
   width: fit-content;
   height: fit-content;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
   ${theme.fonts.body1.semibold}
 
   &:hover {
     color: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
   }
 
   &:active {
     color: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
   }
 `;
 
 const IconWrapper = styled.span<{
-  disabled?: boolean;
-  size?: "medium" | "small";
+  $disabled?: boolean;
+  $size?: "medium" | "small";
 }>`
   display: flex;
   align-items: center;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
   svg {
     width: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "small":
           return "16px";
         default:
@@ -73,7 +73,7 @@ const IconWrapper = styled.span<{
       }
     }};
     height: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "small":
           return "16px";
         default:
@@ -81,43 +81,43 @@ const IconWrapper = styled.span<{
       }
     }};
     stroke: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
     path {
       stroke: ${(props) =>
-        props.disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
+        props.$disabled ? theme.colors.gray[100] : theme.colors.gray[400]};
     }
   }
 
   button:hover & {
     color: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
     svg {
       stroke: ${(props) =>
-        props.disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
+        props.$disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
       path {
         stroke: ${(props) =>
-          props.disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
+          props.$disabled ? theme.colors.gray[100] : theme.colors.gray[500]};
       }
     }
   }
 
   button:active & {
     color: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
     svg {
       stroke: ${(props) =>
-        props.disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
+        props.$disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
       path {
         stroke: ${(props) =>
-          props.disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
+          props.$disabled ? theme.colors.gray[100] : theme.colors.gray[600]};
       }
     }
   }
 `;
 
-const LabelWrapper = styled.span<{ size?: "medium" | "small" }>`
+const LabelWrapper = styled.span<{ $size?: "medium" | "small" }>`
   ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "small":
         return theme.fonts.label2.semibold;
       default:
@@ -137,17 +137,17 @@ const ButtonTextAssistive: React.FC<ButtonTextAssistiveProps> = ({
   return (
     <ButtonWrapper
       onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      size={size}
+      $disabled={disabled}
+      $size={size}
     >
       {leftIcon && (
-        <IconWrapper disabled={disabled} size={size}>
+        <IconWrapper $disabled={disabled} $size={size}>
           {leftIcon}
         </IconWrapper>
       )}
-      <LabelWrapper size={size}>{label}</LabelWrapper>
+      <LabelWrapper $size={size}>{label}</LabelWrapper>
       {rightIcon && (
-        <IconWrapper disabled={disabled} size={size}>
+        <IconWrapper $disabled={disabled} $size={size}>
           {rightIcon}
         </IconWrapper>
       )}

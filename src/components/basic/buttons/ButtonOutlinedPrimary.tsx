@@ -12,11 +12,11 @@ interface ButtonOutlinedPrimaryProps {
 }
 
 const ButtonWrapper = styled.button<{
-  disabled?: boolean;
-  size?: "large" | "medium" | "small";
+  $disabled?: boolean;
+  $size?: "large" | "medium" | "small";
 }>`
   padding: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return "9px 20px";
       case "small":
@@ -27,9 +27,9 @@ const ButtonWrapper = styled.button<{
   }};
   border: 1px solid
     ${(props) =>
-      props.disabled ? theme.colors.gray[50] : theme.colors.purple[600]};
+      props.$disabled ? theme.colors.gray[50] : theme.colors.purple[600]};
   border-radius: ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return "8px";
       case "small":
@@ -39,39 +39,39 @@ const ButtonWrapper = styled.button<{
     }
   }};
   background-color: ${theme.colors.white};
-  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  cursor: ${(props) => (props.$disabled ? "not-allowed" : "pointer")};
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${(props) => (props.size === "large" ? "6px" : "4px")};
+  gap: ${(props) => (props.$size === "large" ? "6px" : "4px")};
   width: fit-content;
   height: fit-content;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
   ${theme.fonts.body1.semibold}
 
   &:hover {
     background-color: ${(props) =>
-      props.disabled ? theme.colors.white : theme.colors.purple[50]};
+      props.$disabled ? theme.colors.white : theme.colors.purple[50]};
   }
 
   &:active {
     background-color: ${(props) =>
-      props.disabled ? theme.colors.white : theme.colors.purple[100]};
+      props.$disabled ? theme.colors.white : theme.colors.purple[100]};
   }
 `;
 
 const IconWrapper = styled.span<{
-  disabled?: boolean;
-  size?: "large" | "medium" | "small";
+  $disabled?: boolean;
+  $size?: "large" | "medium" | "small";
 }>`
   display: flex;
   align-items: center;
   color: ${(props) =>
-    props.disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
+    props.$disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
   svg {
     width: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "medium":
           return "18px";
         case "small":
@@ -81,7 +81,7 @@ const IconWrapper = styled.span<{
       }
     }};
     height: ${(props) => {
-      switch (props.size) {
+      switch (props.$size) {
         case "medium":
           return "18px";
         case "small":
@@ -91,17 +91,17 @@ const IconWrapper = styled.span<{
       }
     }};
     stroke: ${(props) =>
-      props.disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
+      props.$disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
     path {
       stroke: ${(props) =>
-        props.disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
+        props.$disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
     }
   }
 `;
 
-const LabelWrapper = styled.span<{ size?: "large" | "medium" | "small" }>`
+const LabelWrapper = styled.span<{ $size?: "large" | "medium" | "small" }>`
   ${(props) => {
-    switch (props.size) {
+    switch (props.$size) {
       case "medium":
         return theme.fonts.body2.semibold;
       case "small":
@@ -123,17 +123,17 @@ const ButtonOutlinedPrimary: React.FC<ButtonOutlinedPrimaryProps> = ({
   return (
     <ButtonWrapper
       onClick={disabled ? undefined : onClick}
-      disabled={disabled}
-      size={size}
+      $disabled={disabled}
+      $size={size}
     >
       {leftIcon && (
-        <IconWrapper disabled={disabled} size={size}>
+        <IconWrapper $disabled={disabled} $size={size}>
           {leftIcon}
         </IconWrapper>
       )}
-      <LabelWrapper size={size}>{label}</LabelWrapper>
+      <LabelWrapper $size={size}>{label}</LabelWrapper>
       {rightIcon && (
-        <IconWrapper disabled={disabled} size={size}>
+        <IconWrapper $disabled={disabled} $size={size}>
           {rightIcon}
         </IconWrapper>
       )}
