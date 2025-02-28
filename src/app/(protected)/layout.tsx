@@ -10,7 +10,7 @@ import StyledComponentsRegistry from "@/lib/registry";
 import localFont from "next/font/local";
 
 const pretendard = localFont({
-  src: "../fonts/PretendardVariable.woff2",
+  src: "../../fonts/PretendardVariable.woff2",
   variable: "--font-pretendard",
   display: "swap",
 });
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function RootLayout({
+export default function SidebarLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

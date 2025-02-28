@@ -74,6 +74,7 @@ const Input = styled.input<{
 }>`
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.regular : theme.fonts.body1.regular}
+  flex: 1;
   color: ${({ $locked, $disabled }) =>
     $disabled
       ? theme.colors.gray[100]
@@ -128,7 +129,7 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const NormalInput = ({
+const CustomInput = ({
   label,
   helpText,
   required,
@@ -182,4 +183,4 @@ const NormalInput = ({
   );
 };
 
-export default NormalInput;
+export default CustomInput;

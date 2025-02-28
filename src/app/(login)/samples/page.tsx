@@ -1,9 +1,7 @@
 "use client";
 
-import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonSection from "./components/ButtonSection";
 import CheckboxSection from "./components/CheckboxSection";
-import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
 import IconSection from "./components/IconSection";
