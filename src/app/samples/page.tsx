@@ -1,7 +1,7 @@
 "use client";
 
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
-import ButtonSection from "./components/CuttonSection2";
+import ButtonSection from "./components/ButtonSection";
 import CheckboxSection from "./components/CheckboxSection";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomInput from "@/components/basic/CustomInput";
@@ -9,6 +9,7 @@ import CustomTextArea from "@/components/basic/CustomTextArea";
 import IconSection from "./components/IconSection";
 import MusicLogoSection from "./components/MusicLogoSection";
 import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
+import RadioSection from "./components/RadioSection";
 import SnsSection from "./components/SnsSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -68,6 +69,7 @@ export default function Samples() {
       />
       <ButtonSection />
       <CheckboxSection />
+      <RadioSection />
     </Container>
   );
 }
