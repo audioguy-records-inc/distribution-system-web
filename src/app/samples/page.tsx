@@ -11,6 +11,7 @@ import MusicLogoSection from "./components/MusicLogoSection";
 import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
 import RadioSection from "./components/RadioSection";
 import SnsSection from "./components/SnsSection";
+import ToggleSection from "./components/ToggleSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useState } from "react";
@@ -70,6 +71,7 @@ export default function Samples() {
       <ButtonSection />
       <CheckboxSection />
       <RadioSection />
+      <ToggleSection />
     </Container>
   );
 }
