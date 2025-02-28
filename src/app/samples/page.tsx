@@ -1,7 +1,8 @@
 "use client";
 
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
-import ButtonSection from "./components/buttonSection";
+import ButtonSection from "./components/CuttonSection2";
+import CheckboxSection from "./components/CheckboxSection";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
@@ -29,8 +30,6 @@ const Title2 = styled.div`
 `;
 
 export default function Samples() {
-  const [checked, setChecked] = useState(false);
-
   return (
     <Container>
       컴포넌트 모음
@@ -68,11 +67,7 @@ export default function Samples() {
         // isError
       />
       <ButtonSection />
-      <CustomCheckbox
-        checked={checked}
-        onChange={() => setChecked(!checked)}
-        label="Label"
-      />
+      <CheckboxSection />
     </Container>
   );
 }
