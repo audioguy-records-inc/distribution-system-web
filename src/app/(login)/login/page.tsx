@@ -1,9 +1,9 @@
 "use client";
 
+import { API_URL } from "@/constants/api";
 import Image from "next/image";
 import LoginForm from "./components/LoginForm";
 import styled from "styled-components";
-import theme from "@/styles/theme";
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +29,9 @@ const RightSection = styled.div`
 `;
 
 export default function LoginPage() {
+  console.log("moonsae env", process.env.NODE_ENV);
+  console.log("moonsae api", API_URL);
+
   return (
     <Container>
       <LeftSection>
