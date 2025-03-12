@@ -5,18 +5,13 @@ interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
 }
 
-interface FetchResponse<T> {
-  status: boolean;
+export interface FetchResponse<T> {
+  error: boolean;
   data?: T;
-  message?: {
-    error: {
-      code: string;
-      message: string;
-    };
-  };
+  message: string;
 }
 
-export const apiFetch = async <T = unknown>(
+export const apiFetch = async <T>(
   path: string,
   options: FetchOptions = {},
 ): Promise<FetchResponse<T>> => {
@@ -45,50 +40,31 @@ export const apiFetch = async <T = unknown>(
       headers,
     });
 
-    // 응답 상태 먼저 확인
+    const data = await response.json();
+
     if (!response.ok) {
       console.error(
-        `[${options.method || "GET"}][${response.status}] ${response.url}`,
+        `[FETCH RESPONSE] ${options.method} ${url} ${
+          response.status
+        } ${JSON.stringify(data)}`,
       );
-      return {
-        status: false,
-        message: {
-          error: {
-            code: response.status.toString(),
-            message: response.statusText,
-          },
-        },
-      };
+      throw new Error(data.message);
     }
 
-    // JSON 파싱 시도
-    let data;
-    try {
-      data = await response.json();
-    } catch (parseError) {
-      console.error("[FETCH][PARSE ERROR]", parseError);
-      return {
-        status: false,
-        message: {
-          error: { code: "0001", message: "Invalid JSON response" },
-        },
-      };
-    }
+    console.log(
+      `[FETCH RESPONSE] ${options.method} ${url} ${
+        response.status
+      } ${JSON.stringify(data)}`,
+    );
 
-    // 응답 내용 로깅
-    console.log(`[FETCH RESPONSE] ${options.method || "GET"} ${url}`, {
-      status: response.status,
-      data: data,
-    });
-
-    return { status: true, data };
+    return data as FetchResponse<T>;
   } catch (error) {
-    console.error("[FETCH][ERROR]", error);
+    console.error("[apiFetch] error", error);
     return {
-      status: false,
-      message: {
-        error: { code: "0000", message: "Network error or invalid response" },
-      },
+      error: true,
+      message:
+        error instanceof Error ? error.message : "Unknown error occurred",
+      data: undefined,
     };
   }
 };

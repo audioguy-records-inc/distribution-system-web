@@ -1,29 +1,29 @@
+import { FetchResponse, apiFetch } from "../fetch";
+
 import { User } from "@/types/user";
-import { apiFetch } from "../fetch";
 
 interface LoginResponse {
-  status: boolean;
-  data: {
-    user: User;
-    jsonWebToken: string;
-    isAdmin: boolean;
-  } | null;
-  message: {
-    error: {
-      code: string;
-      message: string;
-    };
-  };
+  user: User;
+  isAdmin: boolean;
+  jsonWebToken: string;
+  isLogined?: boolean;
 }
 
 export const login = async (
   account: string,
   password: string,
-): Promise<LoginResponse> => {
-  const response = await apiFetch("/users/login", {
-    method: "POST",
-    body: JSON.stringify({ account, password }),
-  });
+): Promise<FetchResponse<LoginResponse>> => {
+  try {
+    const response = await apiFetch("/users/login", {
+      method: "POST",
+      body: JSON.stringify({ account, password }),
+    });
 
-  return response as LoginResponse;
+    return response as FetchResponse<LoginResponse>;
+  } catch (error) {
+    console.error("[login] error", error);
+    throw error instanceof Error
+      ? error
+      : new Error("로그인 중 알 수 없는 오류가 발생했습니다.");
+  }
 };

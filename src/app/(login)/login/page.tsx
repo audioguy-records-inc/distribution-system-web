@@ -4,6 +4,9 @@ import { API_URL } from "@/constants/api";
 import Image from "next/image";
 import LoginForm from "./components/LoginForm";
 import styled from "styled-components";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div`
   display: flex;
@@ -29,8 +32,17 @@ const RightSection = styled.div`
 `;
 
 export default function LoginPage() {
+  const router = useRouter();
   console.log("moonsae env", process.env.NODE_ENV);
   console.log("moonsae api", API_URL);
+  const user = useUserStore((state) => state.user);
+  console.log("moonsae user", user);
+
+  useEffect(() => {
+    if (user) {
+      router.push("/"); // 또는 router.push('/home') 등 홈 경로로 설정
+    }
+  }, [user, router]);
 
   return (
     <Container>

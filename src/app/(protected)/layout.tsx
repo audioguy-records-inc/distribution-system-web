@@ -1,3 +1,4 @@
+import AuthGuard from "@/components/AuthGuard";
 import LayoutContainer from "@/components/layout/LayoutContainer";
 import MainContent from "@/components/layout/MainContent";
 import type { Metadata } from "next";
@@ -14,9 +15,11 @@ export default function SidebarLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <LayoutContainer>
-      <Sidebar />
-      <MainContent>{children}</MainContent>
-    </LayoutContainer>
+    <AuthGuard>
+      <LayoutContainer>
+        <Sidebar />
+        <MainContent>{children}</MainContent>
+      </LayoutContainer>
+    </AuthGuard>
   );
 }
