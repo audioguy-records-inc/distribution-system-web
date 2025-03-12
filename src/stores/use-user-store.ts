@@ -25,10 +25,10 @@ export const useUserStore = create<UserStore>()(
 
           const response = await login(account, password);
 
-          if (!response.status || !response.data) {
+          if (!response || !response.status || !response.data) {
             toast.error(response.message.error);
             console.error(
-              "[useUserStore/login] Login failed. !status or !data",
+              "[useUserStore/login] Login failed. !response or !status or !data",
               response,
             );
           }

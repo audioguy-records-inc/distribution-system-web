@@ -25,5 +25,5 @@ export const login = async (
     body: JSON.stringify({ account, password }),
   });
 
-  return response.data as LoginResponse;
+  return response as LoginResponse;
 };
