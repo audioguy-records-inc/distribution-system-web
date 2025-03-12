@@ -1,6 +1,7 @@
 import AuthGuard from "@/components/AuthGuard";
+import Breadcrumbs from "@/components/BreadCrumbs";
 import LayoutContainer from "@/components/layout/LayoutContainer";
-import MainContent from "@/components/layout/MainContent";
+import MainContent from "@/components/layout/PageLayout";
 import type { Metadata } from "next";
 import Sidebar from "@/components/layout/Sidebar";
 
@@ -18,7 +19,10 @@ export default function SidebarLayout({
     <AuthGuard>
       <LayoutContainer>
         <Sidebar />
-        <MainContent>{children}</MainContent>
+        <MainContent>
+          <Breadcrumbs />
+          {children}
+        </MainContent>
       </LayoutContainer>
     </AuthGuard>
   );

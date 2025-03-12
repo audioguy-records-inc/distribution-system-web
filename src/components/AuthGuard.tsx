@@ -16,13 +16,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // if (!user && window.location.pathname !== "/login") {
-    //   router.push("/login");
-    // }
-    // if (user && window.location.pathname === "/login") {
-    //   router.push("/home");
-    // }
-
     // 클라이언트 사이드 하이드레이션 후 추가 검증
     const validateAuth = async () => {
       try {

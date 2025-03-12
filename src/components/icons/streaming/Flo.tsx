@@ -2,7 +2,8 @@ import Image from "next/image";
 import styled from "styled-components";
 
 const Container = styled.div`
-  display: inline-block;
+  display: flex;
+  align-items: center;
 `;
 
 interface FloProps {

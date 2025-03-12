@@ -46,7 +46,7 @@ export default function Sidebar() {
       <Logo>My Sidebarasdfsdfdsasdfsdfsdf</Logo>
       <MenuList>
         <MenuItem>
-          <Link href="/">Home</Link>
+          <Link href="/contract/dsp/list">리스트 조회/등록</Link>
         </MenuItem>
         <MenuItem>
           <Link href="/about">About</Link>

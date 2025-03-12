@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
-const Container = styled.div`
+const Container = styled.div<{ $hasLabel?: boolean }>`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ $hasLabel }) => ($hasLabel ? "8px" : "0")};
 `;
 
 const LabelContainer = styled.div`
@@ -146,7 +146,7 @@ const CustomInput = ({
   ...props
 }: InputProps) => {
   return (
-    <Container>
+    <Container $hasLabel={!!label}>
       <LabelContainer>
         {label && (
           <Label $disabled={disabled} $size={size}>

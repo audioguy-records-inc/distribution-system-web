@@ -2,6 +2,7 @@
 
 import ButtonSection from "./components/ButtonSection";
 import CheckboxSection from "./components/CheckboxSection";
+import ChipSection from "./components/ChipSection";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
 import IconSection from "./components/IconSection";
@@ -71,6 +72,7 @@ export default function Samples() {
       <CheckboxSection />
       <RadioSection />
       <ToggleSection />
+      <ChipSection />
     </Container>
   );
 }

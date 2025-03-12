@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 // import "./globals.css";
 import GlobalStyles from "@/styles/global-styles";
 import LayoutContainer from "@/components/layout/LayoutContainer";
-import MainContent from "@/components/layout/MainContent";
+import MainContent from "@/components/layout/PageLayout";
 import type { Metadata } from "next";
 import Sidebar from "@/components/layout/Sidebar";
 import StyledComponentsRegistry from "@/lib/registry";
