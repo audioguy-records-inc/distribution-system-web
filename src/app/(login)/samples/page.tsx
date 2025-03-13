@@ -5,6 +5,7 @@ import CheckboxSection from "./components/CheckboxSection";
 import ChipSection from "./components/ChipSection";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
+import DropdownSection from "./components/DropdownSection";
 import IconSection from "./components/IconSection";
 import MusicLogoSection from "./components/MusicLogoSection";
 import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
@@ -73,6 +74,7 @@ export default function Samples() {
       <RadioSection />
       <ToggleSection />
       <ChipSection />
+      <DropdownSection />
     </Container>
   );
 }
