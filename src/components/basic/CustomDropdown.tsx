@@ -114,22 +114,10 @@ const List = styled.ul`
   overflow: hidden;
 `;
 
-const CheckboxContainer = styled.div<{ $selected: boolean }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  padding: 2px;
-  border-radius: 4px;
-  background-color: ${({ $selected }) =>
-    $selected ? theme.colors.purple[600] : theme.colors.gray[50]};
-  margin-right: 8px;
-`;
-
-const ListItem = styled.li`
-  padding: 12px 14px;
-  ${theme.fonts.body1.medium}
+const ListItem = styled.li<{ $size?: "small" | "normal" }>`
+  padding: ${({ $size }) => ($size === "small" ? "8px 14px" : "12px 14px")};
+  ${({ $size }) =>
+    $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
   color: ${theme.colors.gray[800]};
   cursor: pointer;
   position: relative;
@@ -149,6 +137,22 @@ const ListItem = styled.li`
   &:hover {
     background: ${theme.colors.gray[25]};
   }
+`;
+
+const CheckboxContainer = styled.div<{
+  $selected: boolean;
+  $size?: "small" | "normal";
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: ${({ $size }) => ($size === "small" ? "16px" : "20px")};
+  height: ${({ $size }) => ($size === "small" ? "16px" : "20px")};
+  padding: 2px;
+  border-radius: 4px;
+  background-color: ${({ $selected }) =>
+    $selected ? theme.colors.purple[600] : theme.colors.gray[50]};
+  margin-right: 8px;
 `;
 
 const ChipsContainer = styled.div`
@@ -265,12 +269,21 @@ const CustomDropdown = <T,>({
         {isOpen && !disabled && (
           <List>
             {items.map((item, index) => (
-              <ListItem key={index} onClick={() => handleSelect(item)}>
+              <ListItem
+                key={index}
+                onClick={() => handleSelect(item)}
+                $size={size}
+              >
                 {multiple && (
                   <CheckboxContainer
                     $selected={selectedItems.includes(item.value)}
+                    $size={size}
                   >
-                    <CheckIcon color={"white"} width={16} height={16} />
+                    <CheckIcon
+                      color={"white"}
+                      width={size === "small" ? 12 : 16}
+                      height={size === "small" ? 12 : 16}
+                    />
                   </CheckboxContainer>
                 )}
                 {item.content}
