@@ -25,7 +25,7 @@ export const apiFetch = async <T>(
   };
 
   if (jwt) {
-    headers.Authorization = `${jwt}`;
+    headers.Authorization = `jwt ${jwt}`;
   }
 
   // 요청 내용 로깅
@@ -44,7 +44,7 @@ export const apiFetch = async <T>(
 
     if (!response.ok) {
       console.error(
-        `[FETCH RESPONSE] ${options.method} ${url} ${
+        `[FETCH RESPONSE] ${options.method || "GET"} ${url} ${
           response.status
         } ${JSON.stringify(data)}`,
       );
@@ -52,7 +52,7 @@ export const apiFetch = async <T>(
     }
 
     console.log(
-      `[FETCH RESPONSE] ${options.method} ${url} ${
+      `[FETCH RESPONSE] ${options.method || "GET"} ${url} ${
         response.status
       } ${JSON.stringify(data)}`,
     );
