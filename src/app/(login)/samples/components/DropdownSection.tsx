@@ -61,6 +61,49 @@ export default function DropdownSection() {
           selectedItems={selectedItems}
         />
       </DropdownWrapper>
+      <DropdownWrapper>
+        <CustomDropdown
+          label="Label"
+          content="Label"
+          required
+          items={items}
+          size="small"
+        />
+        <CustomDropdown
+          label="Label"
+          content={getSelectedContent(selectedItem)}
+          required
+          selectedItem={selectedItem}
+          items={items}
+          onSelect={setSelectedItem}
+          size="small"
+        />
+        <CustomDropdown
+          label="Label"
+          content="Label"
+          disabled
+          items={items}
+          size="small"
+        />
+        <CustomDropdown
+          label="Label"
+          content="Label"
+          required
+          disabled
+          items={items}
+          size="small"
+        />
+        <CustomDropdown
+          label="Label"
+          content={getMultiSelectedContent(selectedItems)}
+          required
+          multiple
+          items={items}
+          onMultiSelect={setSelectedItems}
+          selectedItems={selectedItems}
+          size="small"
+        />
+      </DropdownWrapper>
     </Container>
   );
 }

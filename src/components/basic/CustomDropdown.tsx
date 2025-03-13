@@ -44,7 +44,7 @@ const DropdownContainer = styled.button<{
   display: flex;
   height: ${({ $size }) => ($size === "small" ? "42px" : "48px")};
   width: ${({ $width }) => $width}px;
-  padding: 4px 8px 4px ${({ $size }) => ($size === "small" ? "12px" : "14px")};
+  padding: 4px 8px 4px 14px;
   justify-content: space-between;
   align-items: center;
   gap: 8px;
