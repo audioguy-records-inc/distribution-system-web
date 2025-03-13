@@ -53,8 +53,10 @@ export const useUserStore = create<UserStore>()(
               : "로그인 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
+
           console.error("[useUserStore/login] Login failed.", error);
-          set({ error: errorMessage, user: null, jsonWebToken: null });
+
+          set({ user: null, jsonWebToken: null, error: errorMessage });
         } finally {
           set({ isLoading: false });
         }

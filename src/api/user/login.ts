@@ -22,6 +22,7 @@ export const login = async (
     return response as FetchResponse<LoginResponse>;
   } catch (error) {
     console.error("[login] error", error);
+
     throw error instanceof Error
       ? error
       : new Error("로그인 중 알 수 없는 오류가 발생했습니다.");

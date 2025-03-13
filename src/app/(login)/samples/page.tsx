@@ -11,6 +11,7 @@ import MusicLogoSection from "./components/MusicLogoSection";
 import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
 import RadioSection from "./components/RadioSection";
 import SnsSection from "./components/SnsSection";
+import TableSection from "./components/TableSection";
 import ToggleSection from "./components/ToggleSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -75,6 +76,7 @@ export default function Samples() {
       <ToggleSection />
       <ChipSection />
       <DropdownSection />
+      <TableSection />
     </Container>
   );
 }
