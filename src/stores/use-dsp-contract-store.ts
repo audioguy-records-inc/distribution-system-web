@@ -24,10 +24,6 @@ export const useDspContractStore = create<DspContractStore>()(
 
         try {
           const response = await getDspContracts();
-          console.log("moonsae response", response);
-          if (response.error) {
-            throw new Error(response.message);
-          }
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);

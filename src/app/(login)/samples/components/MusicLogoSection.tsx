@@ -10,7 +10,10 @@ import Vibe from "@/components/icons/streaming/Vibe";
 import YoutubeMusic from "@/components/icons/streaming/YoutubeMusic";
 import styled from "styled-components";
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 
 export default function MusicLogoSection() {
   return (

@@ -9,3 +9,10 @@ export const API_URL =
 
 export const STORAGE_URL =
   process.env.NODE_ENV === "production" ? PROD_STORAGE_URL : DEV_STORAGE_URL;
+
+// 이미지 URL을 생성하는 헬퍼 함수 추가
+export const getImageUrl = (imagePath: string) => {
+  if (!imagePath) return "";
+  if (imagePath.startsWith("http")) return imagePath;
+  return `${STORAGE_URL}${imagePath}`;
+};

@@ -6,6 +6,7 @@ import ChipSection from "./components/ChipSection";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
 import DropdownSection from "./components/DropdownSection";
+import DspSection from "./components/DspSection";
 import IconSection from "./components/IconSection";
 import MusicLogoSection from "./components/MusicLogoSection";
 import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
@@ -79,6 +80,7 @@ export default function Samples() {
       <DropdownSection />
       <TableSection />
       <UploadSection />
+      <DspSection />
     </Container>
   );
 }

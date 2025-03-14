@@ -1,3 +1,5 @@
+import { Dsp } from "./dsp";
+
 type ContactPerson = {
   responsibility: "contract" | "settlement" | "promotion";
   name: string;
@@ -27,6 +29,7 @@ interface DspContract {
   contactPersonList: ContactPerson[];
   contractItemList: string[];
   fileList: FileInfo[];
+  dspInfo?: Dsp;
   createdAt: {
     $date: {
       $numberLong: string;
