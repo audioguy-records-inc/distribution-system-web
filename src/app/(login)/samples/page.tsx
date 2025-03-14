@@ -13,6 +13,7 @@ import RadioSection from "./components/RadioSection";
 import SnsSection from "./components/SnsSection";
 import TableSection from "./components/TableSection";
 import ToggleSection from "./components/ToggleSection";
+import UploadSection from "./components/UploadSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useState } from "react";
@@ -77,6 +78,7 @@ export default function Samples() {
       <ChipSection />
       <DropdownSection />
       <TableSection />
+      <UploadSection />
     </Container>
   );
 }

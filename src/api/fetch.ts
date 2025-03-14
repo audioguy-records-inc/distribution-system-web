@@ -31,7 +31,7 @@ export const apiFetch = async <T>(
   // 요청 내용 로깅
   console.log(`[FETCH REQUEST] ${options.method || "GET"} ${url}`, {
     headers,
-    ...options,
+    body: options.body ? JSON.parse(options.body as string) : undefined,
   });
 
   try {
@@ -43,19 +43,17 @@ export const apiFetch = async <T>(
     const data = await response.json();
 
     if (!response.ok) {
-      console.error(
-        `[FETCH RESPONSE] ${options.method || "GET"} ${url} ${
-          response.status
-        } ${JSON.stringify(data)}`,
-      );
+      console.error(`[FETCH RESPONSE] ${options.method || "GET"} ${url}`, {
+        status: response.status,
+        data,
+      });
       throw new Error(data.message);
     }
 
-    console.log(
-      `[FETCH RESPONSE] ${options.method || "GET"} ${url} ${
-        response.status
-      } ${JSON.stringify(data)}`,
-    );
+    console.log(`[FETCH RESPONSE] ${options.method || "GET"} ${url}`, {
+      status: response.status,
+      data,
+    });
 
     return data as FetchResponse<T>;
   } catch (error) {
