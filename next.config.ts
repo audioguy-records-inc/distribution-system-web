@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         destination: "/contract/dsp/list",
         permanent: true,
       },
+      {
+        source: "/home",
+        destination: "/contract/dsp/list",
+        permanent: true,
+      },
     ];
   },
 

@@ -1,7 +1,7 @@
 "use client";
 
 import AddNew from "./components/AddNew";
-import DSPFilterChip from "@/components/DspFilterChip";
+import DSPFilterChip from "@/components/DsFilterChip";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "./components/SearchInput";
