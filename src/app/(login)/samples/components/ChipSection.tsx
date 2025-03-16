@@ -1,5 +1,5 @@
 import CustomChip from "@/components/basic/CustomChip";
-import DSPFilterChip from "@/components/DsFilterChip";
+import DSPFilterChip from "@/components/DspFilterChip";
 import Facebook from "@/components/icons/sns/Facebook";
 import Melon from "@/components/icons/streaming/Melon";
 import Spotify from "@/components/icons/streaming/Spotify";
