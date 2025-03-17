@@ -6,8 +6,7 @@ import AddNew from "@/components/AddNew";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import ContactPersonTable from "./ContactPersonTable";
-import ContractRate from "./ContractRate";
-import ContractUpload from "../../../../../../components/basic/CustomUpload";
+import ContractProductItem from "./ContractProductItem";
 import CountryCodeDropdown from "./CountryCodeDropdown";
 import { CountryItem } from "@/constants/country";
 import CustomInput from "@/components/basic/CustomInput";
@@ -62,10 +61,6 @@ const Form = styled.form`
 
 const AddNewDspContract = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDsp, setSelectedDsp] = useState<Dsp | undefined>(undefined);
-  const [selectedCountry, setSelectedCountry] = useState<
-    CountryItem | undefined
-  >(undefined);
   const { createDspContract } = useDspContractStore();
   const {
     register,
@@ -74,7 +69,6 @@ const AddNewDspContract = () => {
     control,
     formState: { isValid },
     watch,
-    setValue,
   } = useForm<DspContract>({
     defaultValues: {
       contactPersonList: [
@@ -86,6 +80,7 @@ const AddNewDspContract = () => {
         },
       ],
       fileList: [],
+      contractItemList: [],
     },
     shouldFocusError: false,
   });
@@ -280,6 +275,18 @@ const AddNewDspContract = () => {
             placeholder="숫자 입력"
             type="number"
             {...register("contractRate", { required: true })}
+          />
+          <Gap height={56} />
+          <Controller
+            name="contractItemList"
+            control={control}
+            defaultValue={[]}
+            render={({ field }) => (
+              <ContractProductItem
+                value={field.value}
+                onChange={field.onChange}
+              />
+            )}
           />
         </Form>
       </ReactModal>
