@@ -48,6 +48,7 @@ const ChipContainer = styled.div<{
   white-space: nowrap;
   overflow: hidden;
   cursor: pointer;
+  user-select: none;
   background-color: ${({ $isSelected }) =>
     $isSelected ? theme.colors.gray[25] : "transparent"};
   &:hover {

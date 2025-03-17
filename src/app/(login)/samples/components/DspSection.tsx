@@ -3,6 +3,7 @@ import { DataCollectionName, FileType } from "@/types/upload";
 
 import { getImageUrl } from "@/constants/api";
 import styled from "styled-components";
+import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useDspStore } from "@/stores/use-dsp-store";
 import { useEffect } from "react";
@@ -73,9 +74,18 @@ const SelectedFileName = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  background-color: #ff0000;
-  color: #fff;
+  width: 100%;
+  padding: 8px;
+  background-color: ${theme.colors.red[500]};
+  color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  ${theme.fonts.body2.regular};
+
+  &:hover {
+    background-color: ${theme.colors.red[600]};
+  }
 `;
 
 const DeleteConfirmPopup = styled.div`
@@ -126,23 +136,32 @@ const CancelButton = styled.button`
 
 const DspItem = styled.div`
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 8px;
   border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 8px 16px 8px 12px;
+  border-radius: 100px;
+  user-select: none;
+  touch-action: none;
+`;
+
+const DspContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 const DspImage = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 28px;
+  height: 28px;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 50%;
 `;
 
 const DspInfo = styled.div`
   display: flex;
   flex-direction: column;
+  ${theme.fonts.body2.medium};
 `;
 
 const DspSection = () => {
@@ -222,11 +241,6 @@ const DspSection = () => {
     }
   };
 
-  const handleDeleteClick = (dspId: string) => {
-    setDspToDelete(dspId);
-    setShowDeleteConfirm(true);
-  };
-
   const handleConfirmDelete = async () => {
     if (dspToDelete) {
       await deleteDsp({ dspId: dspToDelete });
@@ -270,18 +284,32 @@ const DspSection = () => {
 
       <DspWrapper>
         {dsps.map((dsp) => (
-          <DspItem key={dsp._id}>
-            <DspImage src={getImageUrl(dsp.imageOriginalPath)} alt={dsp.name} />
-            <DspInfo>
-              <div>{dsp.name}</div>
-              <DeleteButton onClick={() => handleDeleteClick(dsp._id)}>
-                삭제
-              </DeleteButton>
-            </DspInfo>
-          </DspItem>
+          <div
+            key={dsp._id}
+            style={{ display: "flex", flexDirection: "column", gap: 8 }}
+          >
+            <DspItem key={dsp._id}>
+              <DspContent>
+                <DspImage
+                  src={getImageUrl(dsp.imageOriginalPath)}
+                  alt={dsp.name}
+                />
+                <DspInfo>
+                  <div>{dsp.name}</div>
+                </DspInfo>
+              </DspContent>
+            </DspItem>
+            <DeleteButton
+              onClick={() => {
+                setDspToDelete(dsp._id);
+                setShowDeleteConfirm(true);
+              }}
+            >
+              삭제
+            </DeleteButton>
+          </div>
         ))}
       </DspWrapper>
-
       {showDeleteConfirm && (
         <DeleteConfirmPopup>
           <DeleteConfirmContent>

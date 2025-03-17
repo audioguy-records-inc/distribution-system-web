@@ -18,7 +18,7 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
-const DSPFilterChip = () => {
+const DspFilterChip = () => {
   return (
     <Container>
       <CustomChip label="ALL" />
@@ -37,4 +37,4 @@ const DSPFilterChip = () => {
   );
 };
 
-export default DSPFilterChip;
+export default DspFilterChip;

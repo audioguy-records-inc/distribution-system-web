@@ -9,6 +9,7 @@ export interface Column<T> {
   accessor: keyof T;
   width?: number;
   align?: "left" | "center" | "right";
+  render?: (value: T[keyof T], record: T) => React.ReactNode;
 }
 
 interface CustomTableProps<T> {
@@ -129,7 +130,9 @@ const CustomTable = <T extends Record<string, any>>({
               <TableRow $isExpanded={expandedRows.has(rowIndex)}>
                 {columns.map((column, colIndex) => (
                   <TableCell key={colIndex} $align={column.align} $size={size}>
-                    {row[column.accessor]}
+                    {column.render
+                      ? column.render(row[column.accessor], row)
+                      : row[column.accessor]}
                   </TableCell>
                 ))}
                 {expandable && (
