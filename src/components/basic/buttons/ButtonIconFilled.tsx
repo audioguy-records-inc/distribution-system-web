@@ -7,11 +7,13 @@ interface ButtonIconFilledProps {
   onClick?: () => void;
   disabled?: boolean;
   size?: "large" | "medium" | "small";
+  expand?: boolean;
 }
 
 const ButtonWrapper = styled.button<{
   $disabled?: boolean;
   $size?: "large" | "medium" | "small";
+  $expand?: boolean;
 }>`
   border: none;
   background-color: ${(props) =>
@@ -20,16 +22,14 @@ const ButtonWrapper = styled.button<{
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${(props) => {
-    switch (props.$size) {
-      case "medium":
-        return "32px";
-      case "small":
-        return "28px";
-      default:
-        return "40px";
-    }
-  }};
+  width: ${(props) =>
+    props.$expand
+      ? "100%"
+      : props.$size === "medium"
+      ? "32px"
+      : props.$size === "small"
+      ? "28px"
+      : "40px"};
   height: ${(props) => {
     switch (props.$size) {
       case "medium":
@@ -107,12 +107,14 @@ const ButtonIconFilled: React.FC<ButtonIconFilledProps> = ({
   onClick,
   disabled = false,
   size = "large",
+  expand = false,
 }) => {
   return (
     <ButtonWrapper
       onClick={disabled ? undefined : onClick}
       $disabled={disabled}
       $size={size}
+      $expand={expand}
     >
       <IconWrapper $disabled={disabled} $size={size}>
         {icon}

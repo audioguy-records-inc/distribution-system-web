@@ -9,11 +9,13 @@ interface ButtonOutlinedPrimaryProps {
   onClick?: () => void;
   disabled?: boolean;
   size?: "large" | "medium" | "small";
+  expand?: boolean;
 }
 
 const ButtonWrapper = styled.button<{
   $disabled?: boolean;
   $size?: "large" | "medium" | "small";
+  $expand?: boolean;
 }>`
   padding: ${(props) => {
     switch (props.$size) {
@@ -44,7 +46,7 @@ const ButtonWrapper = styled.button<{
   align-items: center;
   justify-content: center;
   gap: ${(props) => (props.$size === "large" ? "6px" : "4px")};
-  width: fit-content;
+  width: ${(props) => (props.$expand ? "100%" : "fit-content")};
   height: fit-content;
   color: ${(props) =>
     props.$disabled ? theme.colors.gray[100] : theme.colors.purple[600]};
@@ -119,12 +121,14 @@ const ButtonOutlinedPrimary: React.FC<ButtonOutlinedPrimaryProps> = ({
   onClick,
   disabled = false,
   size = "large",
+  expand = false,
 }) => {
   return (
     <ButtonWrapper
       onClick={disabled ? undefined : onClick}
       $disabled={disabled}
       $size={size}
+      $expand={expand}
     >
       {leftIcon && (
         <IconWrapper $disabled={disabled} $size={size}>
