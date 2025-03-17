@@ -1,25 +1,11 @@
+import { ContactPerson } from "./contact-person";
 import { Dsp } from "./dsp";
+import { FileInfo } from "./file-info";
 
-type ContactPerson = {
-  responsibility: "contract" | "settlement" | "promotion";
-  name: string;
-  email: string;
-  phone: string;
-};
-
-type FileInfo = {
-  name: string;
-  filePath: string;
-};
-
-interface DspContract {
-  _id: {
-    $oid: string;
-  };
+export interface DspContract {
+  _id: string;
   dspContractName: string;
-  dspId: {
-    $oid: string;
-  };
+  dspId: string;
   dspContractUniqueId: string;
   regionType: "international" | "domestic";
   countryCode: string;
@@ -30,21 +16,9 @@ interface DspContract {
   contractItemList: string[];
   fileList: FileInfo[];
   dspInfo?: Dsp;
-  createdAt: {
-    $date: {
-      $numberLong: string;
-    };
-  };
-  updatedAt: {
-    $date: {
-      $numberLong: string;
-    };
-  };
-  deletedAt?: {
-    $date: {
-      $numberLong: string;
-    };
-  };
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
 }
 
 export default DspContract;

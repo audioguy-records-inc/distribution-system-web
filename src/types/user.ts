@@ -1,16 +1,7 @@
-interface ContactPerson {
-  responsibility: "contract" | "settlement" | "promotion";
-  name: string;
-  email: string;
-  phone: string;
-}
+import { ContactPerson } from "./contact-person";
+import { FileInfo } from "./file-info";
 
-interface FileInfo {
-  name: string;
-  filePath: string;
-}
-
-interface User {
+export interface User {
   _id: string;
   account: string;
   password: string;
@@ -38,5 +29,3 @@ interface User {
   updatedAt: Date;
   deletedAt?: Date;
 }
-
-export type { User, ContactPerson, FileInfo };
