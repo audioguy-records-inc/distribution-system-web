@@ -124,6 +124,7 @@ interface InputProps {
   width?: number;
   disabled?: boolean;
   size?: "small" | "normal";
+  type?: string;
 
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -140,11 +141,14 @@ const CustomInput = ({
   width = 320,
   disabled,
   size = "normal",
+  type = "text",
 
-  value,
+  value = "",
   onChange = () => {},
   ...props
 }: InputProps) => {
+  const inputValue = value === null ? "" : value;
+
   return (
     <Container $hasLabel={!!label}>
       <LabelContainer>
@@ -168,9 +172,10 @@ const CustomInput = ({
       >
         <Input
           {...props}
+          type={type}
           placeholder={placeholder}
           disabled={locked || disabled}
-          value={value}
+          value={inputValue}
           onChange={onChange}
           $disabled={disabled}
           $locked={locked}

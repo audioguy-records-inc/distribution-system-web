@@ -162,35 +162,35 @@ const ChipsContainer = styled.div`
   margin-top: 8px;
 `;
 
-interface CustomDropdownProps<T> {
+interface CustomDropdownProps {
   label?: string;
   required?: boolean;
-  selectedItem?: T;
-  selectedItems?: T[];
-  content: string;
+  selectedKey?: string;
+  selectedKeys?: string[];
+  placeholder?: string;
   width?: number;
   disabled?: boolean;
   size?: "small" | "normal";
-  onSelect?: (item: T) => void;
-  onMultiSelect?: (items: T[]) => void;
-  items: { content: string; value: T }[];
+  onSelectKey?: (key: string) => void;
+  onMultiSelectKeys?: (keys: string[]) => void;
+  items: { key: string; value: string }[];
   multiple?: boolean;
 }
 
-const CustomDropdown = <T,>({
+const CustomDropdown = ({
   label,
   required,
-  selectedItem,
-  selectedItems = [],
-  content,
+  selectedKey,
+  selectedKeys = [],
+  placeholder = "",
   width = 180,
   disabled,
   size = "normal",
-  onSelect,
-  onMultiSelect,
+  onSelectKey,
+  onMultiSelectKeys,
   items,
   multiple = false,
-}: CustomDropdownProps<T>) => {
+}: CustomDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -216,21 +216,39 @@ const CustomDropdown = <T,>({
     }
   };
 
-  const handleSelect = (item: { content: string; value: T }) => {
+  const handleSelect = (item: { key: string; value: string }) => {
     if (multiple) {
-      const newSelectedItems = selectedItems.includes(item.value)
-        ? selectedItems.filter((i) => i !== item.value)
-        : [...selectedItems, item.value];
-      onMultiSelect?.(newSelectedItems);
+      const newSelectedKeys = selectedKeys.includes(item.key)
+        ? selectedKeys.filter((k) => k !== item.key)
+        : [...selectedKeys, item.key];
+      onMultiSelectKeys?.(newSelectedKeys);
     } else {
-      onSelect?.(item.value);
+      onSelectKey?.(item.key);
       setIsOpen(false);
     }
   };
 
-  const handleChipDelete = (value: T) => {
-    const newSelectedItems = selectedItems.filter((item) => item !== value);
-    onMultiSelect?.(newSelectedItems);
+  const handleChipDelete = (key: string) => {
+    const newSelectedKeys = selectedKeys.filter((k) => k !== key);
+    onMultiSelectKeys?.(newSelectedKeys);
+  };
+
+  const isItemSelected = (item: { key: string; value: string }) => {
+    if (multiple) {
+      return selectedKeys.includes(item.key);
+    } else {
+      return selectedKey === item.key;
+    }
+  };
+
+  // 선택된 항목의 값을 표시하기 위한 함수
+  const getDisplayText = () => {
+    if (multiple) {
+      return placeholder;
+    } else {
+      const selectedItem = items.find((item) => item.key === selectedKey);
+      return selectedItem ? selectedItem.value : placeholder;
+    }
   };
 
   return (
@@ -249,15 +267,19 @@ const CustomDropdown = <T,>({
       </LabelContainer>
       <ListContainer ref={dropdownRef}>
         <DropdownContainer
-          $selected={!!selectedItem}
+          $selected={!!selectedKey || (multiple && selectedKeys.length > 0)}
           $disabled={disabled}
           $size={size}
           $width={width}
           onClick={handleClick}
           disabled={disabled}
         >
-          <Content $selected={!!selectedItem} $disabled={disabled} $size={size}>
-            {content}
+          <Content
+            $selected={!!selectedKey || (multiple && selectedKeys.length > 0)}
+            $disabled={disabled}
+            $size={size}
+          >
+            {getDisplayText()}
           </Content>
           <IconContainer $size={size}>
             <ArrowDownIcon
@@ -276,7 +298,7 @@ const CustomDropdown = <T,>({
               >
                 {multiple && (
                   <CheckboxContainer
-                    $selected={selectedItems.includes(item.value)}
+                    $selected={isItemSelected(item)}
                     $size={size}
                   >
                     <CheckIcon
@@ -286,23 +308,23 @@ const CustomDropdown = <T,>({
                     />
                   </CheckboxContainer>
                 )}
-                {item.content}
+                {item.value}
               </ListItem>
             ))}
           </List>
         )}
       </ListContainer>
 
-      {multiple && selectedItems.length > 0 && (
+      {multiple && selectedKeys.length > 0 && (
         <ChipsContainer>
           {items
-            .filter((item) => selectedItems.includes(item.value))
+            .filter((item) => selectedKeys.includes(item.key))
             .map((item, index) => (
               <CustomChip
                 key={index}
-                label={item.content}
+                label={item.value}
                 deletable
-                onClick={() => handleChipDelete(item.value)}
+                onClick={() => handleChipDelete(item.key)}
               />
             ))}
         </ChipsContainer>

@@ -15,7 +15,7 @@ interface UploadStore {
     file: File;
     fileType: FileType;
     dataCollectionName: DataCollectionName;
-  }) => Promise<{ uploadId: string; key: string } | null>;
+  }) => Promise<{ name: string; filePath: string } | null>;
   createUploadId: ({
     filename,
     fileType,
@@ -110,14 +110,14 @@ export const useUploadStore = create<UploadStore>()(
             partList: [{ ETag: etag, partNumber: 1 }],
             action: "complete",
           });
-
+          console.log("moonsae completeResult", completeResult);
           if (!completeResult || completeResult.error || !completeResult.data) {
             throw new Error(
               completeResult?.message || "멀티파트 업로드 완료 실패",
             );
           }
 
-          return { uploadId, key };
+          return { name: file.name, filePath: `/${key}` };
         } catch (error) {
           const errorMessage =
             error instanceof Error

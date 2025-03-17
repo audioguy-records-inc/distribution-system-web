@@ -29,9 +29,16 @@ export default function TableSection() {
       render: (value, record) => (
         <Dsp name={value as string} imagePath={record.imagePath!} />
       ),
+      type: "component",
     },
-    { header: "나이", accessor: "age", width: 100, align: "center" },
-    { header: "이메일", accessor: "email" },
+    {
+      header: "나이",
+      accessor: "age",
+      width: 100,
+      align: "center",
+      type: "string",
+    },
+    { header: "이메일", accessor: "email", type: "string" },
   ];
 
   const data = [

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import CustomDropdown from "../CustomDropdown";
+import CustomInput from "../CustomInput";
 import ExpandButton from "./components/ExpandButton";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -9,7 +11,11 @@ export interface Column<T> {
   accessor: keyof T;
   width?: number;
   align?: "left" | "center" | "right";
+  type: "string" | "input" | "dropdown" | "component" | "button";
   render?: (value: T[keyof T], record: T) => React.ReactNode;
+  dropdownOptions?: { key: string; value: string }[];
+  icon?: React.ReactNode;
+  onClick?: (record: T, rowIndex: number) => void;
 }
 
 interface CustomTableProps<T> {
@@ -21,13 +27,15 @@ interface CustomTableProps<T> {
     // expandColumn?: number; // 추후 버튼 위치 정할 때 사용, 구현되어있지 않음. 지금은 맨 뒤에 위치
     expandColumnWidth?: number;
   };
+  onChange?: (value: T[]) => void;
+  disabled?: boolean;
 }
 
 const TableContainer = styled.div`
   width: 100%;
   border: none;
   border-radius: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 `;
 
 const Table = styled.table`
@@ -74,7 +82,7 @@ const TableCell = styled.td<{
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
   color: ${theme.colors.gray[800]};
-  padding: ${({ $size }) => ($size === "small" ? "16px 12px" : "24px 20px")};
+  padding: ${({ $size }) => ($size === "small" ? "6px 12px" : "24px 20px")};
   text-align: ${({ $align }) => $align || "left"};
 `;
 
@@ -86,11 +94,25 @@ const ExpandedCell = styled.td`
   padding: 16px 24px;
 `;
 
+const Button = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+`;
+
 const CustomTable = <T extends Record<string, any>>({
   columns,
   data,
   size = "normal",
   expandable,
+  onChange,
+  disabled = false,
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
@@ -102,6 +124,91 @@ const CustomTable = <T extends Record<string, any>>({
       newExpandedRows.add(rowIndex);
     }
     setExpandedRows(newExpandedRows);
+  };
+
+  const handleInputChange = (
+    rowIndex: number,
+    accessor: keyof T,
+    value: string,
+  ) => {
+    if (!onChange) return;
+
+    const newData = [...data];
+    newData[rowIndex] = {
+      ...newData[rowIndex],
+      [accessor]: value,
+    };
+
+    onChange(newData);
+  };
+
+  const handleDropdownChange = (
+    rowIndex: number,
+    accessor: keyof T,
+    selectedKey: string,
+  ) => {
+    console.log("moonsae dropdown", onChange);
+    if (!onChange) return;
+
+    const newData = [...data];
+    newData[rowIndex] = {
+      ...newData[rowIndex],
+      [accessor]: selectedKey,
+    };
+
+    onChange(newData);
+  };
+
+  const renderCellContent = (column: Column<T>, row: T, rowIndex: number) => {
+    const value = row[column.accessor];
+
+    if (column.render) {
+      return column.render(value, row);
+    }
+
+    switch (column.type) {
+      case "input":
+        return (
+          <CustomInput
+            value={value as string}
+            onChange={(e) =>
+              handleInputChange(rowIndex, column.accessor, e.target.value)
+            }
+            size={size}
+            width={column.width || 150}
+            disabled={disabled}
+          />
+        );
+      case "dropdown":
+        return (
+          <CustomDropdown
+            selectedKey={value as string}
+            onSelectKey={(selectedKey) =>
+              handleDropdownChange(
+                rowIndex,
+                column.accessor,
+                selectedKey as string,
+              )
+            }
+            items={column.dropdownOptions || []}
+            size={size}
+            width={column.width || 150}
+            disabled={disabled}
+            placeholder="선택"
+          />
+        );
+      case "button":
+        return (
+          <Button
+            onClick={() => column.onClick?.(row, rowIndex)}
+            disabled={disabled}
+          >
+            {column.icon}
+          </Button>
+        );
+      default:
+        return value;
+    }
   };
 
   return (
@@ -130,9 +237,7 @@ const CustomTable = <T extends Record<string, any>>({
               <TableRow $isExpanded={expandedRows.has(rowIndex)}>
                 {columns.map((column, colIndex) => (
                   <TableCell key={colIndex} $align={column.align} $size={size}>
-                    {column.render
-                      ? column.render(row[column.accessor], row)
-                      : row[column.accessor]}
+                    {renderCellContent(column, row, rowIndex)}
                   </TableCell>
                 ))}
                 {expandable && (

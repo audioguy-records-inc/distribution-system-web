@@ -1,4 +1,4 @@
-import { getImageUrl } from "@/constants/api";
+import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
@@ -27,10 +27,11 @@ const DspInfo = styled.div`
 `;
 
 const Dsp = ({ name, imagePath }: DspProps) => {
-  console.log("moonsae imagePath", getImageUrl(imagePath));
+  console.log("moonsae imagePath", getFullUrl(imagePath));
+  console.log("moonsae name", name);
   return (
     <DspContent>
-      <DspImage src={getImageUrl(imagePath)} alt={name} />
+      <DspImage src={getFullUrl(imagePath)} alt={name} />
       <DspInfo>
         <div>{name}</div>
       </DspInfo>

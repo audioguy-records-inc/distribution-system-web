@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { DataCollectionName, FileType } from "@/types/upload";
 
-import { getImageUrl } from "@/constants/api";
+import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
@@ -23,7 +23,7 @@ const DspWrapper = styled.div`
 
 const Input = styled.input`
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid ${theme.colors.gray[300]};
   border-radius: 4px;
   width: 200px;
 `;
@@ -36,14 +36,14 @@ const FileLabel = styled.label`
   width: 200px;
   padding: 10px 20px;
   border-radius: 5px;
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: ${theme.colors.gray[100]};
+  color: ${theme.colors.gray[600]};
   cursor: pointer;
   text-align: center;
-  border: 2px dashed #ccc;
+  border: 2px dashed ${theme.colors.gray[300]};
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: ${theme.colors.gray[300]};
   }
 `;
 
@@ -51,18 +51,18 @@ const Button = styled.button`
   width: 200px;
   padding: 10px 20px;
   border-radius: 5px;
-  background-color: #000;
-  color: #fff;
+  background-color: ${theme.colors.black};
+  color: ${theme.colors.white};
   cursor: pointer;
 
   &:disabled {
-    background-color: #666;
+    background-color: ${theme.colors.gray[300]};
     cursor: not-allowed;
   }
 `;
 
 const ErrorMessage = styled.div`
-  color: #ff0000;
+  color: ${theme.colors.red[500]};
   font-size: 14px;
   margin-top: 8px;
 `;
@@ -70,7 +70,7 @@ const ErrorMessage = styled.div`
 const SelectedFileName = styled.div`
   margin-top: 8px;
   font-size: 14px;
-  color: #666;
+  color: ${theme.colors.gray[300]};
 `;
 
 const DeleteButton = styled.button`
@@ -118,7 +118,7 @@ const DeleteConfirmButtons = styled.div`
 
 const ConfirmButton = styled.button`
   padding: 8px 16px;
-  background-color: #ff0000;
+  background-color: ${theme.colors.red[500]};
   color: white;
   border: none;
   border-radius: 4px;
@@ -127,7 +127,7 @@ const ConfirmButton = styled.button`
 
 const CancelButton = styled.button`
   padding: 8px 16px;
-  background-color: #ccc;
+  background-color: ${theme.colors.gray[300]};
   color: black;
   border: none;
   border-radius: 4px;
@@ -138,7 +138,7 @@ const DspItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border: 1px solid #eee;
+  border: 1px solid ${theme.colors.gray[300]};
   padding: 8px 16px 8px 12px;
   border-radius: 100px;
   user-select: none;
@@ -222,10 +222,10 @@ const DspSection = () => {
         dataCollectionName: DataCollectionName.DSPS,
       });
 
-      if (uploadResult?.key) {
+      if (uploadResult?.filePath) {
         await createDsp({
           name: dspName,
-          imageOriginalPath: uploadResult.key,
+          imageOriginalPath: uploadResult.filePath,
         });
 
         // 성공 후 초기화
@@ -291,7 +291,7 @@ const DspSection = () => {
             <DspItem key={dsp._id}>
               <DspContent>
                 <DspImage
-                  src={getImageUrl(dsp.imageOriginalPath)}
+                  src={getFullUrl(dsp.imageOriginalPath)}
                   alt={dsp.name}
                 />
                 <DspInfo>

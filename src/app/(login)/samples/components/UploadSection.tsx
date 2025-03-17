@@ -2,6 +2,7 @@ import { ChangeEvent, useRef, useState } from "react";
 import { DataCollectionName, FileType, urlList } from "@/types/upload";
 
 import styled from "styled-components";
+import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useUploadStore } from "@/stores/use-upload-store";
 
@@ -51,7 +52,7 @@ const SelectedFileName = styled.div`
 `;
 
 const ErrorMessage = styled.div`
-  color: #ff0000;
+  color: ${theme.colors.red[500]};
   font-size: 14px;
   margin-top: 8px;
 `;
