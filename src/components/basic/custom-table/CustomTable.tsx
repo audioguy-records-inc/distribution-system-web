@@ -90,9 +90,7 @@ const ExpandedContent = styled.tr`
   background: ${theme.colors.white};
 `;
 
-const ExpandedCell = styled.td`
-  padding: 16px 24px;
-`;
+const ExpandedCell = styled.td``;
 
 const Button = styled.button`
   background: none;

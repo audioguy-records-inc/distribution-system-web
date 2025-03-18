@@ -37,7 +37,7 @@ const ModalHeader = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 16px;
 `;
 
 const VisibleWrapper = styled.div`

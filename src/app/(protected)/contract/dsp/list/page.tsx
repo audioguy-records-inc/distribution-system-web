@@ -2,7 +2,7 @@
 
 import AddNewDspContract from "./components/AddNewDspContract";
 import DSPFilterChip from "@/components/DspFilterChip";
-import DspContractList from "./components/fragment/DspContractList";
+import DspContractList from "./components/DspContractList";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
