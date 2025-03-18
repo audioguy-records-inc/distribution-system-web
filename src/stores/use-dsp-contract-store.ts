@@ -12,7 +12,7 @@ interface DspContractStore {
   error: string | null;
 
   fetchDspContracts: () => Promise<void>;
-  createDspContract: (request: { dspContract: DspContract }) => Promise<void>;
+  createDspContract: (dspContract: DspContract) => Promise<void>;
 }
 
 export const useDspContractStore = create<DspContractStore>()(
@@ -31,7 +31,7 @@ export const useDspContractStore = create<DspContractStore>()(
             throw new Error(response.message);
           }
 
-          set({ dspContracts: response.data.dspContractList });
+          set({ dspContracts: response.data.dspContractList, error: null });
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -47,18 +47,24 @@ export const useDspContractStore = create<DspContractStore>()(
           set({ isLoading: false });
         }
       },
-      createDspContract: async (request) => {
+      createDspContract: async (dspContract) => {
         set({ isLoading: true });
 
         try {
-          const response = await postDspContract(request);
+          const response = await postDspContract({
+            dspContractList: [dspContract],
+          });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
           set((state) => ({
-            dspContracts: [...state.dspContracts, response.data!.dspContract],
+            dspContracts: [
+              ...state.dspContracts,
+              response.data!.dspContractList[0],
+            ],
+            error: null,
           }));
 
           toast.success("DSP 계약이 생성되었습니다.");
@@ -71,6 +77,7 @@ export const useDspContractStore = create<DspContractStore>()(
           toast.error(errorMessage);
 
           console.error("[createDspContract] error", error);
+          set({ error: errorMessage });
         } finally {
           set({ isLoading: false });
         }

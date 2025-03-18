@@ -17,7 +17,6 @@ export const apiFetch = async <T>(
 ): Promise<FetchResponse<T>> => {
   const jwt = useUserStore.getState().jsonWebToken;
   const url = `${API_URL}${path}`;
-
   // jwt가 있을 때만 포함할 헤더 설정
   const headers: Record<string, string> = {
     "Content-Type": "application/json",

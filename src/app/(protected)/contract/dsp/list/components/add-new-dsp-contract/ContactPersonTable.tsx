@@ -1,4 +1,6 @@
-import CustomTable, { Column } from "@/components/basic/CustomTable";
+import CustomTable, {
+  Column,
+} from "@/components/basic/custom-table/CustomTable";
 
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import { ContactPerson } from "@/types/contact-person";
@@ -31,11 +33,13 @@ const ContactPersonTable = ({
       header: "담당자명",
       accessor: "name",
       type: "input",
+      width: 160,
     },
     {
       header: "구분",
       accessor: "responsibility",
       type: "dropdown",
+      width: 160,
       dropdownOptions: [
         { key: "contract", value: "계약" },
         { key: "settlement", value: "정산" },
@@ -46,11 +50,13 @@ const ContactPersonTable = ({
       header: "이메일",
       accessor: "email",
       type: "input",
+      width: 268,
     },
     {
       header: "연락처",
       accessor: "phone",
       type: "input",
+      width: 268,
     },
     {
       header: "",

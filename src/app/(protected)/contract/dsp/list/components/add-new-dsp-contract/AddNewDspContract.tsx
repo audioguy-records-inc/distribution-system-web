@@ -67,21 +67,29 @@ const AddNewDspContract = () => {
     handleSubmit,
     reset,
     control,
-    formState: { isValid },
+    formState: { isValid, isDirty },
     watch,
   } = useForm<DspContract>({
     defaultValues: {
+      dspContractName: undefined,
+      dspContractUniqueId: undefined,
+      regionType: "domestic",
+      countryCode: undefined,
+      isTimeReleaseEnabled: true,
       contactPersonList: [
         {
-          name: null,
-          responsibility: null,
-          email: null,
-          phone: null,
+          name: undefined,
+          responsibility: undefined,
+          email: undefined,
+          phone: undefined,
         },
       ],
       fileList: [],
       contractItemList: [],
+      contractRate: undefined,
+      isContractEnabled: true,
     },
+    mode: "onChange",
     shouldFocusError: false,
   });
 
@@ -92,7 +100,12 @@ const AddNewDspContract = () => {
   };
 
   const onSubmit = async (data: DspContract) => {
-    await createDspContract({ dspContract: data });
+    // 계약 요율을 0~1 사이의 값으로 변환
+    const transformedData = {
+      ...data,
+      contractRate: Number(data.contractRate) / 100,
+    };
+    await createDspContract(transformedData);
     handleClose();
   };
 
@@ -114,9 +127,9 @@ const AddNewDspContract = () => {
       zIndex: 1000,
     },
   };
-
   console.log("moonsae watch", watch());
-
+  console.log("moonsae isDirty", isDirty);
+  console.log("moonsae isValid", isValid);
   return (
     <>
       <AddNewWrapper onClick={handleOpen}>
@@ -136,7 +149,7 @@ const AddNewDspContract = () => {
             <ButtonFilledPrimary
               label="등록"
               onClick={handleSubmit(onSubmit)}
-              disabled={!isValid}
+              disabled={!isDirty || !isValid}
             />
           </ButtonWrapper>
         </ModalHeader>
@@ -145,7 +158,17 @@ const AddNewDspContract = () => {
         <Form onSubmit={handleSubmit(onSubmit)}>
           <VisibleWrapper>
             <VisibleLabel>계약 정보</VisibleLabel>
-            <CustomToggle checked={true} onChange={() => {}} label="" />
+            <Controller
+              name="isContractEnabled"
+              control={control}
+              render={({ field }) => (
+                <CustomToggle
+                  checked={field.value}
+                  onChange={field.onChange}
+                  label=""
+                />
+              )}
+            />
           </VisibleWrapper>
           <Gap height={42} />
           <RowWrapper>
@@ -153,6 +176,8 @@ const AddNewDspContract = () => {
               size="small"
               label="계약명"
               placeholder="계약명 입력"
+              required
+              value={watch("dspContractName")}
               {...register("dspContractName", { required: true })}
             />
             <Controller
@@ -274,7 +299,14 @@ const AddNewDspContract = () => {
             icon={<PercentIcon />}
             placeholder="숫자 입력"
             type="number"
-            {...register("contractRate", { required: true })}
+            min="0"
+            max="100"
+            {...register("contractRate", {
+              required: true,
+              min: 0,
+              max: 100,
+              valueAsNumber: true,
+            })}
           />
           <Gap height={56} />
           <Controller

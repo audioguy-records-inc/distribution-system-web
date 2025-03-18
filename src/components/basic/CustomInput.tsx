@@ -142,13 +142,10 @@ const CustomInput = ({
   disabled,
   size = "normal",
   type = "text",
-
-  value = "",
-  onChange = () => {},
+  value,
+  onChange,
   ...props
 }: InputProps) => {
-  const inputValue = value === null ? "" : value;
-
   return (
     <Container $hasLabel={!!label}>
       <LabelContainer>
@@ -175,7 +172,7 @@ const CustomInput = ({
           type={type}
           placeholder={placeholder}
           disabled={locked || disabled}
-          value={inputValue}
+          value={value}
           onChange={onChange}
           $disabled={disabled}
           $locked={locked}

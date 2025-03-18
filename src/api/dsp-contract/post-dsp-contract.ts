@@ -25,11 +25,11 @@ import DspContract from "@/types/dsp-contract";
 // }
 
 interface PostDspContractRequest {
-  dspContract: DspContract;
+  dspContractList: DspContract[];
 }
 
 interface PostDspContractResponse {
-  dspContract: DspContract;
+  dspContractList: DspContract[];
 }
 
 export const postDspContract = async (
@@ -38,7 +38,7 @@ export const postDspContract = async (
   try {
     const response = await apiFetch("/dsp-contracts", {
       method: "POST",
-      body: JSON.stringify(request),
+      body: JSON.stringify(request.dspContractList),
     });
 
     return response as FetchResponse<PostDspContractResponse>;

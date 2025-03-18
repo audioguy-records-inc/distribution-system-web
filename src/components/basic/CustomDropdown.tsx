@@ -112,6 +112,8 @@ const List = styled.ul`
   border-radius: 8px;
   border: 1px solid ${theme.colors.gray[50]};
   overflow: hidden;
+  max-height: 300px;
+  overflow-y: auto;
 `;
 
 const ListItem = styled.li<{ $size?: "small" | "normal" }>`

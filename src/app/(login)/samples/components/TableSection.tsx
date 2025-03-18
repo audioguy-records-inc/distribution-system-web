@@ -1,7 +1,9 @@
-import CustomTable, { Column } from "@/components/basic/CustomTable";
+import CustomTable, {
+  Column,
+} from "@/components/basic/custom-table/CustomTable";
 
-import Dsp from "@/components/basic/CustomTable/components/Dsp";
-import ExpandButton from "@/components/basic/CustomTable/components/ExpandButton";
+import Dsp from "@/components/basic/custom-table/components/Dsp";
+import ExpandButton from "@/components/basic/custom-table/components/ExpandButton";
 import styled from "styled-components";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useEffect } from "react";
@@ -64,8 +66,6 @@ export default function TableSection() {
   useEffect(() => {
     fetchDspContracts();
   }, [fetchDspContracts]);
-
-  console.log("moonsae dspContracts", dspContracts[0]);
 
   return (
     <Container>

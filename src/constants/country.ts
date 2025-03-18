@@ -4,6 +4,7 @@ export interface CountryItem {
 }
 
 export const countryList: CountryItem[] = [
+  { name: "대한민국", countryCode: "KR" },
   { name: "가나", countryCode: "GH" },
   { name: "가봉", countryCode: "GA" },
   { name: "가이아나", countryCode: "GY" },
@@ -32,7 +33,7 @@ export const countryList: CountryItem[] = [
   { name: "니우에", countryCode: "NU" },
   { name: "니제르", countryCode: "NE" },
   { name: "니카라과", countryCode: "NI" },
-  { name: "대한민국", countryCode: "KR" },
+
   { name: "덴마크", countryCode: "DK" },
   { name: "도미니카 공화국", countryCode: "DO" },
   { name: "도미니카 연방", countryCode: "DM" },

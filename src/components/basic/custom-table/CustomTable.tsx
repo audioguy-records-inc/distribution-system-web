@@ -35,7 +35,7 @@ const TableContainer = styled.div`
   width: 100%;
   border: none;
   border-radius: 0;
-  /* overflow: hidden; */
+  overflow: visible;
 `;
 
 const Table = styled.table`
@@ -58,7 +58,7 @@ const HeaderCell = styled.th<{
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
   color: ${theme.colors.gray[400]};
   padding: ${({ $size }) => ($size === "small" ? "12px" : "16px")} 24px;
-  text-align: ${({ $align }) => $align || "left"};
+  text-align: ${({ $align }) => $align || "center"};
   width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
 `;
 
@@ -106,6 +106,16 @@ const Button = styled.button`
   }
 `;
 
+const Text = styled.div<{ $size?: "small" | "normal" }>`
+  ${({ $size }) =>
+    $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium};
+  color: ${theme.colors.gray[800]};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomTable = <T extends Record<string, any>>({
   columns,
   data,
@@ -147,7 +157,6 @@ const CustomTable = <T extends Record<string, any>>({
     accessor: keyof T,
     selectedKey: string,
   ) => {
-    console.log("moonsae dropdown", onChange);
     if (!onChange) return;
 
     const newData = [...data];
@@ -175,7 +184,7 @@ const CustomTable = <T extends Record<string, any>>({
               handleInputChange(rowIndex, column.accessor, e.target.value)
             }
             size={size}
-            width={column.width || 150}
+            width={(column.width || 150) - 24}
             disabled={disabled}
           />
         );
@@ -192,7 +201,7 @@ const CustomTable = <T extends Record<string, any>>({
             }
             items={column.dropdownOptions || []}
             size={size}
-            width={column.width || 150}
+            width={(column.width || 150) - 24}
             disabled={disabled}
             placeholder="선택"
           />
@@ -207,7 +216,7 @@ const CustomTable = <T extends Record<string, any>>({
           </Button>
         );
       default:
-        return value;
+        return <Text $size={size}>{value}</Text>;
     }
   };
 

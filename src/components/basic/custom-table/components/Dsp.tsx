@@ -11,6 +11,7 @@ const DspContent = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  justify-content: center;
 `;
 
 const DspImage = styled.img`
@@ -24,11 +25,10 @@ const DspInfo = styled.div`
   display: flex;
   flex-direction: column;
   ${theme.fonts.body2.medium};
+  color: ${theme.colors.gray[800]};
 `;
 
 const Dsp = ({ name, imagePath }: DspProps) => {
-  console.log("moonsae imagePath", getFullUrl(imagePath));
-  console.log("moonsae name", name);
   return (
     <DspContent>
       <DspImage src={getFullUrl(imagePath)} alt={name} />

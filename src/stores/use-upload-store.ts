@@ -110,7 +110,7 @@ export const useUploadStore = create<UploadStore>()(
             partList: [{ ETag: etag, partNumber: 1 }],
             action: "complete",
           });
-          console.log("moonsae completeResult", completeResult);
+
           if (!completeResult || completeResult.error || !completeResult.data) {
             throw new Error(
               completeResult?.message || "멀티파트 업로드 완료 실패",

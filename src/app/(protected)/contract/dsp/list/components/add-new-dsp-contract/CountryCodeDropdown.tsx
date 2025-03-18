@@ -27,7 +27,7 @@ const CountryCodeDropdown = ({
     key: country.countryCode,
     value: `${country.name} (${country.countryCode})`,
   }));
-  console.log("moonsae contry selectedKey", value);
+
   return (
     <CustomDropdown
       label={"국가관리"}

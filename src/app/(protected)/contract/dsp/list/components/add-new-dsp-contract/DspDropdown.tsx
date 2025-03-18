@@ -24,7 +24,7 @@ const DspDropdown = ({
     key: dsp._id,
     value: dsp.name,
   }));
-  console.log("moonsae dsp selectedKey", value);
+
   return (
     <CustomDropdown
       label={"DSP명"}

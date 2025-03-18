@@ -1,4 +1,6 @@
-import CustomTable, { Column } from "@/components/basic/CustomTable";
+import CustomTable, {
+  Column,
+} from "@/components/basic/custom-table/CustomTable";
 import { DataCollectionName, FileType } from "@/types/upload";
 import { useEffect, useRef, useState } from "react";
 
