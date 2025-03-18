@@ -6,23 +6,39 @@ interface ActivateStateBadgeProps {
   isActive: boolean;
 }
 
-const Badge = styled.div<{ $isActive: boolean }>`
+const Container = styled.div<{ $isActive: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 12px;
-  border-radius: 16px;
+  padding: 2px 8px;
+  border-radius: 4px;
   background-color: ${({ $isActive }) =>
-    $isActive ? theme.colors.purple[50] : theme.colors.gray[50]};
+    $isActive ? theme.colors.green[100] : theme.colors.gray[50]};
   color: ${({ $isActive }) =>
-    $isActive ? theme.colors.green[600] : theme.colors.gray[600]};
-  ${theme.fonts.body2.medium}
+    $isActive ? theme.colors.green[600] : theme.colors.gray[400]};
+  ${theme.fonts.label1.medium}
+  gap: 6px;
 `;
+
+const Dot = styled.div<{ $isActive: boolean }>`
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: ${({ $isActive }) =>
+    $isActive ? theme.colors.green[600] : theme.colors.gray[400]};
+`;
+
+const Badge = styled.div``;
 
 const ActivateStateBadge: React.FC<ActivateStateBadgeProps> = ({
   isActive,
 }) => {
-  return <Badge $isActive={isActive}>{isActive ? "활성" : "비활성"}</Badge>;
+  return (
+    <Container $isActive={isActive}>
+      <Dot $isActive={isActive} />
+      <Badge>{isActive ? "활성화" : "비활성화"}</Badge>
+    </Container>
+  );
 };
 
 export default ActivateStateBadge;
