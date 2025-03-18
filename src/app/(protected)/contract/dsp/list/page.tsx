@@ -1,17 +1,12 @@
 "use client";
 
-import AddNew from "../../../../../components/AddNew";
-import AddNewDspContract from "./components/add-new-dsp-contract/AddNewDspContract";
+import AddNewDspContract from "./components/AddNewDspContract";
 import DSPFilterChip from "@/components/DspFilterChip";
-import DspContractList from "./components/dsp-contract-list/DspContractList";
+import DspContractList from "./components/fragment/DspContractList";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
-import SearchInput from "../../../../../components/SearchInput";
+import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
-import theme from "@/styles/theme";
-import { useDspContractStore } from "@/stores/use-dsp-contract-store";
-import { useEffect } from "react";
-import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div``;
 
