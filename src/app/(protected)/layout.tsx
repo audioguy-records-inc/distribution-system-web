@@ -1,8 +1,8 @@
 import AuthGuard from "@/components/AuthGuard";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import LayoutContainer from "@/components/layout/LayoutContainer";
-import MainContent from "@/components/layout/PageLayout";
 import type { Metadata } from "next";
+import PageLayout from "@/components/layout/PageLayout";
 import Sidebar from "@/components/layout/side-bar/Sidebar";
 
 export const metadata: Metadata = {
@@ -19,10 +19,10 @@ export default function SidebarLayout({
     <AuthGuard>
       <LayoutContainer>
         <Sidebar />
-        <MainContent>
+        <PageLayout>
           <Breadcrumbs />
           {children}
-        </MainContent>
+        </PageLayout>
       </LayoutContainer>
     </AuthGuard>
   );
