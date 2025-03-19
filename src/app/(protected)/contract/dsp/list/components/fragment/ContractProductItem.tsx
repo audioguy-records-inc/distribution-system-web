@@ -28,9 +28,14 @@ const CheckboxWrapper = styled.div`
 interface ContractProductItemProps {
   value: string[];
   onChange: (value: string[]) => void;
+  readOnly?: boolean;
 }
 
-const ContractProductItem = ({ value, onChange }: ContractProductItemProps) => {
+const ContractProductItem = ({
+  value,
+  onChange,
+  readOnly,
+}: ContractProductItemProps) => {
   return (
     <Container>
       <Header>계약 상품</Header>
@@ -46,6 +51,7 @@ const ContractProductItem = ({ value, onChange }: ContractProductItemProps) => {
                 onChange(newValue);
               }}
               label={item.value}
+              readOnly={readOnly}
             />
           </CheckboxWrapper>
         ))}

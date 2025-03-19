@@ -9,15 +9,18 @@ interface CustomRadioProps {
   label: string;
   disabled?: boolean;
   size?: "normal" | "small";
+  readOnly?: boolean;
 }
 
 const RadioContainer = styled.label<{
   $disabled?: boolean;
   $size?: "normal" | "small";
+  $readOnly?: boolean;
 }>`
   display: flex;
   align-items: center;
-  cursor: ${({ $disabled }) => ($disabled ? "default" : "pointer")};
+  cursor: ${({ $disabled, $readOnly }) =>
+    $disabled || $readOnly ? "default" : "pointer"};
   gap: ${({ $size }) => ($size === "small" ? "6px" : "8px")};
 `;
 
@@ -67,12 +70,14 @@ const CustomRadio: React.FC<CustomRadioProps> = ({
   label,
   disabled = false,
   size = "normal",
+  readOnly = false,
 }) => {
   return (
     <RadioContainer
       $disabled={disabled}
+      $readOnly={readOnly}
       $size={size}
-      onClick={() => !disabled && onChange(!checked)}
+      onClick={() => !disabled && !readOnly && onChange(!checked)}
     >
       <RadioInput $checked={checked} $disabled={disabled} $size={size}>
         <DotIcon

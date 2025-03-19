@@ -16,9 +16,12 @@ interface CustomRadioWithLabelProps {
     value?: string | boolean;
     checked: boolean;
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (event: any) => void;
   disabled?: boolean;
   value?: string | boolean;
+  readOnly?: boolean;
 }
 
 const Container = styled.div`
@@ -45,13 +48,16 @@ const CustomRadioWithLabel = ({
   onChange,
   disabled = false,
   value,
-}: CustomRadioWithLabelProps & { [key: string]: any }) => {
+  readOnly = false,
+}: CustomRadioWithLabelProps) => {
   const leftValue =
     leftOption.value !== undefined ? leftOption.value : "domestic";
   const rightValue =
     rightOption.value !== undefined ? rightOption.value : "international";
 
   const handleChange = (isLeft: boolean) => {
+    if (readOnly || disabled) return;
+
     if (onChange) {
       const syntheticEvent = {
         target: {
@@ -73,12 +79,14 @@ const CustomRadioWithLabel = ({
           onChange={() => handleChange(true)}
           label={leftOption.label}
           disabled={disabled}
+          readOnly={readOnly}
         />
         <CustomRadio
           checked={value === rightValue}
           onChange={() => handleChange(false)}
           label={rightOption.label}
           disabled={disabled}
+          readOnly={readOnly}
         />
       </RadioContainer>
     </Container>

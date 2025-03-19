@@ -3,9 +3,10 @@ import CustomTable, {
 } from "@/components/basic/custom-table/CustomTable";
 
 import ActivateStateBadge from "@/components/basic/custom-table/components/ActivateStateBadge";
+import CenterSpinner from "@/components/CenterSpinner";
 import Dsp from "@/components/basic/custom-table/components/Dsp";
 import DspContract from "@/types/dsp-contract";
-import DspContractInfo from "./DspContractInfo";
+import DspContractInfo from "./DspContractDetail";
 import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -71,10 +72,6 @@ export default function DspContractList() {
   const renderExpandedContent = (dspContract: DspContract) => {
     return <DspContractInfo dspContract={dspContract} />;
   };
-
-  if (isLoading) {
-    return <Container>로딩 중...</Container>;
-  }
 
   if (error) {
     return <Container>오류가 발생했습니다: {error}</Container>;

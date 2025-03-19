@@ -125,9 +125,10 @@ interface InputProps {
   disabled?: boolean;
   size?: "small" | "normal";
   type?: string;
-
+  readOnly?: boolean;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  defaultValue?: string;
 }
 
 const CustomInput = ({
@@ -144,6 +145,8 @@ const CustomInput = ({
   type = "text",
   value,
   onChange,
+  readOnly,
+  defaultValue,
   ...props
 }: InputProps) => {
   return (
@@ -177,6 +180,8 @@ const CustomInput = ({
           $disabled={disabled}
           $locked={locked}
           $size={size}
+          readOnly={readOnly}
+          defaultValue={defaultValue}
         />
         <IconContainer $size={size}>{icon}</IconContainer>
       </InputContainer>

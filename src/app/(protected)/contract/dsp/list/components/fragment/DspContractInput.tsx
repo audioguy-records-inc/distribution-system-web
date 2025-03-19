@@ -1,0 +1,212 @@
+import {
+  Control,
+  Controller,
+  UseFormRegister,
+  UseFormWatch,
+} from "react-hook-form";
+import { DataCollectionName, FileType } from "@/types/upload";
+
+import ContactPersonTable from "./ContactPersonTable";
+import ContractProductItem from "./ContractProductItem";
+import CountryCodeDropdown from "./CountryCodeDropdown";
+import CustomInput from "@/components/basic/CustomInput";
+import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
+import CustomUpload from "@/components/basic/CustomUpload";
+import DspContract from "@/types/dsp-contract";
+import DspDropdown from "./DspDropdown";
+import Gap from "@/components/basic/Gap";
+import PercentIcon from "@/components/icons/PercentIcon";
+import styled from "styled-components";
+
+const RowWrapper = styled.div`
+  display: flex;
+  gap: 120px;
+`;
+
+const DspContractInput = ({
+  watch,
+  register,
+  control,
+  isEdit,
+}: {
+  watch: UseFormWatch<DspContract>;
+  register: UseFormRegister<DspContract>;
+  control: Control<DspContract>;
+  isEdit: boolean;
+}) => {
+  console.log("moonsae field.value", watch("contractRate"));
+  return (
+    <>
+      <Gap height={42} />
+      <RowWrapper>
+        <CustomInput
+          size="small"
+          label="계약명"
+          placeholder="계약명 입력"
+          required
+          readOnly={!isEdit}
+          value={watch("dspContractName")}
+          {...register("dspContractName", { required: true })}
+        />
+        <Controller
+          name="dspId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <DspDropdown
+              onChange={(value) => {
+                field.onChange(value);
+              }}
+              value={field.value}
+              readOnly={!isEdit}
+            />
+          )}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
+          size="small"
+          label="DPID"
+          placeholder="DPID 입력"
+          {...register("dspContractUniqueId", { required: true })}
+        />
+        <Controller
+          name="regionType"
+          control={control}
+          defaultValue="domestic"
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomRadioWithLabel
+              label="구분"
+              leftOption={{
+                label: "국내",
+                value: "domestic",
+                checked: field.value === "domestic",
+              }}
+              rightOption={{
+                label: "해외",
+                value: "international",
+                checked: field.value === "international",
+              }}
+              onChange={field.onChange}
+              value={field.value}
+              readOnly={!isEdit}
+            />
+          )}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
+        <Controller
+          name="countryCode"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CountryCodeDropdown
+              onChange={(value) => {
+                field.onChange(value);
+              }}
+              value={field.value}
+              readOnly={!isEdit}
+              // disabled={watch("regionType") === "domestic"}
+            />
+          )}
+        />
+        <Controller
+          name="isTimeReleaseEnabled"
+          control={control}
+          defaultValue={true}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomRadioWithLabel
+              label="T/R"
+              leftOption={{
+                label: "사용",
+                value: true,
+                checked: field.value === true,
+              }}
+              rightOption={{
+                label: "미사용",
+                value: false,
+                checked: field.value === false,
+              }}
+              onChange={field.onChange}
+              value={field.value}
+              readOnly={!isEdit}
+            />
+          )}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <Controller
+        name="contactPersonList"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <ContactPersonTable
+            onChange={field.onChange}
+            value={field.value}
+            readOnly={!isEdit}
+          />
+        )}
+      />
+      <Gap height={56} />
+      <Controller
+        name="fileList"
+        control={control}
+        render={({ field }) => (
+          <CustomUpload
+            onChange={field.onChange}
+            value={field.value}
+            fileType={FileType.DOCS}
+            dataCollectionName={DataCollectionName.DSP_CONTRACTS}
+            headerText="계약서"
+            readOnly={!isEdit}
+          />
+        )}
+      />
+      <Gap height={56} />
+      <Controller
+        name="contractRate"
+        control={control}
+        render={({ field }) => (
+          <CustomInput
+            defaultValue={undefined}
+            size="small"
+            label="계약 요율"
+            icon={<PercentIcon />}
+            placeholder="숫자 입력"
+            type="number"
+            value={
+              field.value !== undefined ? (field.value * 100).toString() : ""
+            }
+            onChange={(e) => {
+              e.preventDefault();
+              const value = e.target.value;
+
+              const numValue = parseFloat(value) / 100;
+              field.onChange(numValue);
+            }}
+            readOnly={!isEdit}
+          />
+        )}
+      />
+      <Gap height={56} />
+      <Controller
+        name="contractItemList"
+        control={control}
+        defaultValue={[]}
+        render={({ field }) => (
+          <ContractProductItem
+            value={field.value}
+            onChange={field.onChange}
+            readOnly={!isEdit}
+          />
+        )}
+      />
+    </>
+  );
+};
+
+export default DspContractInput;

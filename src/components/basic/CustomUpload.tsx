@@ -24,7 +24,7 @@ const Header = styled.div`
 `;
 
 // 드래그 앤 드롭 영역 스타일 추가
-const DropZone = styled.div<{ $isDragging: boolean }>`
+const DropZone = styled.div<{ $isDragging: boolean; $readOnly: boolean }>`
   width: 100%;
   height: 144px;
   border: 1.5px dashed
@@ -40,6 +40,7 @@ const DropZone = styled.div<{ $isDragging: boolean }>`
   background-color: ${({ $isDragging }) =>
     $isDragging ? theme.colors.purple[50] : theme.colors.white};
   gap: 8px;
+  cursor: ${({ $readOnly }) => ($readOnly ? "default" : "pointer")};
 `;
 
 const DropZoneText = styled.p`
@@ -55,6 +56,7 @@ interface CustomUploadProps {
   fileType: FileType;
   dataCollectionName: DataCollectionName;
   headerText: string;
+  readOnly?: boolean;
 }
 
 const CustomUpload = ({
@@ -63,6 +65,7 @@ const CustomUpload = ({
   fileType,
   dataCollectionName,
   headerText = "계약서",
+  readOnly = false,
 }: CustomUploadProps) => {
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -80,6 +83,8 @@ const CustomUpload = ({
 
   // 파일 업로드 핸들러 추가
   const handleUpload = async (file: File) => {
+    if (readOnly) return;
+
     try {
       setIsLoading(true);
       const success = await uploadToS3({
@@ -126,21 +131,29 @@ const CustomUpload = ({
 
   // 버튼 클릭 핸들러
   const handleButtonClick = () => {
+    if (readOnly) return;
+
     fileInputRef.current?.click();
   };
 
   // 드래그 앤 드롭 핸들러
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+
     e.preventDefault();
     setIsDragging(true);
   };
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+
     e.preventDefault();
     setIsDragging(false);
   };
 
   const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    if (readOnly) return;
+
     e.preventDefault();
     setIsDragging(false);
 
@@ -155,6 +168,8 @@ const CustomUpload = ({
 
   // 파일 삭제 핸들러 수정
   const handleRemoveFile = (index: number) => {
+    if (readOnly) return;
+
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -196,7 +211,11 @@ const CustomUpload = ({
       icon: <DownloadIcon />,
       onClick: (record) => handleDownloadFile(record),
     },
-    {
+  ];
+
+  // 삭제 버튼은 readOnly가 아닐 때만 추가
+  if (!readOnly) {
+    columns.push({
       header: "삭제",
       accessor: "name",
       width: 80,
@@ -204,8 +223,8 @@ const CustomUpload = ({
       type: "button",
       icon: <TrashIcon />,
       onClick: (record, rowIndex) => handleRemoveFile(rowIndex),
-    },
-  ];
+    });
+  }
 
   // 테이블 데이터 준비
   const tableData = selectedFiles.map((file, index) => ({
@@ -218,13 +237,15 @@ const CustomUpload = ({
     <Container>
       <Header>{headerText}</Header>
       <Gap height={16} />
-      <ButtonOutlinedSecondary
-        label={isLoading ? "업로드 중" : "파일 업로드"}
-        leftIcon={<UploadIcon />}
-        size="medium"
-        onClick={handleButtonClick}
-        disabled={isLoading}
-      />
+      {!readOnly && (
+        <ButtonOutlinedSecondary
+          label={isLoading ? "업로드 중" : "파일 업로드"}
+          leftIcon={<UploadIcon />}
+          size="medium"
+          onClick={handleButtonClick}
+          disabled={isLoading}
+        />
+      )}
       {/* 숨겨진 파일 입력 요소 - multiple 속성 추가 */}
       <input
         type="file"
@@ -235,22 +256,24 @@ const CustomUpload = ({
       />
 
       {/* 드래그 앤 드롭 영역 추가 */}
-      <DropZone
-        $isDragging={isDragging}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <UploadIcon color={theme.colors.purple[600]} />
-        <DropZoneText>
-          {isLoading
-            ? "업로드 중..."
-            : fileType === FileType.IMAGES
-            ? "이미지를 끌어놓아 주세요."
-            : "파일을 끌어놓아 주세요."}
-        </DropZoneText>
-      </DropZone>
-
+      {!readOnly && (
+        <DropZone
+          $isDragging={isDragging}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          $readOnly={readOnly}
+        >
+          <UploadIcon color={theme.colors.purple[600]} />
+          <DropZoneText>
+            {isLoading
+              ? "업로드 중..."
+              : fileType === FileType.IMAGES
+              ? "이미지를 끌어놓아 주세요."
+              : "파일을 끌어놓아 주세요."}
+          </DropZoneText>
+        </DropZone>
+      )}
       {/* 선택된 파일 목록을 CustomTable로 표시 */}
       {selectedFiles.length > 0 && (
         <CustomTable columns={columns} data={tableData} size="small" />

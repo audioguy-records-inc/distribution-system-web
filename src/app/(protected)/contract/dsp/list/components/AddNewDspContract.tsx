@@ -15,6 +15,7 @@ import CustomToggle from "@/components/basic/CustomToggle";
 import CustomUpload from "@/components/basic/CustomUpload";
 import { Dsp } from "@/types/dsp";
 import type DspContract from "@/types/dsp-contract";
+import DspContractInput from "./fragment/DspContractInput";
 import DspDropdown from "./fragment/DspDropdown";
 import Gap from "@/components/basic/Gap";
 import PercentIcon from "@/components/icons/PercentIcon";
@@ -100,12 +101,7 @@ const AddNewDspContract = () => {
   };
 
   const onSubmit = async (data: DspContract) => {
-    // 계약 요율을 0~1 사이의 값으로 변환
-    const transformedData = {
-      ...data,
-      contractRate: Number(data.contractRate) / 100,
-    };
-    await createDspContract(transformedData);
+    await createDspContract(data);
     handleClose();
   };
 
@@ -127,9 +123,7 @@ const AddNewDspContract = () => {
       zIndex: 1000,
     },
   };
-  console.log("moonsae watch", watch());
-  console.log("moonsae isDirty", isDirty);
-  console.log("moonsae isValid", isValid);
+
   return (
     <>
       <AddNewWrapper onClick={handleOpen}>
@@ -170,155 +164,11 @@ const AddNewDspContract = () => {
               )}
             />
           </VisibleWrapper>
-          <Gap height={42} />
-          <RowWrapper>
-            <CustomInput
-              size="small"
-              label="계약명"
-              placeholder="계약명 입력"
-              required
-              value={watch("dspContractName")}
-              {...register("dspContractName", { required: true })}
-            />
-            <Controller
-              name="dspId"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <DspDropdown
-                  onChange={(value) => {
-                    field.onChange(value);
-                  }}
-                  value={field.value}
-                />
-              )}
-            />
-          </RowWrapper>
-          <Gap height={56} />
-          <RowWrapper>
-            <CustomInput
-              size="small"
-              label="DPID"
-              placeholder="DPID 입력"
-              {...register("dspContractUniqueId", { required: true })}
-            />
-            <Controller
-              name="regionType"
-              control={control}
-              defaultValue="domestic"
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomRadioWithLabel
-                  label="구분"
-                  leftOption={{
-                    label: "국내",
-                    value: "domestic",
-                    checked: field.value === "domestic",
-                  }}
-                  rightOption={{
-                    label: "해외",
-                    value: "international",
-                    checked: field.value === "international",
-                  }}
-                  onChange={field.onChange}
-                  value={field.value}
-                />
-              )}
-            />
-          </RowWrapper>
-          <Gap height={56} />
-          <RowWrapper>
-            <Controller
-              name="countryCode"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CountryCodeDropdown
-                  onChange={(value) => {
-                    field.onChange(value);
-                  }}
-                  value={field.value}
-                  // disabled={watch("regionType") === "domestic"}
-                />
-              )}
-            />
-            <Controller
-              name="isTimeReleaseEnabled"
-              control={control}
-              defaultValue={true}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomRadioWithLabel
-                  label="T/R"
-                  leftOption={{
-                    label: "사용",
-                    value: true,
-                    checked: field.value === true,
-                  }}
-                  rightOption={{
-                    label: "미사용",
-                    value: false,
-                    checked: field.value === false,
-                  }}
-                  onChange={field.onChange}
-                  value={field.value}
-                />
-              )}
-            />
-          </RowWrapper>
-          <Gap height={56} />
-          <Controller
-            name="contactPersonList"
+          <DspContractInput
+            watch={watch}
+            register={register}
             control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <ContactPersonTable
-                onChange={field.onChange}
-                value={field.value}
-              />
-            )}
-          />
-          <Gap height={56} />
-          <Controller
-            name="fileList"
-            control={control}
-            render={({ field }) => (
-              <CustomUpload
-                onChange={field.onChange}
-                value={field.value}
-                fileType={FileType.DOCS}
-                dataCollectionName={DataCollectionName.DSP_CONTRACTS}
-                headerText="계약서"
-              />
-            )}
-          />
-          <Gap height={56} />
-          <CustomInput
-            size="small"
-            label="계약 요율"
-            icon={<PercentIcon />}
-            placeholder="숫자 입력"
-            type="number"
-            min="0"
-            max="100"
-            {...register("contractRate", {
-              required: true,
-              min: 0,
-              max: 100,
-              valueAsNumber: true,
-            })}
-          />
-          <Gap height={56} />
-          <Controller
-            name="contractItemList"
-            control={control}
-            defaultValue={[]}
-            render={({ field }) => (
-              <ContractProductItem
-                value={field.value}
-                onChange={field.onChange}
-              />
-            )}
+            isEdit={true}
           />
         </Form>
       </ReactModal>

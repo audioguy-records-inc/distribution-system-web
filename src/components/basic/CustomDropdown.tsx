@@ -78,6 +78,7 @@ const Content = styled.span<{
       ? theme.colors.gray[800]
       : theme.colors.gray[300]};
   flex: 1;
+  text-align: left;
 `;
 
 const IconContainer = styled.div<{ $size?: "small" | "normal" }>`
@@ -125,6 +126,7 @@ const ListItem = styled.li<{ $size?: "small" | "normal" }>`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 
   &:not(:last-child)::after {
     content: "";
@@ -177,6 +179,7 @@ interface CustomDropdownProps {
   onMultiSelectKeys?: (keys: string[]) => void;
   items: { key: string; value: string }[];
   multiple?: boolean;
+  readOnly?: boolean;
 }
 
 const CustomDropdown = ({
@@ -192,6 +195,7 @@ const CustomDropdown = ({
   onMultiSelectKeys,
   items,
   multiple = false,
+  readOnly = false,
 }: CustomDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -213,12 +217,14 @@ const CustomDropdown = ({
   }, []);
 
   const handleClick = () => {
-    if (!disabled) {
+    if (!disabled && !readOnly) {
       setIsOpen(!isOpen);
     }
   };
 
   const handleSelect = (item: { key: string; value: string }) => {
+    if (readOnly || disabled) return;
+
     if (multiple) {
       const newSelectedKeys = selectedKeys.includes(item.key)
         ? selectedKeys.filter((k) => k !== item.key)
@@ -231,6 +237,8 @@ const CustomDropdown = ({
   };
 
   const handleChipDelete = (key: string) => {
+    if (readOnly || disabled) return;
+
     const newSelectedKeys = selectedKeys.filter((k) => k !== key);
     onMultiSelectKeys?.(newSelectedKeys);
   };
@@ -275,6 +283,9 @@ const CustomDropdown = ({
           $width={width}
           onClick={handleClick}
           disabled={disabled}
+          style={{
+            cursor: readOnly ? "default" : disabled ? "default" : "pointer",
+          }}
         >
           <Content
             $selected={!!selectedKey || (multiple && selectedKeys.length > 0)}
@@ -283,14 +294,18 @@ const CustomDropdown = ({
           >
             {getDisplayText()}
           </Content>
-          <IconContainer $size={size}>
-            <ArrowDownIcon
-              color={disabled ? theme.colors.gray[300] : theme.colors.gray[500]}
-            />
-          </IconContainer>
+          {!readOnly && (
+            <IconContainer $size={size}>
+              <ArrowDownIcon
+                color={
+                  disabled ? theme.colors.gray[300] : theme.colors.gray[500]
+                }
+              />
+            </IconContainer>
+          )}
         </DropdownContainer>
 
-        {isOpen && !disabled && (
+        {isOpen && !disabled && !readOnly && (
           <List>
             {items.map((item, index) => (
               <ListItem

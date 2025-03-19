@@ -7,12 +7,14 @@ interface DspDropdownProps {
   onChange: (dsp: string) => void;
   value: string | undefined;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 const DspDropdown = ({
   onChange,
   value,
   disabled = false,
+  readOnly = false,
 }: DspDropdownProps) => {
   const { dsps, fetchDsps, isLoading } = useDspStore();
 
@@ -35,6 +37,7 @@ const DspDropdown = ({
       disabled={disabled || isLoading}
       size={"small"}
       width={320}
+      readOnly={readOnly}
     />
   );
 };

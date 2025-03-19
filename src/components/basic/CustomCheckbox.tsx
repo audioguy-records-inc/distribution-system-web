@@ -9,15 +9,18 @@ interface CustomCheckboxProps {
   label: string;
   disabled?: boolean;
   size?: "normal" | "small";
+  readOnly?: boolean;
 }
 
 const CheckboxContainer = styled.label<{
   $disabled?: boolean;
   $size?: "normal" | "small";
+  $readOnly?: boolean;
 }>`
   display: flex;
   align-items: center;
-  cursor: ${({ $disabled }) => ($disabled ? "default" : "pointer")};
+  cursor: ${({ $disabled, $readOnly }) =>
+    $readOnly || $disabled ? "default" : "pointer"};
   gap: ${({ $size }) => ($size === "small" ? "6px" : "8px")};
 `;
 
@@ -67,12 +70,14 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({
   label,
   disabled = false,
   size = "normal",
+  readOnly = false,
 }) => {
   return (
     <CheckboxContainer
       $disabled={disabled}
       $size={size}
-      onClick={() => !disabled && onChange(!checked)}
+      onClick={() => !disabled && !readOnly && onChange(!checked)}
+      $readOnly={readOnly}
     >
       <CheckboxInput $checked={checked} $disabled={disabled} $size={size}>
         <CheckIcon

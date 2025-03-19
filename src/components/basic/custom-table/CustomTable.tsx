@@ -29,6 +29,7 @@ interface CustomTableProps<T> {
   };
   onChange?: (value: T[]) => void;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 const TableContainer = styled.div`
@@ -121,6 +122,7 @@ const CustomTable = <T extends Record<string, any>>({
   expandable,
   onChange,
   disabled = false,
+  readOnly = false,
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
@@ -184,6 +186,7 @@ const CustomTable = <T extends Record<string, any>>({
             size={size}
             width={(column.width || 150) - 24}
             disabled={disabled}
+            readOnly={readOnly}
           />
         );
       case "dropdown":
@@ -202,9 +205,11 @@ const CustomTable = <T extends Record<string, any>>({
             width={(column.width || 150) - 24}
             disabled={disabled}
             placeholder="선택"
+            readOnly={readOnly}
           />
         );
       case "button":
+        if (readOnly || disabled) return;
         return (
           <Button
             onClick={() => column.onClick?.(row, rowIndex)}

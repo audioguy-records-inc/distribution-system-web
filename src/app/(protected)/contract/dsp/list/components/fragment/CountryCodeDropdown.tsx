@@ -7,12 +7,14 @@ interface CountryCodeDropdownProps {
   onChange: (country: string) => void;
   value: string | undefined;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 const CountryCodeDropdown = ({
   onChange,
   value,
   disabled = false,
+  readOnly = false,
 }: CountryCodeDropdownProps) => {
   const [countries, setCountries] = useState<CountryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +40,7 @@ const CountryCodeDropdown = ({
       disabled={disabled || isLoading}
       size={"small"}
       width={320}
+      readOnly={readOnly}
     />
   );
 };

@@ -21,12 +21,14 @@ interface ContactPersonTableProps {
   onChange: (value: ContactPerson[]) => void;
   value: ContactPerson[];
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 const ContactPersonTable = ({
   onChange,
   value,
   disabled,
+  readOnly,
 }: ContactPersonTableProps) => {
   const columns: Column<ContactPerson>[] = [
     {
@@ -80,24 +82,28 @@ const ContactPersonTable = ({
         onChange={onChange}
         disabled={disabled}
         size="small"
+        readOnly={readOnly}
       />
       <Gap height={12} />
-      <ButtonOutlinedSecondary
-        size="medium"
-        expand
-        leftIcon={<PlusIcon />}
-        label="추가"
-        onClick={() => {
-          const newValue = [...value];
-          newValue.push({
-            name: "",
-            responsibility: null,
-            email: "",
-            phone: "",
-          });
-          onChange(newValue);
-        }}
-      />
+      {!readOnly && (
+        <ButtonOutlinedSecondary
+          size="medium"
+          expand
+          leftIcon={<PlusIcon />}
+          label="추가"
+          onClick={() => {
+            if (readOnly || disabled) return;
+            const newValue = [...value];
+            newValue.push({
+              name: "",
+              responsibility: null,
+              email: "",
+              phone: "",
+            });
+            onChange(newValue);
+          }}
+        />
+      )}
     </Container>
   );
 };
