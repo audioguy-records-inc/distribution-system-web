@@ -18,6 +18,8 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     background-color: #FFFFFF;
     color: #333333;
+
+    font-synthesis: none;
   }
 
      /* Next.js 루트 컨테이너 스타일 */
