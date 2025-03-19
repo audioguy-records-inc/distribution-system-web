@@ -16,7 +16,7 @@ import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 93vh;
   box-sizing: border-box;
 `;
 

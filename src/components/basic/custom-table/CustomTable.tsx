@@ -83,7 +83,7 @@ const TableCell = styled.td<{
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
   color: ${theme.colors.gray[800]};
-  padding: ${({ $size }) => ($size === "small" ? "6px 12px" : "24px 20px")};
+  padding: ${({ $size }) => ($size === "small" ? "6px 12px" : "22px 20px")};
   text-align: ${({ $align }) => $align || "left"};
 `;
 
