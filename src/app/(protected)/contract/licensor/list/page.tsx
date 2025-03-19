@@ -5,6 +5,7 @@ import LicensorSearchType, {
 } from "./components/LicensorSearchType";
 
 import AddNewLicensor from "./components/AddNewLicensor";
+import LicensorList from "./components/LicensorList";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import { UserType } from "@/types/user";
@@ -43,6 +44,7 @@ export default function LicensorListPage() {
         </SearchInputWrapper>
         <AddNewLicensor />
       </SearchContainer>
+      <LicensorList licensors={users} />
     </Container>
   );
 }

@@ -7,6 +7,7 @@ import {
 import { DataCollectionName, FileType } from "@/types/upload";
 import { User, UserType } from "@/types/user";
 
+import BankNameDropdown from "./BankNameDropdown";
 import ContactPersonTable from "../../../../dsp/list/components/fragment/ContactPersonTable";
 import ContractProductItem from "../../../../dsp/list/components/fragment/ContractProductItem";
 import CountryCodeDropdown from "../../../../dsp/list/components/fragment/CountryCodeDropdown";
@@ -37,7 +38,7 @@ const LicensorInput = ({
   isEdit: boolean;
   inputType: "create" | "update";
 }) => {
-  const disabled = inputType === "create" ? false : true;
+  const locked = inputType === "create" ? false : true;
   return (
     <>
       <Gap height={42} />
@@ -47,7 +48,7 @@ const LicensorInput = ({
           label="권리사 ID"
           placeholder="아이디 입력"
           readOnly={!isEdit}
-          disabled={disabled}
+          locked={locked}
           {...register("account", { required: true })}
         />
         <CustomInput
@@ -55,7 +56,7 @@ const LicensorInput = ({
           label="비밀번호"
           placeholder="비밀번호 입력"
           readOnly={!isEdit}
-          disabled={disabled}
+          locked={locked}
           {...register("password", { required: true })}
         />
       </RowWrapper>
@@ -104,44 +105,44 @@ const LicensorInput = ({
       </RowWrapper>
       <Gap height={56} />
       <RowWrapper>
+        <CustomInput
+          size="small"
+          label="대표자명"
+          placeholder="대표자명 입력"
+          readOnly={!isEdit}
+          {...register("representativeName", { required: true })}
+        />
+        <CustomInput
+          size="small"
+          label="주소"
+          placeholder="주소 입력"
+          readOnly={!isEdit}
+          {...register("address", { required: true })}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
         <Controller
-          name="countryCode"
+          name="bankName"
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <CountryCodeDropdown
+            <BankNameDropdown
               onChange={(value) => {
                 field.onChange(value);
               }}
               value={field.value}
               readOnly={!isEdit}
-              // disabled={watch("regionType") === "domestic"}
             />
           )}
         />
-        <Controller
-          name="isTimeReleaseEnabled"
-          control={control}
-          defaultValue={true}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <CustomRadioWithLabel
-              label="T/R"
-              leftOption={{
-                label: "사용",
-                value: true,
-                checked: field.value === true,
-              }}
-              rightOption={{
-                label: "미사용",
-                value: false,
-                checked: field.value === false,
-              }}
-              onChange={field.onChange}
-              value={field.value}
-              readOnly={!isEdit}
-            />
-          )}
+        <CustomInput
+          size="small"
+          label="계좌번호"
+          placeholder="계좌번호 입력(-제외)"
+          type="number"
+          readOnly={!isEdit}
+          {...register("bankAccount", { required: true })}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -166,51 +167,8 @@ const LicensorInput = ({
             onChange={field.onChange}
             value={field.value}
             fileType={FileType.DOCS}
-            dataCollectionName={DataCollectionName.DSP_CONTRACTS}
-            headerText="계약서"
-            readOnly={!isEdit}
-          />
-        )}
-      />
-      <Gap height={56} />
-      <Controller
-        name="contractRate"
-        control={control}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <CustomInput
-            defaultValue={undefined}
-            size="small"
-            label="계약 요율"
-            icon={<PercentIcon />}
-            placeholder="숫자 입력"
-            type="number"
-            value={
-              field.value !== undefined ? (field.value * 100).toString() : ""
-            }
-            onChange={(e) => {
-              e.preventDefault();
-              const value = e.target.value;
-
-              // 부동 소수점 정밀도 문제 해결을 위해 toFixed 사용
-              const numValue = parseFloat((parseFloat(value) / 100).toFixed(4));
-
-              field.onChange(numValue);
-            }}
-            readOnly={!isEdit}
-          />
-        )}
-      />
-      <Gap height={56} />
-      <Controller
-        name="contractItemList"
-        control={control}
-        defaultValue={[]}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <ContractProductItem
-            value={field.value}
-            onChange={field.onChange}
+            dataCollectionName={DataCollectionName.USERS}
+            headerText="업체정보"
             readOnly={!isEdit}
           />
         )}

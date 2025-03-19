@@ -1,34 +1,39 @@
-import { CountryItem, countryList } from "@/constants/country";
+import { BankNameItem, bankNameList } from "@/constants/bank-name";
 import { useEffect, useState } from "react";
 
 import CustomDropdown from "@/components/basic/CustomDropdown";
 
-interface CountryCodeDropdownProps {
-  onChange: (country: string) => void;
+interface BankNameDropdownProps {
+  onChange: (bankName: string) => void;
   value: string | undefined;
   disabled?: boolean;
   readOnly?: boolean;
 }
 
-const CountryCodeDropdown = ({
+const BankNameDropdown = ({
   onChange,
   value,
   disabled = false,
   readOnly = false,
-}: CountryCodeDropdownProps) => {
+}: BankNameDropdownProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const dropdownItems = countryList.map((country) => ({
-    key: country.countryCode,
-    value: `${country.name} (${country.countryCode})`,
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+
+  const dropdownItems = bankNameList.map((bankName) => ({
+    key: bankName.bankName,
+    value: bankName.bankName,
   }));
 
   return (
     <CustomDropdown
-      label={"국가관리"}
+      label={"은행관리"}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
-      placeholder="국가 선택"
+      placeholder="은행 선택"
       disabled={disabled || isLoading}
       size={"small"}
       width={320}
@@ -37,4 +42,4 @@ const CountryCodeDropdown = ({
   );
 };
 
-export default CountryCodeDropdown;
+export default BankNameDropdown;

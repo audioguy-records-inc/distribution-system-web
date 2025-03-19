@@ -5,14 +5,11 @@ import AddNew from "@/components/AddNew";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import CustomToggle from "@/components/basic/CustomToggle";
-import type DspContract from "@/types/dsp-contract";
-import DspContractInput from "../../../dsp/list/components/fragment/DspContractInput";
 import Gap from "@/components/basic/Gap";
 import LicensorInput from "./fragment/LicnsorInput";
 import ReactModal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 

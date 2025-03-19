@@ -2,9 +2,11 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 import { User } from "@/types/user";
 import { create } from "zustand";
+import { deleteUser } from "@/api/user/delete-user";
 import { getUsers } from "@/api/user/get-users";
 import { login } from "@/api/user/login";
 import { postUser } from "@/api/user/post-user";
+import { putUser } from "@/api/user/put-user";
 import toast from "react-hot-toast";
 
 interface UserStore {
@@ -14,6 +16,8 @@ interface UserStore {
 
   fetchUsers: () => Promise<void>;
   createUser: (user: User) => Promise<void>;
+  updateUser: (user: User) => Promise<void>;
+  deleteUser: (userId: string) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -75,6 +79,70 @@ export const useUserStore = create<UserStore>()(
           toast.error(errorMessage);
 
           console.error("[useUserStore/postUser] Post user failed.", error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      updateUser: async (user: User) => {
+        set({ isLoading: true });
+        try {
+          const response = await putUser({ user });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          const fetchResponse = await getUsers();
+
+          if (!fetchResponse || fetchResponse.error || !fetchResponse.data) {
+            throw new Error(fetchResponse.message);
+          }
+
+          set((state) => ({
+            users: fetchResponse.data!.userList,
+            error: null,
+          }));
+
+          toast.success("사용자가 수정되었습니다.");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "사용자 수정 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error("[useUserStore/updateUser] Update user failed.", error);
+          set({ error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      deleteUser: async (userId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await deleteUser({ userId });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set((state) => ({
+            users: state.users.filter((user) => user._id !== userId),
+            error: null,
+          }));
+
+          toast.success("사용자가 삭제되었습니다.");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "사용자 삭제 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error("[useUserStore/deleteUser] Delete user failed.", error);
+          set({ error: errorMessage });
         } finally {
           set({ isLoading: false });
         }

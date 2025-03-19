@@ -1,8 +1,9 @@
 import { FetchResponse, apiFetch } from "../fetch";
 
+import DspContract from "@/types/dsp-contract";
+
 interface DeleteDspContractResponse {
-  message: string;
-  error: boolean;
+  dspContract: DspContract;
 }
 
 interface DeleteDspContractRequest {

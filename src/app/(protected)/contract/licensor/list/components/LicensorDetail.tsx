@@ -2,19 +2,16 @@ import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
 import ActivateStateBadge from "@/components/basic/custom-table/components/ActivateStateBadge";
-import ButtonOutlinedAssistive from "@/components/basic/buttons/ButtonOutlinedAssistive";
-import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import CustomModal from "@/components/CustomModal";
 import CustomToggle from "@/components/basic/CustomToggle";
-import DetailHeaderButton from "./fragment/DetailHeaderButton";
-import DspContract from "@/types/dsp-contract";
-import DspContractInput from "./fragment/DspContractInput";
-import PencilIcon from "@/components/icons/PencilIcon";
-import TrashIcon from "@/components/icons/TrashIcon";
+import DetailHeaderButton from "../../../dsp/list/components/fragment/DetailHeaderButton";
+import LicensorInput from "./fragment/LicnsorInput";
+import { User } from "@/types/user";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
+import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div`
   padding: 48px 32px 64px;
@@ -38,12 +35,12 @@ const RowWrapper = styled.div`
   gap: 120px;
 `;
 
-const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
+const LicensorDetail = ({ licensor }: { licensor: User }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [formData, setFormData] = useState<DspContract | null>(null);
-  const { updateDspContract, deleteDspContract } = useDspContractStore();
+  const [formData, setFormData] = useState<User | null>(null);
+  const { updateUser, deleteUser } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -51,28 +48,24 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
     control,
     formState: { isValid, isDirty },
     watch,
-  } = useForm<DspContract>({
-    defaultValues: dspContract,
+  } = useForm<User>({
+    defaultValues: licensor,
     mode: "onChange",
     shouldFocusError: false,
   });
 
   useEffect(() => {
-    reset(dspContract);
-  }, [dspContract, reset]);
+    reset(licensor);
+  }, [licensor, reset]);
 
-  const onSubmit = async (data: DspContract) => {
-    if (data.contractRate === undefined || isNaN(data.contractRate)) {
-      toast.error("계약 요율을 입력해주세요.");
-      return;
-    }
+  const onSubmit = async (data: User) => {
     setFormData(data);
     setIsUpdateModalOpen(true);
   };
 
   const handleConfirmUpdate = async () => {
     if (formData) {
-      await updateDspContract(formData);
+      await updateUser(formData);
       setIsUpdateModalOpen(false);
       setIsEdit(false);
     }
@@ -83,7 +76,7 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteDspContract(dspContract._id);
+    await deleteUser(licensor._id);
     setIsDeleteModalOpen(false);
   };
 
@@ -91,10 +84,10 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
     <Container>
       <Header>
         <TitleWrapper>
-          계약 정보
+          권리사 정보
           {isEdit ? (
             <Controller
-              name="isContractEnabled"
+              name="isEnabled"
               control={control}
               render={({ field }) => (
                 <CustomToggle
@@ -105,7 +98,7 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
               )}
             />
           ) : (
-            <ActivateStateBadge isActive={dspContract.isContractEnabled} />
+            <ActivateStateBadge isActive={licensor.isEnabled} />
           )}
         </TitleWrapper>
         <DetailHeaderButton
@@ -117,18 +110,19 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
           isValid={isValid}
         />
       </Header>
-      <DspContractInput
+      <LicensorInput
         watch={watch}
         register={register}
         control={control}
         isEdit={isEdit}
+        inputType={"update"}
       />
 
       <CustomModal
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 DSP 계약을 삭제할까요?"
+        content="해당 권리사를 삭제할까요?"
       />
 
       <CustomModal
@@ -141,4 +135,4 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
   );
 };
 
-export default DspContractDetail;
+export default LicensorDetail;
