@@ -2,7 +2,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 
 const HeaderContainer = styled.div`
-  padding: 48px 0;
+  padding: 42px 0;
 `;
 
 const Title = styled.div`

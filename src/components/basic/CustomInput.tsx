@@ -143,10 +143,8 @@ const CustomInput = ({
   disabled,
   size = "normal",
   type = "text",
-  value,
   onChange,
   readOnly,
-  defaultValue,
   ...props
 }: InputProps) => {
   return (
@@ -175,13 +173,11 @@ const CustomInput = ({
           type={type}
           placeholder={placeholder}
           disabled={locked || disabled}
-          value={value}
           onChange={onChange}
           $disabled={disabled}
           $locked={locked}
           $size={size}
           readOnly={readOnly}
-          defaultValue={defaultValue}
         />
         <IconContainer $size={size}>{icon}</IconContainer>
       </InputContainer>

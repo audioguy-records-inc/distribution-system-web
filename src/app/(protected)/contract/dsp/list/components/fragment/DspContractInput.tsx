@@ -34,7 +34,6 @@ const DspContractInput = ({
   control: Control<DspContract>;
   isEdit: boolean;
 }) => {
-  console.log("moonsae field.value", watch("contractRate"));
   return (
     <>
       <Gap height={42} />
@@ -45,7 +44,6 @@ const DspContractInput = ({
           placeholder="계약명 입력"
           required
           readOnly={!isEdit}
-          value={watch("dspContractName")}
           {...register("dspContractName", { required: true })}
         />
         <Controller
@@ -170,6 +168,7 @@ const DspContractInput = ({
       <Controller
         name="contractRate"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <CustomInput
             defaultValue={undefined}
@@ -185,7 +184,9 @@ const DspContractInput = ({
               e.preventDefault();
               const value = e.target.value;
 
-              const numValue = parseFloat(value) / 100;
+              // 부동 소수점 정밀도 문제 해결을 위해 toFixed 사용
+              const numValue = parseFloat((parseFloat(value) / 100).toFixed(4));
+
               field.onChange(numValue);
             }}
             readOnly={!isEdit}
@@ -197,6 +198,7 @@ const DspContractInput = ({
         name="contractItemList"
         control={control}
         defaultValue={[]}
+        rules={{ required: true }}
         render={({ field }) => (
           <ContractProductItem
             value={field.value}
