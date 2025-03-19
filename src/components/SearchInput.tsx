@@ -4,10 +4,8 @@ import styled from "styled-components";
 
 const Container = styled.div``;
 
-const SearchInput = () => {
-  return (
-    <CustomInput placeholder="DPID 또는 계약명 검색" icon={<SearchIcon />} />
-  );
+const SearchInput = ({ placeholder }: { placeholder: string }) => {
+  return <CustomInput placeholder={placeholder} icon={<SearchIcon />} />;
 };
 
 export default SearchInput;

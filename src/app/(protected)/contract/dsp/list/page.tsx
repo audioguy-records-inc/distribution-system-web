@@ -50,7 +50,7 @@ export default function DspListPage() {
     <Container>
       <PageHeader title={"DSP 리스트"} />
       <SearchContainer>
-        <SearchInput />
+        <SearchInput placeholder="DPID 또는 계약명 검색" />
         <AddNewDspContract />
       </SearchContainer>
       <Gap height={32} />

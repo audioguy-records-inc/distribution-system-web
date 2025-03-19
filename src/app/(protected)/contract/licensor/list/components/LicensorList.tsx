@@ -5,7 +5,8 @@ import CustomTable, {
 import ActivateStateBadge from "@/components/basic/custom-table/components/ActivateStateBadge";
 import Dsp from "@/components/basic/custom-table/components/Dsp";
 import DspContract from "@/types/dsp-contract";
-import DspContractInfo from "./DspContractDetail";
+import DspContractInfo from "../../../dsp/list/components/DspContractDetail";
+import { User } from "@/types/user";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
@@ -13,11 +14,7 @@ import { useEffect } from "react";
 
 const Container = styled.div``;
 
-export default function DspContractList({
-  dspContracts,
-}: {
-  dspContracts: DspContract[];
-}) {
+export default function LicensorList({ licensors }: { licensors: User[] }) {
   const { user } = useAuthStore();
   const { fetchDspContracts } = useDspContractStore();
 
@@ -69,7 +66,7 @@ export default function DspContractList({
     },
   ];
 
-  const renderExpandedContent = (dspContract: DspContract) => {
+  const renderExpandedContent = (licensor: User) => {
     return <DspContractInfo dspContract={dspContract} />;
   };
 
@@ -77,7 +74,7 @@ export default function DspContractList({
     <Container>
       <CustomTable
         columns={columns}
-        data={dspContracts || []}
+        data={licensors || []}
         expandable={{
           expandedRowRender: renderExpandedContent,
           expandColumnWidth: 50,

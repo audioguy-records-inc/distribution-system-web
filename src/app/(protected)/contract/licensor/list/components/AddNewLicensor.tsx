@@ -1,3 +1,4 @@
+import { AuthLevel, User } from "@/types/user";
 import { Controller, useForm } from "react-hook-form";
 
 import AddNew from "@/components/AddNew";
@@ -5,13 +6,15 @@ import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary"
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import CustomToggle from "@/components/basic/CustomToggle";
 import type DspContract from "@/types/dsp-contract";
-import DspContractInput from "./fragment/DspContractInput";
+import DspContractInput from "../../../dsp/list/components/fragment/DspContractInput";
 import Gap from "@/components/basic/Gap";
+import LicensorInput from "./fragment/LicnsorInput";
 import ReactModal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useState } from "react";
+import { useUserStore } from "@/stores/use-user-store";
 
 const AddNewWrapper = styled.div`
   cursor: pointer;
@@ -49,9 +52,9 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-const AddNewDspContract = () => {
+const AddNewLicensor = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { createDspContract } = useDspContractStore();
+  const { createUser } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -59,13 +62,18 @@ const AddNewDspContract = () => {
     control,
     formState: { isValid, isDirty },
     watch,
-  } = useForm<DspContract>({
+  } = useForm<User>({
     defaultValues: {
-      dspContractName: undefined,
-      dspContractUniqueId: undefined,
-      regionType: "domestic",
-      countryCode: undefined,
-      isTimeReleaseEnabled: true,
+      account: undefined,
+      password: undefined,
+      displayName: undefined,
+      authLevel: AuthLevel.USER,
+      type: undefined,
+      isEnabled: true,
+      representativeName: undefined,
+      address: undefined,
+      bankName: undefined,
+      bankAccount: undefined,
       contactPersonList: [
         {
           name: undefined,
@@ -75,9 +83,6 @@ const AddNewDspContract = () => {
         },
       ],
       fileList: [],
-      contractItemList: [],
-      contractRate: undefined,
-      isContractEnabled: true,
     },
     mode: "onChange",
     shouldFocusError: false,
@@ -89,8 +94,8 @@ const AddNewDspContract = () => {
     reset();
   };
 
-  const onSubmit = async (data: DspContract) => {
-    await createDspContract(data);
+  const onSubmit = async (data: User) => {
+    await createUser(data);
     handleClose();
   };
 
@@ -126,7 +131,7 @@ const AddNewDspContract = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          DSP 계약 등록
+          권리사 등록
           <ButtonWrapper>
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
             <ButtonFilledPrimary
@@ -140,9 +145,9 @@ const AddNewDspContract = () => {
 
         <Form onSubmit={handleSubmit(onSubmit)}>
           <VisibleWrapper>
-            <VisibleLabel>계약 정보</VisibleLabel>
+            <VisibleLabel>권리사 정보</VisibleLabel>
             <Controller
-              name="isContractEnabled"
+              name="isEnabled"
               control={control}
               render={({ field }) => (
                 <CustomToggle
@@ -153,11 +158,12 @@ const AddNewDspContract = () => {
               )}
             />
           </VisibleWrapper>
-          <DspContractInput
+          <LicensorInput
             watch={watch}
             register={register}
             control={control}
             isEdit={true}
+            inputType="create"
           />
         </Form>
       </ReactModal>
@@ -165,4 +171,4 @@ const AddNewDspContract = () => {
   );
 };
 
-export default AddNewDspContract;
+export default AddNewLicensor;

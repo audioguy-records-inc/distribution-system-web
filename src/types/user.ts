@@ -1,13 +1,22 @@
 import { ContactPerson } from "./contact-person";
 import { FileInfo } from "./file-info";
 
+export enum UserType {
+  INDIVIDUAL = "individual",
+  COMPANY = "company",
+}
+
+export enum AuthLevel {
+  USER = "USER",
+  ADMIN = "ADMIN",
+}
 export interface User {
   _id: string;
   account: string;
   password: string;
   displayName: string;
-  authLevel: "USER" | "ADMIN";
-  type: "individual" | "company";
+  authLevel: AuthLevel;
+  type: UserType;
   isEnabled: boolean;
 
   // 회사 타입일 때만 필요한 필드
