@@ -28,6 +28,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 320px;
 `;
 
 const Label = styled.div`
@@ -37,8 +38,8 @@ const Label = styled.div`
 
 const RadioContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  gap: 24px;
+  justify-content: flex-start;
+  gap: 42px;
 `;
 
 const CustomRadioWithLabel = ({
