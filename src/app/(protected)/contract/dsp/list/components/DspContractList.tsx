@@ -16,10 +16,13 @@ import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div``;
 
-export default function DspContractList() {
+export default function DspContractList({
+  dspContracts,
+}: {
+  dspContracts: DspContract[];
+}) {
   const { user } = useUserStore();
-  const { dspContracts, isLoading, error, fetchDspContracts } =
-    useDspContractStore();
+  const { fetchDspContracts } = useDspContractStore();
 
   useEffect(() => {
     if (user) {
@@ -72,10 +75,6 @@ export default function DspContractList() {
   const renderExpandedContent = (dspContract: DspContract) => {
     return <DspContractInfo dspContract={dspContract} />;
   };
-
-  if (error) {
-    return <Container>오류가 발생했습니다: {error}</Container>;
-  }
 
   return (
     <Container>

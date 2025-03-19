@@ -11,6 +11,7 @@ import Spotify from "./icons/streaming/Spotify";
 import Vibe from "./icons/streaming/Vibe";
 import YoutubeMusic from "./icons/streaming/YoutubeMusic";
 import styled from "styled-components";
+import { useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -18,21 +19,128 @@ const Container = styled.div`
   flex-wrap: wrap;
 `;
 
-const DspFilterChip = () => {
+// DSP 타입 정의
+export type DspType =
+  | "ALL"
+  | "Melon"
+  | "Youtube Music"
+  | "Spotify"
+  | "Apple Music"
+  | "Genie"
+  | "Bugs"
+  | "Flo"
+  | "Vibe"
+  | "KKBOX"
+  | "JOOX"
+  | "Amazon Music";
+
+interface DspFilterChipProps {
+  onFilterChange?: (selectedDsps: DspType[]) => void;
+}
+
+const DspFilterChip = ({ onFilterChange }: DspFilterChipProps) => {
+  const [selectedDsps, setSelectedDsps] = useState<DspType[]>(["ALL"]);
+
+  const handleChipClick = (dsp: DspType) => {
+    let newSelectedDsps: DspType[];
+
+    if (dsp === "ALL") {
+      // ALL을 클릭하면 다른 모든 선택 해제하고 ALL만 선택
+      newSelectedDsps = ["ALL"];
+    } else {
+      // ALL이 선택되어 있었다면 제거
+      const withoutAll = selectedDsps.filter((item) => item !== "ALL");
+
+      if (selectedDsps.includes(dsp)) {
+        // 이미 선택된 DSP를 클릭하면 선택 해제
+        newSelectedDsps = withoutAll.filter((item) => item !== dsp);
+        // 모든 선택이 해제되면 ALL 자동 선택
+        if (newSelectedDsps.length === 0) {
+          newSelectedDsps = ["ALL"];
+        }
+      } else {
+        // 새로운 DSP 선택 추가
+        newSelectedDsps = [...withoutAll, dsp];
+      }
+    }
+
+    setSelectedDsps(newSelectedDsps);
+    onFilterChange?.(newSelectedDsps);
+  };
+
   return (
     <Container>
-      <CustomChip label="ALL" />
-      <CustomChip label="Melon" icon={<Melon />} />
-      <CustomChip label="Youtube Music" icon={<YoutubeMusic />} />
-      <CustomChip label="Spotify" icon={<Spotify />} />
-      <CustomChip label="Apple Music" icon={<AppleMusic />} />
-      <CustomChip label="Genie" icon={<Genie />} />
-      <CustomChip label="Bugs" icon={<Bugs />} />
-      <CustomChip label="Flo" icon={<Flo />} />
-      <CustomChip label="Vibe" icon={<Vibe />} />
-      <CustomChip label="KKBOX" icon={<KKBOX />} />
-      <CustomChip label="JOOK" icon={<JOOX />} />
-      <CustomChip label="Amazon Music" icon={<AmazonMusic />} />
+      <CustomChip
+        label="ALL"
+        isSelected={selectedDsps.includes("ALL")}
+        onClick={() => handleChipClick("ALL")}
+      />
+      <CustomChip
+        label="Melon"
+        icon={<Melon />}
+        isSelected={selectedDsps.includes("Melon")}
+        onClick={() => handleChipClick("Melon")}
+      />
+      <CustomChip
+        label="Youtube Music"
+        icon={<YoutubeMusic />}
+        isSelected={selectedDsps.includes("Youtube Music")}
+        onClick={() => handleChipClick("Youtube Music")}
+      />
+      <CustomChip
+        label="Spotify"
+        icon={<Spotify />}
+        isSelected={selectedDsps.includes("Spotify")}
+        onClick={() => handleChipClick("Spotify")}
+      />
+      <CustomChip
+        label="Apple Music"
+        icon={<AppleMusic />}
+        isSelected={selectedDsps.includes("Apple Music")}
+        onClick={() => handleChipClick("Apple Music")}
+      />
+      <CustomChip
+        label="Genie"
+        icon={<Genie />}
+        isSelected={selectedDsps.includes("Genie")}
+        onClick={() => handleChipClick("Genie")}
+      />
+      <CustomChip
+        label="Bugs"
+        icon={<Bugs />}
+        isSelected={selectedDsps.includes("Bugs")}
+        onClick={() => handleChipClick("Bugs")}
+      />
+      <CustomChip
+        label="Flo"
+        icon={<Flo />}
+        isSelected={selectedDsps.includes("Flo")}
+        onClick={() => handleChipClick("Flo")}
+      />
+      <CustomChip
+        label="Vibe"
+        icon={<Vibe />}
+        isSelected={selectedDsps.includes("Vibe")}
+        onClick={() => handleChipClick("Vibe")}
+      />
+      <CustomChip
+        label="KKBOX"
+        icon={<KKBOX />}
+        isSelected={selectedDsps.includes("KKBOX")}
+        onClick={() => handleChipClick("KKBOX")}
+      />
+      <CustomChip
+        label="JOOX"
+        icon={<JOOX />}
+        isSelected={selectedDsps.includes("JOOX")}
+        onClick={() => handleChipClick("JOOX")}
+      />
+      <CustomChip
+        label="Amazon Music"
+        icon={<AmazonMusic />}
+        isSelected={selectedDsps.includes("Amazon Music")}
+        onClick={() => handleChipClick("Amazon Music")}
+      />
     </Container>
   );
 };
