@@ -52,6 +52,7 @@ export default function Samples() {
         value="Value"
         // disabled
         // locked
+        onChange={() => {}}
         icon={<PlaceholderIcon />}
       />
       <CustomInput
@@ -61,6 +62,7 @@ export default function Samples() {
         required
         value="Value"
         size="small"
+        onChange={() => {}}
         icon={<PlaceholderIcon />}
       />
       <CustomTextArea
