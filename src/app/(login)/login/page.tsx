@@ -4,6 +4,7 @@ import { API_URL } from "@/constants/api";
 import Image from "next/image";
 import LoginForm from "./components/LoginForm";
 import styled from "styled-components";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/use-user-store";
@@ -35,7 +36,7 @@ export default function LoginPage() {
   const router = useRouter();
   console.log("moonsae env", process.env.NODE_ENV);
   console.log("moonsae api", API_URL);
-  const user = useUserStore((state) => state.user);
+  const user = useAuthStore((state) => state.user);
   console.log("moonsae user", user);
 
   useEffect(() => {

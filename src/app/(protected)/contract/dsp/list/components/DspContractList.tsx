@@ -10,6 +10,7 @@ import DspContractInfo from "./DspContractDetail";
 import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/use-user-store";
@@ -21,7 +22,7 @@ export default function DspContractList({
 }: {
   dspContracts: DspContract[];
 }) {
-  const { user } = useUserStore();
+  const { user } = useAuthStore();
   const { fetchDspContracts } = useDspContractStore();
 
   useEffect(() => {
