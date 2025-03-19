@@ -16,7 +16,7 @@ import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 93vh;
+  height: 100%;
   box-sizing: border-box;
 `;
 
@@ -26,11 +26,7 @@ const SearchContainer = styled.div`
   align-items: center;
 `;
 
-const ListContainer = styled.div`
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-`;
+const ListContainer = styled.div``;
 
 export default function DspListPage() {
   const { dspContracts, isLoading, error } = useDspContractStore();
