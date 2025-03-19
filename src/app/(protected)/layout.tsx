@@ -3,7 +3,7 @@ import Breadcrumbs from "@/components/BreadCrumbs";
 import LayoutContainer from "@/components/layout/LayoutContainer";
 import MainContent from "@/components/layout/PageLayout";
 import type { Metadata } from "next";
-import Sidebar from "@/components/layout/Sidebar";
+import Sidebar from "@/components/layout/side-bar/Sidebar";
 
 export const metadata: Metadata = {
   title: "오디오가이 유통시스템 - 관리자",

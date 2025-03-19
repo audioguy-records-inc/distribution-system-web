@@ -83,7 +83,7 @@ const DspContractInfo = ({ dspContract }: { dspContract: DspContract }) => {
   };
 
   const handleConfirmDelete = async () => {
-    await deleteDspContract(dspContract.dspContractUniqueId);
+    await deleteDspContract(dspContract._id);
     setIsDeleteModalOpen(false);
   };
 
