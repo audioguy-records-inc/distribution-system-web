@@ -1,8 +1,8 @@
 "use client";
 
-import LicensorSearchType, {
-  SearchType,
-} from "./components/LicensorSearchType";
+import LicensorSearchTypeDropdown, {
+  LicensorSearchType,
+} from "./components/LicensorSearchTypeDropdown";
 
 import AddNewLicensor from "./components/AddNewLicensor";
 import LicensorList from "./components/LicensorList";
@@ -28,7 +28,7 @@ const SearchInputWrapper = styled.div`
 
 export default function LicensorListPage() {
   const { users } = useUserStore();
-  const [selectedType, setSelectedType] = useState<SearchType>("all");
+  const [selectedType, setSelectedType] = useState<LicensorSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
 
   return (
@@ -36,11 +36,11 @@ export default function LicensorListPage() {
       <PageHeader title={"권리사 리스트"} />
       <SearchContainer>
         <SearchInputWrapper>
-          <LicensorSearchType
+          <LicensorSearchTypeDropdown
             selectedType={selectedType}
             setSelectedType={setSelectedType}
           />
-          <SearchInput placeholder="권리사명 검색" />
+          <SearchInput placeholder="권리사 ID 또는 권리사명 입력" />
         </SearchInputWrapper>
         <AddNewLicensor />
       </SearchContainer>

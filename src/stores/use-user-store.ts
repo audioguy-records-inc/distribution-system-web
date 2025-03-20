@@ -7,10 +7,12 @@ import { getUsers } from "@/api/user/get-users";
 import { login } from "@/api/user/login";
 import { postUser } from "@/api/user/post-user";
 import { putUser } from "@/api/user/put-user";
+import { searchUsers } from "@/api/user/search-users";
 import toast from "react-hot-toast";
 
 interface UserStore {
   users: User[];
+  searchedUsers: User[];
   isLoading: boolean;
   error: string | null;
 
@@ -18,6 +20,7 @@ interface UserStore {
   createUser: (user: User) => Promise<void>;
   updateUser: (user: User) => Promise<void>;
   deleteUser: (userId: string) => Promise<void>;
+  searchUsers: (searchKeyword: string, searchFields?: string) => Promise<void>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -26,6 +29,7 @@ export const useUserStore = create<UserStore>()(
       isLoading: false,
       error: null,
       users: [],
+      searchedUsers: [],
       fetchUsers: async () => {
         set({ isLoading: true });
         try {
@@ -143,6 +147,38 @@ export const useUserStore = create<UserStore>()(
 
           console.error("[useUserStore/deleteUser] Delete user failed.", error);
           set({ error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      searchUsers: async (searchKeyword: string, searchFields?: string) => {
+        set({ isLoading: true });
+        try {
+          const __searchKeyword = searchKeyword;
+          const __searchFields = searchFields;
+          const response = await searchUsers({
+            __searchKeyword,
+            __searchFields,
+          });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set({ searchedUsers: response.data.userList });
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "사용자 검색 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useUserStore/searchUsers] Search users failed.",
+            error,
+          );
+          set({ searchedUsers: [], error: errorMessage });
         } finally {
           set({ isLoading: false });
         }

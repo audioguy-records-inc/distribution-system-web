@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 const Container = styled.div``;
 
-export type SearchType = "_id" | "displayName" | "all";
+export type LicensorSearchType = "account" | "displayName" | "all";
 
-const LicensorSearchType = ({
+const LicensorSearchTypeDropdown = ({
   selectedType,
   setSelectedType,
 }: {
-  selectedType: SearchType;
-  setSelectedType: (type: SearchType) => void;
+  selectedType: LicensorSearchType;
+  setSelectedType: (type: LicensorSearchType) => void;
 }) => {
   const items = [
     {
@@ -18,7 +18,7 @@ const LicensorSearchType = ({
       value: "전체",
     },
     {
-      key: "_id",
+      key: "account",
       value: "권리사 ID",
     },
     {
@@ -31,10 +31,10 @@ const LicensorSearchType = ({
       <CustomDropdown
         items={items}
         selectedKey={selectedType}
-        onSelectKey={(key) => setSelectedType(key as SearchType)}
+        onSelectKey={(key) => setSelectedType(key as LicensorSearchType)}
       />
     </Container>
   );
 };
 
-export default LicensorSearchType;
+export default LicensorSearchTypeDropdown;

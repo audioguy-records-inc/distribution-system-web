@@ -9,15 +9,10 @@ import { User, UserType } from "@/types/user";
 
 import BankNameDropdown from "./BankNameDropdown";
 import ContactPersonTable from "../../../../dsp/list/components/fragment/ContactPersonTable";
-import ContractProductItem from "../../../../dsp/list/components/fragment/ContractProductItem";
-import CountryCodeDropdown from "../../../../dsp/list/components/fragment/CountryCodeDropdown";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
 import CustomUpload from "@/components/basic/CustomUpload";
-import DspContract from "@/types/dsp-contract";
-import DspDropdown from "../../../../dsp/list/components/fragment/DspDropdown";
 import Gap from "@/components/basic/Gap";
-import PercentIcon from "@/components/icons/PercentIcon";
 import styled from "styled-components";
 
 const RowWrapper = styled.div`
