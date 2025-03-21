@@ -89,14 +89,24 @@ const LicensorInput = ({
             />
           )}
         />
-        <CustomInput
-          size="small"
-          label="사업자등록번호"
-          placeholder="사업자등록번호 입력(- 제외)"
-          type="number"
-          readOnly={!isEdit}
-          {...register("companyRegistrationNumber", { required: true })}
-        />
+        {watch("type") === UserType.COMPANY && (
+          <CustomInput
+            size="small"
+            label="사업자등록번호"
+            placeholder="사업자등록번호 입력(- 제외)"
+            type="number"
+            {...register("companyRegistrationNumber", { required: true })}
+          />
+        )}
+        {watch("type") === UserType.INDIVIDUAL && (
+          <CustomInput
+            size="small"
+            label="주민등록번호"
+            placeholder="주민등록번호 입력(- 제외)"
+            type="number"
+            {...register("personalIdNumber", { required: true })}
+          />
+        )}
       </RowWrapper>
       <Gap height={56} />
       <RowWrapper>
