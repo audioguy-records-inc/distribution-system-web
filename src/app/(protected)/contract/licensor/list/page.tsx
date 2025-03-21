@@ -40,7 +40,14 @@ export default function LicensorListPage() {
             selectedType={selectedType}
             setSelectedType={setSelectedType}
           />
-          <SearchInput placeholder="권리사 ID 또는 권리사명 입력" />
+          <SearchInput
+            placeholder="권리사 ID 또는 권리사명 입력"
+            onClickSearch={() => {
+              console.log("search");
+            }}
+            onChange={() => {}}
+            value={searchValue}
+          />
         </SearchInputWrapper>
         <AddNewLicensor />
       </SearchContainer>

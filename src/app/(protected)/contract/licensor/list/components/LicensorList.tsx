@@ -39,7 +39,7 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
     {
       header: "구분",
       accessor: "type",
-      type: "string",
+      type: "component",
       width: 190,
       align: "center",
       render: (value, record) => {

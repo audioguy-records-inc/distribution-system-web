@@ -7,17 +7,29 @@ import {
 import { DataCollectionName, FileType } from "@/types/upload";
 import { User, UserType } from "@/types/user";
 
+import CustomCalendar from "@/components/basic/CustomCalendar";
+import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomUpload from "@/components/basic/CustomUpload";
 import Gap from "@/components/basic/Gap";
-import SearchDropdownInput from "./SearchDropdownInput";
-import SearchInput from "@/components/SearchInput";
+import LicensorSearch from "./LicensorSearch";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
+import theme from "@/styles/theme";
 
 const RowWrapper = styled.div`
   display: flex;
   gap: 120px;
+`;
+
+const ContractTitleRowWrapper = styled.div`
+  display: flex;
+  gap: 24px;
+`;
+
+const ContractTitle = styled.div`
+  ${theme.fonts.heading2.medium};
+  color: ${theme.colors.gray[800]};
 `;
 
 const LicensorContractInput = ({
@@ -34,6 +46,7 @@ const LicensorContractInput = ({
   inputType: "create" | "update";
 }) => {
   const locked = inputType === "create" ? false : true;
+  console.log("moonsae watch", watch());
   return (
     <>
       <Gap height={42} />
@@ -56,8 +69,17 @@ const LicensorContractInput = ({
         />
       </RowWrapper>
       <Gap height={56} />
-      <SearchInput placeholder="권리사명 검색" />
-      <SearchDropdownInput placeholder="권리사명 검색" />
+      <Controller
+        name="userId"
+        control={control}
+        render={({ field }) => (
+          <LicensorSearch
+            value={field.value}
+            onChange={field.onChange}
+            readOnly={!isEdit}
+          />
+        )}
+      />
       <Gap height={56} />
       <Controller
         name="fileList"
@@ -73,6 +95,24 @@ const LicensorContractInput = ({
           />
         )}
       />
+      <Gap height={56} />
+      <ContractTitleRowWrapper>
+        <ContractTitle>계약 기간</ContractTitle>
+        <Controller
+          name="isContractEnabled"
+          control={control}
+          render={({ field }) => (
+            <CustomCheckbox
+              checked={field.value}
+              onChange={field.onChange}
+              label="자동 연장(1년)"
+            />
+          )}
+        />
+      </ContractTitleRowWrapper>
+      <Gap height={12} />
+      <CustomCalendar />
+      <Gap height={500} />
     </>
   );
 };

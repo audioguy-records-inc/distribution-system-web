@@ -39,7 +39,12 @@ export default function LicensorContractInfoPage() {
             selectedType={selectedType}
             setSelectedType={setSelectedType}
           />
-          <SearchInput placeholder="계약명, 권리사명, 계약코드 입력" />
+          <SearchInput
+            placeholder="계약명, 권리사명, 계약코드 입력"
+            onClickSearch={() => {}}
+            onChange={() => {}}
+            value={searchValue}
+          />
         </SearchInputWrapper>
         <AddNewLicensorContract />
       </SearchContainer>

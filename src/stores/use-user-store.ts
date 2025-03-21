@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 
 interface UserStore {
   users: User[];
-  searchedUsers: User[];
   isLoading: boolean;
   error: string | null;
 
@@ -20,7 +19,10 @@ interface UserStore {
   createUser: (user: User) => Promise<void>;
   updateUser: (user: User) => Promise<void>;
   deleteUser: (userId: string) => Promise<void>;
-  searchUsers: (searchKeyword: string, searchFields?: string) => Promise<void>;
+  searchUsers: (
+    searchKeyword: string,
+    searchFields?: string,
+  ) => Promise<User[]>;
 }
 
 export const useUserStore = create<UserStore>()(
@@ -29,7 +31,6 @@ export const useUserStore = create<UserStore>()(
       isLoading: false,
       error: null,
       users: [],
-      searchedUsers: [],
       fetchUsers: async () => {
         set({ isLoading: true });
         try {
@@ -39,7 +40,7 @@ export const useUserStore = create<UserStore>()(
             throw new Error(response.message);
           }
 
-          set({ users: response.data.userList });
+          set({ users: response.data.userList, error: null });
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -165,7 +166,11 @@ export const useUserStore = create<UserStore>()(
             throw new Error(response.message);
           }
 
-          set({ searchedUsers: response.data.userList });
+          set({
+            error: null,
+          });
+
+          return response.data.userList;
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -178,7 +183,8 @@ export const useUserStore = create<UserStore>()(
             "[useUserStore/searchUsers] Search users failed.",
             error,
           );
-          set({ searchedUsers: [], error: errorMessage });
+          set({ error: errorMessage });
+          return [];
         } finally {
           set({ isLoading: false });
         }
