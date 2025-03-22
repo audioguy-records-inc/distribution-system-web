@@ -13,7 +13,6 @@ interface CountryCodeDropdownProps {
 const CountryCodeDropdown = ({
   onChange,
   value,
-  disabled = false,
   readOnly = false,
 }: CountryCodeDropdownProps) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +28,6 @@ const CountryCodeDropdown = ({
       onSelectKey={onChange}
       items={dropdownItems}
       placeholder="국가 선택"
-      disabled={disabled || isLoading}
       size={"small"}
       width={320}
       readOnly={readOnly}

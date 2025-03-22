@@ -1,13 +1,6 @@
+import DspContract from "./dsp-contract";
 import { FileInfo } from "./file-info";
 import { User } from "./user";
-
-interface DspContractReference {
-  _id: string;
-  dspId: string;
-  dspContractUniqueId: string;
-  regionType: "international" | "domestic";
-  contractItemList: string[];
-}
 
 export interface UserContract {
   _id: string;
@@ -16,10 +9,10 @@ export interface UserContract {
   userId: string;
   isContractAutoRenewEnabled: boolean;
   isContractEnabled: boolean;
-  kstContractStartDateInt: number;
-  kstContractEndDateInt: number;
+  kstContractStartDateInt: string;
+  kstContractEndDateInt: string;
   contractRate: number;
-  dspContractList: DspContractReference[];
+  dspContractList: DspContract[];
   fileList: FileInfo[];
   userInfo?: {
     _id: string;

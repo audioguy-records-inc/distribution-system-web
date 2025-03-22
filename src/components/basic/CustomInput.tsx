@@ -149,18 +149,19 @@ const CustomInput = ({
 }: InputProps) => {
   return (
     <Container $hasLabel={!!label}>
-      <LabelContainer>
-        {label && (
+      {label && (
+        <LabelContainer>
           <Label $disabled={disabled} $size={size}>
             {label}
           </Label>
-        )}
-        {required && (
-          <Required $disabled={disabled} $size={size}>
-            *
-          </Required>
-        )}
-      </LabelContainer>
+          {required && (
+            <Required $disabled={disabled} $size={size}>
+              *
+            </Required>
+          )}
+        </LabelContainer>
+      )}
+
       <InputContainer
         $isError={isError}
         $width={width}

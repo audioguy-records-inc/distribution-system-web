@@ -6,6 +6,7 @@ import { deleteDspContract } from "@/api/dsp-contract/delete-dsp-contract";
 import { getDspContracts } from "@/api/dsp-contract/get-dsp-contracts";
 import { postDspContract } from "@/api/dsp-contract/post-dsp-contract";
 import { putDspContract } from "@/api/dsp-contract/put-dsp-contract";
+import { searchDspContract } from "@/api/dsp-contract/search-dsp-contract";
 import toast from "react-hot-toast";
 
 interface DspContractStore {
@@ -17,6 +18,10 @@ interface DspContractStore {
   createDspContract: (dspContract: DspContract) => Promise<void>;
   updateDspContract: (dspContract: DspContract) => Promise<void>;
   deleteDspContract: (dspContractId: string) => Promise<void>;
+  searchDspContract: (
+    searchKeyword: string,
+    searchFields?: string,
+  ) => Promise<DspContract[]>;
 }
 
 export const useDspContractStore = create<DspContractStore>()(
@@ -158,6 +163,41 @@ export const useDspContractStore = create<DspContractStore>()(
 
           console.error("[deleteDspContract] error", error);
           set({ error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      searchDspContract: async (searchKeyword, searchFields) => {
+        set({ isLoading: true });
+
+        try {
+          const __searchKeyword = searchKeyword;
+          const __searchFields = searchFields;
+          const response = await searchDspContract({
+            __searchKeyword,
+            __searchFields,
+          });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set({
+            error: null,
+          });
+
+          return response.data.dspContractList;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "DSP 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error("[searchDspContract] error", error);
+          set({ error: errorMessage });
+          return [];
         } finally {
           set({ isLoading: false });
         }

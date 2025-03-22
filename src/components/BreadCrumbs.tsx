@@ -26,7 +26,6 @@ const CurrentBreadcrumb = styled.div`
 
 const Breadcrumbs = () => {
   const pathname = usePathname();
-  console.log("moonsae pathname", pathname);
 
   switch (pathname) {
     case "/contract/dsp/list":
