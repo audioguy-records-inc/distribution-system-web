@@ -282,6 +282,13 @@ const LicensorDspContractList = ({
                 contractRate: 0,
                 contractItemList: [],
                 dspId: "",
+                dspContractUniqueId: "",
+                regionType: "domestic",
+                countryCode: "",
+                isContractEnabled: false,
+                isTimeReleaseEnabled: false,
+                contactPersonList: [],
+                fileList: [],
               } as DspContract);
               onChange(newValue);
             }}

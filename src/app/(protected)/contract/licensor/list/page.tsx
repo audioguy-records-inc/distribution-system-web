@@ -4,6 +4,7 @@ import LicensorSearchTypeDropdown, {
   LicensorSearchType,
 } from "./components/LicensorSearchTypeDropdown";
 import { User, UserType } from "@/types/user";
+import { useEffect, useState } from "react";
 
 import AddNewLicensor from "./components/AddNewLicensor";
 import Gap from "@/components/basic/Gap";
@@ -11,7 +12,6 @@ import LicensorList from "./components/LicensorList";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
-import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div``;
@@ -32,6 +32,10 @@ export default function LicensorListPage() {
   const [selectedType, setSelectedType] = useState<LicensorSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
 
   const handleSearch = async () => {
     if (!searchValue.trim()) {

@@ -78,6 +78,7 @@ interface SearchDropdownInputProps<T> {
   onSelect: (selectedItem: T) => void;
   renderItem?: (item: T) => string;
   size?: "normal" | "small";
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const SearchDropdownInput = <T,>({
@@ -86,6 +87,7 @@ const SearchDropdownInput = <T,>({
   onClickSearch,
   onSelect,
   renderItem = (item: T) => String(item),
+  onKeyDown,
   size = "normal",
 }: SearchDropdownInputProps<T>) => {
   const [searched, setSearched] = useState(false);
@@ -137,6 +139,7 @@ const SearchDropdownInput = <T,>({
         value={searchKeyword}
         isLoading={isLoading}
         size={size}
+        onKeyDown={onKeyDown}
       />
       {searched && (
         <ListContainer>

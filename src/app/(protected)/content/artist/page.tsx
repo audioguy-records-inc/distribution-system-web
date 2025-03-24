@@ -30,6 +30,10 @@ export default function ArtistPage() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>(artists);
 
+  useEffect(() => {
+    setFilteredArtists(artists);
+  }, [artists]);
+
   const handleSearch = async () => {
     if (!searchValue.trim()) {
       setFilteredArtists(artists);

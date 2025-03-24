@@ -5,6 +5,7 @@ import { Artist } from "@/types/artist";
 import ArtistInput from "./fragment/ArtistInput";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
+import ButtonSpinner from "@/components/ButtonSpinner";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomToggle from "@/components/basic/CustomToggle";
 import type DspContract from "@/types/dsp-contract";
@@ -55,7 +56,7 @@ const Form = styled.form`
 
 const AddNewArtist = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { createArtist } = useArtistStore();
+  const { createArtist, isLoading } = useArtistStore();
   const {
     register,
     handleSubmit,
@@ -122,11 +123,15 @@ const AddNewArtist = () => {
           아티스트 신규 등록
           <ButtonWrapper>
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
-            <ButtonFilledPrimary
-              label="등록"
-              onClick={handleSubmit(onSubmit)}
-              disabled={!isDirty || !isValid}
-            />
+            {isLoading ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonFilledPrimary
+                label="등록"
+                onClick={handleSubmit(onSubmit)}
+                disabled={!isDirty || !isValid}
+              />
+            )}
           </ButtonWrapper>
         </ModalHeader>
         <Gap height={48} />

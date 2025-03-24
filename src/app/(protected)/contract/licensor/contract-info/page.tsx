@@ -3,6 +3,7 @@
 import LicensorContractSearchTypeDropdown, {
   LicensorContractSearchType,
 } from "./components/fragment/LicensorContractSearchTypeDropdown";
+import { useEffect, useState } from "react";
 
 import AddNewLicensorContract from "./components/AddNewLicensorContract";
 import Gap from "@/components/basic/Gap";
@@ -11,7 +12,6 @@ import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
-import { useState } from "react";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 
 const Container = styled.div``;
@@ -32,9 +32,12 @@ export default function LicensorContractInfoPage() {
   const [selectedType, setSelectedType] =
     useState<LicensorContractSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
-  const [filteredContracts, setFilteredContracts] = useState<UserContract[]>(
-    [],
-  );
+  const [filteredContracts, setFilteredContracts] =
+    useState<UserContract[]>(userContracts);
+
+  useEffect(() => {
+    setFilteredContracts(userContracts);
+  }, [userContracts]);
 
   const handleSearch = async () => {
     if (!searchValue.trim()) {

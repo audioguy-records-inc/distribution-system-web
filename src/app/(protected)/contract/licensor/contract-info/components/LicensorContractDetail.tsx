@@ -44,7 +44,8 @@ const LicensorContractDetail = ({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [formData, setFormData] = useState<UserContract | null>(null);
-  const { updateUserContract, deleteUserContract } = useUserContractStore();
+  const { updateUserContract, deleteUserContract, isLoading } =
+    useUserContractStore();
   const {
     register,
     handleSubmit,
@@ -126,6 +127,7 @@ const LicensorContractDetail = ({
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
         content="해당 계약을 삭제할까요?"
+        isLoading={isLoading}
       />
 
       <CustomModal
@@ -133,6 +135,7 @@ const LicensorContractDetail = ({
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
         content="변경사항을 저장할까요?"
+        isLoading={isLoading}
       />
     </Container>
   );

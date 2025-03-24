@@ -1,5 +1,6 @@
 import ButtonFilledPrimary from "./basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "./basic/buttons/ButtonOutlinedSecondary";
+import { ClipLoader } from "react-spinners";
 import Gap from "./basic/Gap";
 import Modal from "react-modal";
 import styled from "styled-components";
@@ -16,6 +17,12 @@ const Container = styled.div`
 const Content = styled.div`
   ${theme.fonts.heading2.medium};
   color: ${theme.colors.gray[800]};
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ButtonContainer = styled.div`
@@ -46,6 +53,7 @@ interface CustomModalProps {
   onRequestClose: () => void;
   onConfirm: () => void;
   content: string;
+  isLoading?: boolean;
 }
 
 const CustomModal = ({
@@ -53,6 +61,7 @@ const CustomModal = ({
   onRequestClose,
   onConfirm,
   content,
+  isLoading,
 }: CustomModalProps) => {
   return (
     <Modal
@@ -64,10 +73,16 @@ const CustomModal = ({
       <Container>
         <Content>{content}</Content>
         <Gap height={32} />
-        <ButtonContainer>
-          <ButtonOutlinedSecondary label="취소" onClick={onRequestClose} />
-          <ButtonFilledPrimary label="확인" onClick={onConfirm} />
-        </ButtonContainer>
+        {isLoading ? (
+          <LoadingContainer>
+            <ClipLoader color={theme.colors.purple[600]} size={30} />
+          </LoadingContainer>
+        ) : (
+          <ButtonContainer>
+            <ButtonOutlinedSecondary label="취소" onClick={onRequestClose} />
+            <ButtonFilledPrimary label="확인" onClick={onConfirm} />
+          </ButtonContainer>
+        )}
       </Container>
     </Modal>
   );

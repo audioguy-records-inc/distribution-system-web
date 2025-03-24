@@ -4,6 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import AddNew from "@/components/AddNew";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
+import ButtonSpinner from "@/components/ButtonSpinner";
 import CustomToggle from "@/components/basic/CustomToggle";
 import Gap from "@/components/basic/Gap";
 import LicensorContractInput from "./fragment/LicensorContractInput";
@@ -54,7 +55,7 @@ const Form = styled.form`
 
 const AddNewLicensorContract = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { createUserContract } = useUserContractStore();
+  const { createUserContract, isLoading } = useUserContractStore();
   const {
     register,
     handleSubmit,
@@ -130,38 +131,39 @@ const AddNewLicensorContract = () => {
           권리사 계약 등록
           <ButtonWrapper>
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
-            <ButtonFilledPrimary
-              label="등록"
-              onClick={handleSubmit(onSubmit)}
-              disabled={!isDirty || !isValid}
-            />
+            {isLoading ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonFilledPrimary
+                label="등록"
+                onClick={handleSubmit(onSubmit)}
+                disabled={!isDirty || !isValid}
+              />
+            )}
           </ButtonWrapper>
         </ModalHeader>
         <Gap height={48} />
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <VisibleWrapper>
-            <VisibleLabel>권리사 계약 정보</VisibleLabel>
-            <Controller
-              name="isContractEnabled"
-              control={control}
-              render={({ field }) => (
-                <CustomToggle
-                  checked={field.value}
-                  onChange={field.onChange}
-                  label=""
-                />
-              )}
-            />
-          </VisibleWrapper>
-          <LicensorContractInput
-            watch={watch}
-            register={register}
+        <VisibleWrapper>
+          <VisibleLabel>권리사 계약 정보</VisibleLabel>
+          <Controller
+            name="isContractEnabled"
             control={control}
-            isEdit={true}
-            inputType="create"
+            render={({ field }) => (
+              <CustomToggle
+                checked={field.value}
+                onChange={field.onChange}
+                label=""
+              />
+            )}
           />
-        </Form>
+        </VisibleWrapper>
+        <LicensorContractInput
+          watch={watch}
+          register={register}
+          control={control}
+          isEdit={true}
+        />
       </ReactModal>
     </>
   );
