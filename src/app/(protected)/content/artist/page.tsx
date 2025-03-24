@@ -1,13 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import AddNewArtist from "./components/AddNewArtist";
+import { Artist } from "@/types/artist";
+import ArtistDownloadButton from "./components/ArtistDownloadButton";
 import ArtistList from "./components/ArtistList";
-import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
+import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
 import { useArtistStore } from "@/stores/use-artist-store";
-import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -23,8 +26,33 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function ArtistPage() {
-  const { artists } = useArtistStore();
+  const { artists, searchArtists, fetchArtists } = useArtistStore();
   const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetchArtists();
+  }, [fetchArtists]);
+
+  useEffect(() => {
+    if (!isSearching) {
+      setFilteredArtists(artists);
+    }
+  }, [artists, isSearching]);
+
+  const handleSearch = async () => {
+    if (!searchValue.trim()) {
+      setIsSearching(false);
+      setFilteredArtists(artists);
+      return;
+    }
+
+    setIsSearching(true);
+    const results = await searchArtists(searchValue, "");
+    setFilteredArtists(results);
+  };
+
   return (
     <Container>
       <PageHeader title={"아티스트 리스트"} />
@@ -33,14 +61,17 @@ export default function ArtistPage() {
           placeholder="아티스트 검색"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
-          onClickSearch={() => {}}
+          onClickSearch={handleSearch}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          // onClear={handleClearSearch}
         />
         <ButtonWrapper>
           <AddNewArtist />
+          <ArtistDownloadButton artists={filteredArtists} />
         </ButtonWrapper>
       </SearchContainer>
-
-      <ArtistList artists={artists} />
+      <Gap height={32} />
+      <ArtistList artists={filteredArtists} />
     </Container>
   );
 }

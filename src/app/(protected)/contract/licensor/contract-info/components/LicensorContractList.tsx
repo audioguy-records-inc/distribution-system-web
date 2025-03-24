@@ -44,13 +44,13 @@ export default function LicensorContractList({
       align: "center",
       render: (value, record) => {
         const _value = value as User;
-        const type = _value?._id;
+        const type = _value?.type;
 
         if (!type) {
           return "";
         }
-        return "";
-        // return <UserTypeBadge type={type} />;
+
+        return <UserTypeBadge type={type} />;
       },
     },
     {

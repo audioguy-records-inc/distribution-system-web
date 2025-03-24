@@ -23,6 +23,7 @@ const SearchInput = ({
   isLoading = false,
   size = "normal",
   readOnly = false,
+  onKeyDown,
 }: {
   placeholder: string;
   onClickSearch: () => void;
@@ -31,6 +32,7 @@ const SearchInput = ({
   isLoading?: boolean;
   size?: "normal" | "small";
   readOnly?: boolean;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }) => {
   return (
     <Container>
@@ -49,6 +51,7 @@ const SearchInput = ({
         value={value}
         size={size}
         readOnly={readOnly}
+        onKeyDown={onKeyDown}
       />
     </Container>
   );
