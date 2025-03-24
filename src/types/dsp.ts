@@ -8,7 +8,8 @@ export interface Dsp {
   image512Path: string;
   image1024Path: string;
   imageFilename: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
+
+  // createdAt: string;
+  // updatedAt: string;
+  // deletedAt: string | null;
 }

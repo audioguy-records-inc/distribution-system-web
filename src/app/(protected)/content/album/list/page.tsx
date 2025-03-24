@@ -1,3 +1,6 @@
+"use client";
+
+import PageHeader from "@/components/PageHeader";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -7,5 +10,9 @@ const Container = styled.div`
 `;
 
 export default function AlbumListPage() {
-  return <Container></Container>;
+  return (
+    <Container>
+      <PageHeader title={"앨범 리스트"} />
+    </Container>
+  );
 }

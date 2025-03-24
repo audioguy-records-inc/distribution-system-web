@@ -34,7 +34,7 @@ export interface User {
   contactPersonList: ContactPerson[];
   fileList: FileInfo[];
 
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date;
+  // createdAt: Date;
+  // updatedAt: Date;
+  // deletedAt?: Date;
 }

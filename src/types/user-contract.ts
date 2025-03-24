@@ -19,9 +19,10 @@ export interface UserContract {
     account: string;
     displayName: string;
   };
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
+
+  // createdAt: Date;
+  // updatedAt: Date;
+  // deletedAt?: Date | null;
 }
 
 export default UserContract;

@@ -16,9 +16,10 @@ export interface DspContract {
   contractItemList: string[];
   fileList: FileInfo[];
   dspInfo?: Dsp;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
+
+  // createdAt: Date;
+  // updatedAt: Date;
+  // deletedAt?: Date | null;
 }
 
 export default DspContract;

@@ -1,35 +1,36 @@
 import { CountryItem, countryList } from "@/constants/country";
 import { useEffect, useState } from "react";
 
+import { ArtistType } from "@/types/artist";
 import CustomDropdown from "@/components/basic/CustomDropdown";
 
-interface CountryCodeDropdownProps {
-  onChange: (country: string) => void;
+interface ArtistTypeDropdownProps {
+  onChange: (artistType: string) => void;
   value: string | undefined;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
 }
 
-const CountryCodeDropdown = ({
+const ArtistTypeDropdown = ({
   onChange,
   value,
   readOnly = false,
   required = false,
-}: CountryCodeDropdownProps) => {
+}: ArtistTypeDropdownProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const dropdownItems = countryList.map((country) => ({
-    key: country.countryCode,
-    value: `${country.name} (${country.countryCode})`,
+  const dropdownItems = Object.values(ArtistType).map((artistType) => ({
+    key: artistType,
+    value: artistType,
   }));
 
   return (
     <CustomDropdown
-      label={"도메인"}
+      label={"유형"}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
-      placeholder="국가 선택"
+      placeholder="유형 선택"
       size={"small"}
       width={320}
       readOnly={readOnly}
@@ -38,4 +39,4 @@ const CountryCodeDropdown = ({
   );
 };
 
-export default CountryCodeDropdown;
+export default ArtistTypeDropdown;
