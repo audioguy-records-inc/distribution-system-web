@@ -128,6 +128,7 @@ interface InputProps {
   readOnly?: boolean;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onIconClick?: () => void;
   defaultValue?: string;
 }
 
@@ -145,6 +146,7 @@ const CustomInput = ({
   type = "text",
   onChange,
   readOnly,
+  onIconClick,
   ...props
 }: InputProps) => {
   return (
@@ -180,7 +182,9 @@ const CustomInput = ({
           $size={size}
           readOnly={readOnly}
         />
-        <IconContainer $size={size}>{icon}</IconContainer>
+        <IconContainer $size={size} onClick={onIconClick}>
+          {icon}
+        </IconContainer>
       </InputContainer>
       {helpText && <HelpText $isError={isError}>{helpText}</HelpText>}
     </Container>

@@ -5,7 +5,7 @@ import CustomTable, {
 import ActivateStateBadge from "@/components/basic/custom-table/components/ActivateStateBadge";
 import Dsp from "@/components/basic/custom-table/components/Dsp";
 import DspContract from "@/types/dsp-contract";
-import DspContractInfo from "./DspContractDetail";
+import DspContractDetail from "./DspContractDetail";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
@@ -70,7 +70,7 @@ export default function DspContractList({
   ];
 
   const renderExpandedContent = (dspContract: DspContract) => {
-    return <DspContractInfo dspContract={dspContract} />;
+    return <DspContractDetail dspContract={dspContract} />;
   };
 
   return (

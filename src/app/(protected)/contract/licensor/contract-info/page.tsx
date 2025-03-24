@@ -2,9 +2,11 @@
 
 import LicensorContractSearchTypeDropdown, {
   LicensorContractSearchType,
-} from "./components/LicensorContractSearchTypeDropdown";
+} from "./components/fragment/LicensorContractSearchTypeDropdown";
 
 import AddNewLicensorContract from "./components/AddNewLicensorContract";
+import Gap from "@/components/basic/Gap";
+import LicensorContractList from "./components/LicensorContractList";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
@@ -48,6 +50,8 @@ export default function LicensorContractInfoPage() {
         </SearchInputWrapper>
         <AddNewLicensorContract />
       </SearchContainer>
+      <Gap height={32} />
+      <LicensorContractList userContracts={userContracts} />
     </Container>
   );
 }

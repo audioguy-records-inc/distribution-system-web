@@ -63,6 +63,14 @@ const CustomCalendar = ({
     return moment(dateString, "YYYYMMDD").toDate();
   };
 
+  const handleChange = (date: Date | null) => {
+    if (date) {
+      onChange(moment(date).format("YYYYMMDD"));
+    } else {
+      onChange(null);
+    }
+  };
+
   return (
     <Container>
       <Label>{label}</Label>
@@ -71,13 +79,7 @@ const CustomCalendar = ({
           customInput={<CustomInput size="small" icon={<CalendarIcon />} />}
           locale={ko}
           selected={parseDate(value)}
-          onChange={(date: Date | null) => {
-            if (date) {
-              onChange(moment(date).format("YYYYMMDD"));
-            } else {
-              onChange(null);
-            }
-          }}
+          onChange={handleChange}
           dateFormat="yyyy/MM/dd"
           readOnly={readOnly}
         />

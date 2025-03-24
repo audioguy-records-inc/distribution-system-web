@@ -51,15 +51,12 @@ const LicensorContractInput = ({
   register,
   control,
   isEdit,
-  inputType,
 }: {
   watch: UseFormWatch<UserContract>;
   register: UseFormRegister<UserContract>;
   control: Control<UserContract>;
   isEdit: boolean;
-  inputType: "create" | "update";
 }) => {
-  const locked = inputType === "create" ? false : true;
   console.log("moonsae watch", watch());
   return (
     <>
@@ -70,7 +67,6 @@ const LicensorContractInput = ({
           label="계약명"
           placeholder="계약명 입력"
           readOnly={!isEdit}
-          locked={locked}
           {...register("userContractName", { required: true })}
         />
         <CustomInput
@@ -78,7 +74,6 @@ const LicensorContractInput = ({
           label="계약 코드"
           placeholder="계약 코드 입력"
           readOnly={!isEdit}
-          locked={locked}
           {...register("userContractUniqueId", { required: true })}
         />
       </RowWrapper>
@@ -90,21 +85,6 @@ const LicensorContractInput = ({
           <LicensorSearch
             value={field.value}
             onChange={field.onChange}
-            readOnly={!isEdit}
-          />
-        )}
-      />
-      <Gap height={56} />
-      <Controller
-        name="fileList"
-        control={control}
-        render={({ field }) => (
-          <CustomUpload
-            onChange={field.onChange}
-            value={field.value}
-            fileType={FileType.DOCS}
-            dataCollectionName={DataCollectionName.USERS}
-            headerText="계약서"
             readOnly={!isEdit}
           />
         )}

@@ -4,6 +4,7 @@ import CustomTable, {
 import { useEffect, useState } from "react";
 
 import ButtonOutlinedAssistive from "@/components/basic/buttons/ButtonOutlinedAssistive";
+import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import CenterSpinner from "@/components/CenterSpinner";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomDropdown from "@/components/basic/CustomDropdown";
@@ -11,9 +12,11 @@ import { Dsp } from "@/types/dsp";
 import DspContract from "@/types/dsp-contract";
 import Gap from "@/components/basic/Gap";
 import LoadIcon from "@/components/icons/LoadIcon";
+import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { toast } from "react-hot-toast";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 
 const Container = styled.div`
@@ -72,9 +75,48 @@ const LicensorDspContractList = ({
       type: "component",
       width: 220,
       align: "center",
+      render: (_value, record) => {
+        const _selectedKey = record._id;
 
-      render: (_value) => {
-        return <>{_value}</>;
+        return (
+          <CustomDropdown
+            width={180}
+            size="small"
+            placeholder="계약명 선택"
+            selectedKey={_selectedKey}
+            items={dropdownList}
+            onSelectKey={(key) => {
+              // 이미 선택된 계약인지 확인
+              const isAlreadySelected = value.some(
+                (contract) =>
+                  contract._id === key && contract._id !== record._id,
+              );
+
+              if (isAlreadySelected) {
+                toast.error("해당 계약은 이미 선택되었습니다");
+                return;
+              }
+
+              const selectedContract = dspContracts.find(
+                (contract) => contract._id === key,
+              );
+              if (!selectedContract) return;
+
+              const newValue = [...value];
+              const contractIndex = newValue.findIndex(
+                (contract) => contract._id === record?._id,
+              );
+
+              if (contractIndex !== -1) {
+                newValue[contractIndex] = {
+                  ...selectedContract,
+                };
+                onChange(newValue);
+              }
+            }}
+            readOnly={readOnly}
+          />
+        );
       },
     },
     {
@@ -99,24 +141,30 @@ const LicensorDspContractList = ({
       width: 439,
       align: "center",
       render: (_value, record) => {
-        if (!record) return null;
+        if (!record || !record._id) return null;
 
         // 기존 계약의 전체 contractItemList를 표시
-        const allContractItems = dspContracts.filter(
+        const contract = dspContracts.find(
           (contract) => contract._id === record._id,
-        )[0].contractItemList;
+        );
+
+        if (!contract) return null;
+
+        const allContractItems = contract.contractItemList;
+        const currentItems = _value as string[];
 
         return (
           <CheckboxWrapper>
             {allContractItems.map((item) => {
               // 현재 선택된 항목인지 확인
-              const isChecked = _value?.includes(item) || false;
+              const isChecked = currentItems?.includes(item) || false;
 
               return (
                 <CustomCheckbox
                   key={item}
                   label={item}
                   checked={isChecked}
+                  readOnly={!isEdit}
                   onChange={(_isChecked) => {
                     const newValue = [...value];
                     const contractIndex = newValue.findIndex(
@@ -219,6 +267,29 @@ const LicensorDspContractList = ({
         size="small"
         readOnly={readOnly}
       />
+
+      {!readOnly && (
+        <>
+          <ButtonOutlinedSecondary
+            size="medium"
+            expand
+            leftIcon={<PlusIcon />}
+            label="추가"
+            onClick={() => {
+              if (readOnly) return;
+              const newValue = [...value];
+              newValue.push({
+                _id: "",
+                dspContractName: "",
+                contractRate: 0,
+                contractItemList: [],
+                dspId: "",
+              } as DspContract);
+              onChange(newValue);
+            }}
+          />
+        </>
+      )}
       {isLoading && <CenterSpinner />}
     </Container>
   );

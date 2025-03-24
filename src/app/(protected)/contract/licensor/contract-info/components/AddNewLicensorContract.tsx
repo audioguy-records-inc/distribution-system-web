@@ -6,7 +6,7 @@ import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary"
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import CustomToggle from "@/components/basic/CustomToggle";
 import Gap from "@/components/basic/Gap";
-import LicensorContractInput from "./LicensorContractInput";
+import LicensorContractInput from "./fragment/LicensorContractInput";
 import LicensorInput from "../../list/components/fragment/LicnsorInput";
 import ReactModal from "react-modal";
 import UserContract from "@/types/user-contract";
