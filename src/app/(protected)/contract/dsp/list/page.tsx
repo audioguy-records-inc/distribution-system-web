@@ -1,7 +1,7 @@
 "use client";
 
 import DSPFilterChip, { DspType } from "@/components/DspFilterChip";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import AddNewDspContract from "./components/AddNewDspContract";
 import CenterSpinner from "@/components/CenterSpinner";
@@ -29,21 +29,44 @@ const SearchContainer = styled.div`
 const ListContainer = styled.div``;
 
 export default function DspListPage() {
-  const { dspContracts, isLoading, error } = useDspContractStore();
+  const { dspContracts, isLoading, error, searchDspContracts } =
+    useDspContractStore();
   const [selectedDsps, setSelectedDsps] = useState<DspType[]>(["ALL"]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredContracts, setFilteredContracts] = useState<DspContract[]>([]);
 
-  const filteredContracts = useMemo(() => {
-    if (selectedDsps.includes("ALL")) {
-      return dspContracts;
+  useEffect(() => {
+    let contracts = dspContracts;
+    if (!selectedDsps.includes("ALL")) {
+      contracts = contracts.filter((contract) =>
+        selectedDsps.includes(contract.dspInfo?.name as DspType),
+      );
     }
-
-    return dspContracts.filter((contract) =>
-      selectedDsps.includes(contract.dspInfo?.name as DspType),
-    );
+    setFilteredContracts(contracts);
   }, [dspContracts, selectedDsps]);
 
   const handleFilterChange = (dsps: DspType[]) => {
     setSelectedDsps(dsps);
+    // 필터 변경 시 검색 상태 초기화
+    let contracts = dspContracts;
+    if (!selectedDsps.includes("ALL")) {
+      contracts = contracts.filter((contract) =>
+        selectedDsps.includes(contract.dspInfo?.name as DspType),
+      );
+    }
+
+    setFilteredContracts(contracts);
+  };
+
+  const handleSearch = async () => {
+    if (!searchValue.trim()) {
+      setFilteredContracts(dspContracts);
+      return;
+    }
+
+    const results = await searchDspContracts(searchValue, "dspContractName");
+    setFilteredContracts(results);
+    setSelectedDsps(["ALL"]);
   };
 
   return (
@@ -52,15 +75,19 @@ export default function DspListPage() {
       <SearchContainer>
         <SearchInput
           placeholder="DPID 또는 계약명 검색"
-          onClickSearch={() => {}}
-          onChange={() => {}}
-          value={""}
+          onClickSearch={handleSearch}
+          onChange={(e) => setSearchValue(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          value={searchValue}
           isLoading={isLoading}
         />
         <AddNewDspContract />
       </SearchContainer>
       <Gap height={32} />
-      <DSPFilterChip onFilterChange={handleFilterChange} />
+      <DSPFilterChip
+        onFilterChange={handleFilterChange}
+        selectedDsps={selectedDsps}
+      />
       <Gap height={32} />
       <ListContainer>
         <DspContractList dspContracts={filteredContracts} />

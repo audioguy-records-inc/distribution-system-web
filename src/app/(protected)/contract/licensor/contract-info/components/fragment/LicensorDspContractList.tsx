@@ -8,9 +8,7 @@ import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSe
 import CenterSpinner from "@/components/CenterSpinner";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomDropdown from "@/components/basic/CustomDropdown";
-import { Dsp } from "@/types/dsp";
 import DspContract from "@/types/dsp-contract";
-import Gap from "@/components/basic/Gap";
 import LoadIcon from "@/components/icons/LoadIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
@@ -59,7 +57,7 @@ const LicensorDspContractList = ({
     dspContracts,
     isLoading,
     error,
-    searchDspContract,
+    searchDspContracts,
     fetchDspContracts,
   } = useDspContractStore();
 
@@ -226,7 +224,7 @@ const LicensorDspContractList = ({
             label="전체 DSP 불러오기"
             leftIcon={<LoadIcon />}
             onClick={async () => {
-              const response = await searchDspContract("", "");
+              const response = await searchDspContracts("", "");
 
               onChange(response);
             }}
@@ -236,7 +234,7 @@ const LicensorDspContractList = ({
             label="국내 DSP 불러오기"
             leftIcon={<LoadIcon />}
             onClick={async () => {
-              const response = await searchDspContract(
+              const response = await searchDspContracts(
                 "domestic",
                 "regionType",
               );
@@ -249,7 +247,7 @@ const LicensorDspContractList = ({
             label="해외 DSP 불러오기"
             leftIcon={<LoadIcon />}
             onClick={async () => {
-              const response = await searchDspContract(
+              const response = await searchDspContracts(
                 "international",
                 "regionType",
               );

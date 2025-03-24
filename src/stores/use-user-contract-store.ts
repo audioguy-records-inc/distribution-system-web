@@ -6,6 +6,7 @@ import { deleteUserContract } from "@/api/user-contract/delete-user-contract";
 import { getUserContracts } from "@/api/user-contract/get-user-contracts";
 import { postUserContract } from "@/api/user-contract/post-user-contract";
 import { putUserContract } from "@/api/user-contract/put-user-contract";
+import { searchUserContracts } from "@/api/user-contract/search-user-contracts";
 import toast from "react-hot-toast";
 
 interface UserContractStore {
@@ -17,6 +18,10 @@ interface UserContractStore {
   createUserContract: (userContract: UserContract) => Promise<void>;
   updateUserContract: (userContract: UserContract) => Promise<void>;
   deleteUserContract: (userContractId: string) => Promise<void>;
+  searchUserContracts: (
+    searchKeyword: string,
+    searchFields?: string,
+  ) => Promise<UserContract[]>;
 }
 
 export const useUserContractStore = create<UserContractStore>()(
@@ -162,6 +167,40 @@ export const useUserContractStore = create<UserContractStore>()(
 
           console.error("[deleteUserContract] error", error);
           set({ error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      searchUserContracts: async (searchKeyword, searchFields) => {
+        set({ isLoading: true });
+        try {
+          const __searchKeyword = searchKeyword;
+          const __searchFields = searchFields;
+          const response = await searchUserContracts({
+            __searchKeyword,
+            __searchFields,
+          });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set({
+            error: null,
+          });
+
+          return response.data.userContractList;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "권리사 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error("[searchUserContracts] error", error);
+          set({ error: errorMessage });
+          return [];
         } finally {
           set({ isLoading: false });
         }

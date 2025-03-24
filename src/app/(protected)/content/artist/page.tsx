@@ -26,30 +26,17 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function ArtistPage() {
-  const { artists, searchArtists, fetchArtists } = useArtistStore();
+  const { artists, searchArtists } = useArtistStore();
   const [searchValue, setSearchValue] = useState<string>("");
-  const [filteredArtists, setFilteredArtists] = useState<Artist[]>([]);
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-
-  useEffect(() => {
-    fetchArtists();
-  }, [fetchArtists]);
-
-  useEffect(() => {
-    if (!isSearching) {
-      setFilteredArtists(artists);
-    }
-  }, [artists, isSearching]);
+  const [filteredArtists, setFilteredArtists] = useState<Artist[]>(artists);
 
   const handleSearch = async () => {
     if (!searchValue.trim()) {
-      setIsSearching(false);
       setFilteredArtists(artists);
       return;
     }
 
-    setIsSearching(true);
-    const results = await searchArtists(searchValue, "");
+    const results = await searchArtists(searchValue, "genderType");
     setFilteredArtists(results);
   };
 

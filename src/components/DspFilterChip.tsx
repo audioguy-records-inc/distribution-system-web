@@ -35,12 +35,14 @@ export type DspType =
   | "Amazon Music";
 
 interface DspFilterChipProps {
+  selectedDsps: DspType[];
   onFilterChange?: (selectedDsps: DspType[]) => void;
 }
 
-const DspFilterChip = ({ onFilterChange }: DspFilterChipProps) => {
-  const [selectedDsps, setSelectedDsps] = useState<DspType[]>(["ALL"]);
-
+const DspFilterChip = ({
+  onFilterChange,
+  selectedDsps,
+}: DspFilterChipProps) => {
   const handleChipClick = (dsp: DspType) => {
     let newSelectedDsps: DspType[];
 
@@ -64,7 +66,6 @@ const DspFilterChip = ({ onFilterChange }: DspFilterChipProps) => {
       }
     }
 
-    setSelectedDsps(newSelectedDsps);
     onFilterChange?.(newSelectedDsps);
   };
 

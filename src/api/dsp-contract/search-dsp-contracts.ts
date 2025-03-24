@@ -11,7 +11,7 @@ interface SearchDspContractResponse {
   dspContractList: DspContract[];
 }
 
-export const searchDspContract = async (
+export const searchDspContracts = async (
   request: SearchDspContractRequest,
 ): Promise<FetchResponse<SearchDspContractResponse>> => {
   try {

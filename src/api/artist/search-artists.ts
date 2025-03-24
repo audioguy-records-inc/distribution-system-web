@@ -11,7 +11,7 @@ interface SearchArtistResponse {
   artistList: Artist[];
 }
 
-export const searchArtist = async (
+export const searchArtists = async (
   request: SearchArtistRequest,
 ): Promise<FetchResponse<SearchArtistResponse>> => {
   try {

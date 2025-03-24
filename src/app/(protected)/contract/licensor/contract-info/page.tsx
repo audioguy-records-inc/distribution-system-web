@@ -9,6 +9,7 @@ import Gap from "@/components/basic/Gap";
 import LicensorContractList from "./components/LicensorContractList";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
+import UserContract from "@/types/user-contract";
 import styled from "styled-components";
 import { useState } from "react";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
@@ -27,10 +28,24 @@ const SearchInputWrapper = styled.div`
 `;
 
 export default function LicensorContractInfoPage() {
-  const { userContracts } = useUserContractStore();
+  const { userContracts, searchUserContracts } = useUserContractStore();
   const [selectedType, setSelectedType] =
     useState<LicensorContractSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredContracts, setFilteredContracts] = useState<UserContract[]>(
+    [],
+  );
+
+  const handleSearch = async () => {
+    if (!searchValue.trim()) {
+      setFilteredContracts(userContracts);
+      return;
+    }
+
+    const _selectedType = selectedType === "all" ? "" : selectedType;
+    const results = await searchUserContracts(searchValue, _selectedType);
+    setFilteredContracts(results);
+  };
 
   return (
     <Container>
@@ -43,15 +58,16 @@ export default function LicensorContractInfoPage() {
           />
           <SearchInput
             placeholder="계약명, 권리사명, 계약코드 입력"
-            onClickSearch={() => {}}
-            onChange={() => {}}
             value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onClickSearch={handleSearch}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
         </SearchInputWrapper>
         <AddNewLicensorContract />
       </SearchContainer>
       <Gap height={32} />
-      <LicensorContractList userContracts={userContracts} />
+      <LicensorContractList userContracts={filteredContracts} />
     </Container>
   );
 }

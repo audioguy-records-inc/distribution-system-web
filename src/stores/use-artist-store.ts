@@ -5,7 +5,7 @@ import { getArtists } from "@/api/artist/get-artists";
 import { persist } from "zustand/middleware";
 import { postArtist } from "@/api/artist/post-artist";
 import { putArtist } from "@/api/artist/put-artist";
-import { searchArtist } from "@/api/artist/search-artist";
+import { searchArtists } from "@/api/artist/search-artists";
 import toast from "react-hot-toast";
 
 interface ArtistStore {
@@ -169,7 +169,7 @@ export const useArtistStore = create<ArtistStore>()(
           const __searchKeyword = searchKeyword;
           const __searchFields = searchFields;
 
-          const response = await searchArtist({
+          const response = await searchArtists({
             __searchKeyword,
             __searchFields,
           });

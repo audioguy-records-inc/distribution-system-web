@@ -3,12 +3,13 @@
 import LicensorSearchTypeDropdown, {
   LicensorSearchType,
 } from "./components/LicensorSearchTypeDropdown";
+import { User, UserType } from "@/types/user";
 
 import AddNewLicensor from "./components/AddNewLicensor";
+import Gap from "@/components/basic/Gap";
 import LicensorList from "./components/LicensorList";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
-import { UserType } from "@/types/user";
 import styled from "styled-components";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
@@ -27,9 +28,20 @@ const SearchInputWrapper = styled.div`
 `;
 
 export default function LicensorListPage() {
-  const { users } = useUserStore();
+  const { users, searchUsers } = useUserStore();
   const [selectedType, setSelectedType] = useState<LicensorSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+
+  const handleSearch = async () => {
+    if (!searchValue.trim()) {
+      setFilteredUsers(users);
+      return;
+    }
+    const _selectedType = selectedType === "all" ? "" : selectedType;
+    const response = await searchUsers(searchValue, _selectedType);
+    setFilteredUsers(response);
+  };
 
   return (
     <Container>
@@ -42,16 +54,16 @@ export default function LicensorListPage() {
           />
           <SearchInput
             placeholder="권리사 ID 또는 권리사명 입력"
-            onClickSearch={() => {
-              console.log("search");
-            }}
-            onChange={() => {}}
             value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onClickSearch={handleSearch}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
         </SearchInputWrapper>
         <AddNewLicensor />
       </SearchContainer>
-      <LicensorList licensors={users} />
+      <Gap height={32} />
+      <LicensorList licensors={filteredUsers} />
     </Container>
   );
 }
