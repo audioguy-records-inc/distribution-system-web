@@ -178,7 +178,9 @@ const DspContractInput = ({
             placeholder="숫자 입력"
             type="number"
             value={
-              field.value !== undefined ? (field.value * 100).toString() : ""
+              field.value !== undefined
+                ? (field.value * 100).toFixed(0).toString()
+                : ""
             }
             onChange={(e) => {
               e.preventDefault();

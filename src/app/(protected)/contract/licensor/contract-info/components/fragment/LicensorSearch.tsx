@@ -26,18 +26,20 @@ export default function LicensorSearch({
   value,
   onChange,
   readOnly = false,
+  user,
 }: {
   value: string;
   onChange: (value: string | null) => void;
   readOnly?: boolean;
+  user?: User;
 }) {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
 
   const columns: Column<User>[] = [
     {
-      header: "권리사명",
-      accessor: "displayName",
+      header: "구분",
+      accessor: "type",
       type: "component",
       width: 140,
       align: "center",

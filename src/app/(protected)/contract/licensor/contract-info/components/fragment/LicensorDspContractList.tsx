@@ -130,7 +130,7 @@ const LicensorDspContractList = ({
         { key: "international", value: "해외" },
       ],
       render: (value) => {
-        const rate = (value as number) * 100;
+        const rate = ((value as number) * 100).toFixed(0);
         return <>{rate}%</>;
       },
     },

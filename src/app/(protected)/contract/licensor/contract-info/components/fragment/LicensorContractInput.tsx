@@ -86,6 +86,7 @@ const LicensorContractInput = ({
             value={field.value}
             onChange={field.onChange}
             readOnly={!isEdit}
+            user={watch("userInfo") as User}
           />
         )}
       />
@@ -148,14 +149,15 @@ const LicensorContractInput = ({
             type="number"
             readOnly={!isEdit}
             value={
-              field.value !== undefined ? (field.value * 100).toString() : ""
+              field.value !== undefined
+                ? (field.value * 100).toFixed(0).toString()
+                : ""
             }
             onChange={(e) => {
               e.preventDefault();
-              const value = e.target.value;
+              const value = parseFloat(e.target.value) / 100;
 
-              // 부동 소수점 정밀도 문제 해결을 위해 toFixed 사용
-              const numValue = parseFloat((parseFloat(value) / 100).toFixed(4));
+              const numValue = value;
 
               field.onChange(numValue);
             }}
