@@ -4,6 +4,8 @@ export interface CountryItem {
 }
 
 export const countryList: CountryItem[] = [
+  { name: "국내", countryCode: "DOM" },
+  { name: "해외", countryCode: "INT" },
   { name: "대한민국", countryCode: "KR" },
   { name: "가나", countryCode: "GH" },
   { name: "가봉", countryCode: "GA" },
