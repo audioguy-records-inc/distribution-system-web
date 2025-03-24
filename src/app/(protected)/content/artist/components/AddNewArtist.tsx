@@ -35,20 +35,6 @@ const ButtonWrapper = styled.div`
   gap: 16px;
 `;
 
-const VisibleWrapper = styled.div`
-  display: flex;
-  gap: 24px;
-`;
-
-const RowWrapper = styled.div`
-  display: flex;
-  gap: 120px;
-`;
-
-const VisibleLabel = styled.div`
-  ${theme.fonts.title2.medium}
-`;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
