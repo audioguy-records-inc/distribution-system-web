@@ -186,7 +186,7 @@ const LicensorContractInput = ({
             onChange={field.onChange}
             value={field.value}
             fileType={FileType.DOCS}
-            dataCollectionName={DataCollectionName.DSP_CONTRACTS}
+            dataCollectionName={DataCollectionName.USER_CONTRACTS}
             headerText="계약서"
             readOnly={!isEdit}
           />

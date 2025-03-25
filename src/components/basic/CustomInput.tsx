@@ -131,6 +131,7 @@ interface InputProps {
   onIconClick?: () => void;
   defaultValue?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onClick?: () => void;
 }
 
 const CustomInput = ({
@@ -149,6 +150,7 @@ const CustomInput = ({
   readOnly,
   onIconClick,
   onKeyDown,
+  onClick,
   ...props
 }: InputProps) => {
   return (
@@ -184,6 +186,7 @@ const CustomInput = ({
           $size={size}
           readOnly={readOnly}
           onKeyDown={onKeyDown}
+          onClick={onClick}
         />
         <IconContainer $size={size} onClick={onIconClick}>
           {icon}

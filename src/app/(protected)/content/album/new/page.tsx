@@ -1,10 +1,16 @@
 "use client";
 
 import Album from "@/types/album";
+import AlbumSection from "./components/AlbumSection";
+import ArtistSection from "./components/ArtistSection";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import ButtonSpinner from "@/components/ButtonSpinner";
+import CollapsibleHeader from "@/components/CollapsibleHeader";
+import DistributionSection from "./components/DistributionSection";
+import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
+import TrackSection from "./components/TrackSection";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
@@ -60,6 +66,38 @@ export default function AlbumNewPage() {
           )}
         </ButtonWrapper>
       </HeaderWrapper>
+      <Gap height={32} />
+      <CollapsibleHeader
+        title="1. 유통 정보"
+        renderComponent={
+          <DistributionSection
+            control={control}
+            watch={watch}
+            register={register}
+          />
+        }
+      />
+      <Gap height={56} />
+      <CollapsibleHeader
+        title="2. 아티스트 정보"
+        renderComponent={
+          <ArtistSection control={control} watch={watch} register={register} />
+        }
+      />
+      <Gap height={56} />
+      <CollapsibleHeader
+        title="3. 앨범 정보"
+        renderComponent={
+          <AlbumSection control={control} watch={watch} register={register} />
+        }
+      />
+      <Gap height={56} />
+      <CollapsibleHeader
+        title="4. 트랙 정보"
+        renderComponent={
+          <TrackSection control={control} watch={watch} register={register} />
+        }
+      />
     </Container>
   );
 }

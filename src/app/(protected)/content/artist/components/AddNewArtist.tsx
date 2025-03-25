@@ -40,7 +40,11 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-const AddNewArtist = () => {
+const AddNewArtist = ({
+  size = "medium",
+}: {
+  size?: "medium" | "small" | "large";
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const { createArtist, isLoading } = useArtistStore();
   const {
@@ -96,7 +100,7 @@ const AddNewArtist = () => {
   return (
     <>
       <AddNewWrapper onClick={handleOpen}>
-        <AddNew />
+        <AddNew size={size} />
       </AddNewWrapper>
 
       <ReactModal

@@ -2,13 +2,10 @@ import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
 
-import { Control } from "react-hook-form";
-import { Controller } from "react-hook-form";
 import Gap from "@/components/basic/Gap";
 import SearchDropdownInput from "@/components/SearchDropdownInput";
 import TrashIcon from "@/components/icons/TrashIcon";
 import { User } from "@/types/user";
-import UserContract from "@/types/user-contract";
 import UserTypeBadge from "@/components/basic/custom-table/components/UserTypeBadge";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -86,7 +83,7 @@ export default function LicensorSearch({
   return (
     <Container>
       <Title>권리사명</Title>
-      <Gap height={12} />
+      <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput
           title="권리사명 검색"

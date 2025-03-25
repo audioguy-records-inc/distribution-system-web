@@ -87,7 +87,6 @@ const SearchDropdownInput = <T,>({
   onClickSearch,
   onSelect,
   renderItem = (item: T) => String(item),
-  onKeyDown,
   size = "normal",
 }: SearchDropdownInputProps<T>) => {
   const [searched, setSearched] = useState(false);
@@ -139,7 +138,11 @@ const SearchDropdownInput = <T,>({
         value={searchKeyword}
         isLoading={isLoading}
         size={size}
-        onKeyDown={onKeyDown}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
+        }}
       />
       {searched && (
         <ListContainer>

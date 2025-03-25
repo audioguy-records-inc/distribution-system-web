@@ -1,6 +1,7 @@
 import { Artist } from "@/types/artist";
 import { create } from "zustand";
 import { deleteArtist } from "@/api/artist/delete-artist";
+import { getArtist } from "@/api/artist/get-artist";
 import { getArtists } from "@/api/artist/get-artists";
 import { persist } from "zustand/middleware";
 import { postArtist } from "@/api/artist/post-artist";
@@ -13,6 +14,7 @@ interface ArtistStore {
   isLoading: boolean;
   error: string | null;
 
+  fetchArtist: (artistId: string) => Promise<Artist | null>;
   fetchArtists: () => Promise<void>;
   createArtist: (artist: Artist) => Promise<void>;
   updateArtist: (artist: Artist) => Promise<void>;
@@ -30,6 +32,34 @@ export const useArtistStore = create<ArtistStore>()(
       isLoading: false,
       error: null,
 
+      fetchArtist: async (artistId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await getArtist({ artistId });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          return response.data.artist;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "아티스트 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useArtistStore/fetchArtist] Fetch artist failed.",
+            error,
+          );
+
+          return null;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       fetchArtists: async () => {
         set({ isLoading: true });
         try {
