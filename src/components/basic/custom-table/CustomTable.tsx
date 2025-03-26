@@ -61,6 +61,10 @@ const HeaderCell = styled.th<{
   padding: ${({ $size }) => ($size === "small" ? "12px" : "16px")} 24px;
   text-align: ${({ $align }) => $align || "center"};
   width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
+  max-width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const TableBody = styled.tbody``;
@@ -85,6 +89,10 @@ const TableCell = styled.td<{
   color: ${theme.colors.gray[800]};
   padding: ${({ $size }) => ($size === "small" ? "6px 12px" : "22px 20px")};
   text-align: ${({ $align }) => $align || "left"};
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
 
 const ExpandedContent = styled.tr`
@@ -112,6 +120,7 @@ const Text = styled.div<{ $size?: "small" | "normal" }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  width: 100%;
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
