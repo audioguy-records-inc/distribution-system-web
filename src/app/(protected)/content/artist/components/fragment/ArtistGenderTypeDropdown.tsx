@@ -1,6 +1,3 @@
-import { CountryItem, countryList } from "@/constants/country";
-import { useEffect, useState } from "react";
-
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import { GenderType } from "@/types/artist";
 

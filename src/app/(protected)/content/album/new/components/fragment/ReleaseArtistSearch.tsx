@@ -43,7 +43,7 @@ const SearchButtonText = styled.span`
   color: ${theme.colors.gray[300]};
 `;
 
-export default function ArtistSearch({
+export default function ReleaseArtistSearch({
   value,
   onChange,
   readOnly = false,
@@ -58,32 +58,31 @@ export default function ArtistSearch({
   label?: string;
   modalHeader?: string;
 }) {
-  const [selectedArtists, setSelectedArtists] = useState<ArtistInfo[]>(
-    value ? value : [],
-  );
-  const { searchArtists } = useArtistStore();
-  const [artistList, setArtistList] = useState<Artist[]>([]);
   const { fetchArtist } = useArtistStore();
+  const [registeredArtistList, setRegisteredArtistList] = useState<Artist[]>(
+    [],
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchArtistList = async () => {
-      if (selectedArtists.length > 0) {
-        const _artistList = selectedArtists.map((artist) => {
+      if (value && value.length > 0) {
+        const _artistList = value.map((artist) => {
           return fetchArtist(artist.artistId);
         });
 
         const artists = await Promise.all(_artistList);
 
         if (artists.length > 0) {
-          setArtistList(artists.filter((artist) => artist !== null));
+          setRegisteredArtistList(artists.filter((artist) => artist !== null));
         }
+      } else {
+        setRegisteredArtistList([]);
       }
     };
 
     fetchArtistList();
-  }, [selectedArtists]);
+  }, [value, fetchArtist]);
 
   const columns: Column<Artist>[] = [
     {
@@ -121,39 +120,43 @@ export default function ArtistSearch({
       },
     },
     {
+      header: "유형",
+      accessor: "artistType",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value, record) => {
+        return record.artistType;
+      },
+    },
+    {
       header: "",
       accessor: "action" as keyof Artist,
       type: "button",
       icon: <TrashIcon />,
       onClick: (record, rowIndex) => {
-        setSelectedArtists(
-          selectedArtists.filter((artist) => artist.artistId !== record._id),
+        onChange(
+          value
+            ? value.filter((artist) => artist.artistId !== record._id)
+            : null,
         );
-        onChange(selectedArtists.length > 0 ? selectedArtists : null);
+        setRegisteredArtistList(
+          registeredArtistList.filter((artist) => artist._id !== record._id),
+        );
       },
     },
   ];
 
-  const handleSearch = async (keyword: string) => {
-    setIsLoading(true);
-
-    const res = await searchArtists(keyword, "name");
-
-    setIsLoading(false);
-    return res;
-  };
-
-  const handleSelectArtist = (selectedItem: Artist) => {
+  const handleRegisterArtist = (artist: Artist) => {
     const artistInfo: ArtistInfo = {
-      artistId: selectedItem._id,
-      name: selectedItem.name,
-      mainRole: "",
-      subRole: "",
+      artistId: artist._id,
+      name: artist.name,
+      mainRole: "release",
+      subRole: "release",
     };
 
-    setSelectedArtists([...selectedArtists, artistInfo]);
-    onChange([...selectedArtists, artistInfo]);
-    setIsModalOpen(false);
+    onChange(value ? [...value, artistInfo] : [artistInfo]);
+    setRegisteredArtistList([...registeredArtistList, artist]);
   };
 
   return (
@@ -169,16 +172,17 @@ export default function ArtistSearch({
           <ArtistSearchModal
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
-            onConfirm={() => setIsModalOpen(false)}
-            isLoading={isLoading}
             header={modalHeader}
+            onChange={onChange}
+            value={value}
+            onRegister={handleRegisterArtist}
           />
         </>
       )}
       <Gap height={20} />
       <CustomTable
         columns={columns}
-        data={artistList}
+        data={registeredArtistList}
         size="small"
         readOnly={readOnly}
       />

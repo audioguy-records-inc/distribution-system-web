@@ -38,7 +38,13 @@ export default function AlbumNewPage() {
     formState: { isValid, isDirty },
     watch,
   } = useForm<Album>({
-    defaultValues: {},
+    defaultValues: {
+      titleList: [
+        {
+          KR: "",
+        },
+      ],
+    },
     mode: "onChange",
     shouldFocusError: false,
   });
@@ -48,6 +54,8 @@ export default function AlbumNewPage() {
     await createAlbum(data);
     handleClose();
   };
+
+  console.log("moonsae watch", watch());
 
   return (
     <Container>

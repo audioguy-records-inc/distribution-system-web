@@ -65,7 +65,7 @@ const LicensorDspContractList = ({
     key: dspContract._id,
     value: dspContract.dspContractName,
   }));
-  console.log("moonsae dspContracts", dspContracts);
+
   const columns: Column<DspContract>[] = [
     {
       header: "계약명",

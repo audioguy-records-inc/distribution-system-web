@@ -27,7 +27,7 @@ export default function LicensorContractList({
       fetchUserContracts();
     }
   }, [user, fetchUserContracts]);
-  console.log("moonsae userContracts", userContracts);
+
   const columns: Column<UserContract>[] = [
     {
       header: "계약 코드",

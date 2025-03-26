@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import ArrowDownIcon from "../icons/ArrowDownIcon";
 import CheckIcon from "../icons/CheckIcon";
 import CustomChip from "./CustomChip";
-import { createPortal } from "react-dom";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
@@ -102,12 +101,18 @@ const ListContainer = styled.div`
 `;
 
 const List = styled.ul`
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
   background: ${theme.colors.white};
+  z-index: 1;
   border-radius: 8px;
   border: 1px solid ${theme.colors.gray[50]};
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  overflow: hidden;
   max-height: 300px;
   overflow-y: auto;
 `;
@@ -118,17 +123,19 @@ const ListItem = styled.li<{ $size?: "small" | "normal" }>`
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
   color: ${theme.colors.gray[800]};
   cursor: pointer;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
 
   &:not(:last-child)::after {
     content: "";
-    position: relative;
-    display: block;
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 0;
     height: 1px;
     background-color: ${theme.colors.gray[50]};
-    margin: 0 14px;
   }
 
   &:hover {
@@ -192,21 +199,21 @@ const CustomDropdown = ({
 }: CustomDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const portalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        !(portalRef.current && portalRef.current.contains(event.target as Node))
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleClick = () => {
@@ -244,6 +251,7 @@ const CustomDropdown = ({
     }
   };
 
+  // 선택된 항목의 값을 표시하기 위한 함수
   const getDisplayText = () => {
     if (multiple) {
       return placeholder;
@@ -251,52 +259,6 @@ const CustomDropdown = ({
       const selectedItem = items.find((item) => item.key === selectedKey);
       return selectedItem ? selectedItem.value : placeholder;
     }
-  };
-
-  const renderDropdownList = () => {
-    if (!dropdownRef.current) return null;
-    const rect = dropdownRef.current.getBoundingClientRect();
-    return createPortal(
-      <div
-        ref={portalRef}
-        style={{
-          position: "absolute",
-          top: rect.bottom + window.scrollY + 8,
-          left: rect.left + window.scrollX,
-          width: rect.width,
-          zIndex: 9999,
-          pointerEvents: "auto",
-        }}
-      >
-        <List>
-          {items.map((item, index) => (
-            <ListItem
-              key={index}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSelect(item);
-              }}
-              $size={size}
-            >
-              {multiple && (
-                <CheckboxContainer
-                  $selected={isItemSelected(item)}
-                  $size={size}
-                >
-                  <CheckIcon
-                    color="white"
-                    width={size === "small" ? 12 : 16}
-                    height={size === "small" ? 12 : 16}
-                  />
-                </CheckboxContainer>
-              )}
-              {item.value}
-            </ListItem>
-          ))}
-        </List>
-      </div>,
-      document.body,
-    );
   };
 
   return (
@@ -342,8 +304,34 @@ const CustomDropdown = ({
             </IconContainer>
           )}
         </DropdownContainer>
+
+        {isOpen && !disabled && !readOnly && (
+          <List>
+            {items.map((item, index) => (
+              <ListItem
+                key={index}
+                onClick={() => handleSelect(item)}
+                $size={size}
+              >
+                {multiple && (
+                  <CheckboxContainer
+                    $selected={isItemSelected(item)}
+                    $size={size}
+                  >
+                    <CheckIcon
+                      color={"white"}
+                      width={size === "small" ? 12 : 16}
+                      height={size === "small" ? 12 : 16}
+                    />
+                  </CheckboxContainer>
+                )}
+                {item.value}
+              </ListItem>
+            ))}
+          </List>
+        )}
       </ListContainer>
-      {isOpen && !disabled && !readOnly && renderDropdownList()}
+
       {multiple && selectedKeys.length > 0 && (
         <ChipsContainer>
           {items

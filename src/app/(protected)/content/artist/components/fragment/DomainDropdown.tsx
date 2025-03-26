@@ -1,7 +1,5 @@
-import { CountryItem, countryList } from "@/constants/country";
-import { useEffect, useState } from "react";
-
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import { getCountryKeyValueList } from "@/constants/country";
 
 interface DomainDropdownProps {
   onChange: (domain: string) => void;
@@ -17,18 +15,12 @@ const DomainDropdown = ({
   readOnly = false,
   required = false,
 }: DomainDropdownProps) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const dropdownItems = countryList.map((country) => ({
-    key: country.countryCode,
-    value: `${country.name} (${country.countryCode})`,
-  }));
-
   return (
     <CustomDropdown
       label={"도메인"}
       selectedKey={value}
       onSelectKey={onChange}
-      items={dropdownItems}
+      items={getCountryKeyValueList()}
       placeholder="도메인 선택"
       size={"small"}
       width={320}

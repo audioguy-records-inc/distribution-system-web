@@ -5,6 +5,7 @@ import CustomInput from "@/components/basic/CustomInput";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -21,7 +22,7 @@ const Title = styled.h1`
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoading, user, jsonWebToken, login } = useUserStore();
+  const { isLoading, user, jsonWebToken, login } = useAuthStore();
 
   const handleLogin = () => {
     if (!email || !password) {

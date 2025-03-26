@@ -1,12 +1,11 @@
 import { FileInfo } from "./file-info";
+import { countryList } from "../constants/country";
 
-export interface TitleLanguage {
-  KR?: string;
-  EN?: string;
-  JA?: string;
-  ZH?: string;
-  [key: string]: string | undefined;
-}
+export type CountryCode = (typeof countryList)[number]["countryCode"];
+
+export type TitleLanguage = {
+  [key in CountryCode]?: string;
+};
 
 export interface ImageInfo extends FileInfo {
   name: string;

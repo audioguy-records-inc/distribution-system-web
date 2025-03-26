@@ -60,8 +60,6 @@ export default function ArtistDownloadButton({
       `아티스트_목록_${new Date().toISOString().split("T")[0]}.xlsx`,
     );
 
-    console.log("moonsae res", res);
-
     setIsModalOpen(false);
   };
 

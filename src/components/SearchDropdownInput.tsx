@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import Gap from "./basic/Gap";
 import SearchInput from "@/components/SearchInput";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
@@ -88,18 +89,21 @@ const SearchDropdownInput = <T,>({
   onSelect,
   renderItem = (item: T) => String(item),
   size = "normal",
+  onKeyDown,
 }: SearchDropdownInputProps<T>) => {
   const [searched, setSearched] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResult, setSearchResult] = useState<T[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const portalRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        !(portalRef.current && portalRef.current.contains(event.target as Node))
       ) {
         setSearched(false);
       }
@@ -125,6 +129,37 @@ const SearchDropdownInput = <T,>({
     setSearched(true);
   };
 
+  const renderDropdownList = () => {
+    if (!dropdownRef.current) return null;
+    const rect = dropdownRef.current.getBoundingClientRect();
+    return createPortal(
+      <div
+        ref={portalRef}
+        style={{
+          position: "absolute",
+          top: rect.bottom + window.scrollY + 8,
+          left: rect.left + window.scrollX,
+          width: rect.width,
+          zIndex: 9999,
+          pointerEvents: "auto",
+        }}
+      >
+        <List>
+          {searchResult.length > 0 ? (
+            searchResult.map((item, index) => (
+              <ListItem key={index} onClick={() => handleItemClick(item)}>
+                {renderItem(item)}
+              </ListItem>
+            ))
+          ) : (
+            <EmptyResultItem>검색결과가 없습니다.</EmptyResultItem>
+          )}
+        </List>
+      </div>,
+      document.body,
+    );
+  };
+
   return (
     <Container ref={dropdownRef}>
       <Title>{title}</Title>
@@ -142,23 +177,10 @@ const SearchDropdownInput = <T,>({
           if (e.key === "Enter") {
             handleSearch();
           }
+          onKeyDown?.(e);
         }}
       />
-      {searched && (
-        <ListContainer>
-          <List>
-            {searchResult.length > 0 ? (
-              searchResult.map((item, index) => (
-                <ListItem key={index} onClick={() => handleItemClick(item)}>
-                  {renderItem(item)}
-                </ListItem>
-              ))
-            ) : (
-              <EmptyResultItem>검색결과가 없습니다.</EmptyResultItem>
-            )}
-          </List>
-        </ListContainer>
-      )}
+      {searched && renderDropdownList()}
     </Container>
   );
 };

@@ -90,9 +90,9 @@ const TableCell = styled.td<{
   padding: ${({ $size }) => ($size === "small" ? "6px 12px" : "22px 20px")};
   text-align: ${({ $align }) => $align || "left"};
   max-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow: visible;
+  /* white-space: nowrap;
+  text-overflow: ellipsis; */
 `;
 
 const ExpandedContent = styled.tr`

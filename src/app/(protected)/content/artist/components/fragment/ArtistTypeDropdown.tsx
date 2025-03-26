@@ -1,4 +1,3 @@
-import { CountryItem, countryList } from "@/constants/country";
 import { useEffect, useState } from "react";
 
 import { ArtistType } from "@/types/artist";

@@ -257,3 +257,10 @@ export const countryList: CountryItem[] = [
   { name: "헝가리", countryCode: "HU" },
   { name: "홍콩", countryCode: "HK" },
 ];
+
+export const getCountryKeyValueList = () => {
+  return countryList.map((country) => ({
+    key: country.countryCode,
+    value: `${country.name} (${country.countryCode})`,
+  }));
+};

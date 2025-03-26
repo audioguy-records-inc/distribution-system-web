@@ -7,10 +7,9 @@ import {
 import { DataCollectionName, FileType } from "@/types/upload";
 
 import Album from "@/types/album";
-import ArtistSearch from "./fragment/ArtistSearch";
-import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
-import ImageUpload from "@/components/basic/ImageUpload";
+import ParticipateArtistSearch from "./fragment/ParticipateArtistSearch";
+import ReleaseArtistSearch from "./fragment/ReleaseArtistSearch";
 import styled from "styled-components";
 
 const Container = styled.div``;
@@ -38,13 +37,28 @@ export default function ArtistSection({
         name="releaseArtistList"
         control={control}
         render={({ field }) => (
-          <ArtistSearch
+          <ReleaseArtistSearch
             value={field.value}
             onChange={field.onChange}
             readOnly={false}
             placeholder="아티스트 검색"
             label="앨범 아티스트"
             modalHeader="앨범 아티스트 검색"
+          />
+        )}
+      />
+      <Gap height={56} />
+      <Controller
+        name="participateArtistList"
+        control={control}
+        render={({ field }) => (
+          <ParticipateArtistSearch
+            value={field.value}
+            onChange={field.onChange}
+            readOnly={false}
+            placeholder="아티스트 검색"
+            label="참여 아티스트"
+            modalHeader="참여 아티스트 검색"
           />
         )}
       />

@@ -57,7 +57,6 @@ const LicensorContractInput = ({
   control: Control<UserContract>;
   isEdit: boolean;
 }) => {
-  console.log("moonsae watch", watch());
   return (
     <>
       <Gap height={42} />

@@ -1,4 +1,10 @@
+import CustomTable, {
+  Column,
+} from "@/components/basic/custom-table/CustomTable";
+
 import AddNewArtist from "@/app/(protected)/content/artist/components/AddNewArtist";
+import { Artist } from "@/types/artist";
+import { ArtistInfo } from "@/types/album";
 import ButtonFilledPrimary from "./basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "./basic/buttons/ButtonOutlinedSecondary";
 import { ClipLoader } from "react-spinners";
@@ -8,6 +14,7 @@ import SearchInput from "./SearchInput";
 import XIcon from "./icons/XIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import toast from "react-hot-toast";
 import { useArtistStore } from "@/stores/use-artist-store";
 import { useState } from "react";
 
@@ -41,6 +48,12 @@ const SearchWrapper = styled.div`
   justify-content: space-between;
 `;
 
+const TableContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+`;
+
 const customStyles = {
   content: {
     top: "50%",
@@ -60,40 +73,132 @@ const customStyles = {
 interface ArtistSearchModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  onConfirm: () => void;
-
-  isLoading?: boolean;
+  onChange: (value: ArtistInfo[]) => void;
   header?: string;
   placeholder?: string;
+  value: ArtistInfo[] | null;
+  onRegister?: (artist: Artist) => void;
 }
 
 const ArtistSearchModal = ({
   isOpen,
   onRequestClose,
-  isLoading,
   header,
   placeholder,
+  onChange,
+  value,
+  onRegister,
 }: ArtistSearchModalProps) => {
   const [searchValue, setSearchValue] = useState("");
+  const [searchedArtistList, setSearchedArtistList] = useState<Artist[]>([]);
 
-  const { searchArtists } = useArtistStore();
+  const { searchArtists, isLoading } = useArtistStore();
 
   const handleSearch = async () => {
-    const res = await searchArtists(searchValue);
-    console.log(res);
+    if (!searchValue.trim()) return;
+
+    try {
+      const res = await searchArtists(searchValue, "name");
+      setSearchedArtistList(res);
+    } catch (error) {
+      toast.error("아티스트 검색 중 오류가 발생했습니다.");
+    } finally {
+    }
   };
+
+  const handleCloseModal = () => {
+    onRequestClose();
+    setSearchValue("");
+    setSearchedArtistList([]);
+  };
+
+  const columns: Column<Artist>[] = [
+    {
+      header: "아티스트 코드",
+      accessor: "artistUniqueId",
+      type: "string",
+      width: 140,
+      align: "center",
+    },
+    {
+      header: "아티스트명",
+      accessor: "name",
+      type: "string",
+      width: 337,
+      align: "center",
+    },
+    {
+      header: "도메인",
+      accessor: "countryCode",
+      type: "string",
+      width: 160,
+      align: "center",
+      render: (value, record) => {
+        return record.countryCode;
+      },
+    },
+    {
+      header: "성별",
+      accessor: "genderType",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value, record) => {
+        return record.genderType;
+      },
+    },
+    {
+      header: "유형",
+      accessor: "artistType",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value, record) => {
+        return record.artistType;
+      },
+    },
+    {
+      header: "",
+      accessor: "action" as keyof Artist,
+      type: "component",
+      align: "center",
+      width: 110,
+      render: (_value, record) => {
+        const isAlreadySelected = value?.some(
+          (artist) => artist.artistId === record._id,
+        );
+
+        return (
+          <ButtonOutlinedSecondary
+            size="small"
+            label={isAlreadySelected ? "등록됨" : "등록"}
+            onClick={() => {
+              if (isAlreadySelected) {
+                toast.error("이미 등록된 아티스트입니다.");
+                return;
+              }
+
+              onRegister?.(record);
+              toast.success("아티스트가 등록되었습니다.");
+            }}
+            disabled={isAlreadySelected}
+          />
+        );
+      },
+    },
+  ];
 
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
+      onRequestClose={handleCloseModal}
       style={customStyles}
       ariaHideApp={false}
     >
       <Container>
         <HeaderWrapper>
           <Header>{header}</Header>
-          <CloseButton onClick={onRequestClose} />
+          <CloseButton onClick={handleCloseModal} />
         </HeaderWrapper>
 
         <Gap height={42} />
@@ -109,17 +214,10 @@ const ArtistSearchModal = ({
           />
           <AddNewArtist />
         </SearchWrapper>
-        {/* <Gap height={32} />
-        {isLoading ? (
-          <LoadingContainer>
-            <ClipLoader color={theme.colors.purple[600]} size={30} />
-          </LoadingContainer>
-        ) : (
-          <ButtonContainer>
-            <ButtonOutlinedSecondary label="취소" onClick={onRequestClose} />
-            <ButtonFilledPrimary label="확인" onClick={onConfirm} />
-          </ButtonContainer>
-        )} */}
+        <Gap height={32} />
+        <TableContainer>
+          <CustomTable columns={columns} data={searchedArtistList} />
+        </TableContainer>
       </Container>
     </Modal>
   );
