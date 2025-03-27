@@ -1,4 +1,8 @@
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+
+import Album from "@/types/album";
 import { Column } from "@/components/basic/custom-table/CustomTable";
+import CustomChip from "@/components/basic/CustomChip";
 import Gap from "@/components/basic/Gap";
 import SearchDropdownInput from "@/components/SearchDropdownInput";
 import TrashIcon from "@/components/icons/TrashIcon";
@@ -19,11 +23,7 @@ const Title = styled.div`
 `;
 
 const SelectedUserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  ${theme.fonts.body2.medium}
-  color: ${theme.colors.gray[800]};
+  padding-top: 8px;
 `;
 
 export default function AlbumLicensorSearch({
@@ -31,55 +31,30 @@ export default function AlbumLicensorSearch({
   onChange,
   readOnly = false,
   user,
+  register,
+  setValue,
 }: {
   value: string;
   onChange: (value: string | null) => void;
   readOnly?: boolean;
   user?: User;
+  register: UseFormRegister<Album>;
+  setValue: UseFormSetValue<Album>;
 }) {
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
 
-  const columns: Column<User>[] = [
-    {
-      header: "구분",
-      accessor: "type",
-      type: "component",
-      width: 140,
-      align: "center",
-      render: (value, record) => {
-        return <UserTypeBadge type={record.type} />;
-      },
-    },
-    {
-      header: "권리사 ID",
-      accessor: "account",
-      type: "string",
-      width: 220,
-      align: "center",
-    },
-    {
-      header: "권리사명",
-      accessor: "displayName",
-      type: "string",
-      width: 449,
-      align: "center",
-    },
-    {
-      header: "",
-      accessor: "action" as keyof User,
-      type: "button",
-      icon: <TrashIcon />,
-      onClick: (record, rowIndex) => {
-        setSelectedUser(null);
-        onChange(null);
-      },
-    },
-  ];
+  const handleDelete = () => {
+    setSelectedUser(null);
+    onChange(null);
+    setValue("userContractId", undefined);
+    setValue("userContract", undefined);
+  };
 
   const onSelect = (selectedItem: User) => {
     setSelectedUser(selectedItem);
-    onChange(selectedItem._id);
+    setValue("userId", selectedItem._id);
+    setValue("userInfo", selectedItem);
   };
 
   const handleSearch = async (searchKeyword: string) => {
@@ -99,13 +74,17 @@ export default function AlbumLicensorSearch({
           onSelect={(selectedItem: User) => {
             onSelect(selectedItem);
           }}
-          renderItem={(item) => item.displayName}
+          renderItem={(item) => `${item.displayName}`}
           size="small"
         />
       )}
       {selectedUser && (
         <SelectedUserContainer>
-          {selectedUser.displayName}
+          <CustomChip
+            label={selectedUser.displayName}
+            onClick={handleDelete}
+            deletable
+          />
         </SelectedUserContainer>
       )}
     </Container>

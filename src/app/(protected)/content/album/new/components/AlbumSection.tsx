@@ -2,6 +2,7 @@ import {
   Control,
   Controller,
   UseFormRegister,
+  UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
 
@@ -10,6 +11,7 @@ import AlbumGenre from "./fragment/AlbumGenre";
 import AlbumLicensorSearch from "./fragment/AlbumLicensorSearch";
 import AlbumTitle from "./fragment/AlbumTitle";
 import AlbumType from "./fragment/AlbumType";
+import AlbumUserContract from "./fragment/AlbumUserContract";
 import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
 import NumberOfDiscs from "./fragment/NumberOfDiscs";
@@ -31,12 +33,14 @@ interface AlbumSectionProps {
   control: Control<Album>;
   watch: UseFormWatch<Album>;
   register: UseFormRegister<Album>;
+  setValue: UseFormSetValue<Album>;
 }
 
 export default function AlbumSection({
   control,
   watch,
   register,
+  setValue,
 }: AlbumSectionProps) {
   return (
     <Container>
@@ -103,12 +107,20 @@ export default function AlbumSection({
           render={({ field }) => {
             return (
               <AlbumLicensorSearch
-                value={field.value}
+                value={field.value || ""}
                 onChange={field.onChange}
                 readOnly={false}
+                register={register}
+                setValue={setValue}
               />
             );
           }}
+        />
+        <AlbumUserContract
+          control={control}
+          watch={watch}
+          register={register}
+          setValue={setValue}
         />
       </RowWrapper>
     </Container>

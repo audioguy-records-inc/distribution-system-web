@@ -14,7 +14,7 @@ interface UserContractStore {
   isLoading: boolean;
   error: string | null;
 
-  fetchUserContracts: () => Promise<void>;
+  fetchUserContracts: (searchQuery?: string) => Promise<void>;
   createUserContract: (userContract: UserContract) => Promise<void>;
   updateUserContract: (userContract: UserContract) => Promise<void>;
   deleteUserContract: (userContractId: string) => Promise<void>;
@@ -30,11 +30,11 @@ export const useUserContractStore = create<UserContractStore>()(
       userContracts: [],
       isLoading: false,
       error: null,
-      fetchUserContracts: async () => {
+      fetchUserContracts: async (searchQuery?: string) => {
         set({ isLoading: true });
 
         try {
-          const response = await getUserContracts();
+          const response = await getUserContracts(searchQuery);
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);

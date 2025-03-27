@@ -93,14 +93,26 @@ const ContactPersonTable = ({
           label="추가"
           onClick={() => {
             if (readOnly || disabled) return;
-            const newValue = [...value];
-            newValue.push({
-              name: "",
-              responsibility: null,
-              email: "",
-              phone: "",
-            });
-            onChange(newValue);
+
+            if (!value) {
+              onChange([
+                {
+                  name: "",
+                  responsibility: null,
+                  email: "",
+                  phone: "",
+                },
+              ]);
+            } else {
+              const newValue = [...value];
+              newValue.push({
+                name: "",
+                responsibility: null,
+                email: "",
+                phone: "",
+              });
+              onChange(newValue);
+            }
           }}
         />
       )}

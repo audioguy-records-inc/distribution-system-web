@@ -37,6 +37,7 @@ export default function AlbumNewPage() {
     control,
     formState: { isValid, isDirty },
     watch,
+    setValue,
   } = useForm<Album>({
     defaultValues: {
       titleList: [
@@ -96,7 +97,12 @@ export default function AlbumNewPage() {
       <CollapsibleHeader
         title="3. 앨범 정보"
         renderComponent={
-          <AlbumSection control={control} watch={watch} register={register} />
+          <AlbumSection
+            control={control}
+            watch={watch}
+            register={register}
+            setValue={setValue}
+          />
         }
       />
       <Gap height={56} />

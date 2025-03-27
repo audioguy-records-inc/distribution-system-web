@@ -6,12 +6,15 @@ interface GetUserContractsResponse {
   userContractList: UserContract[];
 }
 
-export const getUserContracts = async (): Promise<
-  FetchResponse<GetUserContractsResponse>
-> => {
+export const getUserContracts = async (
+  searchQuery?: string,
+): Promise<FetchResponse<GetUserContractsResponse>> => {
   try {
-    const response = await apiFetch("/user-contracts");
+    const url = searchQuery
+      ? `/user-contracts?${searchQuery}`
+      : "/user-contracts";
 
+    const response = await apiFetch(url);
     return response as FetchResponse<GetUserContractsResponse>;
   } catch (error) {
     console.error("[getUserContracts] error", error);

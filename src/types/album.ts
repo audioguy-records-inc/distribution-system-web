@@ -1,4 +1,6 @@
 import { FileInfo } from "./file-info";
+import { User } from "./user";
+import UserContract from "./user-contract";
 import { countryList } from "../constants/country";
 
 export type CountryCode = (typeof countryList)[number]["countryCode"];
@@ -61,8 +63,10 @@ export interface Album {
   distributionCompanyName: string;
   agencyCompanyName: string;
 
-  userId: string;
-  userContractId: string;
+  userId?: string;
+  userInfo?: User;
+  userContractId?: string;
+  userContract?: UserContract;
   dspContractIdList: string[];
 
   supplyRegion: string;

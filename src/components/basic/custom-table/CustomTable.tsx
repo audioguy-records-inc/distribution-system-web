@@ -135,6 +135,10 @@ const CustomTable = <T extends Record<string, any>>({
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
+  // columns나 data가 undefined인 경우를 처리
+  const safeColumns = columns || [];
+  const safeData = data || [];
+
   const toggleRow = (rowIndex: number) => {
     const newExpandedRows = new Set(expandedRows);
     if (newExpandedRows.has(rowIndex)) {
@@ -237,7 +241,7 @@ const CustomTable = <T extends Record<string, any>>({
       <Table>
         <TableHeader>
           <tr>
-            {columns.map((column, index) => (
+            {safeColumns.map((column, index) => (
               <HeaderCell
                 key={index}
                 $width={column.width}
@@ -253,10 +257,10 @@ const CustomTable = <T extends Record<string, any>>({
           </tr>
         </TableHeader>
         <TableBody>
-          {data.map((row, rowIndex) => (
+          {safeData.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <TableRow $isExpanded={expandedRows.has(rowIndex)}>
-                {columns.map((column, colIndex) => (
+                {safeColumns.map((column, colIndex) => (
                   <TableCell key={colIndex} $align={column.align} $size={size}>
                     {renderCellContent(column, row, rowIndex)}
                   </TableCell>
@@ -278,7 +282,7 @@ const CustomTable = <T extends Record<string, any>>({
               </TableRow>
               {expandable && expandedRows.has(rowIndex) && (
                 <ExpandedContent>
-                  <ExpandedCell colSpan={columns.length + 1}>
+                  <ExpandedCell colSpan={safeColumns.length + 1}>
                     {expandable.expandedRowRender(row)}
                   </ExpandedCell>
                 </ExpandedContent>
