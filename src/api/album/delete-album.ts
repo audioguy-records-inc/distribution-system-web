@@ -1,11 +1,13 @@
 import { FetchResponse, apiFetch } from "../fetch";
 
+import Album from "@/types/album";
+
 interface DeleteAlbumRequest {
   albumId: string;
 }
 
 interface DeleteAlbumResponse {
-  albumId: string;
+  album: Album;
 }
 
 export const deleteAlbum = async (

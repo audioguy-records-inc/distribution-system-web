@@ -11,7 +11,7 @@ interface SearchAlbumResponse {
   albumList: Album[];
 }
 
-export const searchAlbum = async (
+export const searchAlbums = async (
   request: SearchAlbumRequest,
 ): Promise<FetchResponse<SearchAlbumResponse>> => {
   try {

@@ -89,9 +89,9 @@ export interface Album {
   transmissionList: Transmission[];
   trackList: Track[];
 
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
+  // createdAt: Date;
+  // updatedAt: Date;
+  // deletedAt?: Date | null;
 }
 
 export default Album;

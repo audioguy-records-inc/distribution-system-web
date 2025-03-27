@@ -1,170 +1,170 @@
-import Album from "@/types/album";
+import Track from "@/types/track";
 import { create } from "zustand";
-import { deleteAlbum } from "@/api/album/delete-album";
-import { getAlbums } from "@/api/album/get-albums";
+import { deleteTrack } from "@/api/track/delete-track";
+import { getTracks } from "@/api/track/get-tracks";
 import { persist } from "zustand/middleware";
-import { postAlbum } from "@/api/album/post-album";
-import { putAlbum } from "@/api/album/put-album";
-import { searchAlbums } from "@/api/album/search-albums";
+import { postTrack } from "@/api/track/post-track";
+import { putTrack } from "@/api/track/put-track";
+import { searchTracks } from "@/api/track/search-tracks";
 import toast from "react-hot-toast";
 
-interface AlbumStore {
-  albums: Album[];
+interface TrackStore {
+  tracks: Track[];
   isLoading: boolean;
   error: string | null;
 
-  fetchAlbums: () => Promise<void>;
-  createAlbum: (album: Album) => Promise<void>;
-  updateAlbum: (album: Album) => Promise<void>;
-  deleteAlbum: (albumId: string) => Promise<void>;
-  searchAlbums: (
+  fetchTracks: () => Promise<void>;
+  createTrack: (track: Track) => Promise<void>;
+  updateTrack: (track: Track) => Promise<void>;
+  deleteTrack: (trackId: string) => Promise<void>;
+  searchTracks: (
     searchKeyword: string,
     searchFields?: string,
-  ) => Promise<Album[]>;
+  ) => Promise<Track[]>;
 }
 
-export const useAlbumStore = create<AlbumStore>()(
+export const useTrackStore = create<TrackStore>()(
   persist(
     (set) => ({
-      albums: [],
+      tracks: [],
       isLoading: false,
       error: null,
 
-      fetchAlbums: async () => {
+      fetchTracks: async () => {
         set({ isLoading: true });
         try {
-          const response = await getAlbums();
+          const response = await getTracks();
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
-          set({ albums: response.data.albumList, error: null });
+          set({ tracks: response.data.trackList, error: null });
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 조회 중 알 수 없는 오류가 발생했습니다.";
+              : "트랙 조회 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
 
           console.error(
-            "[useAlbumStore/fetchAlbums] Fetch albums failed.",
+            "[useTrackStore/fetchTracks] Fetch tracks failed.",
             error,
           );
 
-          set({ albums: [], error: errorMessage });
+          set({ tracks: [], error: errorMessage });
         } finally {
           set({ isLoading: false });
         }
       },
-      createAlbum: async (album: Album) => {
+      createTrack: async (track: Track) => {
         set({ isLoading: true });
         try {
-          const response = await postAlbum({ albumList: [album] });
+          const response = await postTrack({ trackList: [track] });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
-          if (response.data.albumList.length === 0) {
-            throw new Error("앨범 생성 중 알 수 없는 오류가 발생했습니다.");
+          if (response.data.trackList.length === 0) {
+            throw new Error("트랙 생성 중 알 수 없는 오류가 발생했습니다.");
           }
 
           set((state) => ({
-            albums: [...state.albums, response.data!.albumList[0]],
+            tracks: [...state.tracks, response.data!.trackList[0]],
             error: null,
           }));
 
-          toast.success("앨범이 생성되었습니다.");
+          toast.success("트랙이 생성되었습니다.");
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 생성 중 알 수 없는 오류가 발생했습니다.";
+              : "트랙 생성 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
 
-          console.error("[useAlbumStore/postAlbum] Post album failed.", error);
+          console.error("[useTrackStore/postTrack] Post track failed.", error);
         } finally {
           set({ isLoading: false });
         }
       },
-      updateAlbum: async (album: Album) => {
+      updateTrack: async (track: Track) => {
         set({ isLoading: true });
         try {
-          const response = await putAlbum({ album });
+          const response = await putTrack({ track });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
-          const fetchResponse = await getAlbums();
+          const fetchResponse = await getTracks();
 
           if (!fetchResponse || fetchResponse.error || !fetchResponse.data) {
             throw new Error(fetchResponse.message);
           }
 
           set((state) => ({
-            albums: fetchResponse.data!.albumList,
+            tracks: fetchResponse.data!.trackList,
             error: null,
           }));
 
-          toast.success("앨범이 수정되었습니다.");
+          toast.success("트랙이 수정되었습니다.");
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 수정 중 알 수 없는 오류가 발생했습니다.";
+              : "트랙 수정 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
 
           console.error(
-            "[useAlbumStore/updateAlbum] Update album failed.",
+            "[useTrackStore/updateTrack] Update track failed.",
             error,
           );
         } finally {
           set({ isLoading: false });
         }
       },
-      deleteAlbum: async (albumId: string) => {
+      deleteTrack: async (trackId: string) => {
         set({ isLoading: true });
         try {
-          const response = await deleteAlbum({ albumId });
+          const response = await deleteTrack({ trackId });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
           set((state) => ({
-            albums: state.albums.filter((album) => album._id !== albumId),
+            tracks: state.tracks.filter((track) => track._id !== trackId),
             error: null,
           }));
 
-          toast.success("앨범이 삭제되었습니다.");
+          toast.success("트랙이 삭제되었습니다.");
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : "트랙 삭제 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
 
           console.error(
-            "[useAlbumStore/deleteAlbum] Delete album failed.",
+            "[useTrackStore/deleteTrack] Delete track failed.",
             error,
           );
         } finally {
           set({ isLoading: false });
         }
       },
-      searchAlbums: async (searchKeyword: string, searchFields?: string) => {
+      searchTracks: async (searchKeyword: string, searchFields?: string) => {
         set({ isLoading: true });
         try {
           const __searchKeyword = searchKeyword;
           const __searchFields = searchFields;
 
-          const response = await searchAlbums({
+          const response = await searchTracks({
             __searchKeyword,
             __searchFields,
           });
@@ -177,17 +177,17 @@ export const useAlbumStore = create<AlbumStore>()(
             error: null,
           });
 
-          return response.data!.albumList;
+          return response.data!.trackList;
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 검색 중 알 수 없는 오류가 발생했습니다.";
+              : "트랙 검색 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
 
           console.error(
-            "[useAlbumStore/searchAlbums] Search albums failed.",
+            "[useTrackStore/searchTracks] Search tracks failed.",
             error,
           );
           set({ error: errorMessage });
@@ -198,7 +198,7 @@ export const useAlbumStore = create<AlbumStore>()(
       },
     }),
     {
-      name: "album-store",
+      name: "track-store",
     },
   ),
 );
