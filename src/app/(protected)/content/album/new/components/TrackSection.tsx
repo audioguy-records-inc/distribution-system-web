@@ -20,16 +20,10 @@ const RowWrapper = styled.div`
 `;
 
 interface TrackSectionProps {
-  control: Control<Album>;
   watch: UseFormWatch<Album>;
-  register: UseFormRegister<Album>;
 }
 
-export default function TrackSection({
-  control,
-  watch,
-  register,
-}: TrackSectionProps) {
+export default function TrackSection({ watch }: TrackSectionProps) {
   return (
     <Container>
       <Gap height={32} />

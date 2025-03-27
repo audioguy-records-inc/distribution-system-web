@@ -110,9 +110,7 @@ export default function AlbumNewPage() {
       <Gap height={56} />
       <CollapsibleHeader
         title="4. 트랙 정보"
-        renderComponent={
-          <TrackSection control={control} watch={watch} register={register} />
-        }
+        renderComponent={<TrackSection watch={watch} />}
       />
       <Gap height={56} />
     </Container>
