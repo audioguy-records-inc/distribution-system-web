@@ -9,15 +9,15 @@ export type TitleLanguage = {
   [key in CountryCode]?: string;
 };
 
-export interface ImageInfo extends FileInfo {
+export interface ImageInfo {
   name: string;
   imageOriginalPath: string;
-  image64Path: string;
-  image128Path: string;
-  image256Path: string;
-  image512Path: string;
-  image1024Path: string;
-  imageFilename: string;
+  image64Path?: string;
+  image128Path?: string;
+  image256Path?: string;
+  image512Path?: string;
+  image1024Path?: string;
+  imageFilename?: string;
 }
 
 export interface ArtistInfo {

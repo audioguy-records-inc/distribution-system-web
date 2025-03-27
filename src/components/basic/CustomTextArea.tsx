@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
-const Container = styled.div`
+const Container = styled.div<{ $expand?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: ${({ $expand }) => ($expand ? "100%" : "auto")};
 `;
 
 const LabelContainer = styled.div`
@@ -35,10 +36,12 @@ const TextAreaContainer = styled.div<{
   $isError?: boolean;
   $locked?: boolean;
   $disabled?: boolean;
+  $expand?: boolean;
 }>`
   display: flex;
-  width: 320px;
-  height: 160px;
+  width: ${({ $expand }) => ($expand ? "100%" : "320px")};
+  height: auto;
+  min-height: ${({ $expand }) => ($expand ? "100%" : "160px")};
   border-radius: 8px;
   border: 1px solid
     ${({ $isError, $disabled }) =>
@@ -75,7 +78,8 @@ const TextArea = styled.textarea<{
   border: none;
   outline: none;
   background: transparent;
-  resize: none;
+  resize: vertical;
+  min-height: 160px;
   overflow-y: auto;
 
   ${({ $hideScrollbar }) =>
@@ -107,6 +111,7 @@ interface TextAreaProps {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   hideScrollbar?: boolean;
+  expand?: boolean;
 }
 
 const CustomTextArea = ({
@@ -120,10 +125,11 @@ const CustomTextArea = ({
   value,
   onChange = () => {},
   hideScrollbar = false,
+  expand = false,
   ...props
 }: TextAreaProps) => {
   return (
-    <Container>
+    <Container $expand={expand}>
       <LabelContainer>
         {label && <Label $disabled={disabled}>{label}</Label>}
         {required && <Required $disabled={disabled}>*</Required>}
@@ -132,6 +138,7 @@ const CustomTextArea = ({
         $isError={isError}
         $locked={locked}
         $disabled={disabled}
+        $expand={expand}
       >
         <TextArea
           {...props}

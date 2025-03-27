@@ -60,6 +60,8 @@ const InputContainer = styled.div<{
         : theme.colors.gray[50]};
   background: ${({ $locked }) =>
     $locked ? theme.colors.gray[25] : theme.colors.white};
+  box-sizing: border-box;
+  overflow: hidden;
 
   &:focus-within {
     border-color: ${({ $isError }) =>
@@ -75,6 +77,7 @@ const Input = styled.input<{
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.regular : theme.fonts.body1.regular}
   flex: 1;
+  min-width: 0;
   color: ${({ $locked, $disabled }) =>
     $disabled
       ? theme.colors.gray[100]
@@ -106,6 +109,7 @@ const IconContainer = styled.div<{ $size?: "small" | "normal" }>`
   padding: 8px;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 
   svg {
     width: ${({ $size }) => ($size === "small" ? "18px" : "24px")};

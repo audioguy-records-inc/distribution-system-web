@@ -45,6 +45,8 @@ export default function AlbumNewPage() {
           KR: "",
         },
       ],
+      supplyRegion: "Worldwide",
+      isExposed: true,
     },
     mode: "onChange",
     shouldFocusError: false,
@@ -112,6 +114,7 @@ export default function AlbumNewPage() {
           <TrackSection control={control} watch={watch} register={register} />
         }
       />
+      <Gap height={56} />
     </Container>
   );
 }

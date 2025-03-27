@@ -5,6 +5,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import { DataCollectionName, FileType } from "@/types/upload";
 
 import Album from "@/types/album";
 import AlbumGenre from "./fragment/AlbumGenre";
@@ -14,14 +15,20 @@ import AlbumType from "./fragment/AlbumType";
 import AlbumUserContract from "./fragment/AlbumUserContract";
 import ContractedDspList from "./fragment/ContractedDspList";
 import CustomInput from "@/components/basic/CustomInput";
+import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
+import CustomTextArea from "@/components/basic/CustomTextArea";
+import CustomUpload from "@/components/basic/CustomUpload";
+import ExcludedRegionList from "./fragment/ExcludedRegionList";
 import Gap from "@/components/basic/Gap";
+import ImageUpload from "@/components/basic/ImageUpload";
 import NumberOfDiscs from "./fragment/NumberOfDiscs";
 import NumberOfTracksPerDisc from "./fragment/NumberOfTracksPerDisc";
 import ReleaseCountryCode from "./fragment/ReleaseCountryCode";
+import ReleaseDate from "./fragment/ReleaseDate";
+import RequestDetails from "./RequestDetails";
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding-bottom: 100px;
   overflow-y: visible;
 `;
 
@@ -129,6 +136,158 @@ export default function AlbumSection({
         watch={watch}
         register={register}
         setValue={setValue}
+      />
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
+          label="유통 지역"
+          placeholder="유통 지역 입력"
+          size="small"
+          locked={true}
+          {...register("supplyRegion", { required: true })}
+        />
+        <ExcludedRegionList
+          control={control}
+          watch={watch}
+          register={register}
+          setValue={setValue}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <ReleaseDate
+        control={control}
+        watch={watch}
+        register={register}
+        setValue={setValue}
+      />
+      <Gap height={56} />
+      <Controller
+        name="isExposed"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <CustomRadioWithLabel
+            label="노출"
+            leftOption={{
+              label: "해당",
+              value: true,
+              checked: field.value === true,
+            }}
+            rightOption={{
+              label: "해당없음",
+              value: false,
+              checked: field.value === false,
+            }}
+            onChange={field.onChange}
+            value={field.value}
+          />
+        )}
+      />
+      <Gap height={56} />
+      <RowWrapper>
+        <Controller
+          name="isAdultOnly"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomRadioWithLabel
+              label="19금"
+              leftOption={{
+                label: "해당",
+                value: true,
+                checked: field.value === true,
+              }}
+              rightOption={{
+                label: "해당없음",
+                value: false,
+                checked: field.value === false,
+              }}
+              onChange={field.onChange}
+              value={field.value}
+            />
+          )}
+        />
+        <Controller
+          name="isSupportedSpatialAudio"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomRadioWithLabel
+              label="공간 음향 서비스"
+              leftOption={{
+                label: "해당",
+                value: true,
+                checked: field.value === true,
+              }}
+              rightOption={{
+                label: "해당없음",
+                value: false,
+                checked: field.value === false,
+              }}
+              onChange={field.onChange}
+              value={field.value}
+            />
+          )}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <CustomTextArea
+        label="앨범 소개"
+        placeholder="앨범 소개를 입력해주세요."
+        expand={true}
+        {...register("albumIntroduction", { required: true })}
+      />
+      <Gap height={56} />
+      <RequestDetails
+        control={control}
+        watch={watch}
+        register={register}
+        setValue={setValue}
+      />
+      <Gap height={56} />
+      <RowWrapper>
+        <Controller
+          name="coverImageList"
+          control={control}
+          render={({ field }) => (
+            <ImageUpload
+              headerText="앨범 커버"
+              onChange={field.onChange}
+              value={field.value}
+              fileType={FileType.IMAGES}
+              dataCollectionName={DataCollectionName.ALBUMS}
+              width="320px"
+            />
+          )}
+        />
+        <Controller
+          name="bookletImageList"
+          control={control}
+          render={({ field }) => (
+            <ImageUpload
+              headerText="부클릿 이미지"
+              onChange={field.onChange}
+              value={field.value}
+              fileType={FileType.IMAGES}
+              dataCollectionName={DataCollectionName.ALBUMS}
+              width="320px"
+            />
+          )}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <Controller
+        name="etcFileList"
+        control={control}
+        render={({ field }) => (
+          <CustomUpload
+            onChange={field.onChange}
+            value={field.value}
+            fileType={FileType.DOCS}
+            dataCollectionName={DataCollectionName.ALBUMS}
+            headerText="기타 자료(저작권 승인서 등)"
+          />
+        )}
       />
     </Container>
   );

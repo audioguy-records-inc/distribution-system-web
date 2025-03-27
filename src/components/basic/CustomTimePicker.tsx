@@ -1,13 +1,12 @@
 import "react-datepicker/dist/react-datepicker.css";
 
-import CalendarIcon from "../icons/CalendarIcon";
+import ClockIcon from "../icons/ClockIcon";
 import CustomInput from "./CustomInput";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/locale";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -15,10 +14,15 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const CalendarContainer = styled.div`
+const TimePickerContainer = styled.div`
   width: fit-content;
   height: fit-content;
-  .react-datepicker__day--selected {
+
+  .react-datepicker__time-container
+    .react-datepicker__time
+    .react-datepicker__time-box
+    ul.react-datepicker__time-list
+    li.react-datepicker__time-list-item--selected {
     background-color: ${theme.colors.purple[600]};
   }
 
@@ -45,29 +49,31 @@ const Label = styled.div`
   color: ${theme.colors.gray[600]};
 `;
 
-interface CustomCalendarProps {
+interface CustomTimePickerProps {
   label: string;
   value: string | null;
-  onChange: (dateString: string | null) => void;
+  onChange: (timeString: string | null) => void;
   readOnly?: boolean;
+  timeIntervals?: number;
   width?: number;
 }
 
-const CustomCalendar = ({
+const CustomTimePicker = ({
   label,
   value,
   onChange,
   readOnly,
+  timeIntervals = 30,
   width = 320,
-}: CustomCalendarProps) => {
-  const parseDate = (dateString: string | null) => {
-    if (!dateString) return null;
-    return moment(dateString, "YYYYMMDD").toDate();
+}: CustomTimePickerProps) => {
+  const parseTime = (timeString: string | null) => {
+    if (!timeString) return null;
+    return moment(timeString, "HHmm").toDate();
   };
 
   const handleChange = (date: Date | null) => {
     if (date) {
-      onChange(moment(date).format("YYYYMMDD"));
+      onChange(moment(date).format("HHmm"));
     } else {
       onChange(null);
     }
@@ -76,20 +82,25 @@ const CustomCalendar = ({
   return (
     <Container>
       <Label>{label}</Label>
-      <CalendarContainer>
+      <TimePickerContainer>
         <DatePicker
           customInput={
-            <CustomInput size="small" icon={<CalendarIcon />} width={width} />
+            <CustomInput size="small" icon={<ClockIcon />} width={width} />
           }
           locale={ko}
-          selected={parseDate(value)}
+          selected={parseTime(value)}
           onChange={handleChange}
-          dateFormat="yyyy/MM/dd"
+          showTimeSelect
+          showTimeSelectOnly
+          timeIntervals={timeIntervals}
+          timeCaption="시간"
+          dateFormat="HH:mm"
+          timeFormat="HH:mm"
           readOnly={readOnly}
         />
-      </CalendarContainer>
+      </TimePickerContainer>
     </Container>
   );
 };
 
-export default CustomCalendar;
+export default CustomTimePicker;

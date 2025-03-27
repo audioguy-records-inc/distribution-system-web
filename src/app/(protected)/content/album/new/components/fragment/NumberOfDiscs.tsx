@@ -67,7 +67,6 @@ export default function NumberOfDiscs({
         name="numberOfDiscs"
         control={control}
         render={({ field }) => {
-          console.log("moonsae field.value", field.value);
           return (
             <Wrapper>
               <CustomInput
@@ -75,7 +74,6 @@ export default function NumberOfDiscs({
                 value={field.value?.toString() || "0"}
                 onChange={(e) => {
                   const value = e.target.value;
-                  console.log("moonsae value", value);
                   field.onChange(Number(value) < 0 ? 0 : Number(value));
                 }}
                 type="number"

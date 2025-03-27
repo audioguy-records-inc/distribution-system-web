@@ -8,6 +8,7 @@ import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSe
 import DownloadIcon from "@/components/icons/DownloadIcon";
 import { FileInfo } from "@/types/file-info";
 import Gap from "@/components/basic/Gap";
+import { ImageInfo } from "@/types/album";
 import TrashIcon from "@/components/icons/TrashIcon";
 import UploadIcon from "@/components/icons/UploadIcon";
 import { getFullUrl } from "@/constants/api";
@@ -53,8 +54,8 @@ const DropZoneText = styled.p`
 
 // Controller에서 사용할 props 타입 정의
 interface ImageUploadProps {
-  onChange: (files: FileInfo[]) => void;
-  value: FileInfo[];
+  onChange: (files: ImageInfo[]) => void;
+  value: ImageInfo[];
   fileType: FileType;
   dataCollectionName: DataCollectionName;
   headerText: string;
@@ -73,7 +74,7 @@ const ImageUpload = ({
 }: ImageUploadProps) => {
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFiles, setSelectedFiles] = useState<FileInfo[]>(value || []);
+  const [selectedFiles, setSelectedFiles] = useState<ImageInfo[]>(value || []);
   const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { uploadToS3 } = useUploadStore();
@@ -100,9 +101,9 @@ const ImageUpload = ({
       if (success) {
         toast.success(`${file.name} 업로드가 완료되었습니다.`);
         // FileInfo 형식으로 변환
-        const fileInfo: FileInfo = {
+        const fileInfo: ImageInfo = {
           name: success.name,
-          filePath: success.filePath,
+          imageOriginalPath: success.filePath,
         };
         const updatedFiles = [...selectedFiles, fileInfo];
         setSelectedFiles(updatedFiles);
@@ -235,7 +236,10 @@ const ImageUpload = ({
           {selectedFiles.map((file, index) => (
             <ImageItem key={index}>
               <ImageContainer>
-                <StyledImage src={getFullUrl(file.filePath)} alt={file.name} />
+                <StyledImage
+                  src={getFullUrl(file.imageOriginalPath)}
+                  alt={file.name}
+                />
                 <ImageActions>
                   {/* <IconButton onClick={() => handleDownloadFile(file)}>
                     <DownloadIcon color={theme.colors.white} />
