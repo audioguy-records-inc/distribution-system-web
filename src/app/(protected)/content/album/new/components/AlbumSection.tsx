@@ -12,6 +12,7 @@ import AlbumLicensorSearch from "./fragment/AlbumLicensorSearch";
 import AlbumTitle from "./fragment/AlbumTitle";
 import AlbumType from "./fragment/AlbumType";
 import AlbumUserContract from "./fragment/AlbumUserContract";
+import ContractedDspList from "./fragment/ContractedDspList";
 import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
 import NumberOfDiscs from "./fragment/NumberOfDiscs";
@@ -123,6 +124,12 @@ export default function AlbumSection({
           setValue={setValue}
         />
       </RowWrapper>
+      <Gap height={56} />
+      <ContractedDspList
+        watch={watch}
+        register={register}
+        setValue={setValue}
+      />
     </Container>
   );
 }

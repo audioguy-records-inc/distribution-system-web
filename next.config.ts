@@ -21,6 +21,13 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+
+  images: {
+    domains: [
+      "storage-test-distribution.sovo360.com",
+      "storage-distribution.sovo360.com",
+    ],
+  },
 };
 
 export default nextConfig;
