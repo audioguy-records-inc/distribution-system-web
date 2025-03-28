@@ -55,11 +55,6 @@ export default function AlbumNewPage() {
     shouldFocusError: false,
   });
 
-  const trackForm = useForm<Track>({
-    mode: "onChange",
-    shouldFocusError: false,
-  });
-
   const handleReset = () => {
     reset();
     resetNewAlbum();
@@ -163,9 +158,7 @@ export default function AlbumNewPage() {
       <Gap height={56} />
       <CollapsibleTrackHeader
         title="4. 트랙 정보"
-        renderComponent={
-          <TrackSection albumWatch={watch} trackForm={trackForm} />
-        }
+        renderComponent={<TrackSection albumWatch={watch} />}
         disabled={!newAlbum}
       />
       <Gap height={56} />

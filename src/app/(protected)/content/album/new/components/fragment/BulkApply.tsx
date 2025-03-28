@@ -25,15 +25,15 @@ const ButtonWrapper = styled.div`
 
 interface BulkApplyProps {
   albumWatch: UseFormWatch<Album>;
-  setValue: UseFormSetValue<Track>;
-  watch: UseFormWatch<Track>;
+  // setValue: UseFormSetValue<{ trackList: Track[] }>;
+  // watch: UseFormWatch<{ trackList: Track[] }>;
 }
 
 export default function BulkApply({
   albumWatch,
-  setValue,
-  watch,
-}: BulkApplyProps) {
+}: // setValue,
+// watch,
+BulkApplyProps) {
   const [albumGenre, setAlbumGenre] = useState<boolean>(false);
   const [serviceTime, setServiceTime] = useState<boolean>(false);
   const [countryCode, setCountryCode] = useState<boolean>(false);

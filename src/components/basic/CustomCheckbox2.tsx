@@ -1,0 +1,91 @@
+import CheckIcon from "../icons/CheckIcon";
+import React from "react";
+import styled from "styled-components";
+import theme from "@/styles/theme";
+
+interface CustomCheckbox2Props {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+  size?: "normal" | "small";
+  readOnly?: boolean;
+}
+
+const CheckboxContainer = styled.label<{
+  $disabled?: boolean;
+  $size?: "normal" | "small";
+  $readOnly?: boolean;
+}>`
+  display: flex;
+  align-items: center;
+  cursor: ${({ $disabled, $readOnly }) =>
+    $readOnly || $disabled ? "default" : "pointer"};
+  gap: ${({ $size }) => ($size === "small" ? "6px" : "8px")};
+`;
+
+const CheckboxInput = styled.div<{
+  $checked: boolean;
+  $disabled?: boolean;
+  $size?: "normal" | "small";
+}>`
+  width: ${({ $size }) => ($size === "small" ? "16px" : "20px")};
+  height: ${({ $size }) => ($size === "small" ? "16px" : "20px")};
+  margin: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ $checked, $disabled }) =>
+    $disabled
+      ? $checked
+        ? theme.colors.purple[100]
+        : theme.colors.gray[50]
+      : $checked
+      ? theme.colors.purple[600]
+      : theme.colors.gray[50]};
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: ${({ $checked, $disabled }) =>
+      $disabled
+        ? $checked
+          ? theme.colors.purple[100]
+          : theme.colors.gray[50]
+        : $checked
+        ? theme.colors.purple[700]
+        : theme.colors.gray[100]};
+  }
+`;
+
+const Label = styled.span<{ $disabled?: boolean; $size?: "normal" | "small" }>`
+  ${({ $size }) =>
+    $size === "small" ? theme.fonts.label2.medium : theme.fonts.body2.medium}
+  color: ${({ $disabled }) => ($disabled ? theme.colors.gray[100] : "black")};
+`;
+
+const CustomCheckbox2: React.FC<CustomCheckbox2Props> = ({
+  checked,
+  onChange,
+  disabled = false,
+  size = "normal",
+  readOnly = false,
+}) => {
+  return (
+    <CheckboxContainer
+      $disabled={disabled}
+      $size={size}
+      onClick={() => !disabled && !readOnly && onChange(!checked)}
+      $readOnly={readOnly}
+    >
+      <CheckboxInput $checked={checked} $disabled={disabled} $size={size}>
+        <CheckIcon
+          width={size === "small" ? 14 : 16}
+          height={size === "small" ? 14 : 16}
+          color="white"
+        />
+      </CheckboxInput>
+    </CheckboxContainer>
+  );
+};
+
+export default CustomCheckbox2;

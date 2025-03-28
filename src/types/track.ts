@@ -16,46 +16,46 @@ export interface SpatialAudioInfo {
 }
 
 export interface Track {
-  _id: string;
-  title: string;
-  trackUniqueId: string;
-  UCI: string;
-  ISRC: string;
+  _id?: string;
+  title?: string;
+  trackUniqueId?: string;
+  UCI?: string;
+  ISRC?: string;
 
-  discNumber: number;
-  trackNumber: number;
-  isMainTitle: boolean;
-  isTitle: boolean;
+  discNumber?: number;
+  trackNumber?: number;
+  isMainTitle?: boolean;
+  isTitle?: boolean;
 
-  releaseArtistList: ArtistInfo[];
-  participateArtistList: ArtistInfo[];
+  releaseArtistList?: ArtistInfo[];
+  participateArtistList?: ArtistInfo[];
 
-  mainGenre: string;
-  subGenre: string;
+  mainGenre?: string;
+  subGenre?: string;
 
-  releaseCountryCode: CountryCode;
+  releaseCountryCode?: CountryCode;
 
-  utcReleasedAt: Date;
-  utcServiceStartedAt: Date;
+  utcReleasedAt?: Date;
+  utcServiceStartedAt?: Date;
 
-  isExposed: boolean;
-  isAdultOnly: boolean;
+  isExposed?: boolean;
+  isAdultOnly?: boolean;
 
-  trackFileList: TrackFile[];
+  trackFileList?: TrackFile[];
 
-  albumId: string;
+  albumId?: string;
   userId?: string;
   userInfo?: User;
   userContractId?: string;
   userContract?: UserContract;
 
-  lyrics: string;
+  lyrics?: string;
 
-  isSupportedSpatialAudio: boolean;
-  spatialAudioInfo: SpatialAudioInfo | null;
+  isSupportedSpatialAudio?: boolean;
+  spatialAudioInfo?: SpatialAudioInfo | null;
 
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   deletedAt?: Date | null;
 }
 

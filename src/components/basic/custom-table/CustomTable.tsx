@@ -12,7 +12,7 @@ export interface Column<T> {
   width?: number;
   align?: "left" | "center" | "right";
   type: "string" | "input" | "dropdown" | "component" | "button";
-  render?: (value: T[keyof T], record: T) => React.ReactNode;
+  render?: (value: T[keyof T], record: T, rowIndex?: number) => React.ReactNode;
   dropdownOptions?: { key: string; value: string }[];
   icon?: React.ReactNode;
   onClick?: (record: T, rowIndex: number) => void;
@@ -185,7 +185,7 @@ const CustomTable = <T extends Record<string, any>>({
     const value = row[column.accessor];
 
     if (column.render) {
-      return column.render(value, row);
+      return column.render(value, row, rowIndex);
     }
 
     switch (column.type) {
