@@ -36,7 +36,7 @@ export default function ExcludedRegionList({
             label="서비스 제외 지역"
             items={itemList}
             placeholder="서비스 제외 지역 선택"
-            selectedKeys={field.value}
+            selectedKeys={field.value || []}
             size="small"
             width={320}
             multiple={true}

@@ -59,7 +59,7 @@ export default function AlbumSection({
         render={({ field }) => {
           return (
             <AlbumTitle
-              value={field.value}
+              value={field.value || []}
               onChange={field.onChange}
               readOnly={false}
             />
@@ -74,7 +74,7 @@ export default function AlbumSection({
           render={({ field }) => {
             return (
               <AlbumType
-                value={field.value}
+                value={field.value || ""}
                 onChange={field.onChange}
                 readOnly={false}
               />
@@ -253,7 +253,7 @@ export default function AlbumSection({
             <ImageUpload
               headerText="앨범 커버"
               onChange={field.onChange}
-              value={field.value}
+              value={field.value || []}
               fileType={FileType.IMAGES}
               dataCollectionName={DataCollectionName.ALBUMS}
               width="320px"
@@ -267,7 +267,7 @@ export default function AlbumSection({
             <ImageUpload
               headerText="부클릿 이미지"
               onChange={field.onChange}
-              value={field.value}
+              value={field.value || []}
               fileType={FileType.IMAGES}
               dataCollectionName={DataCollectionName.ALBUMS}
               width="320px"
@@ -282,7 +282,7 @@ export default function AlbumSection({
         render={({ field }) => (
           <CustomUpload
             onChange={field.onChange}
-            value={field.value}
+            value={field.value || []}
             fileType={FileType.DOCS}
             dataCollectionName={DataCollectionName.ALBUMS}
             headerText="기타 자료(저작권 승인서 등)"

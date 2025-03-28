@@ -7,9 +7,11 @@ import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary"
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import ButtonSpinner from "@/components/ButtonSpinner";
 import CollapsibleHeader from "@/components/CollapsibleHeader";
+import CollapsibleTrackHeader from "@/components/CollapsibleTrackHeader";
 import DistributionSection from "./components/DistributionSection";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
+import Track from "@/types/track";
 import TrackSection from "./components/TrackSection";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
@@ -29,17 +31,18 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function AlbumNewPage() {
-  const { createAlbum, isLoading } = useAlbumStore();
+  const { createAlbum, newAlbum, isLoading, resetNewAlbum, updateAlbum } =
+    useAlbumStore();
+  console.log("moonsae newAlbum", newAlbum);
   const {
     register,
-    handleSubmit,
     reset,
     control,
     formState: { isValid, isDirty },
     watch,
     setValue,
   } = useForm<Album>({
-    defaultValues: {
+    defaultValues: newAlbum || {
       titleList: [
         {
           KR: "",
@@ -51,28 +54,78 @@ export default function AlbumNewPage() {
     mode: "onChange",
     shouldFocusError: false,
   });
-  const handleClose = () => {};
 
-  const onSubmit = async (data: Album) => {
-    await createAlbum(data);
-    handleClose();
+  const trackForm = useForm<Track>({
+    mode: "onChange",
+    shouldFocusError: false,
+  });
+
+  const handleReset = () => {
+    reset();
+    resetNewAlbum();
   };
 
-  console.log("moonsae watch", watch());
+  const handleSubmit = () => {
+    onSubmit(watch());
+  };
+
+  const onSubmit = async (data: Album) => {
+    if (newAlbum) {
+      await updateAlbum(data, true);
+    } else {
+      await createAlbum(data);
+    }
+  };
+
+  const isFilled = () => {
+    const album = watch();
+    return (
+      album.titleList &&
+      album.titleList.length > 0 &&
+      album.albumUniqueId &&
+      album.UCI &&
+      album.UPC &&
+      album.artistImageList &&
+      album.artistImageList.length > 0 &&
+      album.releaseArtistList &&
+      album.releaseArtistList.length > 0 &&
+      album.participateArtistList &&
+      album.participateArtistList.length > 0 &&
+      album.albumType &&
+      album.releaseCountryCode &&
+      album.mainGenre &&
+      album.subGenre &&
+      album.numberOfDiscs &&
+      album.numberOfTracksPerDisc &&
+      album.distributionCompanyName &&
+      album.agencyCompanyName &&
+      album.userId &&
+      album.userContractId &&
+      album.dspContractIdList &&
+      album.dspContractIdList.length > 0 &&
+      album.supplyRegion &&
+      album.utcReleasedAt &&
+      album.utcServiceStartedAt &&
+      album.coverImageList &&
+      album.coverImageList.length > 0 &&
+      album.bookletImageList &&
+      album.bookletImageList.length > 0
+    );
+  };
 
   return (
     <Container>
       <HeaderWrapper>
         <PageHeader title={"신규 앨범 등록"} />
         <ButtonWrapper>
-          <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
+          <ButtonOutlinedSecondary label="초기화" onClick={handleReset} />
           {isLoading ? (
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label="등록"
-              onClick={handleSubmit(onSubmit)}
-              disabled={!isDirty || !isValid}
+              label={newAlbum ? "수정" : "등록"}
+              onClick={handleSubmit}
+              disabled={!isFilled()}
             />
           )}
         </ButtonWrapper>
@@ -108,9 +161,12 @@ export default function AlbumNewPage() {
         }
       />
       <Gap height={56} />
-      <CollapsibleHeader
+      <CollapsibleTrackHeader
         title="4. 트랙 정보"
-        renderComponent={<TrackSection watch={watch} />}
+        renderComponent={
+          <TrackSection albumWatch={watch} trackForm={trackForm} />
+        }
+        disabled={!newAlbum}
       />
       <Gap height={56} />
     </Container>

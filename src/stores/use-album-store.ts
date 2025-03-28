@@ -1,31 +1,35 @@
+import { createJSONStorage, persist } from "zustand/middleware";
+
 import Album from "@/types/album";
 import { create } from "zustand";
 import { deleteAlbum } from "@/api/album/delete-album";
 import { getAlbums } from "@/api/album/get-albums";
-import { persist } from "zustand/middleware";
 import { postAlbum } from "@/api/album/post-album";
 import { putAlbum } from "@/api/album/put-album";
 import { searchAlbums } from "@/api/album/search-albums";
 import toast from "react-hot-toast";
 
 interface AlbumStore {
+  newAlbum: Album | null;
   albums: Album[];
   isLoading: boolean;
   error: string | null;
 
   fetchAlbums: () => Promise<void>;
   createAlbum: (album: Album) => Promise<void>;
-  updateAlbum: (album: Album) => Promise<void>;
+  updateAlbum: (album: Album, isNewAlbum: boolean) => Promise<void>;
   deleteAlbum: (albumId: string) => Promise<void>;
   searchAlbums: (
     searchKeyword: string,
     searchFields?: string,
   ) => Promise<Album[]>;
+  resetNewAlbum: () => void;
 }
 
 export const useAlbumStore = create<AlbumStore>()(
   persist(
     (set) => ({
+      newAlbum: null,
       albums: [],
       isLoading: false,
       error: null,
@@ -73,6 +77,7 @@ export const useAlbumStore = create<AlbumStore>()(
 
           set((state) => ({
             albums: [...state.albums, response.data!.albumList[0]],
+            newAlbum: response.data!.albumList[0],
             error: null,
           }));
 
@@ -90,7 +95,7 @@ export const useAlbumStore = create<AlbumStore>()(
           set({ isLoading: false });
         }
       },
-      updateAlbum: async (album: Album) => {
+      updateAlbum: async (album: Album, isNewAlbum: boolean = false) => {
         set({ isLoading: true });
         try {
           const response = await putAlbum({ album });
@@ -110,7 +115,9 @@ export const useAlbumStore = create<AlbumStore>()(
             error: null,
           }));
 
-          toast.success("앨범이 수정되었습니다.");
+          if (isNewAlbum) {
+            set({ newAlbum: response.data.album });
+          }
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -196,9 +203,14 @@ export const useAlbumStore = create<AlbumStore>()(
           set({ isLoading: false });
         }
       },
+      resetNewAlbum: () => {
+        set({ newAlbum: null });
+      },
     }),
     {
       name: "album-store",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ newAlbum: state.newAlbum }),
     },
   ),
 );

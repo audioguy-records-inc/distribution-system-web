@@ -53,13 +53,13 @@ export default function DistributionSection({
           {...register("albumUniqueId", { required: true })}
         />
         <Controller
-          name="coverImageList"
+          name="artistImageList"
           control={control}
           render={({ field }) => (
             <ImageUpload
               headerText="아티스트 이미지"
               onChange={field.onChange}
-              value={field.value}
+              value={field.value || []}
               fileType={FileType.IMAGES}
               dataCollectionName={DataCollectionName.ALBUMS}
               width="320px"

@@ -41,53 +41,53 @@ export interface Track {
 }
 
 export interface Album {
-  _id: string;
-  titleList: TitleLanguage[];
-  albumUniqueId: string;
-  UCI: string;
-  UPC: string;
+  _id?: string;
+  titleList?: TitleLanguage[];
+  albumUniqueId?: string;
+  UCI?: string;
+  UPC?: string;
 
-  artistImageList: ImageInfo[];
-  releaseArtistList: ArtistInfo[];
-  participateArtistList: ArtistInfo[];
+  artistImageList?: ImageInfo[];
+  releaseArtistList?: ArtistInfo[];
+  participateArtistList?: ArtistInfo[];
 
-  albumType: string;
-  releaseCountryCode: string;
+  albumType?: string;
+  releaseCountryCode?: string;
 
-  mainGenre: string;
-  subGenre: string;
+  mainGenre?: string;
+  subGenre?: string;
 
-  numberOfDiscs: number;
-  numberOfTracksPerDisc: number;
+  numberOfDiscs?: number;
+  numberOfTracksPerDisc?: number;
 
-  distributionCompanyName: string;
-  agencyCompanyName: string;
+  distributionCompanyName?: string;
+  agencyCompanyName?: string;
 
   userId?: string;
   userInfo?: User;
   userContractId?: string;
   userContract?: UserContract;
-  dspContractIdList: string[];
+  dspContractIdList?: string[];
 
-  supplyRegion: string;
-  excludedRegionList: string[];
+  supplyRegion?: string;
+  excludedRegionList?: string[];
 
-  utcReleasedAt: Date;
-  utcServiceStartedAt: Date;
+  utcReleasedAt?: Date;
+  utcServiceStartedAt?: Date;
 
-  isExposed: boolean;
-  isAdultOnly: boolean;
-  isSupportedSpatialAudio: boolean;
+  isExposed?: boolean;
+  isAdultOnly?: boolean;
+  isSupportedSpatialAudio?: boolean;
 
-  albumIntroduction: string;
-  requestDetails: string;
+  albumIntroduction?: string;
+  requestDetails?: string;
 
-  coverImageList: ImageInfo[];
-  bookletImageList: ImageInfo[];
-  etcFileList: FileInfo[];
+  coverImageList?: ImageInfo[];
+  bookletImageList?: ImageInfo[];
+  etcFileList?: FileInfo[];
 
-  transmissionList: Transmission[];
-  trackList: Track[];
+  transmissionList?: Transmission[];
+  trackList?: Track[];
 
   // createdAt: Date;
   // updatedAt: Date;
