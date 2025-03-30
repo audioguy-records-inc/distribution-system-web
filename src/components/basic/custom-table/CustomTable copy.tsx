@@ -23,7 +23,7 @@ interface CustomTableProps<T> {
   data: T[];
   size?: "small" | "normal";
   expandable?: {
-    expandedRowRender: (record: T, index?: number) => React.ReactNode;
+    expandedRowRender: (record: T) => React.ReactNode;
     // expandColumn?: number; // 추후 버튼 위치 정할 때 사용, 구현되어있지 않음. 지금은 맨 뒤에 위치
     expandColumnWidth?: number;
   };
@@ -43,7 +43,6 @@ const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   background: ${theme.colors.white};
-  table-layout: fixed;
 `;
 
 const TableHeader = styled.thead`
@@ -62,7 +61,6 @@ const HeaderCell = styled.th<{
   padding: ${({ $size }) => ($size === "small" ? "12px" : "16px")} 24px;
   text-align: ${({ $align }) => $align || "center"};
   width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
-  min-width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
   max-width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
   overflow: hidden;
   white-space: nowrap;
@@ -85,17 +83,16 @@ const TableRow = styled.tr<{ $isExpanded?: boolean }>`
 const TableCell = styled.td<{
   $align?: "left" | "center" | "right";
   $size?: "small" | "normal";
-  $width?: number;
 }>`
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
   color: ${theme.colors.gray[800]};
   padding: ${({ $size }) => ($size === "small" ? "6px 12px" : "22px 20px")};
   text-align: ${({ $align }) => $align || "left"};
-  width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
-  min-width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
-  max-width: ${({ $width }) => ($width ? `${$width}px` : "auto")};
+  max-width: 0;
   overflow: visible;
+  /* white-space: nowrap;
+  text-overflow: ellipsis; */
 `;
 
 const ExpandedContent = styled.tr`
@@ -123,13 +120,6 @@ const Text = styled.div<{ $size?: "small" | "normal" }>`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
-`;
-
-const RenderContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
 `;
 
@@ -195,9 +185,7 @@ const CustomTable = <T extends Record<string, any>>({
     const value = row[column.accessor];
 
     if (column.render) {
-      return (
-        <RenderContainer>{column.render(value, row, rowIndex)}</RenderContainer>
-      );
+      return column.render(value, row, rowIndex);
     }
 
     switch (column.type) {
@@ -273,12 +261,7 @@ const CustomTable = <T extends Record<string, any>>({
             <React.Fragment key={rowIndex}>
               <TableRow $isExpanded={expandedRows.has(rowIndex)}>
                 {safeColumns.map((column, colIndex) => (
-                  <TableCell
-                    key={colIndex}
-                    $align={column.align}
-                    $size={size}
-                    $width={column.width}
-                  >
+                  <TableCell key={colIndex} $align={column.align} $size={size}>
                     {renderCellContent(column, row, rowIndex)}
                   </TableCell>
                 ))}
@@ -300,7 +283,7 @@ const CustomTable = <T extends Record<string, any>>({
               {expandable && expandedRows.has(rowIndex) && (
                 <ExpandedContent>
                   <ExpandedCell colSpan={safeColumns.length + 1}>
-                    {expandable.expandedRowRender(row, rowIndex)}
+                    {expandable.expandedRowRender(row)}
                   </ExpandedCell>
                 </ExpandedContent>
               )}

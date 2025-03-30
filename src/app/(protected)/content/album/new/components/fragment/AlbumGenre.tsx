@@ -51,7 +51,7 @@ export default function AlbumGenre({
         render={({ field }) => {
           return (
             <CustomDropdown
-              items={getAlbumGenreSubGenreList(watch("mainGenre")).map(
+              items={getAlbumGenreSubGenreList(watch("mainGenre") || "").map(
                 (item) => ({
                   key: item,
                   value: item,

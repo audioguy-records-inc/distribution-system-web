@@ -169,6 +169,7 @@ export default function ParticipateArtistSearch({
             items={roleCategory1Items}
             size="small"
             width={108}
+            readOnly={readOnly}
           />
         );
       },
@@ -212,6 +213,7 @@ export default function ParticipateArtistSearch({
             items={roleCategory2Items}
             size="small"
             width={108}
+            readOnly={readOnly}
             disabled={!isCategory1Selected}
           />
         );
@@ -221,6 +223,7 @@ export default function ParticipateArtistSearch({
       header: "",
       accessor: "action" as keyof Artist,
       type: "button",
+      width: 50,
       icon: <TrashIcon />,
       onClick: (record, rowIndex) => {
         onChange(

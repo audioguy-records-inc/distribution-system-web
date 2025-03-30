@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import UserContract from "@/types/user-contract";
 import { create } from "zustand";
 import { deleteUserContract } from "@/api/user-contract/delete-user-contract";
+import { filterUserContracts } from "@/api/user-contract/filter-user-contracts";
 import { getUserContracts } from "@/api/user-contract/get-user-contracts";
 import { postUserContract } from "@/api/user-contract/post-user-contract";
 import { putUserContract } from "@/api/user-contract/put-user-contract";
@@ -22,6 +23,7 @@ interface UserContractStore {
     searchKeyword: string,
     searchFields?: string,
   ) => Promise<UserContract[]>;
+  filterUserContracts: (query: string) => Promise<UserContract[]>;
 }
 
 export const useUserContractStore = create<UserContractStore>()(
@@ -199,6 +201,35 @@ export const useUserContractStore = create<UserContractStore>()(
           toast.error(errorMessage);
 
           console.error("[searchUserContracts] error", error);
+          set({ error: errorMessage });
+          return [];
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      filterUserContracts: async (query) => {
+        set({ isLoading: true });
+        try {
+          const response = await filterUserContracts({ query });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set({
+            error: null,
+          });
+
+          return response.data.userContractList;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "유저 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error("[filterUserContracts] error", error);
           set({ error: errorMessage });
           return [];
         } finally {

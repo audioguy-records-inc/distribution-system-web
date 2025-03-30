@@ -100,6 +100,12 @@ const Input = styled.input<{
     ${({ $size }) =>
       $size === "small" ? theme.fonts.body2.regular : theme.fonts.body1.regular}
   }
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 
 const IconContainer = styled.div<{ $size?: "small" | "normal" }>`
@@ -192,9 +198,11 @@ const CustomInput = ({
           onKeyDown={onKeyDown}
           onClick={onClick}
         />
-        <IconContainer $size={size} onClick={onIconClick}>
-          {icon}
-        </IconContainer>
+        {icon && (
+          <IconContainer $size={size} onClick={onIconClick}>
+            {icon}
+          </IconContainer>
+        )}
       </InputContainer>
       {helpText && <HelpText $isError={isError}>{helpText}</HelpText>}
     </Container>

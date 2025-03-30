@@ -133,6 +133,7 @@ export default function ReleaseArtistSearch({
       header: "",
       accessor: "action" as keyof Artist,
       type: "button",
+      width: 50,
       icon: <TrashIcon />,
       onClick: (record, rowIndex) => {
         onChange(

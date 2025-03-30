@@ -38,7 +38,7 @@ export default function ArtistSection({
         control={control}
         render={({ field }) => (
           <ReleaseArtistSearch
-            value={field.value}
+            value={field.value || []}
             onChange={field.onChange}
             readOnly={false}
             placeholder="아티스트 검색"
@@ -53,7 +53,7 @@ export default function ArtistSection({
         control={control}
         render={({ field }) => (
           <ParticipateArtistSearch
-            value={field.value}
+            value={field.value || []}
             onChange={field.onChange}
             readOnly={false}
             placeholder="아티스트 검색"

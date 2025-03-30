@@ -124,14 +124,14 @@ const ArtistSearchModal = ({
       header: "아티스트명",
       accessor: "name",
       type: "string",
-      width: 337,
+      width: 300,
       align: "center",
     },
     {
       header: "도메인",
       accessor: "countryCode",
       type: "string",
-      width: 160,
+      width: 100,
       align: "center",
       render: (value, record) => {
         return record.countryCode;
