@@ -1,4 +1,5 @@
 import { API_URL } from "@/constants/api";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useUserStore } from "@/stores/use-user-store";
 
 interface FetchOptions extends RequestInit {
@@ -15,7 +16,7 @@ export const apiFetch = async <T>(
   path: string,
   options: FetchOptions = {},
 ): Promise<FetchResponse<T>> => {
-  const jwt = useUserStore.getState().jsonWebToken;
+  const jwt = useAuthStore.getState().jsonWebToken;
   const url = `${API_URL}${path}`;
   // jwt가 있을 때만 포함할 헤더 설정
   const headers: Record<string, string> = {
