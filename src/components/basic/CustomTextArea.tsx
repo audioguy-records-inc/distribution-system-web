@@ -37,10 +37,11 @@ const TextAreaContainer = styled.div<{
   $locked?: boolean;
   $disabled?: boolean;
   $expand?: boolean;
+  $height?: string;
 }>`
   display: flex;
   width: ${({ $expand }) => ($expand ? "100%" : "320px")};
-  height: auto;
+  height: ${({ $height }) => ($height ? $height : "auto")};
   min-height: ${({ $expand }) => ($expand ? "100%" : "160px")};
   border-radius: 8px;
   border: 1px solid
@@ -63,10 +64,11 @@ const TextArea = styled.textarea<{
   $disabled?: boolean;
   $locked?: boolean;
   $hideScrollbar?: boolean;
+  $height?: string;
 }>`
   ${theme.fonts.body1.regular}
   width: 100%;
-  height: 100%;
+  height: ${({ $height }) => ($height ? $height : "100%")};
   padding: 12px 14px;
   color: ${({ $locked, $disabled }) =>
     $disabled
@@ -78,8 +80,9 @@ const TextArea = styled.textarea<{
   border: none;
   outline: none;
   background: transparent;
-  resize: vertical;
-  min-height: 160px;
+  resize: ${({ $height }) => ($height ? "none" : "vertical")};
+  min-height: ${({ $height }) =>
+    $height && $height !== "auto" ? $height : "160px"};
   overflow-y: auto;
 
   ${({ $hideScrollbar }) =>
@@ -112,6 +115,7 @@ interface TextAreaProps {
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   hideScrollbar?: boolean;
   expand?: boolean;
+  height?: string;
 }
 
 const CustomTextArea = ({
@@ -126,6 +130,7 @@ const CustomTextArea = ({
   onChange = () => {},
   hideScrollbar = false,
   expand = false,
+  height = "auto",
   ...props
 }: TextAreaProps) => {
   return (
@@ -139,6 +144,7 @@ const CustomTextArea = ({
         $locked={locked}
         $disabled={disabled}
         $expand={expand}
+        $height={height}
       >
         <TextArea
           {...props}
@@ -149,6 +155,7 @@ const CustomTextArea = ({
           $disabled={disabled}
           $locked={locked}
           $hideScrollbar={hideScrollbar}
+          $height={height}
         />
       </TextAreaContainer>
       {helpText && <HelpText $isError={isError}>{helpText}</HelpText>}

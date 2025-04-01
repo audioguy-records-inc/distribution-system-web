@@ -22,11 +22,13 @@ import CustomCheckbox2 from "@/components/basic/CustomCheckbox2";
 import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
 import ImageUpload from "@/components/basic/ImageUpload";
+import LyricsAddModal from "./fragment/LyricsAddModal";
 import PlusIcon from "@/components/icons/PlusIcon";
 import Track from "@/types/track";
 import TrackDetail from "./TrackDetail";
 import TrashIcon from "@/components/icons/TrashIcon";
 import UploadIcon from "@/components/icons/UploadIcon";
+import UploadTrackAudio from "./fragment/UploadTrackAudio";
 import styled from "styled-components";
 import { useTrackStore } from "@/stores/use-track-store";
 
@@ -37,7 +39,7 @@ const RowWrapper = styled.div`
   gap: 120px;
 `;
 
-interface EditTrack extends Track {
+export interface EditTrack extends Track {
   isSelected?: boolean;
 }
 
@@ -50,6 +52,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
 
   const [edittingTracks, setEdittingTracks] = useState<EditTrack[]>(tracks);
   const albumData = albumWatch();
+  const [isLyricsModalOpen, setIsLyricsModalOpen] = useState(false);
+  const [selectedTrack, setSelectedTrack] = useState<EditTrack | null>(null);
 
   // 정렬 함수: 트랙번호가 있는 항목은 먼저 나오고, 없는 항목은 뒤로 정렬
   const sortTracks = (tracksToSort: EditTrack[]) => {
@@ -286,7 +290,18 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       type: "input",
       width: 80,
       render: (value, record, index) => {
-        return <ButtonOutlinedPrimary label="등록" size="small" />;
+        const hasLyrics = record.lyrics && record.lyrics.trim() !== "";
+        return (
+          <ButtonOutlinedPrimary
+            label={hasLyrics ? "수정" : "등록"}
+            size="small"
+            onClick={() => {
+              if (!record) return;
+              setIsLyricsModalOpen(true);
+              setSelectedTrack(record);
+            }}
+          />
+        );
       },
     },
     {
@@ -296,13 +311,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       type: "input",
       width: 174,
       render: (value, record, index) => {
-        return (
-          <ButtonOutlinedPrimary
-            label="업로드"
-            size="small"
-            leftIcon={<UploadIcon />}
-          />
-        );
+        return <UploadTrackAudio track={record} />;
       },
     },
   ];
@@ -349,6 +358,13 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
         onClick={handleAddTrack}
         leftIcon={<PlusIcon />}
         expand
+      />
+
+      {/* 가사 등록 모달 */}
+      <LyricsAddModal
+        isOpen={isLyricsModalOpen}
+        onClose={() => setIsLyricsModalOpen(false)}
+        track={selectedTrack}
       />
     </Container>
   );
