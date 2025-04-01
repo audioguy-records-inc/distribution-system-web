@@ -32,7 +32,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.div`
-  ${theme.fonts.body1.medium}
+  ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
 `;
 

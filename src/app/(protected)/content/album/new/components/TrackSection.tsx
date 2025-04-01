@@ -25,7 +25,7 @@ import ImageUpload from "@/components/basic/ImageUpload";
 import LyricsAddModal from "./fragment/LyricsAddModal";
 import PlusIcon from "@/components/icons/PlusIcon";
 import Track from "@/types/track";
-import TrackDetail from "./TrackDetail";
+import TrackDetail from "./fragment/TrackDetail";
 import TrashIcon from "@/components/icons/TrashIcon";
 import UploadIcon from "@/components/icons/UploadIcon";
 import UploadTrackAudio from "./fragment/UploadTrackAudio";
@@ -34,9 +34,12 @@ import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div``;
 
-const RowWrapper = styled.div`
+const ColumnWrapper = styled.div`
   display: flex;
-  gap: 120px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 `;
 
 export interface EditTrack extends Track {
@@ -54,6 +57,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
   const albumData = albumWatch();
   const [isLyricsModalOpen, setIsLyricsModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState<EditTrack | null>(null);
+  const [isCheckAll, setIsCheckAll] = useState(false);
 
   // 정렬 함수: 트랙번호가 있는 항목은 먼저 나오고, 없는 항목은 뒤로 정렬
   const sortTracks = (tracksToSort: EditTrack[]) => {
@@ -80,6 +84,27 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
     });
   };
 
+  const handleCheckboxChange = (index: number, checked: boolean) => {
+    setEdittingTracks(
+      edittingTracks.map((track, i) =>
+        i === index ? { ...track, isSelected: checked } : track,
+      ),
+    );
+
+    setIsCheckAll(checked);
+  };
+
+  // 전체 체크박스 상태 변경 함수 추가
+  const handleCheckAll = (checked: boolean) => {
+    setIsCheckAll(checked);
+    setEdittingTracks(
+      edittingTracks.map((track) => ({
+        ...track,
+        isSelected: checked,
+      })),
+    );
+  };
+
   // albumWatch 값이 변경될 때마다 모든 트랙의 albumId와 userId 업데이트
   useEffect(() => {
     if (albumData?._id && albumData?.userId) {
@@ -103,10 +128,22 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
   const columns: Column<EditTrack>[] = [
     {
       header: "",
+      renderHeader: () => {
+        return (
+          <ColumnWrapper>
+            <CustomCheckbox2
+              checked={isCheckAll}
+              onChange={(checked) => {
+                handleCheckAll(checked);
+              }}
+            />
+          </ColumnWrapper>
+        );
+      },
       accessor: "_id",
       align: "center",
       type: "string",
-      width: 48,
+      width: 60,
       render: (value, record, index) => {
         return (
           <CustomCheckbox2
@@ -329,7 +366,11 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
   return (
     <Container>
       <Gap height={32} />
-      <BulkApply albumWatch={albumWatch} />
+      <BulkApply
+        albumWatch={albumWatch}
+        tracks={edittingTracks}
+        setTracks={setEdittingTracks}
+      />
       <Gap height={32} />
       <CustomTable
         columns={columns}

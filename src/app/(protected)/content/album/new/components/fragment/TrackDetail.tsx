@@ -1,18 +1,20 @@
+import { useEffect, useState } from "react";
+
 import CustomInput from "@/components/basic/CustomInput";
 import CustomModal from "@/components/CustomModal";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
 import DetailHeaderButton from "@/app/(protected)/contract/dsp/list/components/fragment/DetailHeaderButton";
 import Gap from "@/components/basic/Gap";
-import ParticipateArtistSearch from "./fragment/ParticipateArtistSearch";
-import ReleaseArtistSearch from "./fragment/ReleaseArtistSearch";
+import ParticipateArtistSearch from "./ParticipateArtistSearch";
+import ReleaseArtistSearch from "./ReleaseArtistSearch";
+import SpecialAudio from "./SpecialAudio";
 import Track from "@/types/track";
-import TrackGenre from "./fragment/TrackGenre";
-import TrackReleaseCountryCode from "./fragment/TrackReleaseCountryCode";
-import TrackReleaseDate from "./fragment/TrackReleaseDate";
-import TrackUserContract from "./fragment/TrackUserContract";
+import TrackGenre from "./TrackGenre";
+import TrackReleaseCountryCode from "./TrackReleaseCountryCode";
+import TrackReleaseDate from "./TrackReleaseDate";
+import TrackUserContract from "./TrackUserContract";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useState } from "react";
 import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div`
@@ -59,6 +61,7 @@ export default function TrackDetail({
   const handleConfirmUpdate = async () => {
     await updateTrack(currentTrack);
     setIsUpdateModalOpen(false);
+    setIsEdit(false);
   };
 
   const handleDelete = () => {
@@ -81,6 +84,11 @@ export default function TrackDetail({
     return true;
   };
 
+  useEffect(() => {
+    if (currentTrack?.userContract) {
+    }
+  }, [currentTrack?.userContract]);
+  console.log("moonsae currentTrack", currentTrack);
   return (
     <Container>
       <Gap height={48} />
@@ -212,7 +220,8 @@ export default function TrackDetail({
         />
         <TrackUserContract
           value={currentTrack.userContract || null}
-          userId={currentTrack.userId || ""}
+          userId={currentTrack.userId}
+          userContractId={currentTrack.userContractId}
           onChange={(value) => {
             setTracks(
               tracks.map((track, i) =>
@@ -302,7 +311,37 @@ export default function TrackDetail({
         />
       </RowWrapper>
       <Gap height={56} />
-      <RowWrapper></RowWrapper>
+      <RowWrapper>
+        <CustomRadioWithLabel
+          label="MV 서비스"
+          leftOption={{
+            label: "해당",
+            value: true,
+            checked: currentTrack.isMVService === true,
+          }}
+          rightOption={{
+            label: "해당없음",
+            value: false,
+            checked: currentTrack.isMVService === false,
+          }}
+          value={currentTrack.isMVService}
+          onChange={(e) => {
+            setTracks(
+              tracks.map((track, i) =>
+                i === index ? { ...track, isMVService: e.target.value } : track,
+              ),
+            );
+          }}
+          readOnly={!isEdit}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <SpecialAudio
+        track={currentTrack}
+        tracks={tracks}
+        setTracks={setTracks}
+        readOnly={!isEdit}
+      />
       <CustomModal
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}

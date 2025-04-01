@@ -4,6 +4,7 @@ import UserContract from "@/types/user-contract";
 import { create } from "zustand";
 import { deleteUserContract } from "@/api/user-contract/delete-user-contract";
 import { filterUserContracts } from "@/api/user-contract/filter-user-contracts";
+import { getUserContract } from "@/api/user-contract/get-user-contract";
 import { getUserContracts } from "@/api/user-contract/get-user-contracts";
 import { postUserContract } from "@/api/user-contract/post-user-contract";
 import { putUserContract } from "@/api/user-contract/put-user-contract";
@@ -15,6 +16,7 @@ interface UserContractStore {
   isLoading: boolean;
   error: string | null;
 
+  fetchUserContract: (userContractId: string) => Promise<UserContract | null>;
   fetchUserContracts: (searchQuery?: string) => Promise<void>;
   createUserContract: (userContract: UserContract) => Promise<void>;
   updateUserContract: (userContract: UserContract) => Promise<void>;
@@ -32,6 +34,30 @@ export const useUserContractStore = create<UserContractStore>()(
       userContracts: [],
       isLoading: false,
       error: null,
+      fetchUserContract: async (userContractId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await getUserContract({ userContractId });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          return response.data.userContract;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "유저 계약 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error("[fetchUserContract] error", error);
+          return null;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       fetchUserContracts: async (searchQuery?: string) => {
         set({ isLoading: true });
 

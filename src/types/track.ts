@@ -10,9 +10,9 @@ export interface TrackFile {
 }
 
 export interface SpatialAudioInfo {
-  UPC: string;
-  ISRC: string;
-  trackFileList: TrackFile[];
+  UPC?: string;
+  ISRC?: string;
+  trackFileList?: TrackFile[];
 }
 
 export interface Track {
@@ -51,6 +51,7 @@ export interface Track {
 
   lyrics?: string;
 
+  isMVService?: boolean;
   isSupportedSpatialAudio?: boolean;
   spatialAudioInfo?: SpatialAudioInfo | null;
 

@@ -13,6 +13,7 @@ export interface Column<T> {
   align?: "left" | "center" | "right";
   type: "string" | "input" | "dropdown" | "component" | "button";
   render?: (value: T[keyof T], record: T, rowIndex?: number) => React.ReactNode;
+  renderHeader?: () => React.ReactNode;
   dropdownOptions?: { key: string; value: string }[];
   icon?: React.ReactNode;
   onClick?: (record: T, rowIndex: number) => void;
@@ -260,7 +261,7 @@ const CustomTable = <T extends Record<string, any>>({
                 $align={column.align}
                 $size={size}
               >
-                {column.header}
+                {column.renderHeader ? column.renderHeader() : column.header}
               </HeaderCell>
             ))}
             {expandable && (

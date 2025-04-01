@@ -25,15 +25,17 @@ const Container = styled.div`
 export default function TrackUserContract({
   value,
   userId,
+  userContractId,
   readOnly,
   onChange,
 }: {
   value: UserContract | null;
   userId: string | undefined;
+  userContractId: string | undefined;
   readOnly: boolean;
   onChange: (value: UserContract | null) => void;
 }) {
-  const { filterUserContracts } = useUserContractStore();
+  const { filterUserContracts, fetchUserContract } = useUserContractStore();
   const [searchedUserContracts, setSearchedUserContracts] = useState<
     UserContract[]
   >([]);
@@ -48,6 +50,18 @@ export default function TrackUserContract({
     };
     fetchUserContract();
   }, [userId, filterUserContracts]);
+
+  useEffect(() => {
+    const _fetchUserContract = async () => {
+      if (userContractId) {
+        const res = await fetchUserContract(userContractId);
+        if (res) {
+          onChange(res);
+        }
+      }
+    };
+    _fetchUserContract();
+  }, [userContractId, fetchUserContract]);
 
   return (
     <Container style={{ marginBottom: userId ? "48px" : "0px" }}>
