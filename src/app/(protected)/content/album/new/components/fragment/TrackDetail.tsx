@@ -93,7 +93,7 @@ export default function TrackDetail({
     <Container>
       <Gap height={48} />
       <Header>
-        <TitleWrapper>트래 상세 정보</TitleWrapper>
+        <TitleWrapper>트랙 상세 정보</TitleWrapper>
         <DetailHeaderButton
           isEdit={isEdit}
           setIsEdit={setIsEdit}
