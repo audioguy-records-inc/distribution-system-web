@@ -13,7 +13,7 @@ interface TrackStore {
   isLoading: boolean;
   error: string | null;
 
-  fetchTracks: () => Promise<void>;
+  fetchTracks: (albumId: string) => Promise<void>;
   createTrack: (track: Track) => Promise<void>;
   updateTrack: (track: Track) => Promise<void>;
   deleteTrack: (trackId: string) => Promise<void>;
@@ -30,10 +30,10 @@ export const useTrackStore = create<TrackStore>()(
       isLoading: false,
       error: null,
 
-      fetchTracks: async () => {
+      fetchTracks: async (albumId: string) => {
         set({ isLoading: true });
         try {
-          const response = await getTracks();
+          const response = await getTracks({ albumId });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
@@ -93,13 +93,19 @@ export const useTrackStore = create<TrackStore>()(
       updateTrack: async (track: Track) => {
         set({ isLoading: true });
         try {
+          if (!track.albumId) {
+            throw new Error("앨범 ID가 없습니다.");
+          }
+
           const response = await putTrack({ track });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
-          const fetchResponse = await getTracks();
+          const fetchResponse = await getTracks({
+            albumId: track.albumId,
+          });
 
           if (!fetchResponse || fetchResponse.error || !fetchResponse.data) {
             throw new Error(fetchResponse.message);

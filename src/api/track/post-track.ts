@@ -16,7 +16,7 @@ export const postTrack = async (
   try {
     const response = await apiFetch("/tracks", {
       method: "POST",
-      body: JSON.stringify(request),
+      body: JSON.stringify(request.trackList),
     });
 
     return response as FetchResponse<PostTrackResponse>;

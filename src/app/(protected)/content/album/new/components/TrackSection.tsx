@@ -46,21 +46,55 @@ interface TrackSectionProps {
 }
 
 export default function TrackSection({ albumWatch }: TrackSectionProps) {
-  const [tracks, setTracks] = useState<EditTrack[]>([]);
+  const { tracks, createTrack, error } = useTrackStore();
+
+  const [edittingTracks, setEdittingTracks] = useState<EditTrack[]>(tracks);
   const albumData = albumWatch();
+
+  // 정렬 함수: 트랙번호가 있는 항목은 먼저 나오고, 없는 항목은 뒤로 정렬
+  const sortTracks = (tracksToSort: EditTrack[]) => {
+    return [...tracksToSort].sort((a, b) => {
+      const aHasTrackNumber =
+        a.trackNumber !== undefined && a.trackNumber !== null;
+      const bHasTrackNumber =
+        b.trackNumber !== undefined && b.trackNumber !== null;
+
+      // 둘 다 트랙번호가 있거나 없는 경우
+      if (aHasTrackNumber === bHasTrackNumber) {
+        if (aHasTrackNumber && bHasTrackNumber) {
+          // 트랙번호 오름차순 정렬
+          return a.trackNumber! - b.trackNumber!;
+        } else {
+          // 둘 다 없으면 생성일(createdAt) 기준 오름차순 정렬
+          const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return aDate - bDate;
+        }
+      }
+      // 트랙번호가 있는 항목을 앞으로
+      return aHasTrackNumber ? -1 : 1;
+    });
+  };
 
   // albumWatch 값이 변경될 때마다 모든 트랙의 albumId와 userId 업데이트
   useEffect(() => {
     if (albumData?._id && albumData?.userId) {
-      setTracks((prevTracks) =>
-        prevTracks.map((track) => ({
-          ...track,
-          albumId: albumData._id,
-          userId: albumData.userId,
-        })),
+      setEdittingTracks((prevTracks) =>
+        sortTracks(
+          prevTracks.map((track) => ({
+            ...track,
+            albumId: albumData._id,
+            userId: albumData.userId,
+          })),
+        ),
       );
     }
   }, [albumData._id, albumData.userId]);
+
+  // tracks가 변경될 때마다 정렬된 상태로 업데이트
+  useEffect(() => {
+    setEdittingTracks(sortTracks(tracks));
+  }, [tracks]);
 
   const columns: Column<EditTrack>[] = [
     {
@@ -74,8 +108,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomCheckbox2
             checked={record.isSelected || false}
             onChange={(checked) => {
-              setTracks(
-                tracks.map((track, i) =>
+              setEdittingTracks(
+                edittingTracks.map((track, i) =>
                   i === index ? { ...track, isSelected: checked } : track,
                 ),
               );
@@ -106,8 +140,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
               if (_value && _value < 0) {
                 _value = undefined;
               }
-              setTracks(
-                tracks.map((track, i) =>
+              setEdittingTracks(
+                edittingTracks.map((track, i) =>
                   i === index
                     ? {
                         ...track,
@@ -146,8 +180,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
               if (_value && _value < 0) {
                 _value = undefined;
               }
-              setTracks(
-                tracks.map((track, i) =>
+              setEdittingTracks(
+                edittingTracks.map((track, i) =>
                   i === index
                     ? {
                         ...track,
@@ -176,8 +210,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomInput
             value={_value?.toString() || ""}
             onChange={(e) => {
-              setTracks(
-                tracks.map((track, i) =>
+              setEdittingTracks(
+                edittingTracks.map((track, i) =>
                   i === index ? { ...track, title: e.target.value } : track,
                 ),
               );
@@ -200,8 +234,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomCheckbox2
             checked={_value}
             onChange={(checked) => {
-              setTracks(
-                tracks.map((track, i) =>
+              setEdittingTracks(
+                edittingTracks.map((track, i) =>
                   i === index ? { ...track, isMainTitle: checked } : track,
                 ),
               );
@@ -222,8 +256,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomCheckbox2
             checked={_value}
             onChange={(checked) => {
-              setTracks(
-                tracks.map((track, i) =>
+              setEdittingTracks(
+                edittingTracks.map((track, i) =>
                   i === index ? { ...track, isTitle: checked } : track,
                 ),
               );
@@ -240,8 +274,9 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       width: 120,
       render: (value, record, index) => {
         const _value = value as ArtistInfo[];
-        if (!_value) return "없음";
-        return <div>{_value.map((artist) => artist.name).join(", ")}</div>;
+        if (!_value || _value.length === 0) return "없음";
+        if (_value.length === 1) return _value[0].name;
+        return `${_value[0].name} 외 ${_value.length - 1}`;
       },
     },
     {
@@ -272,17 +307,16 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
     },
   ];
 
-  const handleAddTrack = () => {
+  const handleAddTrack = async () => {
     const albumData = albumWatch();
     const newTrack: EditTrack = {
-      isSelected: false,
       albumId: albumData?._id,
       userId: albumData?.userId,
       isExposed: true,
     };
-    setTracks([...tracks, newTrack]);
+    await createTrack(newTrack);
   };
-  console.log("moonsae tracks", tracks);
+
   return (
     <Container>
       <Gap height={32} />
@@ -290,7 +324,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       <Gap height={32} />
       <CustomTable
         columns={columns}
-        data={tracks}
+        data={edittingTracks}
         expandable={{
           expandedRowRender: (record, index) => {
             if (index === undefined) return null;
@@ -299,14 +333,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
               <TrackDetail
                 record={record}
                 index={index}
-                tracks={tracks}
-                setTracks={setTracks}
-                onDelete={() => {
-                  const newValue = [...tracks];
-                  newValue.splice(index, 1);
-                  setTracks(newValue);
-                }}
-                onSubmit={() => {}}
+                tracks={edittingTracks}
+                setTracks={setEdittingTracks}
               />
             );
           },

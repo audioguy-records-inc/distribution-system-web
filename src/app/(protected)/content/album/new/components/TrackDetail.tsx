@@ -13,6 +13,7 @@ import TrackUserContract from "./fragment/TrackUserContract";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useState } from "react";
+import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div`
   padding-left: 32px;
@@ -42,23 +43,21 @@ export default function TrackDetail({
   index,
   tracks,
   setTracks,
-  onDelete,
-  onSubmit,
 }: {
   record: Track;
   index: number;
   tracks: Track[];
   setTracks: (tracks: Track[]) => void;
-  onDelete: () => void;
-  onSubmit: (data: Track) => void;
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const currentTrack = tracks[index];
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const { updateTrack, deleteTrack, error } = useTrackStore();
 
   const handleConfirmUpdate = async () => {
-    onSubmit(currentTrack);
+    await updateTrack(currentTrack);
     setIsUpdateModalOpen(false);
   };
 
@@ -67,13 +66,18 @@ export default function TrackDetail({
   };
 
   const handleConfirmDelete = async () => {
-    // await deleteTrack(currentTrack._id);
-    onDelete();
+    if (!currentTrack._id) return;
+    await deleteTrack(currentTrack._id);
+
+    if (!error) {
+      setTracks(tracks.filter((track, i) => i !== index));
+    }
+
     setIsDeleteModalOpen(false);
   };
 
   const isValid = () => {
-    if (currentTrack.title === "") return false;
+    if (!currentTrack.title || currentTrack.title === "") return false;
     return true;
   };
 
@@ -85,11 +89,9 @@ export default function TrackDetail({
         <DetailHeaderButton
           isEdit={isEdit}
           setIsEdit={setIsEdit}
-          onSubmit={() => {
-            onSubmit(currentTrack);
-          }}
+          onSubmit={handleConfirmUpdate}
           onDelete={handleDelete}
-          isDirty={false}
+          isDirty={true}
           isValid={isValid()}
         />
       </Header>
