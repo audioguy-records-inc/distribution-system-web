@@ -42,6 +42,7 @@ export default function VideoNewPage() {
     defaultValues: newVideo || {
       titleList: [{ "": "" }],
       userId: user?._id,
+      supplyRegion: "Worldwide",
     },
     mode: "onChange",
     shouldFocusError: false,

@@ -6,6 +6,7 @@ import {
   UseFormWatch,
 } from "react-hook-form";
 
+import ContractedDspList from "../../../album/new/components/fragment/ContractedDspList";
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
@@ -14,7 +15,10 @@ import LabelInfo from "./fragment/LabelInfo";
 import ReleaseArtistSearch from "../../../album/new/components/fragment/ReleaseArtistSearch";
 import TrackSearch from "./fragment/TrackSearch";
 import Video from "@/types/video";
+import VideoContractedDspList from "./fragment/VideoContractedDspList";
+import VideoReleaseDate from "./fragment/VideoReleaseDate";
 import VideoTitle from "./fragment/VideoTitle";
+import VideoUserContract from "./fragment/VideoUserContract";
 import { getCountryKeyValueList } from "@/constants/country";
 import styled from "styled-components";
 import { videoTypeList } from "@/constants/video-type";
@@ -165,12 +169,89 @@ export default function VideoSection({
         />
       </RowWrapper>
       <Gap height={56} />
-      <LabelInfo
-        value={watch("userId") || ""}
-        setValue={(value) => {
-          setValue("userId", value);
-        }}
+      <RowWrapper>
+        <LabelInfo
+          value={watch("userId") || ""}
+          setValue={(value) => {
+            setValue("userId", value);
+          }}
+          watch={watch}
+        />
+        <VideoUserContract
+          control={control}
+          watch={watch}
+          register={register}
+          setValue={setValue}
+        />
+      </RowWrapper>
+
+      <VideoContractedDspList
         watch={watch}
+        register={register}
+        setValue={setValue}
+      />
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
+          label="공급 지역"
+          placeholder="공급 지역 입력"
+          size="small"
+          locked={true}
+          value={watch("supplyRegion") || ""}
+          onChange={(e) => {
+            setValue("supplyRegion", e.target.value);
+          }}
+        />
+        <CustomDropdown
+          label="공급 제외 지역"
+          placeholder="공급 제외 지역 선택"
+          items={getCountryKeyValueList()}
+          selectedKeys={watch("excludedRegionList") || []}
+          onMultiSelectKeys={(selectedKeys) => {
+            setValue("excludedRegionList", selectedKeys);
+          }}
+          size="small"
+          width={320}
+          multiple={true}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
+          label="영상 코드"
+          placeholder="영상 코드 입력"
+          size="small"
+          value={watch("videoUniqueId") || ""}
+          onChange={(e) => {
+            setValue("videoUniqueId", e.target.value);
+          }}
+        />
+        <CustomInput
+          label="UPC"
+          placeholder="UPC 입력"
+          size="small"
+          value={watch("UPC") || ""}
+          onChange={(e) => {
+            setValue("UPC", e.target.value);
+          }}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <CustomInput
+        label="ISRC"
+        placeholder="ISRC 입력"
+        size="small"
+        value={watch("ISRC") || ""}
+        onChange={(e) => {
+          setValue("ISRC", e.target.value);
+        }}
+      />
+      <Gap height={56} />
+      <VideoReleaseDate
+        control={control}
+        watch={watch}
+        register={register}
+        setValue={setValue}
       />
     </Container>
   );
