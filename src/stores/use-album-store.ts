@@ -124,6 +124,7 @@ export const useAlbumStore = create<AlbumStore>()(
           if (isNewAlbum) {
             set({ newAlbum: response.data.album });
           }
+          toast.success("앨범이 수정되었습니다.");
         } catch (error) {
           const errorMessage =
             error instanceof Error

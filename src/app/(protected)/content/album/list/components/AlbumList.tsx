@@ -4,6 +4,7 @@ import CustomTable, {
 } from "@/components/basic/custom-table/CustomTable";
 
 import { Artist } from "@/types/artist";
+import Link from "next/link";
 import { User } from "@/types/user";
 import moment from "moment";
 import styled from "styled-components";
@@ -16,6 +17,12 @@ const Container = styled.div``;
 const RenderText = styled.div`
   ${theme.fonts.body1.medium};
   color: ${theme.colors.gray[800]};
+`;
+
+const RenderLinkText = styled.div`
+  ${theme.fonts.body1.medium};
+  color: ${theme.colors.blue[600]};
+  text-decoration: none;
 `;
 
 export default function AlbumList() {
@@ -36,25 +43,58 @@ export default function AlbumList() {
       align: "center",
       render: (value, row, index) => {
         const titleList = value as TitleLanguage[];
+        const albumId = row._id;
 
         // 우선순위에 따라 앨범명 선택
         let title = "";
 
         // 1. KR 확인
         const krTitle = titleList.find((item) => item.KR)?.KR;
-        if (krTitle) return <div>{krTitle}</div>;
+        if (krTitle)
+          return (
+            <Link
+              href={`/content/album/list/${albumId}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RenderLinkText>{krTitle}</RenderLinkText>
+            </Link>
+          );
 
         // 2. DOM 확인
         const domTitle = titleList.find((item) => item.DOM)?.DOM;
-        if (domTitle) return <div>{domTitle}</div>;
+        if (domTitle)
+          return (
+            <Link
+              href={`/content/album/list/${albumId}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RenderLinkText>{domTitle}</RenderLinkText>
+            </Link>
+          );
 
         // 3. EN 확인
         const enTitle = titleList.find((item) => item.EN)?.EN;
-        if (enTitle) return <div>{enTitle}</div>;
+        if (enTitle)
+          return (
+            <Link
+              href={`/content/album/list/${albumId}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RenderLinkText>{enTitle}</RenderLinkText>
+            </Link>
+          );
 
         // 4. INT 확인
         const intTitle = titleList.find((item) => item.INT)?.INT;
-        if (intTitle) return <div>{intTitle}</div>;
+        if (intTitle)
+          return (
+            <Link
+              href={`/content/album/list/${albumId}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <RenderLinkText>{intTitle}</RenderLinkText>
+            </Link>
+          );
 
         // 5. 첫 번째 값 사용
         if (titleList.length > 0) {
@@ -63,7 +103,14 @@ export default function AlbumList() {
           title = firstItem[firstKey] || "";
         }
 
-        return <RenderText>{title}</RenderText>;
+        return (
+          <Link
+            href={`/content/album/list/${albumId}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <RenderLinkText>{title}</RenderLinkText>
+          </Link>
+        );
       },
     },
     {

@@ -33,7 +33,7 @@ const ButtonWrapper = styled.div`
 export default function AlbumNewPage() {
   const { createAlbum, newAlbum, isLoading, resetNewAlbum, updateAlbum } =
     useAlbumStore();
-  console.log("moonsae newAlbum", newAlbum);
+
   const {
     register,
     reset,
