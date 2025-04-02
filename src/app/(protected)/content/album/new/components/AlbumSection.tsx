@@ -50,7 +50,6 @@ export default function AlbumSection({
   register,
   setValue,
 }: AlbumSectionProps) {
-  console.log("moonsae album", watch());
   return (
     <Container>
       <Gap height={32} />
