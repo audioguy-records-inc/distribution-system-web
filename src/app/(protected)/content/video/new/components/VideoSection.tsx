@@ -45,6 +45,7 @@ export default function VideoSection({
 }: VideoSectionProps) {
   return (
     <Container>
+      <Gap height={32} />
       <Controller
         name="titleList"
         control={control}

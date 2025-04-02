@@ -3,9 +3,11 @@
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import ButtonSpinner from "@/components/ButtonSpinner";
+import CensorSection from "./components/CensorSection";
 import CollapsibleHeader from "@/components/CollapsibleHeader";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
+import UploadSection from "./components/UploadSection";
 import Video from "@/types/video";
 import VideoSection from "./components/VideoSection";
 import styled from "styled-components";
@@ -43,6 +45,7 @@ export default function VideoNewPage() {
       titleList: [{ "": "" }],
       userId: user?._id,
       supplyRegion: "Worldwide",
+      ratingExemptionReason: "해당없음",
     },
     mode: "onChange",
     shouldFocusError: false,
@@ -135,6 +138,30 @@ export default function VideoNewPage() {
         title="1. 영상 정보"
         renderComponent={
           <VideoSection
+            control={control}
+            watch={watch}
+            register={register}
+            setValue={setValue}
+          />
+        }
+      />
+      <Gap height={56} />
+      <CollapsibleHeader
+        title="2. 영상 트랙 정보"
+        renderComponent={
+          <CensorSection
+            control={control}
+            watch={watch}
+            register={register}
+            setValue={setValue}
+          />
+        }
+      />
+      <Gap height={56} />
+      <CollapsibleHeader
+        title="3. 영상 파일"
+        renderComponent={
+          <UploadSection
             control={control}
             watch={watch}
             register={register}
