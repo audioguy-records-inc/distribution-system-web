@@ -46,11 +46,12 @@ const Label = styled.div`
 `;
 
 interface CustomCalendarProps {
-  label: string;
+  label?: string;
   value: string | null;
   onChange: (dateString: string | null) => void;
   readOnly?: boolean;
   width?: number;
+  size?: "small" | "normal";
 }
 
 const CustomCalendar = ({
@@ -59,6 +60,7 @@ const CustomCalendar = ({
   onChange,
   readOnly,
   width = 320,
+  size = "small",
 }: CustomCalendarProps) => {
   const parseDate = (dateString: string | null) => {
     if (!dateString) return null;
@@ -75,11 +77,11 @@ const CustomCalendar = ({
 
   return (
     <Container>
-      <Label>{label}</Label>
+      {label && <Label>{label}</Label>}
       <CalendarContainer>
         <DatePicker
           customInput={
-            <CustomInput size="small" icon={<CalendarIcon />} width={width} />
+            <CustomInput size={size} icon={<CalendarIcon />} width={width} />
           }
           locale={ko}
           selected={parseDate(value)}

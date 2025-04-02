@@ -1,14 +1,15 @@
 "use client";
 
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/use-user-store";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const user = useUserStore((state) => state.user);
-  const jsonWebToken = useUserStore((state) => state.jsonWebToken);
-  const isHydrated = useUserStore((state) => state.isHydrated);
+  const user = useAuthStore((state) => state.user);
+  const jsonWebToken = useAuthStore((state) => state.jsonWebToken);
+  const isHydrated = useAuthStore((state) => state.isHydrated);
 
   useEffect(() => {
     // 세션스토리지의 상태가 로드된 후에 체크

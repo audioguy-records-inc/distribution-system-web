@@ -32,15 +32,6 @@ const SnsIconWrapper = styled.a`
 `;
 
 export default function ArtistList({ artists }: { artists: Artist[] }) {
-  const { user } = useAuthStore();
-  const { fetchArtists } = useArtistStore();
-
-  useEffect(() => {
-    if (user) {
-      fetchArtists();
-    }
-  }, [user, fetchArtists]);
-
   const columns: Column<Artist>[] = [
     {
       header: "아티스트 코드",

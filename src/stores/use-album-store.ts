@@ -19,10 +19,16 @@ interface AlbumStore {
   createAlbum: (album: Album) => Promise<void>;
   updateAlbum: (album: Album, isNewAlbum: boolean) => Promise<void>;
   deleteAlbum: (albumId: string) => Promise<void>;
-  searchAlbums: (
-    searchKeyword: string,
-    searchFields?: string,
-  ) => Promise<Album[]>;
+  searchAlbums: (params: {
+    __searchKeyword: string;
+    __kstStartDate: string;
+    __kstEndDate: string;
+    __searchFields?: string;
+    __sortOption?: string;
+    __skip?: number;
+    __limit?: number;
+  }) => Promise<void>;
+
   resetNewAlbum: () => void;
 }
 
@@ -165,26 +171,27 @@ export const useAlbumStore = create<AlbumStore>()(
           set({ isLoading: false });
         }
       },
-      searchAlbums: async (searchKeyword: string, searchFields?: string) => {
+      searchAlbums: async (params: {
+        __searchKeyword: string;
+        __kstStartDate: string;
+        __kstEndDate: string;
+        __searchFields?: string;
+        __sortOption?: string;
+        __skip?: number;
+        __limit?: number;
+      }) => {
         set({ isLoading: true });
         try {
-          const __searchKeyword = searchKeyword;
-          const __searchFields = searchFields;
-
-          const response = await searchAlbums({
-            __searchKeyword,
-            __searchFields,
-          });
+          const response = await searchAlbums(params);
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
           set({
+            albums: response.data!.albumList,
             error: null,
           });
-
-          return response.data!.albumList;
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -197,8 +204,7 @@ export const useAlbumStore = create<AlbumStore>()(
             "[useAlbumStore/searchAlbums] Search albums failed.",
             error,
           );
-          set({ error: errorMessage });
-          return [];
+          set({ albums: [], error: errorMessage });
         } finally {
           set({ isLoading: false });
         }

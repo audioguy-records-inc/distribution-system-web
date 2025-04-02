@@ -40,7 +40,7 @@ export default function ArtistPage() {
       return;
     }
 
-    const results = await searchArtists(searchValue, "genderType");
+    const results = await searchArtists(searchValue, "name");
     setFilteredArtists(results);
   };
 

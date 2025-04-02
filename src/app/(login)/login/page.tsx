@@ -34,16 +34,24 @@ const RightSection = styled.div`
 
 export default function LoginPage() {
   const router = useRouter();
-  console.log("moonsae env", process.env.NODE_ENV);
-  console.log("moonsae api", API_URL);
   const user = useAuthStore((state) => state.user);
-  console.log("moonsae user", user);
+  const isHydrated = useAuthStore((state) => state.isHydrated);
+
+  // console.log("moonsae env", process.env.NODE_ENV);
+  // console.log("moonsae api", API_URL);
+  // console.log("moonsae user", user);
+  // console.log("isHydrated", isHydrated);
 
   useEffect(() => {
-    if (user) {
-      router.push("/"); // 또는 router.push('/home') 등 홈 경로로 설정
+    if (isHydrated && user) {
+      router.push("/contract/dsp/list"); // "/" 대신 직접 목적지로 리다이렉트
     }
-  }, [user, router]);
+  }, [user, router, isHydrated]);
+
+  // 하이드레이션이 완료되지 않았을 때 로딩 표시 (선택사항)
+  if (!isHydrated) {
+    return <div>로딩 중...</div>;
+  }
 
   return (
     <Container>

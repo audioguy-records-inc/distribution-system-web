@@ -81,6 +81,7 @@ export default function ArtistDownloadButton({
         label="다운로드"
         leftIcon={<DownloadIcon />}
         onClick={handleOpenModal}
+        size="medium"
       />
       <DownloadModal
         isOpen={isModalOpen}

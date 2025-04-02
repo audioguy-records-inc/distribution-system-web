@@ -88,7 +88,7 @@ export default function TrackDetail({
     if (currentTrack?.userContract) {
     }
   }, [currentTrack?.userContract]);
-  console.log("moonsae currentTrack", currentTrack);
+
   return (
     <Container>
       <Gap height={48} />
