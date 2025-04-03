@@ -6,11 +6,13 @@ import CustomTable, {
 import { Artist } from "@/types/artist";
 import Link from "next/link";
 import { User } from "@/types/user";
+import Video from "@/types/video";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useEffect } from "react";
+import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
 
@@ -25,25 +27,25 @@ const RenderLinkText = styled.div`
   text-decoration: none;
 `;
 
-export default function AlbumList() {
-  const { albums, fetchAlbums } = useAlbumStore();
-  const columns: Column<Album>[] = [
+export default function VideoList() {
+  const { videos, fetchVideos } = useVideoStore();
+  const columns: Column<Video>[] = [
     {
-      header: "앨범 코드",
-      accessor: "albumUniqueId",
+      header: "영상 코드",
+      accessor: "videoUniqueId",
       type: "string",
       width: 140,
       align: "center",
     },
     {
-      header: "앨범명",
+      header: "영상명",
       accessor: "titleList",
       type: "string",
       width: 103,
       align: "center",
       render: (value, row, index) => {
         const titleList = value as TitleLanguage[];
-        const albumId = row._id;
+        const videoId = row._id;
 
         // 우선순위에 따라 앨범명 선택
         let title = "";
@@ -53,7 +55,7 @@ export default function AlbumList() {
         if (krTitle)
           return (
             <Link
-              href={`/content/album/list/${albumId}`}
+              href={`/content/video/list/${videoId}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <RenderLinkText>{krTitle}</RenderLinkText>
@@ -65,7 +67,7 @@ export default function AlbumList() {
         if (domTitle)
           return (
             <Link
-              href={`/content/album/list/${albumId}`}
+              href={`/content/video/list/${videoId}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <RenderLinkText>{domTitle}</RenderLinkText>
@@ -77,7 +79,7 @@ export default function AlbumList() {
         if (enTitle)
           return (
             <Link
-              href={`/content/album/list/${albumId}`}
+              href={`/content/video/list/${videoId}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <RenderLinkText>{enTitle}</RenderLinkText>
@@ -89,7 +91,7 @@ export default function AlbumList() {
         if (intTitle)
           return (
             <Link
-              href={`/content/album/list/${albumId}`}
+              href={`/content/video/list/${videoId}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <RenderLinkText>{intTitle}</RenderLinkText>
@@ -105,11 +107,26 @@ export default function AlbumList() {
 
         return (
           <Link
-            href={`/content/album/list/${albumId}`}
+            href={`/content/video/list/${videoId}`}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <RenderLinkText>{title}</RenderLinkText>
           </Link>
+        );
+      },
+    },
+    {
+      header: "트랙명",
+      accessor: "trackList",
+      type: "string",
+      width: 103,
+      align: "center",
+      render: (value, row, index) => {
+        const trackList = value as { trackId: string; title: string }[];
+        return (
+          <RenderText>
+            {trackList.length > 0 ? trackList[0].title : ""}
+          </RenderText>
         );
       },
     },
@@ -179,12 +196,12 @@ export default function AlbumList() {
   ];
 
   useEffect(() => {
-    fetchAlbums();
+    fetchVideos();
   }, []);
 
   return (
     <Container>
-      <CustomTable columns={columns} data={albums} />
+      <CustomTable columns={columns} data={videos} />
     </Container>
   );
 }

@@ -34,6 +34,7 @@ const LicensorInput = ({
   inputType: "create" | "update";
 }) => {
   const locked = inputType === "create" ? false : true;
+
   return (
     <>
       <Gap height={42} />

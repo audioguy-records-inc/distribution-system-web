@@ -103,14 +103,21 @@ export default function VideoSection({
       {watch("isMathcedTrack") && (
         <>
           <Gap height={56} />
-          <TrackSearch
-            value={watch("trackIdList") || []}
-            onChange={(value) => {
-              setValue("trackIdList", value || []);
-            }}
-            placeholder="트랙 검색"
-            label="트랙"
-            trackList={watch("trackList") || []}
+          <Controller
+            name="trackIdList"
+            control={control}
+            render={({ field }) => (
+              <TrackSearch
+                value={field.value || []}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                placeholder="트랙 검색"
+                label="트랙"
+                setValue={setValue}
+                watch={watch}
+              />
+            )}
           />
         </>
       )}

@@ -2,6 +2,7 @@
 
 import ArrowDownIcon from "../../icons/ArrowDownIcon";
 import ArrowUpIcon from "../../icons/ArrowUpIcon";
+import { AuthLevel } from "@/types/user";
 import CommunitySection from "./CommunitySection";
 import ContentSection from "./ContentSection";
 import ContractSection from "./ContractSection";
@@ -10,6 +11,7 @@ import Link from "next/link";
 import ServiceSection from "./ServiceSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useState } from "react";
 
 const SidebarContainer = styled.nav`
@@ -35,11 +37,14 @@ const SidebarContainer = styled.nav`
 `;
 
 export default function Sidebar() {
+  const user = useAuthStore((state) => state.user);
+  if (!user) return null;
+
   return (
     <SidebarContainer>
-      <ContractSection />
-      <ContentSection />
-      <ServiceSection />
+      {user.authLevel === AuthLevel.ADMIN && <ContractSection />}
+      <ContentSection authLevel={user.authLevel} />
+      <ServiceSection authLevel={user.authLevel} />
       <CommunitySection />
     </SidebarContainer>
   );

@@ -1,25 +1,19 @@
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
+import { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import Video, { TrackInfo } from "@/types/video";
 import { useEffect, useState } from "react";
 
-import { Artist } from "@/types/artist";
 import { ArtistInfo } from "@/types/album";
-import ArtistSearchModal from "@/components/ArtistSearchModal";
-import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
-import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
-import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
-import SearchDropdownInput from "@/components/SearchDropdownInput";
 import SearchIcon from "@/components/icons/SearchIcon";
-import SearchInput from "@/components/SearchInput";
 import Track from "@/types/track";
 import TrackSearchModal from "@/components/TrackSearchModal";
 import TrashIcon from "@/components/icons/TrashIcon";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useArtistStore } from "@/stores/use-artist-store";
 import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div``;
@@ -50,11 +44,12 @@ const SearchButtonText = styled.span`
 export default function TrackSearch({
   value,
   onChange,
-  trackList,
   readOnly = false,
   placeholder,
   label,
   modalHeader,
+  setValue,
+  watch,
 }: {
   value: string[] | null;
   onChange: (value: string[] | null) => void;
@@ -62,11 +57,60 @@ export default function TrackSearch({
   placeholder?: string;
   label?: string;
   modalHeader?: string;
-  trackList: Track[];
+  setValue: UseFormSetValue<Video>;
+  watch: UseFormWatch<Video>;
 }) {
-  const { searchTracks } = useTrackStore();
-
+  const { fetchTrack } = useTrackStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // watch("trackList")를 TrackInfo[]로 명시적 캐스팅
+  const trackList: TrackInfo[] = (watch("trackList") as TrackInfo[]) || [];
+
+  // watch를 사용하여 trackIdList 가져오기 (string 배열)
+  const trackIdList: string[] = watch("trackIdList") || [];
+
+  // trackIdList에 있는 ID와 trackList에 없는 트랙을 가져와서 추가하는 로직
+  useEffect(() => {
+    const fetchMissingTracks = async () => {
+      if (!trackIdList || trackIdList.length === 0) {
+        setValue("trackList", []);
+        return;
+      }
+
+      // 현재 trackList에 없는 트랙 ID 찾기
+      const missingTrackIds = trackIdList.filter(
+        (trackId) => !trackList.some((track) => track?.trackId === trackId),
+      );
+
+      if (missingTrackIds.length === 0) return;
+
+      // 누락된 트랙 가져오기
+      const fetchedTracks = await Promise.all(
+        missingTrackIds.map(async (trackId) => await fetchTrack(trackId)),
+      );
+
+      // null이나 undefined가 아닌 값만 필터링
+      const validTracks: TrackInfo[] = fetchedTracks.filter(
+        (track): track is TrackInfo => track !== null && track !== undefined,
+      );
+
+      // 기존 trackList에 validTracks를 합치기 전에, 기존 항목에 trackId가 없다면 _id로 채워줌
+      const normalizedExisting = trackList.map((t) =>
+        t.trackId ? t : { ...t, trackId: t.trackId || "" },
+      );
+
+      // validTracks도 마찬가지로 trackId가 없다면 _id로 채워줍니다.
+      const normalizedNew = validTracks.map((t) =>
+        t.trackId ? t : { ...t, trackId: t.trackId || "" },
+      );
+
+      // 최종 업데이트: 기존 trackList와 새 트랙 합치기
+      setValue("trackList", [...normalizedExisting, ...normalizedNew]);
+    };
+
+    fetchMissingTracks();
+  }, [JSON.stringify(trackIdList), fetchTrack, setValue]);
+  // trackIdList를 안정적으로 비교하기 위해 JSON.stringify 사용
 
   const columns: Column<Track>[] = [
     {
@@ -90,8 +134,8 @@ export default function TrackSearch({
       width: 160,
       align: "center",
       render: (value, record) => {
-        const _value = value as string[];
-        return _value[0];
+        const _value = value as ArtistInfo[];
+        return _value[0].name;
       },
     },
     {
@@ -112,13 +156,21 @@ export default function TrackSearch({
       width: 50,
       icon: <TrashIcon />,
       onClick: (record, rowIndex) => {
-        onChange(value ? value.filter((track) => track !== record._id) : null);
+        const newTrackIdList = value
+          ? value.filter((trackId) => trackId !== record._id)
+          : null;
+        onChange(newTrackIdList);
+        setValue("trackIdList", newTrackIdList || []);
       },
     },
   ];
 
   const handleRegisterTrack = (track: Track) => {
-    onChange(value ? [...value, track._id || ""] : [track._id || ""]);
+    const newTrackIdList = value
+      ? [...value, track._id || ""]
+      : [track._id || ""];
+    onChange(newTrackIdList);
+    setValue("trackIdList", newTrackIdList);
   };
 
   return (

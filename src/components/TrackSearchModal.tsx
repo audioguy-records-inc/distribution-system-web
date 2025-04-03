@@ -182,7 +182,7 @@ const TrackSearchModal = ({
       },
     },
   ];
-  console.log("moonsae search modal", searchedTrackList);
+
   return (
     <Modal
       isOpen={isOpen}

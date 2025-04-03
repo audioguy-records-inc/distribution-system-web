@@ -1,12 +1,15 @@
 "use client";
 
+import { AuthLevel, UserType } from "@/types/user";
+import { usePathname, useRouter } from "next/navigation";
+
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/use-user-store";
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const jsonWebToken = useAuthStore((state) => state.jsonWebToken);
   const isHydrated = useAuthStore((state) => state.isHydrated);
@@ -24,6 +27,23 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
           router.replace("/login");
           return;
         }
+
+        // ADMIN이 아닌 사용자의 접근 제한
+        if (user.authLevel !== AuthLevel.ADMIN) {
+          const allowedPaths = [
+            "/content/album/list",
+            "/content/video/list",
+            "/service/settlement-status/list",
+            "/service/settlement-status/detail",
+            "/community/notice",
+          ];
+
+          // 현재 경로가 허용된 경로 목록에 없으면 메인 페이지로 리다이렉트
+          if (!allowedPaths.some((path) => pathname.startsWith(path))) {
+            router.replace("/content/album/list"); // 또는 다른 기본 페이지로 리다이렉트
+            return;
+          }
+        }
         // 필요한 경우 토큰 유효성 검증 추가
       } catch (error) {
         console.error("Auth validation failed:", error);
@@ -32,7 +52,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
     };
 
     validateAuth();
-  }, [user, jsonWebToken, router, isHydrated]);
+  }, [user, jsonWebToken, router, isHydrated, pathname]);
 
   if (!isHydrated) {
     return <div>Loading...</div>;

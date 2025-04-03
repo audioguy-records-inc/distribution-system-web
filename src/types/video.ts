@@ -35,7 +35,7 @@ export interface Transmission {
   isLive: boolean;
 }
 
-export interface Track {
+export interface TrackInfo {
   trackId: string;
   title: string;
 }
@@ -84,7 +84,7 @@ export interface Video {
   thumbnailImageList?: ImageInfo[];
 
   transmissionList?: Transmission[];
-  trackList?: Track[];
+  trackList?: TrackInfo[];
 
   // createdAt: Date;
   // updatedAt: Date;

@@ -1,6 +1,7 @@
 import Track from "@/types/track";
 import { create } from "zustand";
 import { deleteTrack } from "@/api/track/delete-track";
+import { getTrack } from "@/api/track/get-track";
 import { getTracks } from "@/api/track/get-tracks";
 import { persist } from "zustand/middleware";
 import { postTrack } from "@/api/track/post-track";
@@ -13,6 +14,7 @@ interface TrackStore {
   isLoading: boolean;
   error: string | null;
 
+  fetchTrack: (trackId: string) => Promise<Track | null>;
   fetchTracks: (albumId: string) => Promise<void>;
   createTrack: (track: Track) => Promise<void>;
   updateTrack: (track: Track) => Promise<void>;
@@ -30,6 +32,34 @@ export const useTrackStore = create<TrackStore>()(
       isLoading: false,
       error: null,
 
+      fetchTrack: async (trackId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await getTrack({ trackId });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          return response.data.track;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "트랙 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useTrackStore/fetchTrack] Fetch track failed.",
+            error,
+          );
+
+          return null;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       fetchTracks: async (albumId: string) => {
         set({ isLoading: true });
         try {

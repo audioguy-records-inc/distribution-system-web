@@ -140,29 +140,27 @@ const AddNewLicensor = () => {
         </ModalHeader>
         <Gap height={48} />
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <VisibleWrapper>
-            <VisibleLabel>권리사 정보</VisibleLabel>
-            <Controller
-              name="isEnabled"
-              control={control}
-              render={({ field }) => (
-                <CustomToggle
-                  checked={field.value}
-                  onChange={field.onChange}
-                  label=""
-                />
-              )}
-            />
-          </VisibleWrapper>
-          <LicensorInput
-            watch={watch}
-            register={register}
+        <VisibleWrapper>
+          <VisibleLabel>권리사 정보</VisibleLabel>
+          <Controller
+            name="isEnabled"
             control={control}
-            isEdit={true}
-            inputType="create"
+            render={({ field }) => (
+              <CustomToggle
+                checked={field.value}
+                onChange={field.onChange}
+                label=""
+              />
+            )}
           />
-        </Form>
+        </VisibleWrapper>
+        <LicensorInput
+          watch={watch}
+          register={register}
+          control={control}
+          isEdit={true}
+          inputType="create"
+        />
       </ReactModal>
     </>
   );
