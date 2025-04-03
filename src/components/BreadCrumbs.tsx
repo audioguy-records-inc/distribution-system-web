@@ -147,7 +147,7 @@ const Breadcrumbs = () => {
         </Container>
       );
 
-    case "/community/notice":
+    case "/community/announcement":
       return (
         <Container>
           <PrevBreadcrumb>커뮤니티</PrevBreadcrumb>

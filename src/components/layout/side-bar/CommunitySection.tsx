@@ -25,7 +25,7 @@ const CommunitySection = () => {
       </MenuGroupButton>
       <Gap height={12} />
       <MenuGroup $isOpen={isOpen}>
-        <MenuItemLink href="/community/notice">
+        <MenuItemLink href="/community/announcement">
           <MenuItem>공지사항</MenuItem>
         </MenuItemLink>
       </MenuGroup>

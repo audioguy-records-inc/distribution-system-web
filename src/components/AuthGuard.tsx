@@ -35,7 +35,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
             "/content/video/list",
             "/service/settlement-status/list",
             "/service/settlement-status/detail",
-            "/community/notice",
+            "/community/announcement",
           ];
 
           // 현재 경로가 허용된 경로 목록에 없으면 메인 페이지로 리다이렉트
