@@ -26,7 +26,7 @@ export default function VideoSearchTypeDropdown({
       value: "아티스트명",
     },
     {
-      key: "titleList.KR,titleList.EN,titleList.JP,titleList.CN,titleList.DOM,titleList.INT",
+      key: "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant",
       value: "영상명",
     },
     {

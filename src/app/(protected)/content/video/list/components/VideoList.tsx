@@ -50,32 +50,18 @@ export default function VideoList() {
         // 우선순위에 따라 앨범명 선택
         let title = "";
 
-        // 1. KR 확인
-        const krTitle = titleList.find((item) => item.KR)?.KR;
-        if (krTitle)
+        const koTitle = titleList.find((item) => item.ko)?.ko;
+        if (koTitle)
           return (
             <Link
               href={`/content/video/list/${videoId}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <RenderLinkText>{krTitle}</RenderLinkText>
+              <RenderLinkText>{koTitle}</RenderLinkText>
             </Link>
           );
 
-        // 2. DOM 확인
-        const domTitle = titleList.find((item) => item.DOM)?.DOM;
-        if (domTitle)
-          return (
-            <Link
-              href={`/content/video/list/${videoId}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RenderLinkText>{domTitle}</RenderLinkText>
-            </Link>
-          );
-
-        // 3. EN 확인
-        const enTitle = titleList.find((item) => item.EN)?.EN;
+        const enTitle = titleList.find((item) => item.en)?.en;
         if (enTitle)
           return (
             <Link
@@ -83,18 +69,6 @@ export default function VideoList() {
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <RenderLinkText>{enTitle}</RenderLinkText>
-            </Link>
-          );
-
-        // 4. INT 확인
-        const intTitle = titleList.find((item) => item.INT)?.INT;
-        if (intTitle)
-          return (
-            <Link
-              href={`/content/video/list/${videoId}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RenderLinkText>{intTitle}</RenderLinkText>
             </Link>
           );
 

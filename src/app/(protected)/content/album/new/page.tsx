@@ -16,6 +16,7 @@ import TrackSection from "./components/TrackSection";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -31,9 +32,22 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function AlbumNewPage() {
+  const [resetKey, setResetKey] = useState(0);
   const { createAlbum, newAlbum, isLoading, resetNewAlbum, updateAlbum } =
     useAlbumStore();
 
+  const defaultValues = {
+    titleList: [
+      {
+        ko: "",
+      },
+      {
+        en: "",
+      },
+    ],
+    supplyRegion: "Worldwide",
+    isExposed: true,
+  };
   const {
     register,
     reset,
@@ -42,22 +56,16 @@ export default function AlbumNewPage() {
     watch,
     setValue,
   } = useForm<Album>({
-    defaultValues: newAlbum || {
-      titleList: [
-        {
-          KR: "",
-        },
-      ],
-      supplyRegion: "Worldwide",
-      isExposed: true,
-    },
+    defaultValues: newAlbum || defaultValues,
     mode: "onChange",
     shouldFocusError: false,
   });
 
   const handleReset = () => {
-    reset();
     resetNewAlbum();
+    reset(defaultValues);
+
+    setResetKey((prev) => prev + 1);
   };
 
   const handleSubmit = () => {
@@ -109,7 +117,7 @@ export default function AlbumNewPage() {
   };
 
   return (
-    <Container>
+    <Container key={resetKey}>
       <HeaderWrapper>
         <PageHeader title={"신규 앨범 등록"} />
         <ButtonWrapper>

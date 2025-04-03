@@ -13,6 +13,7 @@ import VideoSection from "./components/VideoSection";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
@@ -33,6 +34,21 @@ export default function VideoNewPage() {
     useVideoStore();
   const { user } = useAuthStore();
 
+  const [resetKey, setResetKey] = useState(0);
+
+  const defaultValues = {
+    titleList: [
+      {
+        ko: "",
+      },
+      {
+        en: "",
+      },
+    ],
+    supplyRegion: "Worldwide",
+    ratingExemptionReason: "해당없음",
+  };
+
   const {
     register,
     reset,
@@ -41,19 +57,15 @@ export default function VideoNewPage() {
     watch,
     setValue,
   } = useForm<Video>({
-    defaultValues: newVideo || {
-      titleList: [{ "": "" }],
-      userId: user?._id,
-      supplyRegion: "Worldwide",
-      ratingExemptionReason: "해당없음",
-    },
+    defaultValues: newVideo || defaultValues,
     mode: "onChange",
     shouldFocusError: false,
   });
 
   const handleReset = () => {
-    reset();
     resetNewVideo();
+    reset(defaultValues);
+    setResetKey((prev) => prev + 1);
   };
 
   const handleSubmit = () => {
@@ -117,7 +129,7 @@ export default function VideoNewPage() {
   console.log("moonsae watch", watch());
 
   return (
-    <Container>
+    <Container key={resetKey}>
       <HeaderWrapper>
         <PageHeader title={"신규 영상 등록"} />
         <ButtonWrapper>
@@ -126,7 +138,7 @@ export default function VideoNewPage() {
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label="등록"
+              label={newVideo ? "수정" : "등록"}
               onClick={handleSubmit}
               disabled={!isFilled()}
             />

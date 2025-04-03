@@ -16,6 +16,7 @@ import ReleaseArtistSearch from "../../../album/new/components/fragment/ReleaseA
 import TrackSearch from "./fragment/TrackSearch";
 import Video from "@/types/video";
 import VideoContractedDspList from "./fragment/VideoContractedDspList";
+import VideoLicensorSearch from "./fragment/VideoLicensorSearch";
 import VideoReleaseDate from "./fragment/VideoReleaseDate";
 import VideoTitle from "./fragment/VideoTitle";
 import VideoUserContract from "./fragment/VideoUserContract";
@@ -178,12 +179,13 @@ export default function VideoSection({
       </RowWrapper>
       <Gap height={56} />
       <RowWrapper>
-        <LabelInfo
+        <VideoLicensorSearch
           value={watch("userId") || ""}
-          setValue={(value) => {
-            setValue("userId", value);
+          onChange={(value) => {
+            setValue("userId", value || undefined);
           }}
-          watch={watch}
+          register={register}
+          setValue={setValue}
         />
         <VideoUserContract
           control={control}
@@ -192,7 +194,7 @@ export default function VideoSection({
           setValue={setValue}
         />
       </RowWrapper>
-
+      <Gap height={56} />
       <VideoContractedDspList
         watch={watch}
         register={register}

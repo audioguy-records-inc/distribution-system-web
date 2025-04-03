@@ -2,7 +2,6 @@ import Album, { TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
-import { countryList, getCountryKeyValueList } from "@/constants/country";
 
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import CustomDropdown from "@/components/basic/CustomDropdown";
@@ -10,6 +9,7 @@ import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
 import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
+import { getLanguageKeyValueList } from "@/constants/language";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
@@ -37,7 +37,7 @@ export default function AlbumTitle({
         return (
           <CustomDropdown
             placeholder="언어 선택"
-            items={getCountryKeyValueList()}
+            items={getLanguageKeyValueList()}
             selectedKey={oldKey}
             onSelectKey={(newKey) => {
               if (

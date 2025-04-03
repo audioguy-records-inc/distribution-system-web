@@ -205,7 +205,7 @@ export const useAlbumStore = create<AlbumStore>()(
             "[useAlbumStore/searchAlbums] Search albums failed.",
             error,
           );
-          set({ albums: [], error: errorMessage });
+          set({ error: errorMessage });
         } finally {
           set({ isLoading: false });
         }
