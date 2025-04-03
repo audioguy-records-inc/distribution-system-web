@@ -75,6 +75,7 @@ export default function AlbumUserContract({
         }}
         selectedKey={watch("userContractId") || ""}
         size="small"
+        width={212}
       />
     </Container>
   );
