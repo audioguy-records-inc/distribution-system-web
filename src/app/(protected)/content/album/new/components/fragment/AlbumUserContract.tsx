@@ -19,6 +19,7 @@ const Container = styled.div`
   display: flex;
   gap: 8px;
   align-items: flex-end;
+  padding-top: 48px;
 `;
 
 export default function AlbumUserContract({
