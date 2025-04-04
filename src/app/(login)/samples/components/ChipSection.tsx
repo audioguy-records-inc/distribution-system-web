@@ -27,7 +27,6 @@ export default function ChipSection() {
         <CustomChip label="Label" />
         <CustomChip label="Label" isSelected />
       </ChipWrapper>
-      <DSPFilterChip />
     </Container>
   );
 }
