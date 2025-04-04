@@ -5,6 +5,7 @@ import Announcement from "@/types/announcement";
 import AnnouncementInput from "./fragments/AnnouncementInput";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
+import ButtonSpinner from "@/components/ButtonSpinner";
 import CustomToggle from "@/components/basic/CustomToggle";
 import Gap from "@/components/basic/Gap";
 import ReactModal from "react-modal";
@@ -50,7 +51,7 @@ const AddNewAnnouncement = () => {
     mode: "onChange",
     shouldFocusError: false,
   });
-  console.log("moonsae watch", watch());
+  const [isLoading, setIsLoading] = useState(false);
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => {
     setIsOpen(false);
@@ -58,8 +59,10 @@ const AddNewAnnouncement = () => {
   };
 
   const onSubmit = async (data: Announcement) => {
+    setIsLoading(true);
     await createAnnouncement(data);
     handleClose();
+    setIsLoading(false);
   };
 
   const customStyles = {
@@ -85,11 +88,21 @@ const AddNewAnnouncement = () => {
     const title = watch("title");
     const text = watch("text");
     const type = watch("type");
-    if (!title || !text || !type) {
+    const recipientResponsibility = watch("recipientResponsibility");
+    if (
+      !title ||
+      !text ||
+      text.length === 0 ||
+      text === "<p><br></p>" ||
+      !type ||
+      !recipientResponsibility
+    ) {
       return false;
     }
     return true;
   };
+
+  console.log("moonsae watch", watch());
 
   return (
     <>
@@ -106,12 +119,20 @@ const AddNewAnnouncement = () => {
         <ModalHeader>
           공지사항 작성
           <ButtonWrapper>
-            <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
-            <ButtonFilledPrimary
-              label="등록"
-              onClick={handleSubmit(onSubmit)}
-              disabled={!isFilled()}
+            <ButtonOutlinedSecondary
+              label="취소"
+              onClick={handleClose}
+              disabled={isLoading}
             />
+            {isLoading ? (
+              <ButtonSpinner />
+            ) : (
+              <ButtonFilledPrimary
+                label="등록"
+                onClick={handleSubmit(onSubmit)}
+                disabled={!isFilled()}
+              />
+            )}
           </ButtonWrapper>
         </ModalHeader>
         <Gap height={48} />

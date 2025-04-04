@@ -1,6 +1,7 @@
 "use client";
 
 import AddNewAnnouncement from "./components/AddNewAnnouncement";
+import AnnouncementList from "./components/AnnouncementList";
 import AnnouncementSearch from "./components/AnnouncementSearch";
 import PageHeader from "@/components/PageHeader";
 import styled from "styled-components";
@@ -25,6 +26,7 @@ export default function AnnouncementPage() {
       <ButtonWrapper>
         <AddNewAnnouncement />
       </ButtonWrapper>
+      <AnnouncementList />
     </Container>
   );
 }

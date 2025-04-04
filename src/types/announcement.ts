@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export const ANNOUNCEMENT_TYPE = {
   ETC: "ETC",
   TRANSMISSION: "TRANSMISSION",
@@ -17,6 +19,8 @@ export interface Announcement {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+
+  userInfo?: User;
 }
 
 export default Announcement;

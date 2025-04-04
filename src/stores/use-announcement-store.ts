@@ -38,7 +38,10 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
       fetchAnnouncements: async () => {
         set({ isLoading: true });
         try {
-          const response = await getAnnouncements();
+          const response = await getAnnouncements({
+            __limit: 100,
+            __sortOption: "createdAtDesc",
+          });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
@@ -116,7 +119,10 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
             throw new Error(response.message);
           }
 
-          const fetchResponse = await getAnnouncements();
+          const fetchResponse = await getAnnouncements({
+            __limit: 100,
+            __sortOption: "createdAtDesc",
+          });
 
           if (!fetchResponse || fetchResponse.error || !fetchResponse.data) {
             throw new Error(fetchResponse.message);

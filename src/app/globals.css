@@ -40,3 +40,8 @@ a {
     color-scheme: dark;
   }
 }
+
+
+.ql-editor em {
+  font-style: italic !important;
+}

@@ -2,15 +2,30 @@ import { FetchResponse, apiFetch } from "../fetch";
 
 import { Announcement } from "@/types/announcement";
 
+interface GetAnnouncementsRequest {
+  __limit: number;
+  __sortOption?: string;
+}
+
 interface GetAnnouncementsResponse {
   announcementList: Announcement[];
 }
 
-export const getAnnouncements = async (): Promise<
-  FetchResponse<GetAnnouncementsResponse>
-> => {
+export const getAnnouncements = async (
+  request: GetAnnouncementsRequest,
+): Promise<FetchResponse<GetAnnouncementsResponse>> => {
   try {
-    const response = await apiFetch("/announcements");
+    const queryParams = new URLSearchParams();
+    if (request.__limit)
+      queryParams.append("__limit", request.__limit.toString());
+    if (request.__sortOption)
+      queryParams.append("__sortOption", request.__sortOption);
+
+    const url = `/announcements?${queryParams.toString()}`;
+
+    const response = await apiFetch(url, {
+      method: "GET",
+    });
 
     return response as FetchResponse<GetAnnouncementsResponse>;
   } catch (error) {

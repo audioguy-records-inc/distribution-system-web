@@ -39,7 +39,7 @@ export default function Samples() {
   return (
     <Container>
       컴포넌트 모음
-      <SnsSection />
+      {/* <SnsSection />
       <MusicLogoSection />
       <IconSection />
       <Title1>Title1</Title1>
@@ -82,7 +82,7 @@ export default function Samples() {
       <DropdownSection />
       <TableSection />
       <UploadSection />
-      <DspSection />
+      <DspSection /> */}
     </Container>
   );
 }
