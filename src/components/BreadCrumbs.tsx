@@ -3,12 +3,20 @@
 
 import ArrowRightIcon from "./icons/ArrowRightIcon";
 import Link from "next/link";
+import LoginInfo from "./LoginInfo";
 import React from "react";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { usePathname } from "next/navigation";
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const BreadcrumbWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -27,135 +35,144 @@ const CurrentBreadcrumb = styled.div`
 const Breadcrumbs = () => {
   const pathname = usePathname();
 
-  switch (pathname) {
-    case "/contract/dsp/list":
-      return (
-        <Container>
-          <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>DSP</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>리스트 조회/등록</CurrentBreadcrumb>
-        </Container>
-      );
-    case "/contract/licensor/list":
-      return (
-        <Container>
-          <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>권리사</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>리스트 조회/등록</CurrentBreadcrumb>
-        </Container>
-      );
-    case "/contract/licensor/contract-info":
-      return (
-        <Container>
-          <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>권리사</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>계약 정보 조회/등록</CurrentBreadcrumb>
-        </Container>
-      );
+  const renderBreadcrumbs = () => {
+    switch (pathname) {
+      case "/contract/dsp/list":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>DSP</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>리스트 조회/등록</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
+      case "/contract/licensor/list":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>권리사</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>리스트 조회/등록</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
+      case "/contract/licensor/contract-info":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>권리사</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>계약 정보 조회/등록</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/content/album/list":
-      return (
-        <Container>
-          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>앨범</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>리스트 조회</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/content/album/list":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>앨범</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>리스트 조회</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/content/album/new":
-      return (
-        <Container>
-          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>앨범</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>신규 앨범 등록</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/content/album/new":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>앨범</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>신규 앨범 등록</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/content/video/list":
-      return (
-        <Container>
-          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>영상 </PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>리스트 조회</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/content/video/list":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>영상 </PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>리스트 조회</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/content/video/new":
-      return (
-        <Container>
-          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>영상 </PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>신규 영상 등록</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/content/video/new":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>영상 </PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>신규 영상 등록</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/content/artist":
-      return (
-        <Container>
-          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>아티스트</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>아티스트 관리</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/content/artist":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>아티스트</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>아티스트 관리</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/service/settlement-status/list":
-      return (
-        <Container>
-          <PrevBreadcrumb>서비스 현황</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>정산 현황</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>정산금 조회</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/service/settlement-status/list":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>서비스 현황</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>정산 현황</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>정산금 조회</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/service/settlement-status/detail":
-      return (
-        <Container>
-          <PrevBreadcrumb>서비스 현황</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>정산 현황</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>상세내역 조회</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/service/settlement-status/detail":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>서비스 현황</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>정산 현황</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>상세내역 조회</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/service/admin-settlement/distribution":
-      return (
-        <Container>
-          <PrevBreadcrumb>서비스 현황</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <PrevBreadcrumb>관리자 정산</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>유통 정산 현황</CurrentBreadcrumb>
-        </Container>
-      );
+      case "/service/admin-settlement/distribution":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>서비스 현황</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <PrevBreadcrumb>관리자 정산</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>유통 정산 현황</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
 
-    case "/community/announcement":
-      return (
-        <Container>
-          <PrevBreadcrumb>커뮤니티</PrevBreadcrumb>
-          <ArrowRightIcon />
-          <CurrentBreadcrumb>공지사항</CurrentBreadcrumb>
-        </Container>
-      );
-  }
+      case "/community/announcement":
+        return (
+          <BreadcrumbWrapper>
+            <PrevBreadcrumb>커뮤니티</PrevBreadcrumb>
+            <ArrowRightIcon />
+            <CurrentBreadcrumb>공지사항</CurrentBreadcrumb>
+          </BreadcrumbWrapper>
+        );
+    }
+  };
+
+  return (
+    <Container>
+      {renderBreadcrumbs()}
+      <LoginInfo />
+    </Container>
+  );
 };
 
 export default Breadcrumbs;

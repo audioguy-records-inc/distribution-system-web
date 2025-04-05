@@ -15,6 +15,7 @@ interface AuthStore {
   isHydrated: boolean;
 
   login: (account: string, password: string) => Promise<void>;
+  logout: () => void;
   setHydrated: () => void;
 }
 
@@ -61,6 +62,9 @@ export const useAuthStore = create<AuthStore>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+      logout: () => {
+        set({ user: null, jsonWebToken: null, isAdmin: false });
       },
       setHydrated: () => set({ isHydrated: true }),
     }),
