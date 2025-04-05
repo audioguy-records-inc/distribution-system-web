@@ -12,6 +12,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
@@ -25,10 +26,12 @@ const RenderLinkText = styled.div`
   ${theme.fonts.body1.medium};
   color: ${theme.colors.blue[600]};
   text-decoration: none;
+  cursor: pointer;
 `;
 
 export default function VideoList() {
   const { videos, fetchVideos } = useVideoStore();
+  const router = useRouter();
   const columns: Column<Video>[] = [
     {
       header: "영상 코드",
@@ -51,26 +54,10 @@ export default function VideoList() {
         let title = "";
 
         const koTitle = titleList.find((item) => item.ko)?.ko;
-        if (koTitle)
-          return (
-            <Link
-              href={`/content/video/list/${videoId}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RenderLinkText>{koTitle}</RenderLinkText>
-            </Link>
-          );
+        if (koTitle) return <RenderLinkText>{koTitle}</RenderLinkText>;
 
         const enTitle = titleList.find((item) => item.en)?.en;
-        if (enTitle)
-          return (
-            <Link
-              href={`/content/video/list/${videoId}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RenderLinkText>{enTitle}</RenderLinkText>
-            </Link>
-          );
+        if (enTitle) return <RenderLinkText>{enTitle}</RenderLinkText>;
 
         // 5. 첫 번째 값 사용
         if (titleList.length > 0) {
@@ -79,14 +66,7 @@ export default function VideoList() {
           title = firstItem[firstKey] || "";
         }
 
-        return (
-          <Link
-            href={`/content/video/list/${videoId}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <RenderLinkText>{title}</RenderLinkText>
-          </Link>
-        );
+        return <RenderLinkText>{title}</RenderLinkText>;
       },
     },
     {
@@ -175,7 +155,13 @@ export default function VideoList() {
 
   return (
     <Container>
-      <CustomTable columns={columns} data={videos} />
+      <CustomTable
+        columns={columns}
+        data={videos}
+        onClick={(record) => {
+          router.push(`/content/video/list/${record._id}`);
+        }}
+      />
     </Container>
   );
 }

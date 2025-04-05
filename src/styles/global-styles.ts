@@ -57,7 +57,9 @@ export const GlobalStyles = createGlobalStyle`
     color: inherit;
   }
 
-  button {
+  button,
+  [role="button"],
+  .button {
     font-family: 'Pretendard', sans-serif;
     font-weight: 500;
     background: none;

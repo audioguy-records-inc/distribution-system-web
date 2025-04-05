@@ -3,14 +3,13 @@ import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
 
-import { Artist } from "@/types/artist";
-import Link from "next/link";
 import { User } from "@/types/user";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Container = styled.div``;
 
@@ -21,12 +20,13 @@ const RenderText = styled.div`
 
 const RenderLinkText = styled.div`
   ${theme.fonts.body1.medium};
-  color: ${theme.colors.blue[600]};
   text-decoration: none;
+  cursor: pointer;
 `;
 
 export default function AlbumList() {
   const { albums, fetchAlbums } = useAlbumStore();
+  const router = useRouter();
   const columns: Column<Album>[] = [
     {
       header: "앨범 코드",
@@ -43,32 +43,15 @@ export default function AlbumList() {
       align: "center",
       render: (value, row, index) => {
         const titleList = value as TitleLanguage[];
-        const albumId = row._id;
 
         // 우선순위에 따라 앨범명 선택
         let title = "";
 
         const koTitle = titleList.find((item) => item.ko)?.ko;
-        if (koTitle)
-          return (
-            <Link
-              href={`/content/album/list/${albumId}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RenderLinkText>{koTitle}</RenderLinkText>
-            </Link>
-          );
+        if (koTitle) return <RenderLinkText>{koTitle}</RenderLinkText>;
 
         const enTitle = titleList.find((item) => item.en)?.en;
-        if (enTitle)
-          return (
-            <Link
-              href={`/content/album/list/${albumId}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <RenderLinkText>{enTitle}</RenderLinkText>
-            </Link>
-          );
+        if (enTitle) return <RenderLinkText>{enTitle}</RenderLinkText>;
 
         // 5. 첫 번째 값 사용
         if (titleList.length > 0) {
@@ -77,14 +60,7 @@ export default function AlbumList() {
           title = firstItem[firstKey] || "";
         }
 
-        return (
-          <Link
-            href={`/content/album/list/${albumId}`}
-            style={{ textDecoration: "none", color: "inherit" }}
-          >
-            <RenderLinkText>{title}</RenderLinkText>
-          </Link>
-        );
+        return <RenderLinkText>{title}</RenderLinkText>;
       },
     },
     {
@@ -158,7 +134,13 @@ export default function AlbumList() {
 
   return (
     <Container>
-      <CustomTable columns={columns} data={albums} />
+      <CustomTable
+        columns={columns}
+        data={albums}
+        onClick={(record) => {
+          router.push(`/content/album/list/${record._id}`);
+        }}
+      />
     </Container>
   );
 }

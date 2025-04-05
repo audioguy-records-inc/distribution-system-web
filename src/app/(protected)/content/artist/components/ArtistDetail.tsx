@@ -90,6 +90,10 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
           onDelete={handleDelete}
           isDirty={isDirty}
           isValid={isValid}
+          onCancel={() => {
+            setIsEdit(false);
+            reset(artist);
+          }}
         />
       </Header>
       <ArtistInput

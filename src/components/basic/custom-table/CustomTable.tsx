@@ -31,6 +31,7 @@ interface CustomTableProps<T> {
   onChange?: (value: T[]) => void;
   disabled?: boolean;
   readOnly?: boolean;
+  onClick?: (record: T) => void;
 }
 
 const TableContainer = styled.div`
@@ -72,10 +73,11 @@ const HeaderCell = styled.th<{
 
 const TableBody = styled.tbody``;
 
-const TableRow = styled.tr<{ $isExpanded?: boolean }>`
+const TableRow = styled.tr<{ $isExpanded?: boolean; $clickable?: boolean }>`
   border-bottom: 1px solid ${theme.colors.gray[50]};
   background: ${({ $isExpanded }) =>
     $isExpanded ? theme.colors.gray[25] : theme.colors.white};
+  cursor: ${({ $clickable }) => ($clickable ? "pointer" : "default")};
 
   &:hover {
     background: ${({ $isExpanded }) =>
@@ -143,6 +145,7 @@ const CustomTable = <T extends Record<string, any>>({
   onChange,
   disabled = false,
   readOnly = false,
+  onClick,
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
@@ -272,7 +275,11 @@ const CustomTable = <T extends Record<string, any>>({
         <TableBody>
           {safeData.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
-              <TableRow $isExpanded={expandedRows.has(rowIndex)}>
+              <TableRow
+                $isExpanded={expandedRows.has(rowIndex)}
+                $clickable={!!onClick}
+                onClick={() => onClick?.(row)}
+              >
                 {safeColumns.map((column, colIndex) => (
                   <TableCell
                     key={colIndex}

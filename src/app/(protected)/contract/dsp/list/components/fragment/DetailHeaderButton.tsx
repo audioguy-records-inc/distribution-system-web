@@ -17,6 +17,7 @@ const DetailHeaderButton = ({
   onDelete,
   isDirty,
   isValid,
+  onCancel,
 }: {
   isEdit: boolean;
   setIsEdit: (isEdit: boolean) => void;
@@ -24,6 +25,7 @@ const DetailHeaderButton = ({
   isValid: boolean;
   onSubmit: () => void;
   onDelete: () => void;
+  onCancel: () => void;
 }) => {
   return (
     <ButtonWrapper>
@@ -31,7 +33,10 @@ const DetailHeaderButton = ({
         <>
           <ButtonOutlinedAssistive
             label="취소"
-            onClick={() => setIsEdit(false)}
+            onClick={() => {
+              setIsEdit(false);
+              onCancel?.();
+            }}
           />
           <ButtonOutlinedPrimary
             label="완료"

@@ -4,7 +4,10 @@ import Announcement from "@/types/announcement";
 import { AnnouncementType } from "@/types/announcement";
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import CustomInput from "@/components/basic/CustomInput";
+import Gap from "@/components/basic/Gap";
+import RowGap from "@/components/basic/RowGap";
 import styled from "styled-components";
+import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
 
 const TypeContainer = styled.div`
@@ -13,12 +16,29 @@ const TypeContainer = styled.div`
   padding: 16px 32px;
 `;
 
+const DisabledTypeContainer = styled.div`
+  display: flex;
+  padding: 16px 32px;
+`;
+
+const Label = styled.div`
+  ${theme.fonts.body1.medium}
+  color: ${theme.colors.gray[400]};
+`;
+
+const Value = styled.div`
+  ${theme.fonts.body1.medium}
+  color: ${theme.colors.gray[800]};
+`;
+
 const TypeSelect = ({
   watch,
   setValue,
+  disabled = false,
 }: {
   watch: UseFormWatch<Announcement>;
   setValue: UseFormSetValue<Announcement>;
+  disabled?: boolean;
 }) => {
   const { user } = useAuthStore();
 
@@ -56,17 +76,35 @@ const TypeSelect = ({
     },
   ];
 
+  if (disabled) {
+    return (
+      <DisabledTypeContainer>
+        <Label>작성자</Label>
+        <RowGap width={12} />
+        <Value>{user?.displayName}</Value>
+        <RowGap width={32} />
+        <Label>구분</Label>
+        <RowGap width={12} />
+        <Value>{watch("type")}</Value>
+        <RowGap width={32} />
+        <Label>전송 대상</Label>
+        <RowGap width={12} />
+        <Value>{watch("recipientResponsibility")}</Value>
+      </DisabledTypeContainer>
+    );
+  }
+
   return (
     <TypeContainer>
       <CustomInput
         label="작성자"
-        value={user?.displayName}
-        locked
+        value={user?.displayName || ""}
         width={180}
         size="small"
+        locked
       />
       <CustomDropdown
-        label="구분 "
+        label="구분"
         items={announcementTypeItems}
         selectedKey={watch("type")}
         onSelectKey={(value) => setValue("type", value as AnnouncementType)}

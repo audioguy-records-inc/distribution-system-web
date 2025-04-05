@@ -6,12 +6,14 @@ import CustomTable, {
 } from "@/components/basic/custom-table/CustomTable";
 import { useEffect, useState } from "react";
 
+import Link from "next/link";
 import { User } from "@/types/user";
 import { UserInfo } from "os";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAnnouncementStore } from "@/stores/use-announcement-store";
+import { useRouter } from "next/navigation";
 
 const Container = styled.div``;
 
@@ -22,7 +24,7 @@ const Title = styled.div`
 
 export default function AnnouncementList() {
   const { announcements, fetchAnnouncements } = useAnnouncementStore();
-
+  const router = useRouter();
   const columns: Column<Announcement>[] = [
     {
       header: "날짜",
@@ -86,7 +88,13 @@ export default function AnnouncementList() {
   console.log("moonsae announcements", announcements);
   return (
     <Container>
-      <CustomTable columns={columns} data={announcements} />
+      <CustomTable
+        columns={columns}
+        data={announcements}
+        onClick={(record) => {
+          router.push(`/community/announcement/${record._id}`);
+        }}
+      />
     </Container>
   );
 }

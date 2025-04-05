@@ -66,8 +66,7 @@ const AlbumDetailPage = () => {
   if (!album) {
     return <div>앨범을 찾을 수 없습니다.</div>;
   }
-  console.log("moonsae ", formState.isValid);
-  console.log("moonsae ", formState.isDirty);
+
   return (
     <Container>
       <HeaderWrapper>

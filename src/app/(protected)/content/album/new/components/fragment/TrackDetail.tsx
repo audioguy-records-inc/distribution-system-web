@@ -53,11 +53,11 @@ export default function TrackDetail({
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const currentTrack = tracks[index];
+  const [prefTrack, setPrefTrack] = useState(currentTrack);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const { updateTrack, deleteTrack, error } = useTrackStore();
-
   const handleConfirmUpdate = async () => {
     await updateTrack(currentTrack);
     setIsUpdateModalOpen(false);
@@ -89,6 +89,11 @@ export default function TrackDetail({
     }
   }, [currentTrack?.userContract]);
 
+  const handleEdit = () => {
+    setPrefTrack(currentTrack);
+    setIsEdit(true);
+  };
+
   return (
     <Container>
       <Gap height={48} />
@@ -96,11 +101,20 @@ export default function TrackDetail({
         <TitleWrapper>트랙 상세 정보</TitleWrapper>
         <DetailHeaderButton
           isEdit={isEdit}
-          setIsEdit={setIsEdit}
+          setIsEdit={(value) => {
+            if (value) handleEdit();
+            else setIsEdit(value);
+          }}
           onSubmit={handleConfirmUpdate}
           onDelete={handleDelete}
           isDirty={true}
           isValid={isValid()}
+          onCancel={() => {
+            setIsEdit(false);
+            setTracks(
+              tracks.map((track, i) => (i === index ? prefTrack : track)),
+            );
+          }}
         />
       </Header>
       <Gap height={56} />

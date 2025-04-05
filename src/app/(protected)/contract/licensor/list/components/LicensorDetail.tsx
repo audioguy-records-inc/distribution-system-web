@@ -108,6 +108,10 @@ const LicensorDetail = ({ licensor }: { licensor: User }) => {
           onDelete={handleDelete}
           isDirty={isDirty}
           isValid={isValid}
+          onCancel={() => {
+            setIsEdit(false);
+            reset(licensor);
+          }}
         />
       </Header>
       <LicensorInput

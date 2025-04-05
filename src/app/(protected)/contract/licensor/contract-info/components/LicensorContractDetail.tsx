@@ -113,6 +113,10 @@ const LicensorContractDetail = ({
           onDelete={handleDelete}
           isDirty={isDirty}
           isValid={isValid}
+          onCancel={() => {
+            setIsEdit(false);
+            reset(licensorContract);
+          }}
         />
       </Header>
       <LicensorContractInput

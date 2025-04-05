@@ -36,6 +36,47 @@ const Breadcrumbs = () => {
   const pathname = usePathname();
 
   const renderBreadcrumbs = () => {
+    // 동적 라우트 매칭을 위해 정규식 사용
+    if (pathname.match(/^\/content\/album\/list\/[^\/]+$/)) {
+      return (
+        <BreadcrumbWrapper>
+          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <PrevBreadcrumb>앨범</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <PrevBreadcrumb>리스트 조회</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <CurrentBreadcrumb>상세</CurrentBreadcrumb>
+        </BreadcrumbWrapper>
+      );
+    }
+
+    if (pathname.match(/^\/content\/video\/list\/[^\/]+$/)) {
+      return (
+        <BreadcrumbWrapper>
+          <PrevBreadcrumb>콘텐츠 관리</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <PrevBreadcrumb>영상</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <PrevBreadcrumb>리스트 조회</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <CurrentBreadcrumb>상세</CurrentBreadcrumb>
+        </BreadcrumbWrapper>
+      );
+    }
+
+    if (pathname.match(/^\/community\/announcement\/[^\/]+$/)) {
+      return (
+        <BreadcrumbWrapper>
+          <PrevBreadcrumb>커뮤니티</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <PrevBreadcrumb>공지사항</PrevBreadcrumb>
+          <ArrowRightIcon />
+          <CurrentBreadcrumb>상세</CurrentBreadcrumb>
+        </BreadcrumbWrapper>
+      );
+    }
+
     switch (pathname) {
       case "/contract/dsp/list":
         return (

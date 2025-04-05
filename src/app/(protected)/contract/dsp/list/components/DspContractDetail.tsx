@@ -115,6 +115,10 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
           onDelete={handleDelete}
           isDirty={isDirty}
           isValid={isValid}
+          onCancel={() => {
+            setIsEdit(false);
+            reset(dspContract);
+          }}
         />
       </Header>
       <DspContractInput
