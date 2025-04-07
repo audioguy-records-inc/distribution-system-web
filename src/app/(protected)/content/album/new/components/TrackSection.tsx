@@ -51,7 +51,7 @@ interface TrackSectionProps {
 }
 
 export default function TrackSection({ albumWatch }: TrackSectionProps) {
-  const { tracks, createTrack, error } = useTrackStore();
+  const { tracks, createTrack, error, fetchTracks } = useTrackStore();
 
   const [edittingTracks, setEdittingTracks] = useState<EditTrack[]>(tracks);
   const albumData = albumWatch();
@@ -107,17 +107,23 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
 
   // albumWatch 값이 변경될 때마다 모든 트랙의 albumId와 userId 업데이트
   useEffect(() => {
-    if (albumData?._id && albumData?.userId) {
-      setEdittingTracks((prevTracks) =>
-        sortTracks(
-          prevTracks.map((track) => ({
-            ...track,
-            albumId: albumData._id,
-            userId: albumData.userId,
-          })),
-        ),
-      );
-    }
+    const _fetchTracks = async () => {
+      if (albumData?._id && albumData?.userId) {
+        await fetchTracks(albumData?._id);
+
+        setEdittingTracks((prevTracks) =>
+          sortTracks(
+            prevTracks.map((track) => ({
+              ...track,
+              albumId: albumData._id,
+              userId: albumData.userId,
+            })),
+          ),
+        );
+      }
+    };
+
+    _fetchTracks();
   }, [albumData._id, albumData.userId]);
 
   // tracks가 변경될 때마다 정렬된 상태로 업데이트

@@ -10,6 +10,7 @@ import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div``;
 
@@ -26,6 +27,7 @@ const RenderLinkText = styled.div`
 
 export default function AlbumList() {
   const { albums, fetchAlbums } = useAlbumStore();
+  const { resetTracks } = useTrackStore();
   const router = useRouter();
   const columns: Column<Album>[] = [
     {
@@ -132,14 +134,17 @@ export default function AlbumList() {
     fetchAlbums();
   }, []);
 
+  const handleClickAlbumItem = (record: Album) => {
+    resetTracks();
+    router.push(`/content/album/list/${record._id}`);
+  };
+
   return (
     <Container>
       <CustomTable
         columns={columns}
         data={albums}
-        onClick={(record) => {
-          router.push(`/content/album/list/${record._id}`);
-        }}
+        onClick={handleClickAlbumItem}
       />
     </Container>
   );

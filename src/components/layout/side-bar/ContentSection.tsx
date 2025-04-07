@@ -12,11 +12,13 @@ import { AuthLevel } from "@/types/user";
 import Gap from "@/components/basic/Gap";
 import styled from "styled-components";
 import { useState } from "react";
+import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div``;
 
 const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { resetTracks } = useTrackStore();
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
@@ -34,7 +36,10 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
         {authLevel === AuthLevel.ADMIN && (
           <>
             <Gap height={12} />
-            <MenuItemLink href="/content/album/new">
+            <MenuItemLink
+              href="/content/album/new"
+              onClick={() => resetTracks()}
+            >
               <MenuItem>신규 앨범 등록</MenuItem>
             </MenuItemLink>
           </>

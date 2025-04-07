@@ -23,6 +23,7 @@ interface TrackStore {
     searchKeyword: string,
     searchFields?: string,
   ) => Promise<Track[]>;
+  resetTracks: () => void;
 }
 
 export const useTrackStore = create<TrackStore>()(
@@ -231,6 +232,9 @@ export const useTrackStore = create<TrackStore>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+      resetTracks: () => {
+        set({ tracks: [] });
       },
     }),
     {
