@@ -1,4 +1,4 @@
-import { AuthLevel, User } from "@/types/user";
+import { AuthLevel, User, UserType } from "@/types/user";
 import { Controller, useForm } from "react-hook-form";
 
 import AddNew from "@/components/AddNew";
@@ -91,8 +91,8 @@ const AddNewLicensor = () => {
     reset();
   };
 
-  const onSubmit = async (data: User) => {
-    await createUser(data);
+  const onSubmit = async () => {
+    await createUser(watch());
     handleClose();
   };
 
@@ -115,6 +115,49 @@ const AddNewLicensor = () => {
     },
   };
 
+  const isSubmitDisabled = () => {
+    if (!watch("displayName")) {
+      return true;
+    }
+
+    if (watch("displayName").trim() === "") {
+      return true;
+    }
+
+    if (!watch("type")) {
+      return true;
+    }
+
+    if (
+      watch("type") === UserType.COMPANY &&
+      !watch("companyRegistrationNumber")
+    ) {
+      return true;
+    }
+
+    if (watch("type") === UserType.INDIVIDUAL && !watch("personalIdNumber")) {
+      return true;
+    }
+
+    if (!watch("representativeName")) {
+      return true;
+    }
+
+    if (!watch("address")) {
+      return true;
+    }
+
+    if (!watch("bankName")) {
+      return true;
+    }
+
+    if (!watch("bankAccount")) {
+      return true;
+    }
+
+    return false;
+  };
+
   return (
     <>
       <AddNewWrapper onClick={handleOpen}>
@@ -133,8 +176,10 @@ const AddNewLicensor = () => {
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
             <ButtonFilledPrimary
               label="등록"
-              onClick={handleSubmit(onSubmit)}
-              disabled={!isDirty || !isValid}
+              onClick={() => {
+                onSubmit();
+              }}
+              disabled={isSubmitDisabled()}
             />
           </ButtonWrapper>
         </ModalHeader>
