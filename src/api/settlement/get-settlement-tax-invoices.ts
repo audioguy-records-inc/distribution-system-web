@@ -19,7 +19,7 @@ export interface GetSettlementTaxInvoicesRequest {
 }
 
 interface GetSettlementTaxInvoicesResponse {
-  settlementList: SettlementTaxInvoice[];
+  settlementTaxInvoiceList: SettlementTaxInvoice[];
 }
 
 export const getSettlementTaxInvoices = async (
@@ -50,7 +50,7 @@ export const getSettlementTaxInvoices = async (
       queryParams.append("__sortOption", request.__sortOption);
 
     const response = await apiFetch<GetSettlementTaxInvoicesResponse>(
-      `/api/settlements/tax-invoices?${queryParams.toString()}`,
+      `/settlements/tax-invoices?${queryParams.toString()}`,
     );
 
     return response as FetchResponse<GetSettlementTaxInvoicesResponse>;

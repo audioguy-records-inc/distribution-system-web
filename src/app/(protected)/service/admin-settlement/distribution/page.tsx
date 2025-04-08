@@ -3,6 +3,7 @@
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SettlementAdminInvoiceDownloadButton from "./components/fragment/SettlementAdminInvoiceDownloadButton";
+import SettlementAdminInvoiceList from "./components/SettlementAdminInvoiceList";
 import SettlementAdminInvoiceSearch from "./components/SettlementAdminInvoiceSearch";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -36,6 +37,8 @@ export default function SettlementStatusPage() {
         </HelpText>
         <SettlementAdminInvoiceDownloadButton />
       </ButtonRow>
+      <Gap height={32} />
+      <SettlementAdminInvoiceList />
     </Container>
   );
 }

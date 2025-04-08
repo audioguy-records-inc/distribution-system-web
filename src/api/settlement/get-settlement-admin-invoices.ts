@@ -40,7 +40,7 @@ export const getSettlementAdminInvoices = async (
       queryParams.append("__sortOption", request.__sortOption);
 
     const response = await apiFetch<GetSettlementAdminInvoicesResponse>(
-      `/api/settlements/admin-invoices?${queryParams.toString()}`,
+      `/settlements/admin-invoices?${queryParams.toString()}`,
       {
         method: "GET",
       },

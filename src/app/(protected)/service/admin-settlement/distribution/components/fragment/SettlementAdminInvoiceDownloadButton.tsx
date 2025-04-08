@@ -64,7 +64,7 @@ export default function SettlementAdminInvoiceDownloadButton() {
 
     // CSV 파일 생성 및 다운로드
     const blob = new Blob([csvOutput], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, `정산금_${new Date().toISOString().split("T")[0]}.csv`);
+    saveAs(blob, `유통정산_현황_${new Date().toISOString().split("T")[0]}.csv`);
 
     setIsModalOpen(false);
   };

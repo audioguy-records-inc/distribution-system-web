@@ -97,7 +97,7 @@ export const useSettlementStore = create<SettlementStore>()(
           }
 
           set({
-            settlementTaxInvoices: response.data.settlementList,
+            settlementTaxInvoices: response.data.settlementTaxInvoiceList,
             error: null,
           });
         } catch (error) {

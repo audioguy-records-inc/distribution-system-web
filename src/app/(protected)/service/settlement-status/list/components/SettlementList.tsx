@@ -3,6 +3,7 @@ import CustomTable, {
 } from "@/components/basic/custom-table/CustomTable";
 
 import { SettlementDetail } from "@/types/settlement-matched-record";
+import moment from "moment";
 import styled from "styled-components";
 import { useSettlementStore } from "@/stores/use-settlement-store";
 
@@ -35,8 +36,24 @@ export default function SettlementList() {
       },
     },
     {
+      header: "발매일",
+      accessor: "utcReleasedAt",
+      type: "string",
+      align: "center",
+      render: (value) => {
+        const _value = value as string;
+        return moment(_value).format("YYYY.MM.DD");
+      },
+    },
+    {
       header: "권리사",
       accessor: "userDisplayName",
+      type: "string",
+      align: "center",
+    },
+    {
+      header: "기획사",
+      accessor: "agencyCompanyName",
       type: "string",
       align: "center",
     },

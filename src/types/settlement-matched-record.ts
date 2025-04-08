@@ -122,6 +122,8 @@ export interface SettlementDetail {
   albumDistributionCode: string;
   userSettlementFee: number;
   artistNameList: string[];
+  utcReleasedAt: string;
+  agencyCompanyName: string;
 }
 
 export interface SettlementTaxInvoice {
