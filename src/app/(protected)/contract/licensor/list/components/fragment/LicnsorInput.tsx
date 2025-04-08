@@ -44,16 +44,14 @@ const LicensorInput = ({
           label="권리사 ID"
           placeholder="아이디 입력"
           readOnly={!isEdit}
-          locked={locked}
-          {...register("account", { required: true })}
+          {...register("account")}
         />
         <CustomInput
           size="small"
           label="비밀번호"
           placeholder="비밀번호 입력"
           readOnly={!isEdit}
-          locked={locked}
-          {...register("password", { required: true })}
+          {...register("password")}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -70,7 +68,6 @@ const LicensorInput = ({
           name="type"
           control={control}
           defaultValue={UserType.COMPANY}
-          rules={{ required: true }}
           render={({ field }) => (
             <CustomRadioWithLabel
               label="구분"
@@ -96,7 +93,7 @@ const LicensorInput = ({
             label="사업자등록번호"
             placeholder="사업자등록번호 입력(- 제외)"
             type="number"
-            {...register("companyRegistrationNumber", { required: true })}
+            {...register("companyRegistrationNumber")}
           />
         )}
         {watch("type") === UserType.INDIVIDUAL && (
@@ -105,7 +102,7 @@ const LicensorInput = ({
             label="주민등록번호"
             placeholder="주민등록번호 입력(- 제외)"
             type="number"
-            {...register("personalIdNumber", { required: true })}
+            {...register("personalIdNumber")}
           />
         )}
       </RowWrapper>
@@ -116,14 +113,14 @@ const LicensorInput = ({
           label="대표자명"
           placeholder="대표자명 입력"
           readOnly={!isEdit}
-          {...register("representativeName", { required: true })}
+          {...register("representativeName")}
         />
         <CustomInput
           size="small"
           label="주소"
           placeholder="주소 입력"
           readOnly={!isEdit}
-          {...register("address", { required: true })}
+          {...register("address")}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -148,14 +145,13 @@ const LicensorInput = ({
           placeholder="계좌번호 입력(-제외)"
           type="number"
           readOnly={!isEdit}
-          {...register("bankAccount", { required: true })}
+          {...register("bankAccount")}
         />
       </RowWrapper>
       <Gap height={56} />
       <Controller
         name="contactPersonList"
         control={control}
-        rules={{ required: true }}
         render={({ field }) => (
           <ContactPersonTable
             onChange={field.onChange}
