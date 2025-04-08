@@ -31,8 +31,6 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         // ADMIN이 아닌 사용자의 접근 제한
         if (user.authLevel !== AuthLevel.ADMIN) {
           const allowedPaths = [
-            "/content/album/list",
-            "/content/video/list",
             "/service/settlement-status/list",
             "/service/settlement-status/detail",
             "/community/announcement",

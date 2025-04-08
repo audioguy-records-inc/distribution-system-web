@@ -43,7 +43,9 @@ export default function Sidebar() {
   return (
     <SidebarContainer>
       {user.authLevel === AuthLevel.ADMIN && <ContractSection />}
-      <ContentSection authLevel={user.authLevel} />
+      {user.authLevel === AuthLevel.ADMIN && (
+        <ContentSection authLevel={user.authLevel} />
+      )}
       <ServiceSection authLevel={user.authLevel} />
       <CommunitySection />
     </SidebarContainer>

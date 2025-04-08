@@ -49,7 +49,7 @@ const LoginInfo = () => {
     <Container>
       <UserInfoWrapper>
         <UserInfoLabel>로그인 정보</UserInfoLabel>
-        <UserName>홍길동</UserName>
+        <UserName>{user?.displayName}</UserName>
       </UserInfoWrapper>
       <ButtonOutlinedAssistive
         onClick={handleLogoutClick}
