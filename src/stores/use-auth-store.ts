@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { getUsers } from "@/api/user/get-users";
 import { login } from "@/api/user/login";
 import toast from "react-hot-toast";
+import { useSettlementStore } from "./use-settlement-store";
 
 interface AuthStore {
   isLoading: boolean;
@@ -65,6 +66,7 @@ export const useAuthStore = create<AuthStore>()(
       },
       logout: () => {
         set({ user: null, jsonWebToken: null, isAdmin: false });
+        useSettlementStore.getState().reset();
       },
       setHydrated: () => set({ isHydrated: true }),
     }),

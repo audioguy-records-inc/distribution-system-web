@@ -44,6 +44,8 @@ interface SettlementStore {
   ) => Promise<void>;
 
   createSettlementFiles: (request: PostSettlementFilesRequest) => Promise<void>;
+
+  reset: () => void;
 }
 
 export const useSettlementStore = create<SettlementStore>()(
@@ -173,6 +175,13 @@ export const useSettlementStore = create<SettlementStore>()(
         } finally {
           set({ isLoading: false });
         }
+      },
+      reset: () => {
+        set({
+          settlementDetails: [],
+          settlementTaxInvoices: [],
+          settlementAdminInvoices: [],
+        });
       },
     }),
     {
