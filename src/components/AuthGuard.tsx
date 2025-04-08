@@ -38,7 +38,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
           // 현재 경로가 허용된 경로 목록에 없으면 메인 페이지로 리다이렉트
           if (!allowedPaths.some((path) => pathname.startsWith(path))) {
-            router.replace("/content/album/list"); // 또는 다른 기본 페이지로 리다이렉트
+            router.replace("/community/announcement"); // 또는 다른 기본 페이지로 리다이렉트
             return;
           }
         }

@@ -1,6 +1,7 @@
 "use client";
 
 import { API_URL } from "@/constants/api";
+import { AuthLevel } from "@/types/user";
 import Image from "next/image";
 import LoginForm from "./components/LoginForm";
 import styled from "styled-components";
@@ -44,7 +45,11 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isHydrated && user) {
-      router.push("/contract/dsp/list"); // "/" 대신 직접 목적지로 리다이렉트
+      if (user.authLevel === AuthLevel.ADMIN) {
+        router.push("/contract/dsp/list");
+      } else {
+        router.push("/community/announcement");
+      }
     }
   }, [user, router, isHydrated]);
 
