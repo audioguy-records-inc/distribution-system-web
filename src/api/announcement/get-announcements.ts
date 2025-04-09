@@ -16,10 +16,16 @@ export const getAnnouncements = async (
 ): Promise<FetchResponse<GetAnnouncementsResponse>> => {
   try {
     const queryParams = new URLSearchParams();
-    if (request.__limit)
+    if (request.__limit) {
       queryParams.append("__limit", request.__limit.toString());
-    if (request.__sortOption)
+    } else {
+      queryParams.append("__limit", "100");
+    }
+    if (request.__sortOption) {
       queryParams.append("__sortOption", request.__sortOption);
+    } else {
+      queryParams.append("__sortOption", "createdAtDESC");
+    }
 
     const url = `/announcements?${queryParams.toString()}`;
 

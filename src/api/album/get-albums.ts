@@ -8,7 +8,11 @@ interface GetAlbumResponse {
 
 export const getAlbums = async (): Promise<FetchResponse<GetAlbumResponse>> => {
   try {
-    const response = await apiFetch(`/albums`);
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(`/albums?${queryParams.toString()}`);
 
     return response as FetchResponse<GetAlbumResponse>;
   } catch (error) {

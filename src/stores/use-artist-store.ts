@@ -1,9 +1,10 @@
+import { createJSONStorage, persist } from "zustand/middleware";
+
 import { Artist } from "@/types/artist";
 import { create } from "zustand";
 import { deleteArtist } from "@/api/artist/delete-artist";
 import { getArtist } from "@/api/artist/get-artist";
 import { getArtists } from "@/api/artist/get-artists";
-import { persist } from "zustand/middleware";
 import { postArtist } from "@/api/artist/post-artist";
 import { putArtist } from "@/api/artist/put-artist";
 import { searchArtists } from "@/api/artist/search-artists";
@@ -234,6 +235,7 @@ export const useArtistStore = create<ArtistStore>()(
     }),
     {
       name: "artist-store",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

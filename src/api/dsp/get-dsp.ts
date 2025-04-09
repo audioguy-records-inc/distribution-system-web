@@ -8,7 +8,11 @@ interface GetDspResponse {
 
 export const getDsp = async (): Promise<FetchResponse<GetDspResponse>> => {
   try {
-    const response = await apiFetch("/dsps");
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(`/dsps?${queryParams.toString()}`);
 
     return response as FetchResponse<GetDspResponse>;
   } catch (error) {

@@ -10,7 +10,11 @@ export const getDspContracts = async (): Promise<
   FetchResponse<GetDspContractsResponse>
 > => {
   try {
-    const response = await apiFetch("/dsp-contracts");
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(`/dsp-contracts?${queryParams.toString()}`);
 
     return response as FetchResponse<GetDspContractsResponse>;
   } catch (error) {

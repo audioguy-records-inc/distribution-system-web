@@ -71,7 +71,7 @@ export default function SettlementTaxInvoiceSearch() {
       __params.regionType = selectedType as RegionType;
     }
 
-    __params.__limit = 1000;
+    __params.__limit = 100;
 
     await fetchSettlementTaxInvoices(__params);
     setIsLoading(false);

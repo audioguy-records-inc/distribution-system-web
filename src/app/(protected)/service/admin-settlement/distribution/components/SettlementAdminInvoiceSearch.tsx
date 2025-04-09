@@ -47,8 +47,8 @@ export default function SettlementAdminInvoiceSearch() {
     await fetchSettlementAdminInvoices({
       __kstSettlementStartMonth: startDate,
       __kstSettlementEndMonth: endDate,
-      __limit: 1000,
-      // __sortOption: "createdAtDesc",
+      __limit: 100,
+      // __sortOption: "createdAtDESC",
     });
     setIsLoading(false);
   };

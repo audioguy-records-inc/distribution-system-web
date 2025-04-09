@@ -1,9 +1,9 @@
 import { Announcement, AnnouncementType } from "@/types/announcement";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import { create } from "zustand";
 import { deleteAnnouncement } from "@/api/announcement/delete-announcement";
 import { getAnnouncements } from "@/api/announcement/get-announcements";
-import { persist } from "zustand/middleware";
 import { postAnnouncement } from "@/api/announcement/post-announcement";
 import { putAnnouncement } from "@/api/announcement/put-announcement";
 import { searchAnnouncement } from "@/api/announcement/search-aanouncement";
@@ -40,7 +40,7 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
         try {
           const response = await getAnnouncements({
             __limit: 100,
-            __sortOption: "createdAtDesc",
+            __sortOption: "createdAtDESC",
           });
 
           if (!response || response.error || !response.data) {
@@ -121,7 +121,7 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
 
           const fetchResponse = await getAnnouncements({
             __limit: 100,
-            __sortOption: "createdAtDesc",
+            __sortOption: "createdAtDESC",
           });
 
           if (!fetchResponse || fetchResponse.error || !fetchResponse.data) {
@@ -225,6 +225,7 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
     }),
     {
       name: "announcement-store",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

@@ -5,6 +5,8 @@ import { User } from "@/types/user";
 interface SearchUsersRequest {
   __searchKeyword: string;
   __searchFields?: string;
+  __limit?: number;
+  __sortOption?: string;
 }
 
 interface SearchUsersResponse {
@@ -21,7 +23,14 @@ export const searchUsers = async (
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
     }
-
+    if (request.__limit) {
+      queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
+    }
+    if (request.__sortOption) {
+      queryParams.append("__sortOption", request.__sortOption);
+    }
     const response = await apiFetch(`/users?${queryParams.toString()}`, {
       method: "GET",
     });

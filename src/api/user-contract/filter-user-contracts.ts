@@ -16,6 +16,8 @@ export const filterUserContracts = async (
   try {
     const queryParams = new URLSearchParams();
     queryParams.append("query", request.query);
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
 
     const response = await apiFetch(
       `/user-contracts?${queryParams.toString()}`,

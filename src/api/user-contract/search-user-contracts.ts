@@ -5,6 +5,8 @@ import UserContract from "@/types/user-contract";
 interface SearchUserContractsRequest {
   __searchKeyword: string;
   __searchFields?: string;
+  __limit?: number;
+  __sortOption?: string;
 }
 
 interface SearchUserContractsResponse {
@@ -19,6 +21,16 @@ export const searchUserContracts = async (
     queryParams.append("__searchKeyword", request.__searchKeyword);
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
+    }
+    if (request.__limit) {
+      queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
+    }
+    if (request.__sortOption) {
+      queryParams.append("__sortOption", request.__sortOption);
+    } else {
+      queryParams.append("__sortOption", "createdAtDESC");
     }
 
     const response = await apiFetch(

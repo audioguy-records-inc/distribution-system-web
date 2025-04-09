@@ -1,9 +1,10 @@
+import { createJSONStorage, persist } from "zustand/middleware";
+
 import Track from "@/types/track";
 import { create } from "zustand";
 import { deleteTrack } from "@/api/track/delete-track";
 import { getTrack } from "@/api/track/get-track";
 import { getTracks } from "@/api/track/get-tracks";
-import { persist } from "zustand/middleware";
 import { postTrack } from "@/api/track/post-track";
 import { putTrack } from "@/api/track/put-track";
 import { searchTracks } from "@/api/track/search-tracks";
@@ -239,6 +240,7 @@ export const useTrackStore = create<TrackStore>()(
     }),
     {
       name: "track-store",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

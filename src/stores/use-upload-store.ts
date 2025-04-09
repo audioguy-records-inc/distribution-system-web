@@ -1,7 +1,7 @@
 import { DataCollectionName, FileType, urlList } from "@/types/upload";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { postPreSignedUrls } from "@/api/uploads/post-pre-signed-urls";
 import { postUploadId } from "@/api/uploads/post-upload-id";
 import { putMultipart } from "@/api/uploads/put-multipart";
@@ -246,6 +246,7 @@ export const useUploadStore = create<UploadStore>()(
     }),
     {
       name: "upload",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

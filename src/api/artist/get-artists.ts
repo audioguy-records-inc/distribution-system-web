@@ -10,7 +10,11 @@ export const getArtists = async (): Promise<
   FetchResponse<GetArtistsResponse>
 > => {
   try {
-    const response = await apiFetch("/artists");
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(`/artists?${queryParams.toString()}`);
 
     return response as FetchResponse<GetArtistsResponse>;
   } catch (error) {

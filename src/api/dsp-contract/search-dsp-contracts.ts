@@ -5,6 +5,8 @@ import DspContract from "@/types/dsp-contract";
 interface SearchDspContractRequest {
   __searchKeyword: string;
   __searchFields?: string;
+  __limit?: number;
+  __sortOption?: string;
 }
 
 interface SearchDspContractResponse {
@@ -19,6 +21,18 @@ export const searchDspContracts = async (
     queryParams.append("__searchKeyword", request.__searchKeyword);
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
+    }
+
+    if (request.__limit) {
+      queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
+    }
+
+    if (request.__sortOption) {
+      queryParams.append("__sortOption", request.__sortOption);
+    } else {
+      queryParams.append("__sortOption", "createdAtDESC");
     }
 
     const response = await apiFetch(

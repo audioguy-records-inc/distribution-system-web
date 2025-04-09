@@ -19,9 +19,9 @@ import {
   SettlementDetail,
   SettlementTaxInvoice,
 } from "@/types/settlement-matched-record";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import toast from "react-hot-toast";
 
 interface SettlementStore {
@@ -186,6 +186,7 @@ export const useSettlementStore = create<SettlementStore>()(
     }),
     {
       name: "settlement",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );

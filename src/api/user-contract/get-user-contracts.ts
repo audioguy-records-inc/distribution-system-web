@@ -10,9 +10,13 @@ export const getUserContracts = async (
   searchQuery?: string,
 ): Promise<FetchResponse<GetUserContractsResponse>> => {
   try {
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
     const url = searchQuery
-      ? `/user-contracts?${searchQuery}`
-      : "/user-contracts";
+      ? `/user-contracts?${searchQuery}&${queryParams.toString()}`
+      : `/user-contracts?${queryParams.toString()}`;
 
     const response = await apiFetch(url);
     return response as FetchResponse<GetUserContractsResponse>;

@@ -28,9 +28,13 @@ export const searchAnnouncement = async (
     }
     if (request.__limit) {
       queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
     }
     if (request.__sortOption) {
       queryParams.append("__sortOption", request.__sortOption);
+    } else {
+      queryParams.append("__sortOption", "createdAtDESC");
     }
 
     const response = await apiFetch(

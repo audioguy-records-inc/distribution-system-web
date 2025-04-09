@@ -5,6 +5,8 @@ import { Artist } from "@/types/artist";
 interface SearchArtistRequest {
   __searchKeyword: string;
   __searchFields?: string;
+  __limit?: number;
+  __sortOption?: string;
 }
 
 interface SearchArtistResponse {
@@ -19,6 +21,18 @@ export const searchArtists = async (
     queryParams.append("__searchKeyword", request.__searchKeyword);
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
+    }
+
+    if (request.__limit) {
+      queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
+    }
+
+    if (request.__sortOption) {
+      queryParams.append("__sortOption", request.__sortOption);
+    } else {
+      queryParams.append("__sortOption", "createdAtDESC");
     }
 
     const response = await apiFetch(`/artists?${queryParams.toString()}`, {

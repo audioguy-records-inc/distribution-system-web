@@ -26,9 +26,21 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function ArtistPage() {
-  const { artists, searchArtists } = useArtistStore();
+  const { artists, searchArtists, fetchArtists } = useArtistStore();
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredArtists, setFilteredArtists] = useState<Artist[]>(artists);
+
+  useEffect(() => {
+    const _fetchArtists = async () => {
+      await fetchArtists();
+
+      if (artists) {
+        setFilteredArtists(artists);
+      }
+    };
+
+    _fetchArtists();
+  }, []);
 
   useEffect(() => {
     setFilteredArtists(artists);

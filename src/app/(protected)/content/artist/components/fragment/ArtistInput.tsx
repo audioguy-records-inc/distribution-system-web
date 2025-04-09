@@ -48,8 +48,7 @@ const ArtistInput = ({
           label="아티스트 코드"
           size="small"
           placeholder="아티스트 코드 입력"
-          {...register("artistUniqueId", { required: true })}
-          required={isEdit}
+          {...register("artistUniqueId")}
         />
       </RowWrapper>
 

@@ -5,6 +5,8 @@ import Track from "@/types/track";
 interface SearchTracksRequest {
   __searchKeyword: string;
   __searchFields?: string;
+  __limit?: number;
+  __sortOption?: string;
 }
 
 interface SearchTracksResponse {
@@ -19,6 +21,12 @@ export const searchTracks = async (
     queryParams.append("__searchKeyword", request.__searchKeyword);
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
+    }
+
+    if (request.__limit) {
+      queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
     }
 
     const response = await apiFetch(`/tracks?${queryParams.toString()}`, {

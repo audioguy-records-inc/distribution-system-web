@@ -14,7 +14,13 @@ export const getTracks = async (
   request: GetTracksRequest,
 ): Promise<FetchResponse<GetTracksResponse>> => {
   try {
-    const response = await apiFetch(`/tracks?albumId=${request.albumId}`);
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(
+      `/tracks?albumId=${request.albumId}&${queryParams.toString()}`,
+    );
 
     return response as FetchResponse<GetTracksResponse>;
   } catch (error) {

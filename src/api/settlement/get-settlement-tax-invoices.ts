@@ -46,8 +46,14 @@ export const getSettlementTaxInvoices = async (
     if (request.__skip) queryParams.append("__skip", request.__skip.toString());
     if (request.__limit)
       queryParams.append("__limit", request.__limit.toString());
+    else {
+      queryParams.append("__limit", "100");
+    }
     if (request.__sortOption)
       queryParams.append("__sortOption", request.__sortOption);
+    else {
+      queryParams.append("__sortOption", "createdAtDESC");
+    }
 
     const response = await apiFetch<GetSettlementTaxInvoicesResponse>(
       `/settlements/tax-invoices?${queryParams.toString()}`,

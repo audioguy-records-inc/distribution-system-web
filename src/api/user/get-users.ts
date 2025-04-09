@@ -8,7 +8,11 @@ interface GetUsersResponse {
 
 export const getUsers = async (): Promise<FetchResponse<GetUsersResponse>> => {
   try {
-    const response = await apiFetch("/users");
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(`/users?${queryParams.toString()}`);
 
     return response as FetchResponse<GetUsersResponse>;
   } catch (error) {
