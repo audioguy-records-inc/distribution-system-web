@@ -21,8 +21,8 @@ interface AlbumStore {
   deleteAlbum: (albumId: string) => Promise<void>;
   searchAlbums: (params: {
     __searchKeyword: string;
-    __kstStartDate: string;
-    __kstEndDate: string;
+    __kstStartDate?: string;
+    __kstEndDate?: string;
     __searchFields?: string;
     __sortOption?: string;
     __skip?: number;
@@ -174,8 +174,8 @@ export const useAlbumStore = create<AlbumStore>()(
       },
       searchAlbums: async (params: {
         __searchKeyword: string;
-        __kstStartDate: string;
-        __kstEndDate: string;
+        __kstStartDate?: string;
+        __kstEndDate?: string;
         __searchFields?: string;
         __sortOption?: string;
         __skip?: number;

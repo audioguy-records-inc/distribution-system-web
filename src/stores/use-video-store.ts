@@ -21,8 +21,8 @@ interface VideoStore {
   deleteVideo: (videoId: string) => Promise<void>;
   searchVideos: (params: {
     __searchKeyword: string;
-    __kstStartDate: string;
-    __kstEndDate: string;
+    __kstStartDate?: string;
+    __kstEndDate?: string;
     __searchFields?: string;
     __sortOption?: string;
     __skip?: number;
@@ -174,8 +174,8 @@ export const useVideoStore = create<VideoStore>()(
       },
       searchVideos: async (params: {
         __searchKeyword: string;
-        __kstStartDate: string;
-        __kstEndDate: string;
+        __kstStartDate?: string;
+        __kstEndDate?: string;
         __searchFields?: string;
         __sortOption?: string;
         __skip?: number;

@@ -3,8 +3,8 @@ import { FetchResponse, apiFetch } from "../fetch";
 import Album from "@/types/album";
 
 interface SearchAlbumRequest {
-  __kstStartDate: string;
-  __kstEndDate: string;
+  __kstStartDate?: string;
+  __kstEndDate?: string;
   __searchKeyword: string;
   __searchFields?: string;
   __skip?: number;
@@ -22,8 +22,12 @@ export const searchAlbums = async (
   try {
     const queryParams = new URLSearchParams();
     queryParams.append("__searchKeyword", request.__searchKeyword);
-    queryParams.append("__kstStartDate", request.__kstStartDate);
-    queryParams.append("__kstEndDate", request.__kstEndDate);
+    if (request.__kstStartDate) {
+      queryParams.append("__kstStartDate", request.__kstStartDate);
+    }
+    if (request.__kstEndDate) {
+      queryParams.append("__kstEndDate", request.__kstEndDate);
+    }
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
     }

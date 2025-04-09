@@ -4,8 +4,8 @@ import Video from "@/types/video";
 
 interface SearchVideoRequest {
   __searchKeyword: string;
-  __kstStartDate: string;
-  __kstEndDate: string;
+  __kstStartDate?: string;
+  __kstEndDate?: string;
   __searchFields?: string;
   __sortOption?: string;
   __skip?: number;
@@ -22,8 +22,12 @@ export const searchVideos = async (
   try {
     const queryParams = new URLSearchParams();
     queryParams.append("__searchKeyword", request.__searchKeyword);
-    queryParams.append("__kstStartDate", request.__kstStartDate);
-    queryParams.append("__kstEndDate", request.__kstEndDate);
+    if (request.__kstStartDate) {
+      queryParams.append("__kstStartDate", request.__kstStartDate);
+    }
+    if (request.__kstEndDate) {
+      queryParams.append("__kstEndDate", request.__kstEndDate);
+    }
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
     }

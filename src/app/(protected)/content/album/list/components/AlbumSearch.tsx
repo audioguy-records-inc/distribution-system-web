@@ -46,16 +46,10 @@ export default function AlbumSearch() {
     const __searchFields = selectedType === "all" ? "" : selectedType;
     const __searchKeyword = searchValue;
 
-    if (!startDate || !endDate) {
-      toast.error("발매일을 선택해주세요.");
-      setIsLoading(false);
-      return;
-    }
-
     const response = await searchAlbums({
       __searchKeyword,
-      __kstStartDate: startDate,
-      __kstEndDate: endDate,
+      __kstStartDate: startDate || undefined,
+      __kstEndDate: endDate || undefined,
       __searchFields: __searchFields,
       __limit: 20,
     });
