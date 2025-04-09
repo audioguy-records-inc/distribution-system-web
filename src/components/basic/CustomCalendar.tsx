@@ -38,6 +38,27 @@ const CalendarContainer = styled.div`
       padding: 0;
     }
   }
+
+  .react-datepicker__navigation--years-previous::before,
+  .react-datepicker__navigation--years-upcoming::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid ${theme.colors.gray[600]};
+    border-right: 2px solid ${theme.colors.gray[600]};
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+
+  .react-datepicker__navigation--years-previous::before {
+    transform: translate(-50%, -50%) rotate(135deg);
+  }
+
+  .react-datepicker__navigation--years-upcoming::before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
 `;
 
 const Label = styled.div`
@@ -88,6 +109,9 @@ const CustomCalendar = ({
           onChange={handleChange}
           dateFormat="yyyy/MM/dd"
           readOnly={readOnly}
+          showYearDropdown
+          // yearDropdownItemNumber={1}
+          // scrollableYearDropdown
         />
       </CalendarContainer>
     </Container>

@@ -73,6 +73,7 @@ export interface Video {
   utcServiceStartedAt?: Date;
 
   ratingAuthority?: string;
+  ratingAuthorityOther?: string;
   rating?: string;
   utcRatedAt?: Date;
   ratingExemptionReason?: string;

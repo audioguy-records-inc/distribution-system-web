@@ -73,6 +73,14 @@ export default function VideoNewPage() {
   };
 
   const onSubmit = async (data: Video) => {
+    if (
+      data.ratingAuthorityOther &&
+      data.ratingAuthorityOther !== "" &&
+      data.ratingAuthority === "기타(직접입력)"
+    ) {
+      data.ratingAuthority = data.ratingAuthorityOther;
+      return;
+    }
     if (newVideo) {
       await updateVideo(data, true);
     } else {

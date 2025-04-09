@@ -79,7 +79,7 @@ const AlbumDetailPage = () => {
             <ButtonFilledPrimary
               label="수정"
               onClick={handleSubmit}
-              disabled={!formState.isDirty}
+              disabled={false}
             />
           )}
         </ButtonWrapper>

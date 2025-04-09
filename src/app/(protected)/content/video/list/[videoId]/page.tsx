@@ -59,6 +59,15 @@ const VideoDetailPage = () => {
     if (!_video) {
       return;
     }
+
+    if (
+      _video.ratingAuthorityOther &&
+      _video.ratingAuthorityOther !== "" &&
+      _video.ratingAuthority === "기타(직접입력)"
+    ) {
+      _video.ratingAuthority = _video.ratingAuthorityOther;
+    }
+
     setIsLoading(true);
     await updateVideo(_video, false);
     setIsLoading(false);
@@ -80,7 +89,7 @@ const VideoDetailPage = () => {
             <ButtonFilledPrimary
               label="수정"
               onClick={handleSubmit}
-              disabled={!formState.isDirty}
+              disabled={false}
             />
           )}
         </ButtonWrapper>

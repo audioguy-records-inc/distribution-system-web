@@ -13,6 +13,7 @@ import {
 
 import CustomCalendar from "@/components/basic/CustomCalendar";
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import CustomInput from "@/components/basic/CustomInput";
 import CustomTextArea from "@/components/basic/CustomTextArea";
 import CustomUpload from "@/components/basic/CustomUpload";
 import Gap from "@/components/basic/Gap";
@@ -54,6 +55,9 @@ export default function CensorSection({
             if (selectedKey === "심의제외") {
               setValue("ratingExemptionReason", "해당없음");
             }
+            if (selectedKey !== "기타(직접입력)") {
+              setValue("ratingAuthorityOther", "");
+            }
           }}
           size="small"
           width={320}
@@ -66,6 +70,18 @@ export default function CensorSection({
             selectedKey={watch("ratingExemptionReason")}
             onSelectKey={(selectedKey) => {
               setValue("ratingExemptionReason", selectedKey);
+            }}
+            size="small"
+            width={320}
+          />
+        )}
+        {watch("ratingAuthority") === "기타(직접입력)" && (
+          <CustomInput
+            label="심의처 직접입력"
+            placeholder="심의처 입력"
+            value={watch("ratingAuthorityOther") || ""}
+            onChange={(e) => {
+              setValue("ratingAuthorityOther", e.target.value);
             }}
             size="small"
             width={320}

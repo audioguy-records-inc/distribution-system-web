@@ -137,7 +137,7 @@ const AddNewLicensorContract = () => {
               <ButtonFilledPrimary
                 label="등록"
                 onClick={handleSubmit(onSubmit)}
-                disabled={!isDirty || !isValid}
+                disabled={false}
               />
             )}
           </ButtonWrapper>

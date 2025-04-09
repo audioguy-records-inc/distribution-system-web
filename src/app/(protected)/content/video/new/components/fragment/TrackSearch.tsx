@@ -135,7 +135,7 @@ export default function TrackSearch({
       align: "center",
       render: (value, record) => {
         const _value = value as ArtistInfo[];
-        return _value[0].name;
+        return _value?.[0]?.name || "";
       },
     },
     {
