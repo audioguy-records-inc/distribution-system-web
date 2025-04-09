@@ -14,7 +14,12 @@ export const deleteAnnouncement = async (
   request: DeleteAnnouncementRequest,
 ): Promise<FetchResponse<DeleteAnnouncementResponse>> => {
   try {
-    const response = await apiFetch(`/announcements/${request.announcementId}`);
+    const response = await apiFetch(
+      `/announcements/${request.announcementId}`,
+      {
+        method: "DELETE",
+      },
+    );
 
     return response as FetchResponse<DeleteAnnouncementResponse>;
   } catch (error) {
