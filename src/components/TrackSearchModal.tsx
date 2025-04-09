@@ -101,7 +101,10 @@ const TrackSearchModal = ({
     if (!searchValue.trim()) return;
 
     try {
-      const res = await searchTracks(searchValue, "title");
+      const res = await searchTracks(
+        searchValue,
+        "title,trackUniqueId,UCI,ISRC",
+      );
       setSearchedTrackList(res);
     } catch (error) {
       toast.error("트랙 검색 중 오류가 발생했습니다.");

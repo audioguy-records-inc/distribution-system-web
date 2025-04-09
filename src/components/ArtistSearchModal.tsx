@@ -98,7 +98,7 @@ const ArtistSearchModal = ({
     if (!searchValue.trim()) return;
 
     try {
-      const res = await searchArtists(searchValue, "name");
+      const res = await searchArtists(searchValue, "name,artistUniqueId");
       setSearchedArtistList(res);
     } catch (error) {
       toast.error("아티스트 검색 중 오류가 발생했습니다.");

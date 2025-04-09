@@ -166,6 +166,19 @@ export default function VideoSection({
           size="small"
           width={320}
         />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
+          label="유통사"
+          placeholder="유통사 입력"
+          value={watch("distributionCompanyName") || ""}
+          onChange={(e) => {
+            setValue("distributionCompanyName", e.target.value);
+          }}
+          size="small"
+          width={320}
+        />
         <CustomInput
           label="기획사"
           placeholder="기획사 입력"
