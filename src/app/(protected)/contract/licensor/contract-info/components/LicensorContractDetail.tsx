@@ -111,8 +111,7 @@ const LicensorContractDetail = ({
           setIsEdit={setIsEdit}
           onSubmit={handleSubmit(onSubmit)}
           onDelete={handleDelete}
-          isDirty={isDirty}
-          isValid={isValid}
+          isDisabled={false}
           onCancel={() => {
             setIsEdit(false);
             reset(licensorContract);

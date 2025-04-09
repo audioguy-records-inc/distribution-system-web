@@ -113,8 +113,7 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
           setIsEdit={setIsEdit}
           onSubmit={handleSubmit(onSubmit)}
           onDelete={handleDelete}
-          isDirty={isDirty}
-          isValid={isValid}
+          isDisabled={false}
           onCancel={() => {
             setIsEdit(false);
             reset(dspContract);

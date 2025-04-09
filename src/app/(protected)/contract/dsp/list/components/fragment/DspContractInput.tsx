@@ -42,7 +42,6 @@ const DspContractInput = ({
           size="small"
           label="계약명"
           placeholder="계약명 입력"
-          required
           readOnly={!isEdit}
           {...register("dspContractName", { required: true })}
         />

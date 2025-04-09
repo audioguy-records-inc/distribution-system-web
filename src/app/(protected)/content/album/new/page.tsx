@@ -85,7 +85,6 @@ export default function AlbumNewPage() {
     return (
       album.titleList &&
       album.titleList.length > 0 &&
-      album.albumUniqueId &&
       album.UCI &&
       album.UPC &&
       album.artistImageList &&

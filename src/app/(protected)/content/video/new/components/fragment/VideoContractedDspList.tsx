@@ -71,7 +71,7 @@ export default function VideoContractedDspList({
 
   return (
     <Container>
-      <Label>DSP</Label>
+      <Label>계약된 DSP 리스트</Label>
       <Gap height={8} />
       <CustomCheckbox
         label="전체 선택"

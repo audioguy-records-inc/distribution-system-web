@@ -208,7 +208,7 @@ const CustomTable = <T extends Record<string, any>>({
       case "input":
         return (
           <CustomInput
-            value={value as string}
+            value={(value as string) || ""}
             onChange={(e) =>
               handleInputChange(rowIndex, column.accessor, e.target.value)
             }

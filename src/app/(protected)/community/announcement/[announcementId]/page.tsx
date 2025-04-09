@@ -109,11 +109,9 @@ const AnnouncementDetailPage = () => {
           onSubmit={handleSubmit(onSubmit)}
           onDelete={handleDelete}
           onCancel={handleCancel}
-          isDirty={isDirty}
-          isValid={isValid}
+          isDisabled={false}
         />
       </HeaderWrapper>
-
       <Title
         value={watch("title") || ""}
         placeholder="제목 입력"

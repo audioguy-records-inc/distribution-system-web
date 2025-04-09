@@ -15,17 +15,15 @@ const DetailHeaderButton = ({
   setIsEdit,
   onSubmit,
   onDelete,
-  isDirty,
-  isValid,
   onCancel,
+  isDisabled,
 }: {
   isEdit: boolean;
   setIsEdit: (isEdit: boolean) => void;
-  isDirty: boolean;
-  isValid: boolean;
   onSubmit: () => void;
   onDelete: () => void;
   onCancel: () => void;
+  isDisabled: boolean;
 }) => {
   return (
     <ButtonWrapper>
@@ -41,7 +39,7 @@ const DetailHeaderButton = ({
           <ButtonOutlinedPrimary
             label="완료"
             onClick={onSubmit}
-            disabled={!isDirty || !isValid}
+            disabled={isDisabled}
             size="medium"
           />
         </>

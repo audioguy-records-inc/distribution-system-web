@@ -79,9 +79,9 @@ export default function TrackDetail({
     setIsDeleteModalOpen(false);
   };
 
-  const isValid = () => {
-    if (!currentTrack.title || currentTrack.title === "") return false;
-    return true;
+  const isDisabled = () => {
+    // if (!currentTrack.title || currentTrack.title === "") return true;
+    return false;
   };
 
   useEffect(() => {
@@ -107,8 +107,7 @@ export default function TrackDetail({
           }}
           onSubmit={handleConfirmUpdate}
           onDelete={handleDelete}
-          isDirty={true}
-          isValid={isValid()}
+          isDisabled={isDisabled()}
           onCancel={() => {
             setIsEdit(false);
             setTracks(
