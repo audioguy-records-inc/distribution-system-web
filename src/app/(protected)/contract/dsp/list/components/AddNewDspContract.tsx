@@ -131,35 +131,33 @@ const AddNewDspContract = () => {
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
             <ButtonFilledPrimary
               label="등록"
-              onClick={handleSubmit(onSubmit)}
+              onClick={() => onSubmit(watch())}
               disabled={false}
             />
           </ButtonWrapper>
         </ModalHeader>
         <Gap height={48} />
 
-        <Form onSubmit={handleSubmit(onSubmit)}>
-          <VisibleWrapper>
-            <VisibleLabel>계약 정보</VisibleLabel>
-            <Controller
-              name="isContractEnabled"
-              control={control}
-              render={({ field }) => (
-                <CustomToggle
-                  checked={field.value}
-                  onChange={field.onChange}
-                  label=""
-                />
-              )}
-            />
-          </VisibleWrapper>
-          <DspContractInput
-            watch={watch}
-            register={register}
+        <VisibleWrapper>
+          <VisibleLabel>계약 정보</VisibleLabel>
+          <Controller
+            name="isContractEnabled"
             control={control}
-            isEdit={true}
+            render={({ field }) => (
+              <CustomToggle
+                checked={field.value}
+                onChange={field.onChange}
+                label=""
+              />
+            )}
           />
-        </Form>
+        </VisibleWrapper>
+        <DspContractInput
+          watch={watch}
+          register={register}
+          control={control}
+          isEdit={true}
+        />
       </ReactModal>
     </>
   );
