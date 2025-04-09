@@ -82,7 +82,7 @@ export const useAlbumStore = create<AlbumStore>()(
           }
 
           set((state) => ({
-            albums: [...state.albums, response.data!.albumList[0]],
+            albums: [response.data!.albumList[0], ...state.albums],
             newAlbum: response.data!.albumList[0],
             error: null,
           }));

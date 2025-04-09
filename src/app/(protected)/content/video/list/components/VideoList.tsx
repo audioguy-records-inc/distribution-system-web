@@ -153,14 +153,16 @@ export default function VideoList() {
     fetchVideos();
   }, []);
 
+  const handleClickVideoItem = (record: Video) => {
+    router.push(`/content/video/list/${record._id}`);
+  };
+
   return (
     <Container>
       <CustomTable
         columns={columns}
         data={videos}
-        onClick={(record) => {
-          router.push(`/content/video/list/${record._id}`);
-        }}
+        onClick={handleClickVideoItem}
       />
     </Container>
   );

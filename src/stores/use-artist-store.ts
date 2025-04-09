@@ -103,7 +103,7 @@ export const useArtistStore = create<ArtistStore>()(
           }
 
           set((state) => ({
-            artists: [...state.artists, response.data!.artistList[0]],
+            artists: [response.data!.artistList[0], ...state.artists],
             error: null,
           }));
 

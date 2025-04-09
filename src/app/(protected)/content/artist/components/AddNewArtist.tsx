@@ -97,6 +97,16 @@ const AddNewArtist = ({
     },
   };
 
+  const isDisabled = () => {
+    const artist = watch();
+    if (!artist.name || artist.name === "") return true;
+    if (!artist.countryCode || artist.countryCode === "") return true;
+    if (!artist.genderType) return true;
+    if (!artist.artistType) return true;
+    if (!artist.countryCode) return true;
+    return false;
+  };
+
   return (
     <>
       <AddNewWrapper onClick={handleOpen}>
@@ -119,7 +129,7 @@ const AddNewArtist = ({
               <ButtonFilledPrimary
                 label="등록"
                 onClick={handleSubmit(onSubmit)}
-                disabled={!isDirty || !isValid}
+                disabled={isDisabled()}
               />
             )}
           </ButtonWrapper>

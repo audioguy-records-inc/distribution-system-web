@@ -2,6 +2,7 @@
 
 import PageHeader from "@/components/PageHeader";
 import VideoDownloadButton from "./components/fragment/VideoDownloadButton";
+import VideoList from "./components/VideoList";
 import VideoSearch from "./components/VideoSearch";
 import styled from "styled-components";
 
@@ -25,6 +26,7 @@ export default function VideoListPage() {
       <ButtonWrapper>
         <VideoDownloadButton />
       </ButtonWrapper>
+      <VideoList />
     </Container>
   );
 }

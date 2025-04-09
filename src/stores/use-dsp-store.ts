@@ -66,7 +66,7 @@ export const useDspStore = create<DspStore>()(
           }
 
           set((state) => ({
-            dsps: [...state.dsps, ...(response.data?.dspList || [])],
+            dsps: [response.data!.dspList[0], ...state.dsps],
           }));
         } catch (error) {
           const errorMessage =

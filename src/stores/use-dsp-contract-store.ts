@@ -74,8 +74,8 @@ export const useDspContractStore = create<DspContractStore>()(
 
           set((state) => ({
             dspContracts: [
-              ...state.dspContracts,
               response.data!.dspContractList[0],
+              ...state.dspContracts,
             ],
             error: null,
           }));
