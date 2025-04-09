@@ -3,6 +3,7 @@ import CustomTable, {
 } from "@/components/basic/custom-table/CustomTable";
 
 import ActivateStateBadge from "@/components/basic/custom-table/components/ActivateStateBadge";
+import CenterSpinner from "@/components/CenterSpinner";
 import Dsp from "@/components/basic/custom-table/components/Dsp";
 import DspContract from "@/types/dsp-contract";
 import DspContractDetail from "./DspContractDetail";
@@ -15,8 +16,10 @@ const Container = styled.div``;
 
 export default function DspContractList({
   dspContracts,
+  isLoading,
 }: {
   dspContracts: DspContract[];
+  isLoading: boolean;
 }) {
   const { user } = useAuthStore();
   const { fetchDspContracts } = useDspContractStore();
@@ -72,6 +75,10 @@ export default function DspContractList({
   const renderExpandedContent = (dspContract: DspContract) => {
     return <DspContractDetail dspContract={dspContract} />;
   };
+
+  if (isLoading) {
+    return <CenterSpinner />;
+  }
 
   return (
     <Container>

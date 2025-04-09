@@ -29,8 +29,7 @@ const SearchContainer = styled.div`
 const ListContainer = styled.div``;
 
 export default function DspListPage() {
-  const { dspContracts, isLoading, error, searchDspContracts } =
-    useDspContractStore();
+  const { dspContracts, isLoading, error } = useDspContractStore();
   const [selectedDsps, setSelectedDsps] = useState<DspType[]>(["ALL"]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredContracts, setFilteredContracts] = useState<DspContract[]>([]);
@@ -47,11 +46,21 @@ export default function DspListPage() {
 
   const handleFilterChange = (dsps: DspType[]) => {
     setSelectedDsps(dsps);
-    // 필터 변경 시 검색 상태 초기화
+
+    // 필터 변경 시 현재 검색어를 유지하면서 필터링
     let contracts = dspContracts;
-    if (!selectedDsps.includes("ALL")) {
+    if (!dsps.includes("ALL")) {
       contracts = contracts.filter((contract) =>
-        selectedDsps.includes(contract.dspInfo?.name as DspType),
+        dsps.includes(contract.dspInfo?.name as DspType),
+      );
+    }
+
+    // 검색어가 있는 경우 검색 필터도 적용
+    if (searchValue.trim()) {
+      contracts = contracts.filter((contract) =>
+        contract.dspContractName
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase()),
       );
     }
 
@@ -59,14 +68,28 @@ export default function DspListPage() {
   };
 
   const handleSearch = async () => {
-    if (!searchValue.trim()) {
-      setFilteredContracts(dspContracts);
-      return;
+    // 현재 선택된 DSP 필터를 유지하면서 검색
+    let contracts = dspContracts;
+
+    // DSP 필터 적용
+    if (!selectedDsps.includes("ALL")) {
+      contracts = contracts.filter((contract) =>
+        selectedDsps.includes(contract.dspInfo?.name as DspType),
+      );
     }
 
-    const results = await searchDspContracts(searchValue, "dspContractName");
-    setFilteredContracts(results);
-    setSelectedDsps(["ALL"]);
+    // 검색어 필터 적용
+    if (searchValue.trim()) {
+      contracts = contracts.filter((contract) =>
+        contract.dspContractName
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase()),
+      );
+    } else {
+      // 검색어가 없는 경우 DSP 필터만 적용된 결과 표시
+    }
+
+    setFilteredContracts(contracts);
   };
 
   return (
@@ -90,8 +113,10 @@ export default function DspListPage() {
       />
       <Gap height={32} />
       <ListContainer>
-        <DspContractList dspContracts={filteredContracts} />
-        {isLoading && <CenterSpinner />}
+        <DspContractList
+          dspContracts={filteredContracts}
+          isLoading={isLoading}
+        />
       </ListContainer>
     </Container>
   );
