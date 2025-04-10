@@ -84,6 +84,7 @@ const TextArea = styled.textarea<{
   min-height: ${({ $height }) =>
     $height && $height !== "auto" ? $height : "160px"};
   overflow-y: auto;
+  font-family: inherit;
 
   ${({ $hideScrollbar }) =>
     $hideScrollbar &&
@@ -99,6 +100,11 @@ const TextArea = styled.textarea<{
     color: ${({ $disabled }) =>
       $disabled ? theme.colors.gray[100] : theme.colors.gray[300]};
     font-feature-settings: "ss10" on;
+    ${theme.fonts.body1.regular}
+  }
+
+  &,
+  &:focus {
     ${theme.fonts.body1.regular}
   }
 `;
