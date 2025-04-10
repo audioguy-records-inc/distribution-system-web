@@ -1,4 +1,5 @@
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 import Album from "@/types/album";
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
@@ -9,7 +10,6 @@ import Track from "@/types/track";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
-import { useState } from "react";
 import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div`
@@ -112,7 +112,7 @@ BulkApplyProps) {
       setIsLoading(false);
     }
   };
-  console.log("moonsae tracks", tracks);
+
   return (
     <Container>
       <ButtonWrapper>

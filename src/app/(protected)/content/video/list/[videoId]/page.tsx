@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import Album from "@/types/album";
@@ -7,6 +8,7 @@ import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary"
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import ButtonSpinner from "@/components/ButtonSpinner";
 import CensorSection from "../../new/components/CensorSection";
+import CenterSpinner from "@/components/CenterSpinner";
 import CollapsibleHeader from "@/components/CollapsibleHeader";
 import CollapsibleTrackHeader from "@/components/CollapsibleTrackHeader";
 import Gap from "@/components/basic/Gap";
@@ -17,7 +19,6 @@ import VideoSection from "../../new/components/VideoSection";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
@@ -37,15 +38,29 @@ const VideoDetailPage = () => {
   const router = useRouter();
   const { videoId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const { videos, updateVideo, deleteVideo } = useVideoStore();
-  const video = videos.find((video) => video._id === videoId);
+  const { videos, updateVideo, deleteVideo, fetchVideo } = useVideoStore();
+
+  const [video, setVideo] = useState<Video | null>(null);
 
   const { register, reset, control, watch, setValue, formState } =
     useForm<Video>({
-      defaultValues: video,
+      defaultValues: {},
       mode: "onChange",
       shouldFocusError: false,
     });
+
+  useEffect(() => {
+    const _fetchVideo = async () => {
+      setIsLoading(true);
+      const _video = await fetchVideo(videoId as string);
+      if (_video) {
+        setVideo(_video);
+        reset(_video);
+      }
+      setIsLoading(false);
+    };
+    _fetchVideo();
+  }, [videoId, fetchVideo, reset]);
 
   const handleDelete = async () => {
     setIsLoading(true);
@@ -72,6 +87,10 @@ const VideoDetailPage = () => {
     await updateVideo(_video, false);
     setIsLoading(false);
   };
+
+  if (isLoading) {
+    return <CenterSpinner />;
+  }
 
   if (!video) {
     return <div>영상을 찾을 수 없습니다.</div>;

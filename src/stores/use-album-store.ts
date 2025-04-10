@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import Album from "@/types/album";
 import { create } from "zustand";
 import { deleteAlbum } from "@/api/album/delete-album";
+import { getAlbum } from "@/api/album/get-album";
 import { getAlbums } from "@/api/album/get-albums";
 import { postAlbum } from "@/api/album/post-album";
 import { putAlbum } from "@/api/album/put-album";
@@ -15,6 +16,7 @@ interface AlbumStore {
   isLoading: boolean;
   error: string | null;
 
+  fetchAlbum: (albumId: string) => Promise<Album | null>;
   fetchAlbums: () => Promise<void>;
   createAlbum: (album: Album) => Promise<void>;
   updateAlbum: (album: Album, isNewAlbum: boolean) => Promise<void>;
@@ -40,6 +42,34 @@ export const useAlbumStore = create<AlbumStore>()(
       isLoading: false,
       error: null,
 
+      fetchAlbum: async (albumId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await getAlbum({ albumId });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          return response.data.album;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "앨범 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useAlbumStore/fetchAlbum] Fetch album failed.",
+            error,
+          );
+
+          return null;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       fetchAlbums: async () => {
         set({ isLoading: true });
         try {

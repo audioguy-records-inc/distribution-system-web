@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import Video from "@/types/video";
 import { create } from "zustand";
 import { deleteVideo } from "@/api/video/delete-video";
+import { getVideo } from "@/api/video/get-video";
 import { getVideos } from "@/api/video/get-videos";
 import { postVideo } from "@/api/video/post-video";
 import { putVideo } from "@/api/video/put-video";
@@ -15,6 +16,7 @@ interface VideoStore {
   isLoading: boolean;
   error: string | null;
 
+  fetchVideo: (videoId: string) => Promise<Video | null>;
   fetchVideos: () => Promise<void>;
   createVideo: (video: Video) => Promise<void>;
   updateVideo: (video: Video, isNewVideo: boolean) => Promise<void>;
@@ -40,6 +42,34 @@ export const useVideoStore = create<VideoStore>()(
       isLoading: false,
       error: null,
 
+      fetchVideo: async (videoId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await getVideo({ videoId });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          return response.data.video;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "영상 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useVideoStore/fetchVideo] Fetch video failed.",
+            error,
+          );
+
+          return null;
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       fetchVideos: async () => {
         set({ isLoading: true });
         try {
