@@ -82,7 +82,7 @@ export const useVideoStore = create<VideoStore>()(
           }
 
           set((state) => ({
-            videos: [...state.videos, response.data!.videoList[0]],
+            videos: [response.data!.videoList[0], ...state.videos],
             newVideo: response.data!.videoList[0],
             error: null,
           }));

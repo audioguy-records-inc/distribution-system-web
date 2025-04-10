@@ -10,7 +10,11 @@ export const getVideos = async (): Promise<
   FetchResponse<GetVideosResponse>
 > => {
   try {
-    const response = await apiFetch("/videos");
+    const queryParams = new URLSearchParams();
+    queryParams.append("__limit", "100");
+    queryParams.append("__sortOption", "createdAtDESC");
+
+    const response = await apiFetch(`/videos?${queryParams.toString()}`);
 
     return response as FetchResponse<GetVideosResponse>;
   } catch (error) {

@@ -31,13 +31,19 @@ export const getSettlementAdminInvoices = async (
         request.__kstSettlementEndMonth,
       );
 
-    if (request.__limit)
+    if (request.__limit) {
       queryParams.append("__limit", request.__limit.toString());
+    } else {
+      queryParams.append("__limit", "100");
+    }
 
     if (request.__skip) queryParams.append("__skip", request.__skip.toString());
 
-    if (request.__sortOption)
+    if (request.__sortOption) {
       queryParams.append("__sortOption", request.__sortOption);
+    } else {
+      queryParams.append("__sortOption", "createdAtDESC");
+    }
 
     const response = await apiFetch<GetSettlementAdminInvoicesResponse>(
       `/settlements/admin-invoices?${queryParams.toString()}`,
