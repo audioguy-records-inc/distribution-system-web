@@ -84,7 +84,7 @@ const AddNewAnnouncement = () => {
     },
   };
 
-  const isFilled = () => {
+  const isDisabledConfirmButton = () => {
     const title = watch("title");
     const text = watch("text");
     const type = watch("type");
@@ -97,12 +97,10 @@ const AddNewAnnouncement = () => {
       !type ||
       !recipientResponsibility
     ) {
-      return false;
+      return true;
     }
-    return true;
+    return false;
   };
-
-  console.log("moonsae watch", watch());
 
   return (
     <>
@@ -130,7 +128,7 @@ const AddNewAnnouncement = () => {
               <ButtonFilledPrimary
                 label="등록"
                 onClick={handleSubmit(onSubmit)}
-                disabled={!isFilled()}
+                disabled={isDisabledConfirmButton()}
               />
             )}
           </ButtonWrapper>
