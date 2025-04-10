@@ -70,7 +70,7 @@ export default function AnnouncementSearch() {
           onSelectKey={(key) => setSearchType(key as SearchType)}
         />
         <SearchInput
-          placeholder="검색어 입력"
+          placeholder="제목, 내용 입력"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

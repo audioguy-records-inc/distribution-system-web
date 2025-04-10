@@ -86,7 +86,7 @@ export default function SettlementSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="검색어 입력"
+          placeholder="앨범명, 트랙명, 아티스트명 입력"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

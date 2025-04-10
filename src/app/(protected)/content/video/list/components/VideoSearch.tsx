@@ -117,7 +117,7 @@ export default function VideoSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="검색어 입력"
+          placeholder="아티스트, 영상명, 트랙명, 영상코드"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}
