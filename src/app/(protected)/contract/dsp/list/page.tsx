@@ -80,10 +80,14 @@ export default function DspListPage() {
 
     // 검색어 필터 적용
     if (searchValue.trim()) {
-      contracts = contracts.filter((contract) =>
-        contract.dspContractName
-          ?.toLowerCase()
-          .includes(searchValue.toLowerCase()),
+      contracts = contracts.filter(
+        (contract) =>
+          contract.dspContractName
+            ?.toLowerCase()
+            .includes(searchValue.toLowerCase()) ||
+          contract.dspContractUniqueId
+            ?.toLowerCase()
+            .includes(searchValue.toLowerCase()),
       );
     } else {
       // 검색어가 없는 경우 DSP 필터만 적용된 결과 표시
