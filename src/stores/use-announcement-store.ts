@@ -19,7 +19,7 @@ interface AnnouncementStore {
   updateAnnouncement: (announcement: Announcement) => Promise<void>;
   deleteAnnouncement: (announcementId: string) => Promise<void>;
   searchAnnouncements: (params: {
-    type: AnnouncementType;
+    type?: AnnouncementType;
     __searchKeyword: string;
     __searchFields?: string;
     __skip?: number;
@@ -188,7 +188,7 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
         }
       },
       searchAnnouncements: async (params: {
-        type: AnnouncementType;
+        type?: AnnouncementType;
         __searchKeyword: string;
         __searchFields?: string;
         __skip?: number;

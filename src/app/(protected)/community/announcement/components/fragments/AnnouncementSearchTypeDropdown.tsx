@@ -1,5 +1,6 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useAnnouncementStore } from "@/stores/use-announcement-store";
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ export default function AnnouncementSearchTypeDropdown({
   selectedType: AnnouncementSearchType;
   setSelectedType: (type: AnnouncementSearchType) => void;
 }) {
+  const { searchAnnouncements } = useAnnouncementStore();
   const items = [
     {
       key: "ALL",
@@ -36,13 +38,31 @@ export default function AnnouncementSearchTypeDropdown({
       value: "기타",
     },
   ];
+  const handleSearch = async (key: AnnouncementSearchType) => {
+    const _type = key === "ALL" ? null : key;
+    if (_type) {
+      await searchAnnouncements({
+        type: _type,
+        __searchKeyword: "",
+      });
+    } else {
+      await searchAnnouncements({
+        __searchKeyword: "",
+      });
+    }
+  };
+
   return (
     <Container>
       <CustomDropdown
         label={"구분"}
         items={items}
         selectedKey={selectedType}
-        onSelectKey={(key) => setSelectedType(key as AnnouncementSearchType)}
+        onSelectKey={(key) => {
+          const _key = key as AnnouncementSearchType;
+          setSelectedType(_key);
+          handleSearch(_key);
+        }}
       />
     </Container>
   );

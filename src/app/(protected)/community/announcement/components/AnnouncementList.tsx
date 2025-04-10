@@ -77,15 +77,15 @@ export default function AnnouncementList() {
             _type = "기타";
             break;
         }
-        return <Title>{_type}</Title>;
+        return <Title>{_value}</Title>;
       },
     },
   ];
 
   useEffect(() => {
     fetchAnnouncements();
-  }, []);
-  console.log("moonsae announcements", announcements);
+  }, [fetchAnnouncements]);
+
   return (
     <Container>
       <CustomTable

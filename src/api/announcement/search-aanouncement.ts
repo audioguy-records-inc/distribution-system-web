@@ -2,7 +2,7 @@ import { Announcement, AnnouncementType } from "@/types/announcement";
 import { FetchResponse, apiFetch } from "../fetch";
 
 interface SearchAnnouncementRequest {
-  type: AnnouncementType;
+  type?: AnnouncementType;
   __searchKeyword: string;
   __searchFields?: string;
   __skip?: number; // 기본값 0
@@ -19,6 +19,9 @@ export const searchAnnouncement = async (
 ): Promise<FetchResponse<SearchAnnouncementResponse>> => {
   try {
     const queryParams = new URLSearchParams();
+    if (request.type) {
+      queryParams.append("type", request.type);
+    }
     queryParams.append("__searchKeyword", request.__searchKeyword);
     if (request.__searchFields) {
       queryParams.append("__searchFields", request.__searchFields);
