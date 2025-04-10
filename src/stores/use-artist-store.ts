@@ -23,7 +23,7 @@ interface ArtistStore {
   searchArtists: (
     searchKeyword: string,
     searchFields?: string,
-  ) => Promise<Artist[]>;
+  ) => Promise<void>;
 }
 
 export const useArtistStore = create<ArtistStore>()(
@@ -210,10 +210,9 @@ export const useArtistStore = create<ArtistStore>()(
           }
 
           set({
+            artists: response.data.artistList,
             error: null,
           });
-
-          return response.data.artistList;
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -227,7 +226,6 @@ export const useArtistStore = create<ArtistStore>()(
             error,
           );
           set({ error: errorMessage });
-          return [];
         } finally {
           set({ isLoading: false });
         }

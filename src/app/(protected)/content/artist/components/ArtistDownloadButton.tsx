@@ -11,12 +11,9 @@ import { useState } from "react";
 
 const Container = styled.div``;
 
-export default function ArtistDownloadButton({
-  artists,
-}: {
-  artists: Artist[];
-}) {
+export default function ArtistDownloadButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { artists } = useArtistStore();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);

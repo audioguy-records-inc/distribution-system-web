@@ -31,7 +31,8 @@ const SnsIconWrapper = styled.a`
   justify-content: center;
 `;
 
-export default function ArtistList({ artists }: { artists: Artist[] }) {
+export default function ArtistList() {
+  const { artists, fetchArtists } = useArtistStore();
   const columns: Column<Artist>[] = [
     {
       header: "아티스트 코드",
@@ -155,6 +156,10 @@ export default function ArtistList({ artists }: { artists: Artist[] }) {
       },
     },
   ];
+
+  useEffect(() => {
+    fetchArtists();
+  }, [fetchArtists]);
 
   const renderExpandedContent = (artist: Artist) => {
     return <ArtistDetail artist={artist} />;
