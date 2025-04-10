@@ -3,6 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 
 import Announcement from "@/types/announcement";
+import { AuthLevel } from "@/types/user";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import ButtonSpinner from "@/components/ButtonSpinner";
@@ -15,6 +16,7 @@ import Title from "../components/fragments/Title";
 import TypeSelect from "../components/fragments/TypeSelect";
 import styled from "styled-components";
 import { useAnnouncementStore } from "@/stores/use-announcement-store";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -34,6 +36,7 @@ const ButtonWrapper = styled.div`
 
 const AnnouncementDetailPage = () => {
   const router = useRouter();
+  const { user } = useAuthStore();
   const { announcements, updateAnnouncement, deleteAnnouncement } =
     useAnnouncementStore();
   const { announcementId } = useParams();
@@ -58,6 +61,7 @@ const AnnouncementDetailPage = () => {
     mode: "onChange",
     shouldFocusError: false,
   });
+  const isAdmin = user?.authLevel === AuthLevel.ADMIN;
 
   useEffect(() => {
     reset(announcement);
@@ -103,14 +107,16 @@ const AnnouncementDetailPage = () => {
     <Container>
       <HeaderWrapper>
         <PageHeader title={"공지사항 상세"} />
-        <DetailHeaderButton
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
-          onSubmit={handleSubmit(onSubmit)}
-          onDelete={handleDelete}
-          onCancel={handleCancel}
-          isDisabled={false}
-        />
+        {isAdmin && (
+          <DetailHeaderButton
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+            onSubmit={handleSubmit(onSubmit)}
+            onDelete={handleDelete}
+            onCancel={handleCancel}
+            isDisabled={false}
+          />
+        )}
       </HeaderWrapper>
       <Title
         value={watch("title") || ""}

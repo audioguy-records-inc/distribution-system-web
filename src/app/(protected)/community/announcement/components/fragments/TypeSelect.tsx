@@ -85,11 +85,22 @@ const TypeSelect = ({
         <RowGap width={32} />
         <Label>구분</Label>
         <RowGap width={12} />
-        <Value>{watch("type")}</Value>
+        <Value>
+          {
+            announcementTypeItems.find((item) => item.key === watch("type"))
+              ?.value
+          }
+        </Value>
         <RowGap width={32} />
         <Label>전송 대상</Label>
         <RowGap width={12} />
-        <Value>{watch("recipientResponsibility")}</Value>
+        <Value>
+          {
+            recipientResponsibilityItems.find(
+              (item) => item.key === watch("recipientResponsibility"),
+            )?.value
+          }
+        </Value>
       </DisabledTypeContainer>
     );
   }
