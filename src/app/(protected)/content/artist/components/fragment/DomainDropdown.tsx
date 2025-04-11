@@ -17,11 +17,11 @@ const DomainDropdown = ({
 }: DomainDropdownProps) => {
   return (
     <CustomDropdown
-      label={"도메인"}
+      label={"국가"}
       selectedKey={value}
       onSelectKey={onChange}
       items={getCountryKeyValueList()}
-      placeholder="도메인 선택"
+      placeholder="국가 선택"
       size={"small"}
       width={320}
       readOnly={readOnly}

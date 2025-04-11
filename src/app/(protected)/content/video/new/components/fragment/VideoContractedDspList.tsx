@@ -29,6 +29,11 @@ const Label = styled.div`
   color: ${theme.colors.gray[600]};
 `;
 
+const HelpText = styled.div`
+  ${theme.fonts.body2.medium}
+  padding-top: 12px;
+`;
+
 export default function VideoContractedDspList({
   watch,
   register,
@@ -39,7 +44,8 @@ export default function VideoContractedDspList({
   setValue: UseFormSetValue<Video>;
 }) {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
-  const contractedDspContractList = watch("userContract.dspContractList") || [];
+  const contractedDspContractList =
+    watch("userContractInfo.dspContractList") || [];
   const dspContractIdList = watch("dspContractIdList") || [];
 
   const handleChipClick = (dsp: Dsp) => {
@@ -71,14 +77,22 @@ export default function VideoContractedDspList({
 
   return (
     <Container>
-      <Label>계약된 DSP 리스트</Label>
-      <Gap height={8} />
-      <CustomCheckbox
-        label="전체 선택"
-        checked={isSelectedAll}
-        onChange={handleSelectAll}
-      />
-      <Gap height={8} />
+      <Label>{`계약된 DSP 리스트: ${dspContractIdList.length}개 선택됨`}</Label>
+      {!contractedDspContractList || contractedDspContractList.length === 0 ? (
+        <HelpText>
+          계약 정보를 선택하면 해당 계약의 dsp 리스트가 표시됩니다.
+        </HelpText>
+      ) : (
+        <>
+          <Gap height={8} />
+          <CustomCheckbox
+            label="전체 선택"
+            checked={isSelectedAll}
+            onChange={handleSelectAll}
+          />
+          <Gap height={8} />
+        </>
+      )}
       <ChipContainer>
         {contractedDspContractList &&
           contractedDspContractList.length > 0 &&

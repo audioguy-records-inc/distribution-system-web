@@ -118,7 +118,7 @@ export default function AlbumList() {
       align: "center",
       render: (value, row, index) => {
         const userInfo = value as User;
-        return <RenderText>{userInfo.displayName}</RenderText>;
+        return <RenderText>{userInfo?.displayName}</RenderText>;
       },
     },
     {

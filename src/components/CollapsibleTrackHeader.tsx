@@ -83,7 +83,6 @@ const EnableText = styled.div`
 const CollapsibleTrackHeader: React.FC<CollapsibleTrackHeaderProps> = ({
   title,
   renderComponent,
-  disabled,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -95,15 +94,8 @@ const CollapsibleTrackHeader: React.FC<CollapsibleTrackHeaderProps> = ({
     <HeaderContainer>
       <HeaderWrapper onClick={toggleOpen}>
         <Title>{title}</Title>
-        {disabled ? (
-          <DisableText>
-            트랙은 앨범 정보 등록 후 추가 가능합니다. 앨범을 먼저 등록해주세요.
-          </DisableText>
-        ) : (
-          <EnableText>트랙 등록 가능</EnableText>
-        )}
         <IconWrapper>
-          {isOpen && !disabled ? (
+          {isOpen ? (
             <ArrowUpIcon
               color={theme.colors.purple[600]}
               width={18}
@@ -118,9 +110,7 @@ const CollapsibleTrackHeader: React.FC<CollapsibleTrackHeaderProps> = ({
           )}
         </IconWrapper>
       </HeaderWrapper>
-      <ContentWrapper $isOpen={isOpen && !disabled}>
-        {renderComponent}
-      </ContentWrapper>
+      <ContentWrapper $isOpen={isOpen}>{renderComponent}</ContentWrapper>
     </HeaderContainer>
   );
 };

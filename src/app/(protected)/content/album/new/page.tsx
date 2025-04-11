@@ -17,6 +17,7 @@ import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div``;
 
@@ -35,6 +36,8 @@ export default function AlbumNewPage() {
   const [resetKey, setResetKey] = useState(0);
   const { createAlbum, newAlbum, isLoading, resetNewAlbum, updateAlbum } =
     useAlbumStore();
+  const { edittingTracks, resetEdittingTracks, createTrack, updateTrack } =
+    useTrackStore();
 
   const defaultValues = {
     titleList: [
@@ -64,7 +67,7 @@ export default function AlbumNewPage() {
   const handleReset = () => {
     resetNewAlbum();
     reset(defaultValues);
-
+    resetEdittingTracks();
     setResetKey((prev) => prev + 1);
   };
 
@@ -75,8 +78,22 @@ export default function AlbumNewPage() {
   const onSubmit = async (data: Album) => {
     if (newAlbum) {
       await updateAlbum(data, true);
+
+      const trackPromises = edittingTracks.map((track) => {
+        if (track._id) {
+          return updateTrack(track);
+        } else {
+          return createTrack(track);
+        }
+      });
+      await Promise.all(trackPromises);
     } else {
       await createAlbum(data);
+
+      if (newAlbum) {
+        const trackPromises = edittingTracks.map((track) => createTrack(track));
+        await Promise.all(trackPromises);
+      }
     }
   };
 
@@ -166,7 +183,6 @@ export default function AlbumNewPage() {
       <CollapsibleTrackHeader
         title="4. 트랙 정보"
         renderComponent={<TrackSection albumWatch={watch} />}
-        disabled={!newAlbum}
       />
       <Gap height={56} />
     </Container>

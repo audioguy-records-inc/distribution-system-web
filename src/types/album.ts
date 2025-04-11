@@ -66,7 +66,7 @@ export interface Album {
   userId?: string;
   userInfo?: User;
   userContractId?: string;
-  userContract?: UserContract;
+  userContractInfo?: UserContract;
   dspContractIdList?: string[];
 
   supplyRegion?: string;

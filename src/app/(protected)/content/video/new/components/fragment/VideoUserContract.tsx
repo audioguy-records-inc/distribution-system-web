@@ -55,7 +55,7 @@ export default function VideoUserContract({
       <CustomInput
         label="계약 정보"
         locked
-        value={watch("userContract")?.userContractUniqueId || ""}
+        value={watch("userContractInfo")?.userContractUniqueId || ""}
         width={100}
         size="small"
       />
@@ -67,7 +67,7 @@ export default function VideoUserContract({
         onSelectKey={(key) => {
           setValue("userContractId", key);
           setValue(
-            "userContract",
+            "userContractInfo",
             searchedUserContracts.find(
               (userContract) => userContract._id === key,
             ),

@@ -25,7 +25,7 @@ const CountryCodeDropdown = ({
 
   return (
     <CustomDropdown
-      label={"도메인"}
+      label={"국가"}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}

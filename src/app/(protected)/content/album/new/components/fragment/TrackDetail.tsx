@@ -12,10 +12,10 @@ import Track from "@/types/track";
 import TrackGenre from "./TrackGenre";
 import TrackReleaseCountryCode from "./TrackReleaseCountryCode";
 import TrackReleaseDate from "./TrackReleaseDate";
+import TrackTitle from "./TrackTitle";
 import TrackUserContract from "./TrackUserContract";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div`
   padding-left: 32px;
@@ -55,51 +55,55 @@ export default function TrackDetail({
   const currentTrack = tracks[index];
   const [prefTrack, setPrefTrack] = useState(currentTrack);
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const { updateTrack, deleteTrack, error } = useTrackStore();
-  const handleConfirmUpdate = async () => {
-    await updateTrack(currentTrack);
-    setIsUpdateModalOpen(false);
-    setIsEdit(false);
-  };
+  // const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  // const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  // const { createTrack, updateTrack, deleteTrack, error } = useTrackStore();
+  // const handleConfirmUpdate = async () => {
+  //   if (!currentTrack._id) {
+  //     await createTrack(currentTrack);
+  //   } else {
+  //     await updateTrack(currentTrack);
+  //   }
+  //   setIsUpdateModalOpen(false);
+  //   setIsEdit(false);
+  // };
 
-  const handleDelete = () => {
-    setIsDeleteModalOpen(true);
-  };
+  // const handleDelete = () => {
+  //   setIsDeleteModalOpen(true);
+  // };
 
-  const handleConfirmDelete = async () => {
-    if (!currentTrack._id) return;
-    await deleteTrack(currentTrack._id);
+  // const handleConfirmDelete = async () => {
+  //   if (!currentTrack._id) return;
+  //   await deleteTrack(currentTrack._id);
 
-    if (!error) {
-      setTracks(tracks.filter((track, i) => i !== index));
-    }
+  //   if (!error) {
+  //     setTracks(tracks.filter((track, i) => i !== index));
+  //   }
 
-    setIsDeleteModalOpen(false);
-  };
+  //   setIsDeleteModalOpen(false);
+  // };
 
-  const isDisabled = () => {
-    // if (!currentTrack.title || currentTrack.title === "") return true;
-    return false;
-  };
+  // const isDisabled = () => {
+  //   // if (!currentTrack.title || currentTrack.title === "") return true;
+  //   return false;
+  // };
 
   useEffect(() => {
-    if (currentTrack?.userContract) {
+    if (currentTrack?.userContractInfo) {
     }
-  }, [currentTrack?.userContract]);
+  }, [currentTrack?.userContractInfo]);
 
-  const handleEdit = () => {
-    setPrefTrack(currentTrack);
-    setIsEdit(true);
-  };
+  // const handleEdit = () => {
+  //   setPrefTrack(currentTrack);
+  //   setIsEdit(true);
+  // };
 
   return (
     <Container>
       <Gap height={48} />
       <Header>
         <TitleWrapper>트랙 상세 정보</TitleWrapper>
-        <DetailHeaderButton
+        {/* <DetailHeaderButton
           isEdit={isEdit}
           setIsEdit={(value) => {
             if (value) handleEdit();
@@ -114,8 +118,20 @@ export default function TrackDetail({
               tracks.map((track, i) => (i === index ? prefTrack : track)),
             );
           }}
-        />
+        /> */}
       </Header>
+      <Gap height={56} />
+      <TrackTitle
+        value={currentTrack.titleList || []}
+        onChange={(value) => {
+          setTracks(
+            tracks.map((track, i) =>
+              i === index ? { ...track, titleList: value } : track,
+            ),
+          );
+        }}
+        readOnly={false}
+      />
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
@@ -132,7 +148,7 @@ export default function TrackDetail({
               ),
             );
           }}
-          readOnly={!isEdit}
+          // readOnly={!isEdit}
         />
         <CustomInput
           label="ISRC"
@@ -146,7 +162,7 @@ export default function TrackDetail({
               ),
             );
           }}
-          readOnly={!isEdit}
+          // readOnly={!isEdit}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -162,7 +178,7 @@ export default function TrackDetail({
             ),
           );
         }}
-        readOnly={!isEdit}
+        // readOnly={!isEdit}
       />
       <Gap height={56} />
       <ReleaseArtistSearch
@@ -179,7 +195,7 @@ export default function TrackDetail({
         placeholder="아티스트 검색"
         label="트랙 아티스트"
         modalHeader="트랙 아티스트 검색"
-        readOnly={!isEdit}
+        // readOnly={!isEdit}
       />
       <Gap height={56} />
       <ParticipateArtistSearch
@@ -196,7 +212,7 @@ export default function TrackDetail({
         placeholder="아티스트 검색"
         label="참여 아티스트"
         modalHeader="참여 아티스트 검색"
-        readOnly={!isEdit}
+        // readOnly={!isEdit}
       />
       <Gap height={56} />
       <TrackGenre
@@ -216,7 +232,7 @@ export default function TrackDetail({
             ),
           );
         }}
-        readOnly={!isEdit}
+        // readOnly={!isEdit}
       />
       <Gap height={56} />
       <RowWrapper>
@@ -229,24 +245,25 @@ export default function TrackDetail({
               ),
             );
           }}
-          readOnly={!isEdit}
+          // readOnly={!isEdit}
         />
         <TrackUserContract
-          value={currentTrack.userContract || null}
+          value={currentTrack.userContractInfo || null}
           userId={currentTrack.userId}
           userContractId={currentTrack.userContractId}
           onChange={(value) => {
             setTracks(
               tracks.map((track, i) =>
                 i === index
-                  ? { ...track, userContract: value || undefined }
+                  ? { ...track, userContractInfo: value || undefined }
                   : track,
               ),
             );
           }}
-          readOnly={!isEdit}
+          readOnly={false}
         />
       </RowWrapper>
+      <Gap height={56} />
       <TrackReleaseDate
         utcReleasedAt={currentTrack.utcReleasedAt || null}
         utcServiceStartedAt={currentTrack.utcServiceStartedAt || null}
@@ -274,7 +291,7 @@ export default function TrackDetail({
             ),
           );
         }}
-        readOnly={!isEdit}
+        readOnly={false}
       />
       <Gap height={56} />
       <RowWrapper>
@@ -298,7 +315,7 @@ export default function TrackDetail({
             );
           }}
           value={currentTrack.isExposed}
-          readOnly={!isEdit}
+          // readOnly={!isEdit}
         />
         <CustomRadioWithLabel
           label="19금"
@@ -320,7 +337,7 @@ export default function TrackDetail({
             );
           }}
           value={currentTrack.isAdultOnly}
-          readOnly={!isEdit}
+          // readOnly={!isEdit}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -345,7 +362,7 @@ export default function TrackDetail({
               ),
             );
           }}
-          readOnly={!isEdit}
+          // readOnly={!isEdit}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -353,9 +370,9 @@ export default function TrackDetail({
         track={currentTrack}
         tracks={tracks}
         setTracks={setTracks}
-        readOnly={!isEdit}
+        // readOnly={!isEdit}
       />
-      <CustomModal
+      {/* <CustomModal
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
@@ -366,7 +383,7 @@ export default function TrackDetail({
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
         content="변경사항을 저장할까요?"
-      />
+      /> */}
       <Gap height={56} />
     </Container>
   );

@@ -105,7 +105,7 @@ export default function ParticipateArtistSearch({
       align: "center",
     },
     {
-      header: "도메인",
+      header: "국가",
       accessor: "countryCode",
       type: "string",
       width: 120,

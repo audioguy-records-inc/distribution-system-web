@@ -48,7 +48,7 @@ export default function VideoLicensorSearch({
     setSelectedUser(null);
     onChange(null);
     setValue("userContractId", undefined);
-    setValue("userContract", undefined);
+    setValue("userContractInfo", undefined);
   };
 
   const onSelect = (selectedItem: User) => {

@@ -59,7 +59,7 @@ export interface Video {
   userId?: string;
   userInfo?: User;
   userContractId?: string;
-  userContract?: UserContract;
+  userContractInfo?: UserContract;
   dspContractIdList?: string[];
 
   isFree?: boolean;

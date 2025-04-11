@@ -1,34 +1,22 @@
-import Album, { ArtistInfo } from "@/types/album";
-import {
-  Control,
-  Controller,
-  UseFormRegister,
-  UseFormReturn,
-  UseFormWatch,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
+import Album, { ArtistInfo, TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
-import { DataCollectionName, FileType } from "@/types/upload";
 import { useEffect, useState } from "react";
 
 import BulkApply from "./fragment/BulkApply";
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
-import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomCheckbox2 from "@/components/basic/CustomCheckbox2";
 import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
-import ImageUpload from "@/components/basic/ImageUpload";
 import LyricsAddModal from "./fragment/LyricsAddModal";
 import PlusIcon from "@/components/icons/PlusIcon";
 import Track from "@/types/track";
 import TrackDetail from "./fragment/TrackDetail";
 import TrashIcon from "@/components/icons/TrashIcon";
-import UploadIcon from "@/components/icons/UploadIcon";
 import UploadTrackAudio from "./fragment/UploadTrackAudio";
+import { UseFormWatch } from "react-hook-form";
 import styled from "styled-components";
 import { useTrackStore } from "@/stores/use-track-store";
 
@@ -51,85 +39,13 @@ interface TrackSectionProps {
 }
 
 export default function TrackSection({ albumWatch }: TrackSectionProps) {
-  const { tracks, createTrack, error, fetchTracks } = useTrackStore();
+  const { tracks, edittingTracks, setEdittingTracks, error, fetchTracks } =
+    useTrackStore();
 
-  const [edittingTracks, setEdittingTracks] = useState<EditTrack[]>(tracks);
   const albumData = albumWatch();
   const [isLyricsModalOpen, setIsLyricsModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState<EditTrack | null>(null);
-  const [isCheckAll, setIsCheckAll] = useState(false);
-
-  // 정렬 함수: 트랙번호가 있는 항목은 먼저 나오고, 없는 항목은 뒤로 정렬
-  const sortTracks = (tracksToSort: EditTrack[]) => {
-    return [...tracksToSort].sort((a, b) => {
-      const aHasTrackNumber =
-        a.trackNumber !== undefined && a.trackNumber !== null;
-      const bHasTrackNumber =
-        b.trackNumber !== undefined && b.trackNumber !== null;
-
-      // 둘 다 트랙번호가 있거나 없는 경우
-      if (aHasTrackNumber === bHasTrackNumber) {
-        if (aHasTrackNumber && bHasTrackNumber) {
-          // 트랙번호 오름차순 정렬
-          return a.trackNumber! - b.trackNumber!;
-        } else {
-          // 둘 다 없으면 생성일(createdAt) 기준 오름차순 정렬
-          const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-          const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-          return aDate - bDate;
-        }
-      }
-      // 트랙번호가 있는 항목을 앞으로
-      return aHasTrackNumber ? -1 : 1;
-    });
-  };
-
-  const handleCheckboxChange = (index: number, checked: boolean) => {
-    setEdittingTracks(
-      edittingTracks.map((track, i) =>
-        i === index ? { ...track, isSelected: checked } : track,
-      ),
-    );
-
-    setIsCheckAll(checked);
-  };
-
-  // 전체 체크박스 상태 변경 함수 추가
-  const handleCheckAll = (checked: boolean) => {
-    setIsCheckAll(checked);
-    setEdittingTracks(
-      edittingTracks.map((track) => ({
-        ...track,
-        isSelected: checked,
-      })),
-    );
-  };
-
-  // albumWatch 값이 변경될 때마다 모든 트랙의 albumId와 userId 업데이트
-  useEffect(() => {
-    const _fetchTracks = async () => {
-      if (albumData?._id && albumData?.userId) {
-        await fetchTracks(albumData?._id);
-
-        setEdittingTracks((prevTracks) =>
-          sortTracks(
-            prevTracks.map((track) => ({
-              ...track,
-              albumId: albumData._id,
-              userId: albumData.userId,
-            })),
-          ),
-        );
-      }
-    };
-
-    _fetchTracks();
-  }, [albumData._id, albumData.userId]);
-
-  // tracks가 변경될 때마다 정렬된 상태로 업데이트
-  useEffect(() => {
-    setEdittingTracks(sortTracks(tracks));
-  }, [tracks]);
+  const [isCheckAll, setIsCheckAll] = useState(true);
 
   const columns: Column<EditTrack>[] = [
     {
@@ -247,26 +163,20 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
     },
     {
       header: "트랙명",
-      accessor: "title",
+      accessor: "titleList",
       align: "center",
       type: "input",
       width: 174,
       render: (value, record, index) => {
-        const _value = value as string;
-        return (
-          <CustomInput
-            value={_value?.toString() || ""}
-            onChange={(e) => {
-              setEdittingTracks(
-                edittingTracks.map((track, i) =>
-                  i === index ? { ...track, title: e.target.value } : track,
-                ),
-              );
-            }}
-            width={150}
-            size="small"
-          />
-        );
+        const _value = value as TitleLanguage[];
+
+        // 타이틀 목록에서 첫 번째 타이틀 표시 (있는 경우)
+        if (_value && _value.length > 0) {
+          const firstTitle = _value[0];
+          const lang = Object.keys(firstTitle)[0];
+          return firstTitle[lang] || "";
+        }
+        return "";
       },
     },
     {
@@ -357,7 +267,47 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
         return <UploadTrackAudio track={record} />;
       },
     },
+    {
+      header: "",
+      accessor: "_id" as keyof EditTrack,
+      align: "center",
+      type: "button",
+      width: 60,
+      icon: <TrashIcon />,
+      onClick: (record, index) => {
+        if (index === undefined) return;
+
+        // 서버에 저장된 트랙인 경우 API 호출하여 삭제
+        if (record._id) {
+          useTrackStore.getState().deleteTrack(record._id);
+        }
+
+        // UI에서 트랙 제거
+        setEdittingTracks(edittingTracks.filter((_, i) => i !== index));
+      },
+    },
   ];
+
+  useEffect(() => {
+    const _fetchTracks = async () => {
+      if (albumData?._id && albumData?.userId) {
+        await fetchTracks(albumData?._id);
+      }
+    };
+    _fetchTracks();
+  }, [albumData._id, albumData.userId]);
+
+  useEffect(() => {
+    // 모든 트랙의 isSelected를 true로 설정
+    if (edittingTracks.length > 0) {
+      setEdittingTracks(
+        edittingTracks.map((track) => ({
+          ...track,
+          isSelected: true,
+        })),
+      );
+    }
+  }, [edittingTracks.length]);
 
   const handleAddTrack = async () => {
     const albumData = albumWatch();
@@ -365,8 +315,31 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       albumId: albumData?._id,
       userId: albumData?.userId,
       isExposed: true,
+      isSelected: true,
+      titleList: [{ ko: "" }, { en: "" }],
     };
-    await createTrack(newTrack);
+
+    setEdittingTracks([...edittingTracks, newTrack]);
+  };
+
+  const handleCheckboxChange = (index: number, checked: boolean) => {
+    setEdittingTracks(
+      edittingTracks.map((track, i) =>
+        i === index ? { ...track, isSelected: checked } : track,
+      ),
+    );
+
+    setIsCheckAll(checked);
+  };
+
+  const handleCheckAll = (checked: boolean) => {
+    setIsCheckAll(checked);
+    setEdittingTracks(
+      edittingTracks.map((track) => ({
+        ...track,
+        isSelected: checked,
+      })),
+    );
   };
 
   return (
@@ -407,7 +380,6 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
         expand
       />
 
-      {/* 가사 등록 모달 */}
       <LyricsAddModal
         isOpen={isLyricsModalOpen}
         onClose={() => setIsLyricsModalOpen(false)}

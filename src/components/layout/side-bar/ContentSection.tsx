@@ -29,10 +29,7 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
       <MenuGroup $isOpen={isOpen}>
         <Gap height={12} />
         <MenuLabel>앨범</MenuLabel>
-        <Gap height={16} />
-        <MenuItemLink href="/content/album/list">
-          <MenuItem>리스트 조회</MenuItem>
-        </MenuItemLink>
+
         {authLevel === AuthLevel.ADMIN && (
           <>
             <Gap height={12} />
@@ -44,12 +41,12 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
             </MenuItemLink>
           </>
         )}
-        <Gap height={20} />
-        <MenuLabel>영상</MenuLabel>
-        <Gap height={16} />
-        <MenuItemLink href="/content/video/list">
+        <MenuItemLink href="/content/album/list">
           <MenuItem>리스트 조회</MenuItem>
         </MenuItemLink>
+
+        <Gap height={20} />
+        <MenuLabel>영상</MenuLabel>
 
         {authLevel === AuthLevel.ADMIN && (
           <>
@@ -59,11 +56,14 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
             </MenuItemLink>
           </>
         )}
+        <MenuItemLink href="/content/video/list">
+          <MenuItem>리스트 조회</MenuItem>
+        </MenuItemLink>
+
         {authLevel === AuthLevel.ADMIN && (
           <>
             <Gap height={20} />
             <MenuLabel>아티스트</MenuLabel>
-            <Gap height={16} />
             <MenuItemLink href="/content/artist">
               <MenuItem>아티스트 관리</MenuItem>
             </MenuItemLink>

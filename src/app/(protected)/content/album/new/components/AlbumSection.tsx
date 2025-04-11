@@ -120,6 +120,7 @@ export default function AlbumSection({
                 readOnly={false}
                 register={register}
                 setValue={setValue}
+                user={watch("userInfo")}
               />
             );
           }}

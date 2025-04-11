@@ -196,7 +196,6 @@ export default function UploadSpecialTrackAudio({
       }
       return false;
     } catch (err) {
-      console.log("moonsae ", err);
       toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
       return false;
     } finally {

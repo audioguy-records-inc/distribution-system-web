@@ -1,4 +1,5 @@
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 import Album from "@/types/album";
 import { Column } from "@/components/basic/custom-table/CustomTable";
@@ -10,7 +11,6 @@ import { User } from "@/types/user";
 import UserTypeBadge from "@/components/basic/custom-table/components/UserTypeBadge";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div`
@@ -44,11 +44,17 @@ export default function AlbumLicensorSearch({
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
 
+  useEffect(() => {
+    if (user) {
+      setSelectedUser(user);
+    }
+  }, [user]);
+
   const handleDelete = () => {
     setSelectedUser(null);
     onChange(null);
     setValue("userContractId", undefined);
-    setValue("userContract", undefined);
+    setValue("userContractInfo", undefined);
   };
 
   const onSelect = (selectedItem: User) => {

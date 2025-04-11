@@ -19,6 +19,7 @@ import TrackSection from "../../new/components/TrackSection";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
+import { useTrackStore } from "@/stores/use-track-store";
 
 const Container = styled.div``;
 
@@ -38,6 +39,13 @@ const AlbumDetailPage = () => {
   const { albumId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const { albums, updateAlbum, deleteAlbum, fetchAlbum } = useAlbumStore();
+  const {
+    edittingTracks,
+    resetEdittingTracks,
+    updateTrack,
+    createTrack,
+    deleteTrack,
+  } = useTrackStore();
 
   // 초기 앨범 상태 설정 로직 개선
   const [album, setAlbum] = useState<Album | null>(null);
@@ -76,6 +84,17 @@ const AlbumDetailPage = () => {
     }
     setIsLoading(true);
     await updateAlbum(_album, false);
+
+    // 트랙 업데이트 및 생성 로직 추가
+    const trackPromises = edittingTracks.map((track) => {
+      if (track._id) {
+        return updateTrack(track);
+      } else {
+        return createTrack(track);
+      }
+    });
+    await Promise.all(trackPromises);
+
     setIsLoading(false);
   };
 
@@ -138,7 +157,6 @@ const AlbumDetailPage = () => {
       <CollapsibleTrackHeader
         title="4. 트랙 정보"
         renderComponent={<TrackSection albumWatch={watch} />}
-        disabled={false}
       />
     </Container>
   );

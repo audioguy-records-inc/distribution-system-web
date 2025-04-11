@@ -46,7 +46,7 @@ BulkApplyProps) {
   const [expose, setExpose] = useState<boolean>(false);
   const [contractInfo, setContractInfo] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { updateTrack } = useTrackStore();
+  // const { updateTrack } = useTrackStore();
 
   const handleApply = async () => {
     const albumData = albumWatch();
@@ -87,7 +87,7 @@ BulkApplyProps) {
 
       if (contractInfo && albumData.userContractId) {
         updatedTrack.userContractId = albumData.userContractId;
-        updatedTrack.userContract = albumData.userContract;
+        updatedTrack.userContractInfo = albumData.userContractInfo;
       }
 
       return updatedTrack;
@@ -98,11 +98,11 @@ BulkApplyProps) {
 
     // 선택된 트랙들에 대해 Promise.all을 사용하여 모든 트랙 업데이트
     try {
-      const updatePromises = updatedTracks
-        .filter((track) => track.isSelected)
-        .map((track) => updateTrack(track as Track));
+      // const updatePromises = updatedTracks
+      //   .filter((track) => track.isSelected)
+      //   .map((track) => updateTrack(track as Track));
 
-      await Promise.all(updatePromises);
+      // await Promise.all(updatePromises);
       toast.success("일괄 적용 완료");
     } catch (error) {
       toast.error("트랙 업데이트 중 오류가 발생했습니다");

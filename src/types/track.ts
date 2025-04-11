@@ -1,4 +1,5 @@
-import { ArtistInfo } from "./album";
+import { ArtistInfo, TitleLanguage } from "./album";
+
 import { CountryCode } from "./album";
 import { FileInfo } from "./file-info";
 import { User } from "./user";
@@ -17,7 +18,7 @@ export interface SpatialAudioInfo {
 
 export interface Track {
   _id?: string;
-  title?: string;
+  titleList?: TitleLanguage[];
   trackUniqueId?: string;
   UCI?: string;
   ISRC?: string;
@@ -47,7 +48,7 @@ export interface Track {
   userId?: string;
   userInfo?: User;
   userContractId?: string;
-  userContract?: UserContract;
+  userContractInfo?: UserContract;
 
   lyrics?: string;
 

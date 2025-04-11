@@ -12,7 +12,11 @@ export interface Column<T> {
   width?: number;
   align?: "left" | "center" | "right";
   type: "string" | "input" | "dropdown" | "component" | "button";
-  render?: (value: T[keyof T], record: T, rowIndex?: number) => React.ReactNode;
+  render?: (
+    value: T[keyof T] | null,
+    record: T,
+    rowIndex?: number,
+  ) => React.ReactNode;
   renderHeader?: () => React.ReactNode;
   dropdownOptions?: { key: string; value: string }[];
   icon?: React.ReactNode;
@@ -196,7 +200,11 @@ const CustomTable = <T extends Record<string, any>>({
   };
 
   const renderCellContent = (column: Column<T>, row: T, rowIndex: number) => {
-    const value = row[column.accessor];
+    // row가 null이거나 undefined인 경우 처리
+    if (!row) return null;
+
+    // value가 null이거나 undefined인 경우를 안전하게 처리
+    const value = row[column.accessor] ?? null;
 
     if (column.render) {
       return (

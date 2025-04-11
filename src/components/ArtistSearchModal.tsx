@@ -90,16 +90,13 @@ const ArtistSearchModal = ({
   onRegister,
 }: ArtistSearchModalProps) => {
   const [searchValue, setSearchValue] = useState("");
-  const [searchedArtistList, setSearchedArtistList] = useState<Artist[]>([]);
-
-  const { searchArtists, isLoading } = useArtistStore();
+  const { artists, searchArtists, isLoading } = useArtistStore();
 
   const handleSearch = async () => {
     if (!searchValue.trim()) return;
 
     try {
-      const res = await searchArtists(searchValue, "name,artistUniqueId");
-      setSearchedArtistList(res);
+      await searchArtists(searchValue, "name,artistUniqueId");
     } catch (error) {
       toast.error("아티스트 검색 중 오류가 발생했습니다.");
     } finally {
@@ -109,7 +106,6 @@ const ArtistSearchModal = ({
   const handleCloseModal = () => {
     onRequestClose();
     setSearchValue("");
-    setSearchedArtistList([]);
   };
 
   const columns: Column<Artist>[] = [
@@ -128,7 +124,7 @@ const ArtistSearchModal = ({
       align: "center",
     },
     {
-      header: "도메인",
+      header: "국가",
       accessor: "countryCode",
       type: "string",
       width: 100,
@@ -216,7 +212,7 @@ const ArtistSearchModal = ({
         </SearchWrapper>
         <Gap height={32} />
         <TableContainer>
-          <CustomTable columns={columns} data={searchedArtistList} />
+          <CustomTable columns={columns} data={artists} />
         </TableContainer>
       </Container>
     </Modal>

@@ -1,5 +1,6 @@
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { EditTrack } from "@/app/(protected)/content/album/new/components/TrackSection";
 import Track from "@/types/track";
 import { create } from "zustand";
 import { deleteTrack } from "@/api/track/delete-track";
@@ -12,6 +13,7 @@ import toast from "react-hot-toast";
 
 interface TrackStore {
   tracks: Track[];
+  edittingTracks: EditTrack[];
   isLoading: boolean;
   error: string | null;
 
@@ -25,12 +27,16 @@ interface TrackStore {
     searchFields?: string,
   ) => Promise<Track[]>;
   resetTracks: () => void;
+  setEdittingTracks: (tracks: EditTrack[]) => void;
+  sortTracks: (tracksToSort: EditTrack[]) => EditTrack[];
+  resetEdittingTracks: () => void;
 }
 
 export const useTrackStore = create<TrackStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       tracks: [],
+      edittingTracks: [],
       isLoading: false,
       error: null,
 
@@ -71,7 +77,12 @@ export const useTrackStore = create<TrackStore>()(
             throw new Error(response.message);
           }
 
-          set({ tracks: response.data.trackList, error: null });
+          const fetchedTracks = response.data.trackList;
+          set({
+            tracks: fetchedTracks,
+            edittingTracks: get().sortTracks(fetchedTracks),
+            error: null,
+          });
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -235,7 +246,36 @@ export const useTrackStore = create<TrackStore>()(
         }
       },
       resetTracks: () => {
-        set({ tracks: [] });
+        set({ tracks: [], edittingTracks: [] });
+      },
+      setEdittingTracks: (tracks: EditTrack[]) => {
+        set({ edittingTracks: tracks });
+      },
+      sortTracks: (tracksToSort: EditTrack[]) => {
+        return [...tracksToSort].sort((a, b) => {
+          const aHasTrackNumber =
+            a.trackNumber !== undefined && a.trackNumber !== null;
+          const bHasTrackNumber =
+            b.trackNumber !== undefined && b.trackNumber !== null;
+
+          // 둘 다 트랙번호가 있거나 없는 경우
+          if (aHasTrackNumber === bHasTrackNumber) {
+            if (aHasTrackNumber && bHasTrackNumber) {
+              // 트랙번호 오름차순 정렬
+              return a.trackNumber! - b.trackNumber!;
+            } else {
+              // 둘 다 없으면 생성일(createdAt) 기준 오름차순 정렬
+              const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+              const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+              return aDate - bDate;
+            }
+          }
+          // 트랙번호가 있는 항목을 앞으로
+          return aHasTrackNumber ? -1 : 1;
+        });
+      },
+      resetEdittingTracks: () => {
+        set({ edittingTracks: [] });
       },
     }),
     {
