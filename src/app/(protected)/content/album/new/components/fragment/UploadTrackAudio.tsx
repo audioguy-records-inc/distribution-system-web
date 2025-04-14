@@ -167,7 +167,7 @@ export default function UploadTrackAudio({ track }: { track: EditTrack }) {
           name: success.name,
           filePath: success.filePath,
         });
-        await updateTrack(track);
+        // await updateTrack(track);
 
         return true;
       }
@@ -214,7 +214,7 @@ export default function UploadTrackAudio({ track }: { track: EditTrack }) {
     if (track.trackFileList && track.trackFileList.length > 0) {
       track.trackFileList = [];
     }
-    await updateTrack(track);
+    // await updateTrack(track);
   };
 
   return (

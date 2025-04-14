@@ -1,10 +1,10 @@
+import { ArtistInfo, TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
 
 import AddNewArtist from "@/app/(protected)/content/artist/components/AddNewArtist";
 import { Artist } from "@/types/artist";
-import { ArtistInfo } from "@/types/album";
 import ButtonFilledPrimary from "./basic/buttons/ButtonFilledPrimary";
 import ButtonOutlinedSecondary from "./basic/buttons/ButtonOutlinedSecondary";
 import { ClipLoader } from "react-spinners";
@@ -128,10 +128,14 @@ const TrackSearchModal = ({
     },
     {
       header: "트랙명",
-      accessor: "title",
+      accessor: "titleList",
       type: "string",
       width: 300,
       align: "center",
+      render: (value, record) => {
+        const _value = value as TitleLanguage[];
+        return _value?.[0]?.ko || "";
+      },
     },
     {
       header: "아티스트명",

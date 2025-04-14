@@ -1,3 +1,4 @@
+import { ArtistInfo, TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
@@ -5,7 +6,6 @@ import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import Video, { TrackInfo } from "@/types/video";
 import { useEffect, useState } from "react";
 
-import { ArtistInfo } from "@/types/album";
 import Gap from "@/components/basic/Gap";
 import SearchIcon from "@/components/icons/SearchIcon";
 import Track from "@/types/track";
@@ -90,9 +90,11 @@ export default function TrackSearch({
       );
 
       // null이나 undefined가 아닌 값만 필터링
-      const validTracks: TrackInfo[] = fetchedTracks.filter(
-        (track): track is TrackInfo => track !== null && track !== undefined,
-      );
+      const validTracks: TrackInfo[] = fetchedTracks
+        .filter(
+          (track): track is Track => track !== null && track !== undefined,
+        )
+        .map((track) => track as TrackInfo);
 
       // 기존 trackList에 validTracks를 합치기 전에, 기존 항목에 trackId가 없다면 _id로 채워줌
       const normalizedExisting = trackList.map((t) =>
@@ -122,10 +124,14 @@ export default function TrackSearch({
     },
     {
       header: "트랙명",
-      accessor: "title",
+      accessor: "titleList",
       type: "string",
       width: 337,
       align: "center",
+      render: (value, record) => {
+        const _value = value as TitleLanguage[];
+        return _value?.[0]?.ko || "";
+      },
     },
     {
       header: "아티스트명",
@@ -196,7 +202,7 @@ export default function TrackSearch({
       <Gap height={20} />
       <CustomTable
         columns={columns}
-        data={trackList}
+        data={trackList as Track[]}
         size="small"
         readOnly={readOnly}
       />

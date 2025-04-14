@@ -190,7 +190,7 @@ export default function UploadSpecialTrackAudio({
           });
         }
 
-        await updateTrack(track);
+        // await updateTrack(track);
 
         return true;
       }
@@ -240,7 +240,7 @@ export default function UploadSpecialTrackAudio({
     ) {
       track.spatialAudioInfo.trackFileList = [];
     }
-    await updateTrack(track);
+    // await updateTrack(track);
   };
 
   return (

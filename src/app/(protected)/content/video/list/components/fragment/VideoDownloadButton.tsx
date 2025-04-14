@@ -35,7 +35,7 @@ export default function VideoDownloadButton() {
       발매국가: video.releaseCountryCode || "",
       기획사: video.agencyCompanyName || "",
       발매사: video.userInfo?.displayName || "",
-      계약정보: video.userContract?.userContractName || "",
+      계약정보: video.userContractInfo?.userContractName || "",
       공급지역: video.supplyRegion || "",
       공급제외지역: video.excludedRegionList?.join(",") || "",
       영상코드: video.videoUniqueId,

@@ -35,7 +35,6 @@ export default function LyricsAddModal({
   onClose,
   track,
 }: LyricsAddModalProps) {
-  const { updateTrack } = useTrackStore();
   const [isLoading, setIsLoading] = useState(false);
   const [lyrics, setLyrics] = useState("");
 
@@ -71,10 +70,11 @@ export default function LyricsAddModal({
 
     setIsLoading(true);
     try {
-      await updateTrack({
-        ...track,
-        lyrics: lyrics,
-      });
+      // await updateTrack({
+      //   ...track,
+      //   lyrics: lyrics,
+      // });
+      track.lyrics = lyrics;
       onClose();
     } catch (error) {
       console.error("가사 저장 중 오류 발생:", error);
@@ -93,7 +93,9 @@ export default function LyricsAddModal({
       ariaHideApp={false}
     >
       <ModalHeader>
-        {track && track.title ? `${track.title} - 가사 등록` : "가사 등록"}
+        {track && Array.isArray(track.titleList) && track.titleList.length > 0
+          ? `${track.titleList[0].ko} - 가사 등록`
+          : "가사 등록"}
         <ButtonWrapper>
           <ButtonOutlinedSecondary label="취소" onClick={onClose} />
           {isLoading ? (
