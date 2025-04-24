@@ -83,6 +83,8 @@ const CustomCalendar = ({
   width = 320,
   size = "small",
 }: CustomCalendarProps) => {
+  const [datePickerRef, setDatePickerRef] = useState<DatePicker | null>(null);
+
   const parseDate = (dateString: string | null) => {
     if (!dateString) return null;
     return moment(dateString, "YYYYMMDD").toDate();
@@ -96,13 +98,24 @@ const CustomCalendar = ({
     }
   };
 
+  const handleIconClick = () => {
+    if (datePickerRef && !readOnly) {
+      datePickerRef.setOpen(true);
+    }
+  };
+
   return (
     <Container>
       {label && <Label>{label}</Label>}
       <CalendarContainer>
         <DatePicker
+          ref={(r) => setDatePickerRef(r)}
           customInput={
-            <CustomInput size={size} icon={<CalendarIcon />} width={width} />
+            <CustomInput
+              size={size}
+              icon={<CalendarIcon onClick={handleIconClick} />}
+              width={width}
+            />
           }
           locale={ko}
           selected={parseDate(value)}
