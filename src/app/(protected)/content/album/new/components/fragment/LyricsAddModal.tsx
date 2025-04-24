@@ -66,7 +66,7 @@ export default function LyricsAddModal({
   };
 
   const handleSubmit = async () => {
-    if (!track || !track._id) return;
+    if (!track) return;
 
     setIsLoading(true);
     try {
