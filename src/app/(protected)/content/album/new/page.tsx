@@ -97,8 +97,10 @@ export default function AlbumNewPage() {
     }
   };
 
+  console.log("moonsae album", watch());
   const isFilled = () => {
     const album = watch();
+
     return (
       album.titleList &&
       album.titleList.length > 0 &&
@@ -108,8 +110,6 @@ export default function AlbumNewPage() {
       album.artistImageList.length > 0 &&
       album.releaseArtistList &&
       album.releaseArtistList.length > 0 &&
-      album.participateArtistList &&
-      album.participateArtistList.length > 0 &&
       album.albumType &&
       album.releaseCountryCode &&
       album.mainGenre &&
