@@ -72,11 +72,14 @@ export const useDspContractStore = create<DspContractStore>()(
             throw new Error("DSP 계약 생성 중 알 수 없는 오류가 발생했습니다.");
           }
 
+          const fetchResponse = await getDspContracts();
+
+          if (!fetchResponse || fetchResponse.error || !fetchResponse.data) {
+            throw new Error(fetchResponse.message);
+          }
+
           set((state) => ({
-            dspContracts: [
-              response.data!.dspContractList[0],
-              ...state.dspContracts,
-            ],
+            dspContracts: [...fetchResponse.data!.dspContractList],
             error: null,
           }));
 
