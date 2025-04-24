@@ -55,6 +55,7 @@ export default function AlbumLicensorSearch({
     onChange(null);
     setValue("userContractId", undefined);
     setValue("userContractInfo", undefined);
+    setValue("dspContractIdList", []);
   };
 
   const onSelect = (selectedItem: User) => {
