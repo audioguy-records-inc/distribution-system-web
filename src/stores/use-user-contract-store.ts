@@ -104,8 +104,8 @@ export const useUserContractStore = create<UserContractStore>()(
 
           set((state) => ({
             userContracts: [
-              ...state.userContracts,
               response.data!.userContractList[0],
+              ...state.userContracts,
             ],
             error: null,
           }));
