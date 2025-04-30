@@ -72,6 +72,19 @@ export default function LicensorContractList({
       align: "center",
     },
     {
+      header: "계약 요율",
+      accessor: "contractRate",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value) => {
+        const _value = value as number;
+        return `${
+          value !== undefined ? (_value * 100).toFixed(0).toString() : ""
+        }%`;
+      },
+    },
+    {
       header: "활성 여부",
       accessor: "isContractEnabled",
       type: "component",

@@ -55,6 +55,7 @@ export default function VideoLicensorSearch({
     setSelectedUser(selectedItem);
     setValue("userId", selectedItem._id);
     setValue("userInfo", selectedItem);
+    setValue("dspContractIdList", []);
   };
 
   const handleSearch = async (searchKeyword: string) => {

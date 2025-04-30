@@ -34,8 +34,8 @@ export default function LoginLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={pretendard.className}>
-      <body className={pretendard.className}>
+    <html lang="en">
+      <body className={`${pretendard.variable} antialiased`}>
         <StyledComponentsRegistry>
           <GlobalStyles />
           {children}

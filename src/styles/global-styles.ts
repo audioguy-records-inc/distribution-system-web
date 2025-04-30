@@ -41,13 +41,11 @@ export const GlobalStyles = createGlobalStyle`
 
   /* 기본 요소 스타일 */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Pretendard', sans-serif;
     font-weight: 600;
     color: inherit;
   }
 
   p, span, a, li, div {
-    font-family: 'Pretendard', sans-serif;
     font-weight: 400;
     color: inherit;
   }
@@ -60,7 +58,6 @@ export const GlobalStyles = createGlobalStyle`
   button,
   [role="button"],
   .button {
-    font-family: 'Pretendard', sans-serif;
     font-weight: 500;
     background: none;
     border: none;
