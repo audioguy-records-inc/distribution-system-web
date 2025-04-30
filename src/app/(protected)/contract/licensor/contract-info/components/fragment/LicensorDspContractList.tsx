@@ -8,6 +8,7 @@ import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSe
 import CenterSpinner from "@/components/CenterSpinner";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import Dsp from "@/components/basic/custom-table/components/Dsp";
 import DspContract from "@/types/dsp-contract";
 import LoadIcon from "@/components/icons/LoadIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
@@ -68,6 +69,22 @@ const LicensorDspContractList = ({
 
   const columns: Column<DspContract>[] = [
     {
+      header: "DSP",
+      accessor: "dspId",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value, record) => {
+        const dsp = record.dspInfo;
+
+        if (!dsp) {
+          return "";
+        }
+
+        return <Dsp name={dsp.name} imagePath={dsp.imageOriginalPath} />;
+      },
+    },
+    {
       header: "계약명",
       accessor: "dspContractName",
       type: "component",
@@ -121,7 +138,7 @@ const LicensorDspContractList = ({
       header: "계약 요율",
       accessor: "contractRate",
       type: "string",
-      width: 150,
+      width: 120,
       align: "center",
       dropdownOptions: [
         { key: "domestic", value: "국내" },
