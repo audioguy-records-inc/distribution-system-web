@@ -8,6 +8,7 @@ import {
 
 import Album from "@/types/album";
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import CustomDropdownSearch from "@/components/basic/CustomDropdownSearch";
 import { getCountryKeyValueList } from "@/constants/country";
 import styled from "styled-components";
 
@@ -32,7 +33,7 @@ export default function ExcludedRegionList({
         name="excludedRegionList"
         control={control}
         render={({ field }) => (
-          <CustomDropdown
+          <CustomDropdownSearch
             label="서비스 제외 지역"
             items={itemList}
             placeholder="서비스 제외 지역 선택"

@@ -35,7 +35,7 @@ const Required = styled.span<{
     $disabled ? theme.colors.red[300] : theme.colors.red[600]};
 `;
 
-const DropdownContainer = styled.button<{
+const DropdownContainer = styled.div<{
   $selected?: boolean;
   $disabled?: boolean;
   $size?: "small" | "normal";
@@ -61,6 +61,25 @@ const DropdownContainer = styled.button<{
 
   &:active:not(:disabled) {
     border-color: ${theme.colors.purple[600]};
+  }
+`;
+
+const SearchInput = styled.input<{
+  $size?: "small" | "normal";
+  $disabled?: boolean;
+}>`
+  ${({ $size }) =>
+    $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
+  color: ${({ $disabled }) =>
+    $disabled ? theme.colors.gray[100] : theme.colors.gray[800]};
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+
+  &::placeholder {
+    color: ${theme.colors.gray[300]};
   }
 `;
 
@@ -182,7 +201,7 @@ interface CustomDropdownProps {
   readOnly?: boolean;
 }
 
-const CustomDropdown = ({
+const CustomDropdownSearch = ({
   label,
   required,
   selectedKey,
@@ -198,7 +217,9 @@ const CustomDropdown = ({
   readOnly = false,
 }: CustomDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -219,6 +240,18 @@ const CustomDropdown = ({
   const handleClick = () => {
     if (!disabled && !readOnly) {
       setIsOpen(!isOpen);
+      if (!isOpen && inputRef.current) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0);
+      }
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    if (!isOpen) {
+      setIsOpen(true);
     }
   };
 
@@ -230,8 +263,11 @@ const CustomDropdown = ({
         ? selectedKeys.filter((k) => k !== item.key)
         : [...selectedKeys, item.key];
       onMultiSelectKeys?.(newSelectedKeys);
+      setSearchText("");
+      setIsOpen(false);
     } else {
       onSelectKey?.(item.key);
+      setSearchText("");
       setIsOpen(false);
     }
   };
@@ -254,12 +290,27 @@ const CustomDropdown = ({
   // 선택된 항목의 값을 표시하기 위한 함수
   const getDisplayText = () => {
     if (multiple) {
-      return placeholder;
+      return "";
     } else {
       const selectedItem = items.find((item) => item.key === selectedKey);
-      return selectedItem ? selectedItem.value : placeholder;
+      return selectedItem ? selectedItem.value : "";
     }
   };
+
+  // 검색어에 따라 필터링된 항목 목록
+  const filteredItems = items.filter((item) =>
+    item.value.toLowerCase().includes(searchText.toLowerCase()),
+  );
+
+  // 컴포넌트가 마운트될 때 선택된 값으로 검색 텍스트 초기화
+  useEffect(() => {
+    if (!multiple && selectedKey) {
+      const selectedItem = items.find((item) => item.key === selectedKey);
+      if (selectedItem) {
+        setSearchText(selectedItem.value);
+      }
+    }
+  }, [selectedKey, items, multiple]);
 
   return (
     <Container $hasLabel={!!label}>
@@ -282,18 +333,20 @@ const CustomDropdown = ({
           $size={size}
           $width={width}
           onClick={handleClick}
-          disabled={disabled}
           style={{
             cursor: readOnly ? "default" : disabled ? "default" : "pointer",
           }}
         >
-          <Content
-            $selected={!!selectedKey || (multiple && selectedKeys.length > 0)}
-            $disabled={disabled}
+          <SearchInput
+            ref={inputRef}
+            value={searchText}
+            onChange={handleInputChange}
+            placeholder={placeholder}
+            disabled={disabled || readOnly}
             $size={size}
-          >
-            {getDisplayText()}
-          </Content>
+            $disabled={disabled}
+            onClick={(e) => e.stopPropagation()}
+          />
           {!readOnly && (
             <IconContainer $size={size}>
               <ArrowDownIcon
@@ -307,27 +360,31 @@ const CustomDropdown = ({
 
         {isOpen && !disabled && !readOnly && (
           <List>
-            {items.map((item, index) => (
-              <ListItem
-                key={index}
-                onClick={() => handleSelect(item)}
-                $size={size}
-              >
-                {multiple && (
-                  <CheckboxContainer
-                    $selected={isItemSelected(item)}
-                    $size={size}
-                  >
-                    <CheckIcon
-                      color={"white"}
-                      width={size === "small" ? 12 : 16}
-                      height={size === "small" ? 12 : 16}
-                    />
-                  </CheckboxContainer>
-                )}
-                {item.value}
-              </ListItem>
-            ))}
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item, index) => (
+                <ListItem
+                  key={index}
+                  onClick={() => handleSelect(item)}
+                  $size={size}
+                >
+                  {multiple && (
+                    <CheckboxContainer
+                      $selected={isItemSelected(item)}
+                      $size={size}
+                    >
+                      <CheckIcon
+                        color={"white"}
+                        width={size === "small" ? 12 : 16}
+                        height={size === "small" ? 12 : 16}
+                      />
+                    </CheckboxContainer>
+                  )}
+                  {item.value}
+                </ListItem>
+              ))
+            ) : (
+              <ListItem $size={size}>검색 결과가 없습니다</ListItem>
+            )}
           </List>
         )}
       </ListContainer>
@@ -350,4 +407,4 @@ const CustomDropdown = ({
   );
 };
 
-export default CustomDropdown;
+export default CustomDropdownSearch;
