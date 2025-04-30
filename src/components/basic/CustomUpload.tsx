@@ -85,6 +85,15 @@ const CustomUpload = ({
   const handleUpload = async (file: File) => {
     if (readOnly) return;
 
+    // USER_CONTRACTS인 경우 PDF 파일만 허용
+    if (dataCollectionName === DataCollectionName.USER_CONTRACTS) {
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+      if (fileExtension !== "pdf") {
+        toast.error("계약서는 PDF 파일만 업로드 가능합니다.");
+        return false;
+      }
+    }
+
     try {
       setIsLoading(true);
       const success = await uploadToS3({
@@ -118,9 +127,27 @@ const CustomUpload = ({
   ) => {
     const files = event.target.files;
     if (files && files.length > 0) {
+      // USER_CONTRACTS인 경우 PDF 파일만 필터링
+      let filesToUpload = Array.from(files);
+
+      if (dataCollectionName === DataCollectionName.USER_CONTRACTS) {
+        const nonPdfFiles = filesToUpload.filter((file) => {
+          const fileExtension = file.name.split(".").pop()?.toLowerCase();
+          return fileExtension !== "pdf";
+        });
+
+        if (nonPdfFiles.length > 0) {
+          toast.error("계약서는 PDF 파일만 업로드 가능합니다.");
+          filesToUpload = filesToUpload.filter((file) => {
+            const fileExtension = file.name.split(".").pop()?.toLowerCase();
+            return fileExtension === "pdf";
+          });
+        }
+      }
+
       // 선택된 각 파일을 즉시 업로드
-      for (let i = 0; i < files.length; i++) {
-        await handleUpload(files[i]);
+      for (let i = 0; i < filesToUpload.length; i++) {
+        await handleUpload(filesToUpload[i]);
       }
       // 파일 선택 초기화
       if (fileInputRef.current) {
@@ -159,9 +186,27 @@ const CustomUpload = ({
 
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
+      // USER_CONTRACTS인 경우 PDF 파일만 필터링
+      let filesToUpload = Array.from(files);
+
+      if (dataCollectionName === DataCollectionName.USER_CONTRACTS) {
+        const nonPdfFiles = filesToUpload.filter((file) => {
+          const fileExtension = file.name.split(".").pop()?.toLowerCase();
+          return fileExtension !== "pdf";
+        });
+
+        if (nonPdfFiles.length > 0) {
+          toast.error("계약서는 PDF 파일만 업로드 가능합니다.");
+          filesToUpload = filesToUpload.filter((file) => {
+            const fileExtension = file.name.split(".").pop()?.toLowerCase();
+            return fileExtension === "pdf";
+          });
+        }
+      }
+
       // 드롭된 각 파일을 즉시 업로드
-      for (let i = 0; i < files.length; i++) {
-        await handleUpload(files[i]);
+      for (let i = 0; i < filesToUpload.length; i++) {
+        await handleUpload(filesToUpload[i]);
       }
     }
   };
@@ -253,6 +298,11 @@ const CustomUpload = ({
         onChange={handleFileChange}
         style={{ display: "none" }}
         multiple
+        accept={
+          dataCollectionName === DataCollectionName.USER_CONTRACTS
+            ? ".pdf"
+            : undefined
+        }
       />
 
       {/* 드래그 앤 드롭 영역 추가 */}
@@ -268,6 +318,8 @@ const CustomUpload = ({
           <DropZoneText>
             {isLoading
               ? "업로드 중..."
+              : dataCollectionName === DataCollectionName.USER_CONTRACTS
+              ? "PDF 파일을 끌어놓아 주세요."
               : fileType === FileType.IMAGES
               ? "이미지를 끌어놓아 주세요."
               : "파일을 끌어놓아 주세요."}
