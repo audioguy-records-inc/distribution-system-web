@@ -12,7 +12,7 @@ export default function ArtistSearch() {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    await searchArtists(searchValue, "name, artistUniqueId");
+    await searchArtists(searchValue, "name,artistUniqueId");
     setIsLoading(false);
   };
 
