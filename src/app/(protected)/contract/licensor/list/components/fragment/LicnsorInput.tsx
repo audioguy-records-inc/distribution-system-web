@@ -41,7 +41,7 @@ const LicensorInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="권리자 ID"
+          label="권리자 코드"
           placeholder="아이디 입력"
           readOnly={!isEdit}
           {...register("account")}

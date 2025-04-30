@@ -19,7 +19,7 @@ const LicensorSearchTypeDropdown = ({
     },
     {
       key: "account",
-      value: "권리자 ID",
+      value: "권리자 코드",
     },
     {
       key: "displayName",

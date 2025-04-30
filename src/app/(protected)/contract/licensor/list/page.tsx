@@ -57,7 +57,7 @@ export default function LicensorListPage() {
             setSelectedType={setSelectedType}
           />
           <SearchInput
-            placeholder="권리자 ID 또는 권리자명 입력"
+            placeholder="권리자 코드 또는 권리자명 입력"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClickSearch={handleSearch}

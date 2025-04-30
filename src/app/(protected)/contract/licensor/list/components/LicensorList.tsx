@@ -30,7 +30,7 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
 
   const columns: Column<User>[] = [
     {
-      header: "권리자 ID",
+      header: "권리자 코드",
       accessor: "account",
       type: "string",
       width: 100,

@@ -45,7 +45,7 @@ export default function LicensorSearch({
       },
     },
     {
-      header: "권리자 ID",
+      header: "권리자 코드",
       accessor: "account",
       type: "string",
       width: 220,
