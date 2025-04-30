@@ -33,7 +33,7 @@ const ContractSection = () => {
         </MenuItemLink>
 
         <Gap height={20} />
-        <MenuLabel>권리사</MenuLabel>
+        <MenuLabel>권리자</MenuLabel>
         <Gap height={16} />
 
         <MenuItemLink href="/contract/licensor/list">

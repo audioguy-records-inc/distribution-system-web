@@ -27,7 +27,7 @@ const LicensorContractSearchTypeDropdown = ({
     },
     {
       key: "userInfo.displayName",
-      value: "권리사명",
+      value: "권리자명",
     },
     {
       key: "userContractUniqueId",

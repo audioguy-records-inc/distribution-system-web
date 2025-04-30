@@ -111,7 +111,7 @@ export default function AlbumList() {
       },
     },
     {
-      header: "권리사",
+      header: "권리자",
       accessor: "userInfo",
       type: "string",
       width: 120,

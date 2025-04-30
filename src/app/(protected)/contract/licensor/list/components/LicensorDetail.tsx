@@ -84,7 +84,7 @@ const LicensorDetail = ({ licensor }: { licensor: User }) => {
     <Container>
       <Header>
         <TitleWrapper>
-          권리사 정보
+          권리자 정보
           {isEdit ? (
             <Controller
               name="isEnabled"
@@ -125,7 +125,7 @@ const LicensorDetail = ({ licensor }: { licensor: User }) => {
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 권리사를 삭제할까요?"
+        content="해당 권리자를 삭제할까요?"
       />
 
       <CustomModal

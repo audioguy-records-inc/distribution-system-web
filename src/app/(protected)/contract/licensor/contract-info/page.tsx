@@ -52,7 +52,7 @@ export default function LicensorContractInfoPage() {
 
   return (
     <Container>
-      <PageHeader title={"권리사 계약 리스트"} />
+      <PageHeader title={"권리자 계약 리스트"} />
       <SearchContainer>
         <SearchInputWrapper>
           <LicensorContractSearchTypeDropdown
@@ -60,7 +60,7 @@ export default function LicensorContractInfoPage() {
             setSelectedType={setSelectedType}
           />
           <SearchInput
-            placeholder="계약명, 권리사명, 계약코드 입력"
+            placeholder="계약명, 권리자명, 계약코드 입력"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClickSearch={handleSearch}

@@ -89,7 +89,7 @@ const LicensorContractDetail = ({
     <Container>
       <Header>
         <TitleWrapper>
-          권리사 계약 정보
+          권리자 계약 정보
           {isEdit ? (
             <Controller
               name="isContractEnabled"

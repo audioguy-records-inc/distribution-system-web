@@ -54,7 +54,7 @@ export default function LicensorContractList({
       },
     },
     {
-      header: "권리사명",
+      header: "권리자명",
       accessor: "userInfo",
       type: "string",
       width: 200,

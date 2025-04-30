@@ -49,7 +49,7 @@ export default function LicensorListPage() {
 
   return (
     <Container>
-      <PageHeader title={"권리사 리스트"} />
+      <PageHeader title={"권리자 리스트"} />
       <SearchContainer>
         <SearchInputWrapper>
           <LicensorSearchTypeDropdown
@@ -57,7 +57,7 @@ export default function LicensorListPage() {
             setSelectedType={setSelectedType}
           />
           <SearchInput
-            placeholder="권리사 ID 또는 권리사명 입력"
+            placeholder="권리자 ID 또는 권리자명 입력"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClickSearch={handleSearch}

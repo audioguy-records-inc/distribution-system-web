@@ -29,7 +29,7 @@ export default function SettlementDownloadButton() {
       음반코드: album.albumDistributionCode,
       음반명: album.albumTitle,
       아티스트: album.artistNameList?.map((artist) => artist).join(","),
-      권리사: album.userDisplayName,
+      권리자: album.userDisplayName,
       정산금합계: album.userSettlementFee,
     }));
   };

@@ -128,7 +128,7 @@ const AddNewLicensorContract = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          권리사 계약 등록
+          권리자 계약 등록
           <ButtonWrapper>
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
             {isLoading ? (
@@ -145,7 +145,7 @@ const AddNewLicensorContract = () => {
         <Gap height={48} />
 
         <VisibleWrapper>
-          <VisibleLabel>권리사 계약 정보</VisibleLabel>
+          <VisibleLabel>권리자 계약 정보</VisibleLabel>
           <Controller
             name="isContractEnabled"
             control={control}

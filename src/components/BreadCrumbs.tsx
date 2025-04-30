@@ -93,7 +93,7 @@ const Breadcrumbs = () => {
           <BreadcrumbWrapper>
             <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
             <ArrowRightIcon />
-            <PrevBreadcrumb>권리사</PrevBreadcrumb>
+            <PrevBreadcrumb>권리자</PrevBreadcrumb>
             <ArrowRightIcon />
             <CurrentBreadcrumb>리스트 조회/등록</CurrentBreadcrumb>
           </BreadcrumbWrapper>
@@ -103,7 +103,7 @@ const Breadcrumbs = () => {
           <BreadcrumbWrapper>
             <PrevBreadcrumb>계약 관리</PrevBreadcrumb>
             <ArrowRightIcon />
-            <PrevBreadcrumb>권리사</PrevBreadcrumb>
+            <PrevBreadcrumb>권리자</PrevBreadcrumb>
             <ArrowRightIcon />
             <CurrentBreadcrumb>계약 정보 조회/등록</CurrentBreadcrumb>
           </BreadcrumbWrapper>

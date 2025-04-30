@@ -45,14 +45,14 @@ export default function LicensorSearch({
       },
     },
     {
-      header: "권리사 ID",
+      header: "권리자 ID",
       accessor: "account",
       type: "string",
       width: 220,
       align: "center",
     },
     {
-      header: "권리사명",
+      header: "권리자명",
       accessor: "displayName",
       type: "string",
       width: 449,
@@ -82,12 +82,12 @@ export default function LicensorSearch({
 
   return (
     <Container>
-      <Title>권리사명</Title>
+      <Title>권리자명</Title>
       <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput
-          title="권리사명 검색"
-          placeholder="권리사명 검색"
+          title="권리자명 검색"
+          placeholder="권리자명 검색"
           onClickSearch={handleSearch}
           onSelect={(selectedItem: User) => {
             onSelect(selectedItem);

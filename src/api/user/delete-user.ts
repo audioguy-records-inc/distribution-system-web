@@ -24,6 +24,6 @@ export const deleteUser = async (
 
     throw error instanceof Error
       ? error
-      : new Error("권리사 삭제 중 알 수 없는 오류가 발생했습니다.");
+      : new Error("권리자 삭제 중 알 수 없는 오류가 발생했습니다.");
   }
 };

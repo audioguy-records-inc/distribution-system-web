@@ -50,7 +50,7 @@ export default function AlbumDownloadButton() {
       CD별수록곡: album.numberOfTracksPerDisc || "",
       유통사: album.distributionCompanyName || "",
       기획사: album.agencyCompanyName || "",
-      권리사: album.userInfo?.displayName || "",
+      권리자: album.userInfo?.displayName || "",
       발매일: album.utcReleasedAt
         ? new Date(album.utcReleasedAt).toLocaleDateString()
         : "",

@@ -222,7 +222,7 @@ export const useUserContractStore = create<UserContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "권리사 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+              : "권리자 계약 검색 중 알 수 없는 오류가 발생했습니다.";
 
           toast.error(errorMessage);
 

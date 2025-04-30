@@ -31,7 +31,7 @@ export default function SettlementAdminInvoiceDownloadButton() {
       정산월: settlementAdminInvoice.settlementMonth,
       판매금액: settlementAdminInvoice.totalSettlementFee,
       유통수수료수익: settlementAdminInvoice.totalDistributionFee,
-      권리사정산금액: settlementAdminInvoice.totalUserSettlementFee,
+      권리자정산금액: settlementAdminInvoice.totalUserSettlementFee,
     }));
   };
 

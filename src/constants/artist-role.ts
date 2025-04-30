@@ -228,7 +228,7 @@ export const artistRoleList: ArtistRoleItem[] = [
   { category1: "제작/배급", category2: "유통사" },
   { category1: "제작/배급", category2: "제조사" },
   { category1: "제작/배급", category2: "아티스트 매니지먼트" },
-  { category1: "제작/배급", category2: "권리사" },
+  { category1: "제작/배급", category2: "권리자" },
   { category1: "스튜디오", category2: "레코딩 스튜디오" },
   { category1: "스튜디오", category2: "마스터링 스튜디오" },
   { category1: "스튜디오", category2: "믹싱 스튜디오" },

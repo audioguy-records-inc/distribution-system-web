@@ -31,7 +31,7 @@ export default function SettlementAdminInvoiceList() {
       align: "center",
     },
     {
-      header: "권리사 정산 금액",
+      header: "권리자 정산 금액",
       accessor: "totalUserSettlementFee",
       type: "string",
       align: "center",

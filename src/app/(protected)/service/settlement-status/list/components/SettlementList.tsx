@@ -46,7 +46,7 @@ export default function SettlementList() {
       },
     },
     {
-      header: "권리사",
+      header: "권리자",
       accessor: "userDisplayName",
       type: "string",
       align: "center",

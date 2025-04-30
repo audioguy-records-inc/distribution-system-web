@@ -41,7 +41,7 @@ const LicensorInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="권리사 ID"
+          label="권리자 ID"
           placeholder="아이디 입력"
           readOnly={!isEdit}
           {...register("account")}
@@ -57,8 +57,8 @@ const LicensorInput = ({
       <Gap height={56} />
       <CustomInput
         size="small"
-        label="권리사명"
-        placeholder="권리사명 입력"
+        label="권리자명"
+        placeholder="권리자명 입력"
         readOnly={!isEdit}
         {...register("displayName", { required: true })}
       />

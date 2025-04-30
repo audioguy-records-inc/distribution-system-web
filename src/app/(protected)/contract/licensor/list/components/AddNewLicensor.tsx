@@ -171,7 +171,7 @@ const AddNewLicensor = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          권리사 등록
+          권리자 등록
           <ButtonWrapper>
             <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
             <ButtonFilledPrimary
@@ -186,7 +186,7 @@ const AddNewLicensor = () => {
         <Gap height={48} />
 
         <VisibleWrapper>
-          <VisibleLabel>권리사 정보</VisibleLabel>
+          <VisibleLabel>권리자 정보</VisibleLabel>
           <Controller
             name="isEnabled"
             control={control}

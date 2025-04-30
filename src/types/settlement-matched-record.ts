@@ -86,10 +86,10 @@ export interface SettlementMatchedRecord {
   // 매칭된 앨범의 기획사 회사명 (String)
   agencyCompanyName: string; // 예: "테스트 기획사2"
 
-  // 매칭된 권리사(사용자)의 표시 이름 (String)
-  userDisplayName: string; // 예: "테스트권리사003"
+  // 매칭된 권리자(사용자)의 표시 이름 (String)
+  userDisplayName: string; // 예: "테스트권리자003"
 
-  // 매칭된 권리사(사용자)의 계정 ID (String)
+  // 매칭된 권리자(사용자)의 계정 ID (String)
   userAccount: string; // 예: "testCompany003"
 
   // 매칭된 사용자 계약의 이름 (String)
@@ -104,7 +104,7 @@ export interface SettlementMatchedRecord {
   /* 매칭 결과 필드 end */
 
   /* 매칭후 계산되어 추가된 필드 */
-  // 최종 사용자(권리사)에게 지급될 정산 금액 (Number)
+  // 최종 사용자(권리자)에게 지급될 정산 금액 (Number)
   // 계산식: settlementFee * userContractRate
   userSettlementFee: number; // 예: 0.04504962
 
@@ -156,7 +156,7 @@ export interface SettlementAdminInvoice {
   _id?: string; // 정산월 (YYYYMM 형식)
   settlementMonth: string; // 정산월
   totalSettlementFee: number; // 판매금액
-  totalUserSettlementFee: number; // 권리사 정산 금액
+  totalUserSettlementFee: number; // 권리자 정산 금액
   totalDistributionFee: number; // 유통 수수료 수익
 }
 
