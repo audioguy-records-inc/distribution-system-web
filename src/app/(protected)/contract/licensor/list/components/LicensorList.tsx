@@ -40,7 +40,7 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
       header: "구분",
       accessor: "type",
       type: "component",
-      width: 190,
+      width: 150,
       align: "center",
       render: (value, record) => {
         return <UserTypeBadge type={record.type} />;
@@ -50,7 +50,14 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
       header: "권리자명",
       accessor: "displayName",
       type: "string",
-      width: 417,
+      width: 280,
+      align: "center",
+    },
+    {
+      header: "앨범수",
+      accessor: "albumCount",
+      type: "string",
+      width: 100,
       align: "center",
     },
     {
@@ -59,7 +66,6 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
       type: "component",
       width: 170,
       align: "center",
-
       render: (value) => <ActivateStateBadge isActive={Boolean(value)} />,
     },
   ];

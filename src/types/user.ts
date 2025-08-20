@@ -30,6 +30,7 @@ export interface User {
   address: string;
   bankName: string;
   bankAccount: string;
+  albumCount: number;
 
   contactPersonList: ContactPerson[];
   fileList: FileInfo[];
