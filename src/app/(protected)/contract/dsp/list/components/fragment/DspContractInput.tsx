@@ -43,6 +43,7 @@ const DspContractInput = ({
           label="계약명"
           placeholder="계약명 입력"
           readOnly={!isEdit}
+          required
           {...register("dspContractName", { required: true })}
         />
         <Controller
@@ -56,6 +57,7 @@ const DspContractInput = ({
               }}
               value={field.value}
               readOnly={!isEdit}
+              required
             />
           )}
         />
@@ -66,13 +68,13 @@ const DspContractInput = ({
           size="small"
           label="DPID"
           placeholder="DPID 입력"
+          required
+          helpText="중복된 id 요청시 생성되지 않습니다."
           {...register("dspContractUniqueId", { required: true })}
         />
         <Controller
           name="regionType"
           control={control}
-          defaultValue="domestic"
-          rules={{ required: true }}
           render={({ field }) => (
             <CustomRadioWithLabel
               label="구분"
@@ -106,6 +108,7 @@ const DspContractInput = ({
               }}
               value={field.value}
               readOnly={!isEdit}
+              required
               // disabled={watch("regionType") === "domestic"}
             />
           )}
@@ -113,8 +116,6 @@ const DspContractInput = ({
         <Controller
           name="isTimeReleaseEnabled"
           control={control}
-          defaultValue={true}
-          rules={{ required: true }}
           render={({ field }) => (
             <CustomRadioWithLabel
               label="T/R"
@@ -139,7 +140,6 @@ const DspContractInput = ({
       <Controller
         name="contactPersonList"
         control={control}
-        rules={{ required: true }}
         render={({ field }) => (
           <ContactPersonTable
             onChange={field.onChange}
@@ -173,6 +173,7 @@ const DspContractInput = ({
             defaultValue={undefined}
             size="small"
             label="계약 요율"
+            required
             icon={<PercentIcon />}
             placeholder="숫자 입력"
             type="number"
@@ -198,8 +199,6 @@ const DspContractInput = ({
       <Controller
         name="contractItemList"
         control={control}
-        defaultValue={[]}
-        rules={{ required: true }}
         render={({ field }) => (
           <ContractProductItem
             value={field.value}

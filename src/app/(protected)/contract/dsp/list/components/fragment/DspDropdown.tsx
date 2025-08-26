@@ -8,6 +8,7 @@ interface DspDropdownProps {
   value: string | undefined;
   disabled?: boolean;
   readOnly?: boolean;
+  required?: boolean;
 }
 
 const DspDropdown = ({
@@ -15,6 +16,7 @@ const DspDropdown = ({
   value,
   disabled = false,
   readOnly = false,
+  required = false,
 }: DspDropdownProps) => {
   const { dsps, fetchDsps, isLoading } = useDspStore();
 
@@ -30,6 +32,7 @@ const DspDropdown = ({
   return (
     <CustomDropdown
       label={"DSP명"}
+      required={required}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}

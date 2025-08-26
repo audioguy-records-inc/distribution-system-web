@@ -52,6 +52,27 @@ const Form = styled.form`
 const AddNewDspContract = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { createDspContract } = useDspContractStore();
+  const defaultFormValues: Partial<DspContract> = {
+    dspContractName: "",
+    dspContractUniqueId: "",
+    regionType: "domestic" as const,
+    countryCode: "",
+    isTimeReleaseEnabled: true,
+    contactPersonList: [
+      {
+        name: null,
+        responsibility: null,
+        email: null,
+        phone: null,
+      },
+    ],
+    fileList: [],
+    contractItemList: [],
+    contractRate: undefined,
+    isContractEnabled: true,
+    dspId: "",
+  };
+
   const {
     register,
     handleSubmit,
@@ -60,25 +81,7 @@ const AddNewDspContract = () => {
     formState: { isValid, isDirty },
     watch,
   } = useForm<DspContract>({
-    defaultValues: {
-      dspContractName: undefined,
-      dspContractUniqueId: undefined,
-      regionType: "domestic",
-      countryCode: undefined,
-      isTimeReleaseEnabled: true,
-      contactPersonList: [
-        {
-          name: undefined,
-          responsibility: undefined,
-          email: undefined,
-          phone: undefined,
-        },
-      ],
-      fileList: [],
-      contractItemList: [],
-      contractRate: undefined,
-      isContractEnabled: true,
-    },
+    defaultValues: defaultFormValues,
     mode: "onChange",
     shouldFocusError: false,
   });
@@ -86,12 +89,45 @@ const AddNewDspContract = () => {
   const handleOpen = () => setIsOpen(true);
   const handleClose = () => {
     setIsOpen(false);
-    reset();
+    reset(defaultFormValues);
   };
 
   const onSubmit = async (data: DspContract) => {
     await createDspContract(data);
+    reset(defaultFormValues);
     handleClose();
+  };
+
+  const isSubmitDisabled = () => {
+    // 계약명 체크
+    if (!watch("dspContractName") || watch("dspContractName").trim() === "") {
+      return true;
+    }
+
+    // DSP 선택 체크
+    if (!watch("dspId")) {
+      return true;
+    }
+
+    // DPID 체크
+    if (
+      !watch("dspContractUniqueId") ||
+      watch("dspContractUniqueId").trim() === ""
+    ) {
+      return true;
+    }
+
+    // 국가 코드 체크
+    if (!watch("countryCode")) {
+      return true;
+    }
+
+    // 계약 요율 체크
+    if (watch("contractRate") === undefined || watch("contractRate") === null) {
+      return true;
+    }
+
+    return false;
   };
 
   const customStyles = {
@@ -132,7 +168,7 @@ const AddNewDspContract = () => {
             <ButtonFilledPrimary
               label="등록"
               onClick={() => onSubmit(watch())}
-              disabled={false}
+              disabled={isSubmitDisabled()}
             />
           </ButtonWrapper>
         </ModalHeader>
