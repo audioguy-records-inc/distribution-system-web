@@ -6,16 +6,21 @@ import {
 } from "react-hook-form";
 import { DataCollectionName, FileType } from "@/types/upload";
 import { User, UserType } from "@/types/user";
+import {
+  UserContract,
+  UserContractBusinessType,
+  UserContractType,
+} from "@/types/user-contract";
 
 import CustomCalendar from "@/components/basic/CustomCalendar";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
+import CustomDropdown from "@/components/basic/CustomDropdown";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomUpload from "@/components/basic/CustomUpload";
 import Gap from "@/components/basic/Gap";
 import LicensorDspContractList from "./LicensorDspContractList";
 import LicensorSearch from "./LicensorSearch";
 import PercentIcon from "@/components/icons/PercentIcon";
-import UserContract from "@/types/user-contract";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
@@ -57,6 +62,20 @@ const LicensorContractInput = ({
   control: Control<UserContract>;
   isEdit: boolean;
 }) => {
+  // 계약 유형 옵션
+  const contractTypeOptions = [
+    { key: "GENERAL", value: "일반" },
+    { key: "INVESTMENT", value: "투자" },
+    { key: "MG", value: "MG" },
+  ];
+
+  // 업체 유형 옵션
+  const businessTypeOptions = [
+    { key: "INDIVIDUAL", value: "개인" },
+    { key: "INDIVIDUAL_BUSINESS", value: "개인사업자" },
+    { key: "CORPORATION_BUSINESS", value: "법인사업자" },
+  ];
+
   return (
     <>
       <Gap height={42} />
@@ -74,6 +93,43 @@ const LicensorContractInput = ({
           placeholder="계약 코드 입력"
           readOnly={!isEdit}
           {...register("userContractUniqueId", { required: true })}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
+        <Controller
+          name="userContractType"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomDropdown
+              label="계약 유형"
+              required
+              selectedKey={field.value}
+              onSelectKey={field.onChange}
+              items={contractTypeOptions}
+              readOnly={!isEdit}
+              size="small"
+              width={180}
+            />
+          )}
+        />
+        <Controller
+          name="userContractBusinessType"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <CustomDropdown
+              label="업체 유형"
+              required
+              selectedKey={field.value}
+              onSelectKey={field.onChange}
+              items={businessTypeOptions}
+              readOnly={!isEdit}
+              size="small"
+              width={180}
+            />
+          )}
         />
       </RowWrapper>
       <Gap height={56} />

@@ -68,6 +68,8 @@ const AddNewLicensorContract = () => {
       userContractName: undefined,
       userContractUniqueId: undefined,
       userId: undefined,
+      userContractType: "GENERAL",
+      userContractBusinessType: "INDIVIDUAL",
       isContractAutoRenewEnabled: false,
       isContractEnabled: true,
       kstContractStartDateInt: undefined,

@@ -93,6 +93,36 @@ export default function LicensorContractList({
 
       render: (value) => <ActivateStateBadge isActive={Boolean(value)} />,
     },
+    {
+      header: "계약 유형",
+      accessor: "userContractType",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value): string => {
+        const typeMap: Record<string, string> = {
+          GENERAL: "일반",
+          INVESTMENT: "투자",
+          MG: "MG",
+        };
+        return typeMap[value as string] || (value as string);
+      },
+    },
+    {
+      header: "업체 유형",
+      accessor: "userContractBusinessType",
+      type: "string",
+      width: 120,
+      align: "center",
+      render: (value): string => {
+        const businessTypeMap: Record<string, string> = {
+          INDIVIDUAL: "개인",
+          INDIVIDUAL_BUSINESS: "개인사업자",
+          CORPORATION_BUSINESS: "법인사업자",
+        };
+        return businessTypeMap[value as string] || (value as string);
+      },
+    },
   ];
 
   const renderExpandedContent = (licensorContract: UserContract) => {
