@@ -29,6 +29,7 @@ export type CountryCode = (typeof countryList)[number]["countryCode"];
 export interface Artist {
   _id: string;
   name: string;
+  nameEn: string;
   artistUniqueId: string;
 
   countryCode: CountryCode; // ISO 3166-1 기준 국가 코드 (예: 'KR', 'US')
@@ -38,6 +39,11 @@ export interface Artist {
   artistType: ArtistType;
 
   snsLinkList: SnsLink[];
+
+  releaseAlbumCount: 0;
+  participateAlbumCount: 0;
+  releaseTrackCount: 0;
+  participateTrackCount: 0;
 
   // createdAt: Date;
   // updatedAt: Date;

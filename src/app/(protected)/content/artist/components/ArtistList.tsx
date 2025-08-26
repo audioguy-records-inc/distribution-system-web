@@ -155,6 +155,28 @@ export default function ArtistList() {
         );
       },
     },
+    {
+      header: "앨범수",
+      accessor: "releaseAlbumCount",
+      type: "string",
+      width: 100,
+      align: "center",
+      render: (value) => {
+        const albumCount = (value as number) || 0;
+        return albumCount > 0 ? albumCount.toString() : "0";
+      },
+    },
+    {
+      header: "트랙수",
+      accessor: "releaseTrackCount",
+      type: "string",
+      width: 100,
+      align: "center",
+      render: (value) => {
+        const trackCount = (value as number) || 0;
+        return trackCount > 0 ? trackCount.toString() : "0";
+      },
+    },
   ];
 
   useEffect(() => {
