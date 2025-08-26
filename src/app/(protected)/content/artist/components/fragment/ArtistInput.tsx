@@ -43,12 +43,40 @@ const ArtistInput = ({
           placeholder="아티스트명 입력"
           {...register("name", { required: true })}
           required={isEdit}
+          readOnly={!isEdit}
         />
         <CustomInput
           label="아티스트 코드"
           size="small"
           placeholder="아티스트 코드 입력"
           {...register("artistUniqueId")}
+          readOnly={!isEdit}
+        />
+      </RowWrapper>
+
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
+          label="아티스트 영문명"
+          size="small"
+          placeholder="아티스트 영문명 입력"
+          {...register("nameEn")}
+          readOnly={!isEdit}
+        />
+        <Controller
+          name="artistType"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <ArtistTypeDropdown
+              onChange={(value) => {
+                field.onChange(value);
+              }}
+              value={field.value}
+              readOnly={!isEdit}
+              required={isEdit}
+            />
+          )}
         />
       </RowWrapper>
 
@@ -87,21 +115,6 @@ const ArtistInput = ({
       </RowWrapper>
       <Gap height={56} />
       <RowWrapper>
-        <Controller
-          name="artistType"
-          control={control}
-          rules={{ required: true }}
-          render={({ field }) => (
-            <ArtistTypeDropdown
-              onChange={(value) => {
-                field.onChange(value);
-              }}
-              value={field.value}
-              readOnly={!isEdit}
-              required={isEdit}
-            />
-          )}
-        />
         <SnsInput isEdit={isEdit} required={isEdit} control={control} />
       </RowWrapper>
     </>

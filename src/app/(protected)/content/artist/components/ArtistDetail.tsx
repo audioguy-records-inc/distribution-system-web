@@ -58,15 +58,44 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
   }, [artist, reset]);
 
   const onSubmit = async (data: Artist) => {
+    console.log("onSubmit called with data:", data);
+    console.log("Artist ID:", data._id);
+    console.log("Form is valid:", isValid);
+    console.log("Form is dirty:", isDirty);
+
+    // 필수 필드 검증
+    if (!data._id) {
+      console.error("Artist ID is missing");
+      toast.error("아티스트 ID가 누락되었습니다.");
+      return;
+    }
+
+    if (!data.name || data.name.trim() === "") {
+      console.error("Artist name is missing");
+      toast.error("아티스트명이 누락되었습니다.");
+      return;
+    }
+
     setFormData(data);
     setIsUpdateModalOpen(true);
   };
 
   const handleConfirmUpdate = async () => {
+    console.log("handleConfirmUpdate called with formData:", formData);
+
     if (formData) {
-      await updateArtist(formData);
-      setIsUpdateModalOpen(false);
-      setIsEdit(false);
+      try {
+        await updateArtist(formData);
+        setIsUpdateModalOpen(false);
+        setIsEdit(false);
+        toast.success("아티스트가 성공적으로 수정되었습니다.");
+      } catch (error) {
+        console.error("Update failed:", error);
+        toast.error("아티스트 수정에 실패했습니다.");
+      }
+    } else {
+      console.error("formData is null");
+      toast.error("수정할 데이터가 없습니다.");
     }
   };
 
@@ -88,7 +117,7 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
           setIsEdit={setIsEdit}
           onSubmit={handleSubmit(onSubmit)}
           onDelete={handleDelete}
-          isDisabled={false}
+          isDisabled={!isValid || !isDirty}
           onCancel={() => {
             setIsEdit(false);
             reset(artist);

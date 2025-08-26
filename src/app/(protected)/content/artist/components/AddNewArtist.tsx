@@ -57,6 +57,7 @@ const AddNewArtist = ({
   } = useForm<Artist>({
     defaultValues: {
       name: undefined,
+      nameEn: undefined,
       artistUniqueId: undefined,
       countryCode: undefined,
       genderType: undefined,
