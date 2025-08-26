@@ -24,6 +24,9 @@ const Container = styled.div<{ $width: string }>`
 const Header = styled.div`
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 // 드래그 앤 드롭 영역 스타일 추가
@@ -61,6 +64,7 @@ interface ImageUploadProps {
   headerText: string;
   readOnly?: boolean;
   width?: string;
+  required?: boolean;
 }
 
 const ImageUpload = ({
@@ -71,6 +75,7 @@ const ImageUpload = ({
   headerText = "계약서",
   readOnly = false,
   width = "100%",
+  required = false,
 }: ImageUploadProps) => {
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -190,7 +195,10 @@ const ImageUpload = ({
 
   return (
     <Container $width={width}>
-      <Header>{headerText}</Header>
+      <Header>
+        {headerText}
+        {required && <span style={{ color: "red" }}>*</span>}
+      </Header>
       <Gap height={16} />
       {!readOnly && (
         <ButtonOutlinedSecondary

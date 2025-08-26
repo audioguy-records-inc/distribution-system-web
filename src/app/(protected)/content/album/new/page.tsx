@@ -102,33 +102,25 @@ export default function AlbumNewPage() {
     const album = watch();
 
     return (
-      album.titleList &&
-      album.titleList.length > 0 &&
-      album.UCI &&
       album.UPC &&
-      album.artistImageList &&
-      album.artistImageList.length > 0 &&
+      album.albumUniqueId &&
       album.releaseArtistList &&
       album.releaseArtistList.length > 0 &&
+      album.titleList &&
+      album.titleList.length > 0 &&
       album.albumType &&
-      album.releaseCountryCode &&
       album.mainGenre &&
       album.subGenre &&
-      album.numberOfDiscs &&
-      album.numberOfTracksPerDisc &&
-      album.distributionCompanyName &&
       album.agencyCompanyName &&
+      album.supplyRegion &&
+      album.utcReleasedAt &&
+      album.isAdultOnly !== undefined &&
+      album.coverImageList &&
+      album.coverImageList.length > 0 &&
       album.userId &&
       album.userContractId &&
       album.dspContractIdList &&
-      album.dspContractIdList.length > 0 &&
-      album.supplyRegion &&
-      album.utcReleasedAt &&
-      album.utcServiceStartedAt &&
-      album.coverImageList &&
-      album.coverImageList.length > 0 &&
-      album.bookletImageList &&
-      album.bookletImageList.length > 0
+      album.dspContractIdList.length > 0
     );
   };
 

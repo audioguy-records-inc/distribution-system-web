@@ -25,6 +25,7 @@ export default function AlbumType({
         }}
         size="small"
         width={320}
+        required
       />
     </Container>
   );

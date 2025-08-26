@@ -26,6 +26,9 @@ const ChipContainer = styled.div`
 const Label = styled.div`
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const HelpText = styled.div`
@@ -76,7 +79,10 @@ export default function ContractedDspList({
 
   return (
     <Container>
-      <Label>{`계약된 DSP 리스트: ${dspContractIdList.length}개 선택됨`}</Label>
+      <Label>
+        {`계약된 DSP 리스트: ${dspContractIdList.length}개 선택됨`}{" "}
+        <span style={{ color: "red" }}>*</span>
+      </Label>
       {!contractedDspContractList || contractedDspContractList.length === 0 ? (
         <HelpText>
           계약 정보를 선택하면 해당 계약의 dsp 리스트가 표시됩니다.

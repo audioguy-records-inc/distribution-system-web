@@ -56,6 +56,7 @@ export default function AlbumSection({
       <Controller
         name="titleList"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => {
           return (
             <AlbumTitle
@@ -71,6 +72,7 @@ export default function AlbumSection({
         <Controller
           name="albumType"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => {
             return (
               <AlbumType
@@ -98,12 +100,13 @@ export default function AlbumSection({
           label="유통사"
           placeholder="유통사명 입력"
           size="small"
-          {...register("distributionCompanyName", { required: true })}
+          {...register("distributionCompanyName", {})}
         />
         <CustomInput
-          label="기획사"
+          label="기획사(레이블)"
           placeholder="기획사명 입력"
           size="small"
+          required
           {...register("agencyCompanyName", { required: true })}
         />
       </RowWrapper>
@@ -112,6 +115,7 @@ export default function AlbumSection({
         <Controller
           name="userId"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => {
             return (
               <AlbumLicensorSearch
@@ -125,18 +129,32 @@ export default function AlbumSection({
             );
           }}
         />
-        <AlbumUserContract
+        <Controller
+          name="userContractId"
           control={control}
-          watch={watch}
-          register={register}
-          setValue={setValue}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <AlbumUserContract
+              control={control}
+              watch={watch}
+              register={register}
+              setValue={setValue}
+            />
+          )}
         />
       </RowWrapper>
       <Gap height={56} />
-      <ContractedDspList
-        watch={watch}
-        register={register}
-        setValue={setValue}
+      <Controller
+        name="dspContractIdList"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <ContractedDspList
+            watch={watch}
+            register={register}
+            setValue={setValue}
+          />
+        )}
       />
       <Gap height={56} />
       <RowWrapper>
@@ -145,21 +163,35 @@ export default function AlbumSection({
           placeholder="유통 지역 입력"
           size="small"
           locked={true}
+          required
           {...register("supplyRegion", { required: true })}
         />
-        <ExcludedRegionList
+        <Controller
+          name="excludedRegionList"
           control={control}
-          watch={watch}
-          register={register}
-          setValue={setValue}
+          render={({ field }) => (
+            <ExcludedRegionList
+              control={control}
+              watch={watch}
+              register={register}
+              setValue={setValue}
+            />
+          )}
         />
       </RowWrapper>
       <Gap height={56} />
-      <ReleaseDate
+      <Controller
+        name="utcReleasedAt"
         control={control}
-        watch={watch}
-        register={register}
-        setValue={setValue}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <ReleaseDate
+            control={control}
+            watch={watch}
+            register={register}
+            setValue={setValue}
+          />
+        )}
       />
       <Gap height={56} />
       <Controller
@@ -205,6 +237,7 @@ export default function AlbumSection({
               }}
               onChange={field.onChange}
               value={field.value}
+              required
             />
           )}
         />
@@ -250,6 +283,7 @@ export default function AlbumSection({
         <Controller
           name="coverImageList"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <ImageUpload
               headerText="앨범 커버"
@@ -258,6 +292,7 @@ export default function AlbumSection({
               fileType={FileType.IMAGES}
               dataCollectionName={DataCollectionName.ALBUMS}
               width="320px"
+              required
             />
           )}
         />

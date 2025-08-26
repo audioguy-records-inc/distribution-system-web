@@ -26,6 +26,7 @@ export default function AlbumGenre({
       <Controller
         name="mainGenre"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => {
           return (
             <CustomDropdown
@@ -41,6 +42,7 @@ export default function AlbumGenre({
               }}
               size="small"
               width={156}
+              required
             />
           );
         }}
@@ -48,9 +50,11 @@ export default function AlbumGenre({
       <Controller
         name="subGenre"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => {
           return (
             <CustomDropdown
+              label="서브 장르"
               items={getAlbumGenreSubGenreList(watch("mainGenre") || "").map(
                 (item) => ({
                   key: item,
@@ -64,6 +68,7 @@ export default function AlbumGenre({
               }}
               size="small"
               width={300}
+              required
             />
           );
         }}

@@ -13,6 +13,9 @@ const Container = styled.div`
 const Title = styled.div`
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const ListContainer = styled.div`
@@ -80,6 +83,7 @@ interface SearchDropdownInputProps<T> {
   renderItem?: (item: T) => string;
   size?: "normal" | "small";
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  required?: boolean;
 }
 
 const SearchDropdownInput = <T,>({
@@ -90,6 +94,7 @@ const SearchDropdownInput = <T,>({
   renderItem = (item: T) => String(item),
   size = "normal",
   onKeyDown,
+  required = false,
 }: SearchDropdownInputProps<T>) => {
   const [searched, setSearched] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -162,7 +167,10 @@ const SearchDropdownInput = <T,>({
 
   return (
     <Container ref={dropdownRef}>
-      <Title>{title}</Title>
+      <Title>
+        {title}
+        {required && <span style={{ color: "red" }}>*</span>}
+      </Title>
       <Gap height={8} />
       <SearchInput
         placeholder={placeholder}

@@ -116,6 +116,9 @@ export default function AlbumTitle({
 
   return (
     <Container>
+      <div style={{ marginBottom: "16px" }}>
+        앨범명 <span style={{ color: "red", fontSize: "15px" }}>*</span>
+      </div>
       <CustomTable columns={columns} data={value || []} size="small" />
       <Gap height={12} />
       {!readOnly && (

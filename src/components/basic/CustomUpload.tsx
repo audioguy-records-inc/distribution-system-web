@@ -21,6 +21,9 @@ const Container = styled.div``;
 const Header = styled.div`
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 // 드래그 앤 드롭 영역 스타일 추가
@@ -57,6 +60,7 @@ interface CustomUploadProps {
   dataCollectionName: DataCollectionName;
   headerText: string;
   readOnly?: boolean;
+  required?: boolean;
 }
 
 const CustomUpload = ({
@@ -66,6 +70,7 @@ const CustomUpload = ({
   dataCollectionName,
   headerText = "계약서",
   readOnly = false,
+  required = false,
 }: CustomUploadProps) => {
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -280,7 +285,10 @@ const CustomUpload = ({
 
   return (
     <Container>
-      <Header>{headerText}</Header>
+      <Header>
+        {headerText}
+        {required && <span style={{ color: "red" }}>*</span>}
+      </Header>
       <Gap height={16} />
       {!readOnly && (
         <ButtonOutlinedSecondary

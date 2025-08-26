@@ -8,6 +8,7 @@ import { DataCollectionName, FileType } from "@/types/upload";
 
 import Album from "@/types/album";
 import Gap from "@/components/basic/Gap";
+import ImageUpload from "@/components/basic/ImageUpload";
 import ParticipateArtistSearch from "./fragment/ParticipateArtistSearch";
 import ReleaseArtistSearch from "./fragment/ReleaseArtistSearch";
 import styled from "styled-components";
@@ -36,6 +37,7 @@ export default function ArtistSection({
       <Controller
         name="releaseArtistList"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <ReleaseArtistSearch
             value={field.value || []}
@@ -44,6 +46,7 @@ export default function ArtistSection({
             placeholder="아티스트 검색"
             label="앨범 아티스트"
             modalHeader="앨범 아티스트 검색"
+            required={true}
           />
         )}
       />

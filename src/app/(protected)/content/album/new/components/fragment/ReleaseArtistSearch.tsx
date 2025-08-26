@@ -23,6 +23,9 @@ const Container = styled.div``;
 const Label = styled.div`
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const SearchButton = styled.div`
@@ -50,6 +53,7 @@ export default function ReleaseArtistSearch({
   placeholder,
   label,
   modalHeader,
+  required = false,
 }: {
   value: ArtistInfo[] | null;
   onChange: (value: ArtistInfo[] | null) => void;
@@ -57,6 +61,7 @@ export default function ReleaseArtistSearch({
   placeholder?: string;
   label?: string;
   modalHeader?: string;
+  required?: boolean;
 }) {
   const { fetchArtist } = useArtistStore();
   const [registeredArtistList, setRegisteredArtistList] = useState<Artist[]>(
@@ -162,7 +167,10 @@ export default function ReleaseArtistSearch({
 
   return (
     <Container>
-      <Label>{label}</Label>
+      <Label>
+        {label}
+        {required && <span style={{ color: "red" }}>*</span>}
+      </Label>
       <Gap height={8} />
       {!readOnly && (
         <>

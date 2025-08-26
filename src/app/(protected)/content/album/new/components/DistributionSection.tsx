@@ -42,6 +42,7 @@ export default function DistributionSection({
         <CustomInput
           label="UPC"
           placeholder="UPC 입력"
+          required
           {...register("UPC", { required: true })}
         />
       </RowWrapper>
@@ -50,6 +51,7 @@ export default function DistributionSection({
         <CustomInput
           label="앨범 코드"
           placeholder="앨범 코드 입력"
+          required
           {...register("albumUniqueId", { required: true })}
         />
         <Controller

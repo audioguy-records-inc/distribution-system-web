@@ -73,6 +73,7 @@ export default function ReleaseDate({
                 field.onChange(null);
               }
             }}
+            required
           />
         )}
       />
