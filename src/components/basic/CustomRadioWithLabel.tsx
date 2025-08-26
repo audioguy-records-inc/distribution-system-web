@@ -22,6 +22,7 @@ interface CustomRadioWithLabelProps {
   disabled?: boolean;
   value?: string | boolean;
   readOnly?: boolean;
+  required?: boolean;
 }
 
 const Container = styled.div`
@@ -32,8 +33,16 @@ const Container = styled.div`
 `;
 
 const Label = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+`;
+
+const Required = styled.span`
+  ${theme.fonts.body2.medium}
+  color: ${theme.colors.red[600]};
 `;
 
 const RadioContainer = styled.div`
@@ -50,6 +59,7 @@ const CustomRadioWithLabel = ({
   disabled = false,
   value,
   readOnly = false,
+  required = false,
 }: CustomRadioWithLabelProps) => {
   const leftValue =
     leftOption.value !== undefined ? leftOption.value : "domestic";
@@ -73,7 +83,10 @@ const CustomRadioWithLabel = ({
 
   return (
     <Container>
-      <Label>{label}</Label>
+      <Label>
+        {label}
+        {required && <Required>*</Required>}
+      </Label>
       <RadioContainer>
         <CustomRadio
           checked={value === leftValue}

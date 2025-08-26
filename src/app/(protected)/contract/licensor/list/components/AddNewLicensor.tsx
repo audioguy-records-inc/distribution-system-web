@@ -51,7 +51,7 @@ const Form = styled.form`
 
 const AddNewLicensor = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { createUser } = useUserStore();
+  const { createUser, fetchUsers } = useUserStore();
   const {
     register,
     handleSubmit,
@@ -93,6 +93,7 @@ const AddNewLicensor = () => {
 
   const onSubmit = async () => {
     await createUser(watch());
+    await fetchUsers(); // 권리자 등록 후 리스트 새로고침
     handleClose();
   };
 

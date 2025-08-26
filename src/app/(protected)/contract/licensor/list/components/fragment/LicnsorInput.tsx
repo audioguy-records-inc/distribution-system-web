@@ -51,6 +51,7 @@ const LicensorInput = ({
           label="비밀번호"
           placeholder="비밀번호 입력"
           readOnly={!isEdit}
+          required
           {...register("password")}
         />
       </RowWrapper>
@@ -60,6 +61,7 @@ const LicensorInput = ({
         label="권리자명"
         placeholder="권리자명 입력"
         readOnly={!isEdit}
+        required
         {...register("displayName", { required: true })}
       />
       <Gap height={56} />
@@ -71,6 +73,7 @@ const LicensorInput = ({
           render={({ field }) => (
             <CustomRadioWithLabel
               label="구분"
+              required
               leftOption={{
                 label: "사업자",
                 value: UserType.COMPANY,
@@ -93,6 +96,7 @@ const LicensorInput = ({
             label="사업자등록번호"
             placeholder="사업자등록번호 입력(- 제외)"
             type="number"
+            required
             {...register("companyRegistrationNumber")}
           />
         )}
@@ -102,6 +106,7 @@ const LicensorInput = ({
             label="주민등록번호"
             placeholder="주민등록번호 입력(- 제외)"
             type="number"
+            required
             {...register("personalIdNumber")}
           />
         )}
@@ -113,6 +118,7 @@ const LicensorInput = ({
           label="대표자명"
           placeholder="대표자명 입력"
           readOnly={!isEdit}
+          required
           {...register("representativeName")}
         />
         <CustomInput
@@ -120,6 +126,7 @@ const LicensorInput = ({
           label="주소"
           placeholder="주소 입력"
           readOnly={!isEdit}
+          required
           {...register("address")}
         />
       </RowWrapper>
@@ -131,6 +138,7 @@ const LicensorInput = ({
           rules={{ required: true }}
           render={({ field }) => (
             <BankNameDropdown
+              required
               onChange={(value) => {
                 field.onChange(value);
               }}
@@ -145,6 +153,7 @@ const LicensorInput = ({
           placeholder="계좌번호 입력(-제외)"
           type="number"
           readOnly={!isEdit}
+          required
           {...register("bankAccount")}
         />
       </RowWrapper>

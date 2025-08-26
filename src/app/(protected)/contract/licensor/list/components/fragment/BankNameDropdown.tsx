@@ -8,6 +8,7 @@ interface BankNameDropdownProps {
   value: string | undefined;
   disabled?: boolean;
   readOnly?: boolean;
+  required?: boolean;
 }
 
 const BankNameDropdown = ({
@@ -15,6 +16,7 @@ const BankNameDropdown = ({
   value,
   disabled = false,
   readOnly = false,
+  required = false,
 }: BankNameDropdownProps) => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -29,7 +31,8 @@ const BankNameDropdown = ({
 
   return (
     <CustomDropdown
-      label={"은행관리"}
+      label={"은행명"}
+      required={required}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
