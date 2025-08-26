@@ -85,6 +85,7 @@ const LicensorContractInput = ({
           label="계약명"
           placeholder="계약명 입력"
           readOnly={!isEdit}
+          required
           {...register("userContractName", { required: true })}
         />
         <CustomInput
@@ -92,6 +93,7 @@ const LicensorContractInput = ({
           label="계약 코드"
           placeholder="계약 코드 입력"
           readOnly={!isEdit}
+          required
           {...register("userContractUniqueId", { required: true })}
         />
       </RowWrapper>
@@ -136,12 +138,14 @@ const LicensorContractInput = ({
       <Controller
         name="userId"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => (
           <LicensorSearch
             value={field.value}
             onChange={field.onChange}
             readOnly={!isEdit}
             user={watch("userInfo") as User}
+            required
           />
         )}
       />
@@ -149,7 +153,7 @@ const LicensorContractInput = ({
       <ContractTitleRowWrapper>
         <ContractTitle>계약 기간</ContractTitle>
         <Controller
-          name="isContractEnabled"
+          name="isContractAutoRenewEnabled"
           control={control}
           render={({ field }) => (
             <CustomCheckbox
@@ -166,9 +170,11 @@ const LicensorContractInput = ({
         <Controller
           name="kstContractStartDateInt"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <CustomCalendar
               label={"계약 시작일"}
+              required
               value={field.value}
               onChange={field.onChange}
               readOnly={!isEdit}
@@ -179,9 +185,11 @@ const LicensorContractInput = ({
         <Controller
           name="kstContractEndDateInt"
           control={control}
+          rules={{ required: true }}
           render={({ field }) => (
             <CustomCalendar
               label={"계약 종료일"}
+              required
               value={field.value}
               onChange={field.onChange}
               readOnly={!isEdit}
@@ -199,6 +207,7 @@ const LicensorContractInput = ({
             defaultValue={undefined}
             size="small"
             label="계약 요율"
+            required
             icon={<PercentIcon />}
             placeholder="숫자 입력"
             type="number"

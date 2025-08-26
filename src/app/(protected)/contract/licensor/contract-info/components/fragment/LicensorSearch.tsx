@@ -15,8 +15,16 @@ import { useUserStore } from "@/stores/use-user-store";
 const Container = styled.div``;
 
 const Title = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   ${theme.fonts.heading2.medium}
   color: ${theme.colors.gray[800]};
+`;
+
+const Required = styled.span`
+  ${theme.fonts.heading2.medium}
+  color: ${theme.colors.red[600]};
 `;
 
 export default function LicensorSearch({
@@ -24,11 +32,13 @@ export default function LicensorSearch({
   onChange,
   readOnly = false,
   user,
+  required = false,
 }: {
   value: string;
   onChange: (value: string | null) => void;
   readOnly?: boolean;
   user?: User;
+  required?: boolean;
 }) {
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
@@ -82,7 +92,10 @@ export default function LicensorSearch({
 
   return (
     <Container>
-      <Title>권리자명</Title>
+      <Title>
+        권리자명
+        {required && <Required>*</Required>}
+      </Title>
       <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput

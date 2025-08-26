@@ -98,6 +98,43 @@ const AddNewLicensorContract = () => {
     handleClose();
   };
 
+  const isSubmitDisabled = () => {
+    // 계약명 체크
+    if (!watch("userContractName") || watch("userContractName").trim() === "") {
+      return true;
+    }
+
+    // 계약 코드 체크
+    if (
+      !watch("userContractUniqueId") ||
+      watch("userContractUniqueId").trim() === ""
+    ) {
+      return true;
+    }
+
+    // 권리자 선택 체크
+    if (!watch("userId")) {
+      return true;
+    }
+
+    // 계약 시작일 체크
+    if (!watch("kstContractStartDateInt")) {
+      return true;
+    }
+
+    // 계약 종료일 체크
+    if (!watch("kstContractEndDateInt")) {
+      return true;
+    }
+
+    // 계약 요율 체크
+    if (watch("contractRate") === undefined || watch("contractRate") === null) {
+      return true;
+    }
+
+    return false;
+  };
+
   const customStyles = {
     content: {
       top: "77px",
@@ -139,7 +176,7 @@ const AddNewLicensorContract = () => {
               <ButtonFilledPrimary
                 label="등록"
                 onClick={handleSubmit(onSubmit)}
-                disabled={false}
+                disabled={isSubmitDisabled()}
               />
             )}
           </ButtonWrapper>

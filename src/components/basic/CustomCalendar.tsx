@@ -62,8 +62,16 @@ const CalendarContainer = styled.div`
 `;
 
 const Label = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   ${theme.fonts.body2.medium}
   color: ${theme.colors.gray[600]};
+`;
+
+const Required = styled.span`
+  ${theme.fonts.body2.medium}
+  color: ${theme.colors.red[600]};
 `;
 
 interface CustomCalendarProps {
@@ -73,6 +81,7 @@ interface CustomCalendarProps {
   readOnly?: boolean;
   width?: number;
   size?: "small" | "normal";
+  required?: boolean;
 }
 
 const CustomCalendar = ({
@@ -82,6 +91,7 @@ const CustomCalendar = ({
   readOnly,
   width = 320,
   size = "small",
+  required = false,
 }: CustomCalendarProps) => {
   const [datePickerRef, setDatePickerRef] = useState<DatePicker | null>(null);
 
@@ -106,7 +116,12 @@ const CustomCalendar = ({
 
   return (
     <Container>
-      {label && <Label>{label}</Label>}
+      {label && (
+        <Label>
+          {label}
+          {required && <Required>*</Required>}
+        </Label>
+      )}
       <CalendarContainer>
         <DatePicker
           ref={(r) => setDatePickerRef(r)}
@@ -120,7 +135,7 @@ const CustomCalendar = ({
           locale={ko}
           selected={parseDate(value)}
           onChange={handleChange}
-          dateFormat="yyyy/MM/dd"
+          dateFormat="yyyy-MM-dd"
           readOnly={readOnly}
           showYearDropdown
           // yearDropdownItemNumber={1}
