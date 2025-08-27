@@ -4,6 +4,7 @@ import {
   UseFormSetValue,
   UseFormWatch,
 } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 import Album from "@/types/album";
 import CustomCheckbox from "@/components/basic/CustomCheckbox";
@@ -13,7 +14,6 @@ import Gap from "@/components/basic/Gap";
 import Image from "next/image";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -49,6 +49,24 @@ export default function ContractedDspList({
   const contractedDspContractList =
     watch("userContractInfo.dspContractList") || [];
   const dspContractIdList = watch("dspContractIdList") || [];
+
+  // 계약된 DSP 리스트가 변경될 때마다 모든 DSP를 자동으로 선택
+  useEffect(() => {
+    if (contractedDspContractList && contractedDspContractList.length > 0) {
+      const allDspIds = contractedDspContractList
+        .map((contract) => contract.dspInfo?._id)
+        .filter((id): id is string => !!id);
+
+      // 현재 선택된 DSP가 없거나 모든 DSP가 선택되지 않은 경우에만 전체 선택
+      if (
+        dspContractIdList.length === 0 ||
+        dspContractIdList.length !== allDspIds.length
+      ) {
+        setValue("dspContractIdList", allDspIds);
+        setIsSelectedAll(true);
+      }
+    }
+  }, [contractedDspContractList, setValue]);
 
   const handleChipClick = (dsp: Dsp) => {
     if (dspContractIdList.includes(dsp._id)) {
