@@ -77,6 +77,32 @@ const AlbumDetailPage = () => {
     router.push("/content/album/list");
   };
 
+  const isFilled = () => {
+    const album = watch();
+
+    return (
+      album.UPC &&
+      album.albumUniqueId &&
+      album.releaseArtistList &&
+      album.releaseArtistList.length > 0 &&
+      album.titleList &&
+      album.titleList.length > 0 &&
+      album.albumType &&
+      album.mainGenre &&
+      album.subGenre &&
+      album.agencyCompanyName &&
+      album.supplyRegion &&
+      album.utcReleasedAt &&
+      album.isAdultOnly !== undefined &&
+      album.coverImageList &&
+      album.coverImageList.length > 0 &&
+      album.userId &&
+      album.userContractId &&
+      album.dspContractIdList &&
+      album.dspContractIdList.length > 0
+    );
+  };
+
   const handleSubmit = async () => {
     const _album = watch();
     if (!_album) {
@@ -118,7 +144,7 @@ const AlbumDetailPage = () => {
             <ButtonFilledPrimary
               label="수정"
               onClick={handleSubmit}
-              disabled={false}
+              disabled={!isFilled()}
             />
           )}
         </ButtonWrapper>

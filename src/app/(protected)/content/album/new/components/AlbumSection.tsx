@@ -198,6 +198,7 @@ export default function AlbumSection({
         name="isExposed"
         control={control}
         rules={{ required: true }}
+        defaultValue={true}
         render={({ field }) => (
           <CustomRadioWithLabel
             label="노출"
@@ -222,6 +223,7 @@ export default function AlbumSection({
           name="isAdultOnly"
           control={control}
           rules={{ required: true }}
+          defaultValue={false}
           render={({ field }) => (
             <CustomRadioWithLabel
               label="19금"
@@ -245,6 +247,7 @@ export default function AlbumSection({
           name="isSupportedSpatialAudio"
           control={control}
           rules={{ required: true }}
+          defaultValue={false}
           render={({ field }) => (
             <CustomRadioWithLabel
               label="공간 음향 서비스"
