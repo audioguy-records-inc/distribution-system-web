@@ -185,6 +185,7 @@ export default function ReleaseArtistSearch({
             onChange={onChange}
             value={value}
             onRegister={handleRegisterArtist}
+            required={required}
           />
         </>
       )}

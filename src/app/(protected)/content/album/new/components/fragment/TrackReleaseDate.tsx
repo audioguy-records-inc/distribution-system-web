@@ -34,12 +34,14 @@ export default function TrackReleaseDate({
   onChangeReleasedAt,
   onChangeServiceStartedAt,
   readOnly,
+  required = false,
 }: {
   utcReleasedAt: Date | null;
   utcServiceStartedAt: Date | null;
   onChangeReleasedAt: (value: Date | null) => void;
   onChangeServiceStartedAt: (value: Date | null) => void;
   readOnly: boolean;
+  required?: boolean;
 }) {
   return (
     <RowWrapper>
@@ -67,6 +69,7 @@ export default function TrackReleaseDate({
           }
         }}
         readOnly={readOnly}
+        required={required}
       />
 
       <ServiceDateWrapper>

@@ -245,7 +245,9 @@ export default function UploadSpecialTrackAudio({
 
   return (
     <Container>
-      <Header>공간 음향 음원 파일</Header>
+      <Header>
+        공간 음향 음원 파일 <span style={{ color: "red" }}>*</span>
+      </Header>
       <Gap height={16} />
       {track.spatialAudioInfo?.trackFileList &&
       track.spatialAudioInfo.trackFileList.length > 0 ? (

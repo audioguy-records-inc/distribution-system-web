@@ -78,6 +78,7 @@ interface ArtistSearchModalProps {
   placeholder?: string;
   value: ArtistInfo[] | null;
   onRegister?: (artist: Artist) => void;
+  required?: boolean;
 }
 
 const ArtistSearchModal = ({
@@ -88,6 +89,7 @@ const ArtistSearchModal = ({
   onChange,
   value,
   onRegister,
+  required,
 }: ArtistSearchModalProps) => {
   const [searchValue, setSearchValue] = useState("");
   const { artists, searchArtists, isLoading } = useArtistStore();
@@ -193,7 +195,10 @@ const ArtistSearchModal = ({
     >
       <Container>
         <HeaderWrapper>
-          <Header>{header}</Header>
+          <Header>
+            {header}
+            {required && <span style={{ color: "red" }}>*</span>}
+          </Header>
           <CloseButton onClick={handleCloseModal} />
         </HeaderWrapper>
 

@@ -62,6 +62,7 @@ export default function SpecialAudio({
             size="small"
             value={track.spatialAudioInfo?.UPC || ""}
             readOnly={readOnly}
+            required
             onChange={(e) => {
               setTracks(
                 tracks.map((t) =>
@@ -83,6 +84,7 @@ export default function SpecialAudio({
             size="small"
             value={track.spatialAudioInfo?.ISRC || ""}
             readOnly={readOnly}
+            required
             onChange={(e) => {
               setTracks(
                 tracks.map((t) =>

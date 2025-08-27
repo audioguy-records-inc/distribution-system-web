@@ -115,6 +115,18 @@ export default function TrackTitle({
 
   return (
     <Container>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          fontSize: "16px",
+          fontWeight: "500",
+          color: "#374151",
+        }}
+      >
+        트랙명 <span style={{ color: "red" }}>*</span>
+      </div>
       <CustomTable columns={columns} data={value || []} size="small" />
       <Gap height={12} />
       {!readOnly && (

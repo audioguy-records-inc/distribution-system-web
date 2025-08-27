@@ -292,6 +292,7 @@ export default function TrackDetail({
           );
         }}
         readOnly={false}
+        required
       />
       <Gap height={56} />
       <RowWrapper>
@@ -347,14 +348,14 @@ export default function TrackDetail({
           leftOption={{
             label: "해당",
             value: true,
-            checked: currentTrack.isMVService === true,
+            checked: (currentTrack.isMVService ?? false) === true,
           }}
           rightOption={{
             label: "해당없음",
             value: false,
-            checked: currentTrack.isMVService === false,
+            checked: (currentTrack.isMVService ?? false) === false,
           }}
-          value={currentTrack.isMVService}
+          value={currentTrack.isMVService ?? false}
           onChange={(e) => {
             setTracks(
               tracks.map((track, i) =>

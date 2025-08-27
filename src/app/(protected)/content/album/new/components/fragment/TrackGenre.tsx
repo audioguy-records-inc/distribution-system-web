@@ -30,7 +30,7 @@ export default function TrackGenre({
   return (
     <Container>
       <CustomDropdown
-        label="트랙 장르"
+        label="메인 장르"
         items={getAlbumGenreMainGenreList().map((item) => ({
           key: item,
           value: item,
@@ -43,8 +43,10 @@ export default function TrackGenre({
         size="small"
         width={156}
         readOnly={readOnly}
+        required
       />
       <CustomDropdown
+        label="서브 장르"
         items={getAlbumGenreSubGenreList(mainGenre || "").map((item) => ({
           key: item,
           value: item,
@@ -57,6 +59,7 @@ export default function TrackGenre({
         size="small"
         width={300}
         readOnly={readOnly}
+        required
       />
     </Container>
   );
