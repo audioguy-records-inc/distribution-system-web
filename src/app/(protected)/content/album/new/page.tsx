@@ -90,10 +90,24 @@ export default function AlbumNewPage() {
     } else {
       await createAlbum(data);
 
-      if (newAlbum) {
-        const trackPromises = edittingTracks.map((track) => createTrack(track));
-        await Promise.all(trackPromises);
+      // 신규 앨범 등록 시에도 트랙 저장
+      if (edittingTracks.length > 0) {
+        // 앨범 생성 후 newAlbum에서 ID를 가져와서 트랙에 설정
+        const currentNewAlbum = useAlbumStore.getState().newAlbum;
+        if (currentNewAlbum?._id) {
+          const trackPromises = edittingTracks.map((track) => {
+            const trackWithAlbumId = {
+              ...track,
+              albumId: currentNewAlbum._id,
+            };
+            return createTrack(trackWithAlbumId);
+          });
+          await Promise.all(trackPromises);
+        }
       }
+
+      // 신규 앨범 등록 후 자동 초기화
+      handleReset();
     }
   };
 

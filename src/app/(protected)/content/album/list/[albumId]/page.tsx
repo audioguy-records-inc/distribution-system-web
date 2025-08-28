@@ -72,9 +72,45 @@ const AlbumDetailPage = () => {
 
   const handleDelete = async () => {
     setIsLoading(true);
-    await deleteAlbum(albumId as string);
-    setIsLoading(false);
-    router.push("/content/album/list");
+
+    try {
+      // 1. 등록된 트랙들을 먼저 전부 삭제
+      if (edittingTracks.length > 0) {
+        const tracksToDelete = edittingTracks.filter((track) => track._id);
+
+        if (tracksToDelete.length > 0) {
+          console.log(`${tracksToDelete.length}개의 트랙 삭제 시작...`);
+
+          const deleteTrackPromises = tracksToDelete.map((track) =>
+            deleteTrack(track._id!).catch((error) => {
+              console.error(`트랙 ${track._id} 삭제 실패:`, error);
+              throw error;
+            }),
+          );
+
+          await Promise.all(deleteTrackPromises);
+          console.log("모든 트랙 삭제 완료");
+        }
+      }
+
+      // 2. 트랙 삭제 완료 후 앨범 삭제
+      console.log("앨범 삭제 시작...");
+      await deleteAlbum(albumId as string);
+      console.log("앨범 삭제 완료");
+
+      setIsLoading(false);
+      router.push("/content/album/list");
+    } catch (error) {
+      setIsLoading(false);
+      console.error("앨범 삭제 중 오류 발생:", error);
+
+      // 사용자에게 에러 메시지 표시
+      if (error instanceof Error) {
+        alert(`삭제 중 오류가 발생했습니다: ${error.message}`);
+      } else {
+        alert("삭제 중 알 수 없는 오류가 발생했습니다.");
+      }
+    }
   };
 
   const isFilled = () => {

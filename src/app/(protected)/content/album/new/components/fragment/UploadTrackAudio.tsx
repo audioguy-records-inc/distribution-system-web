@@ -228,7 +228,7 @@ export default function UploadTrackAudio({
       {track.trackFileList && track.trackFileList.length > 0 ? (
         <div>
           {track.trackFileList.map((file, fileIndex) => (
-            <AudioFileWrapper key={fileIndex} style={{ marginBottom: "8px" }}>
+            <AudioFileWrapper key={fileIndex}>
               <AudioContainer>
                 <AudioName>{file.name}</AudioName>
                 <AudioActions>
@@ -241,14 +241,15 @@ export default function UploadTrackAudio({
             </AudioFileWrapper>
           ))}
         </div>
-      ) : null}
-      <ButtonOutlinedPrimary
-        label={isLoading ? "업로드 중" : "파일 업로드"}
-        size="small"
-        leftIcon={<UploadIcon />}
-        onClick={handleButtonClick}
-        disabled={isLoading}
-      />
+      ) : (
+        <ButtonOutlinedPrimary
+          label={isLoading ? "업로드 중" : "파일 업로드"}
+          size="small"
+          leftIcon={<UploadIcon />}
+          onClick={handleButtonClick}
+          disabled={isLoading}
+        />
+      )}
       <input
         type="file"
         ref={fileInputRef}
