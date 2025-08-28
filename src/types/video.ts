@@ -23,8 +23,11 @@ export interface ImageInfo {
 export interface ArtistInfo {
   artistId: string;
   name: string;
-  mainRole: string;
-  subRole: string;
+  nameEn: string;
+  roleList: {
+    mainRole: string;
+    subRole: string;
+  }[];
 }
 
 export interface Transmission {

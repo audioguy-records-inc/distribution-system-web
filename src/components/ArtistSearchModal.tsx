@@ -122,7 +122,14 @@ const ArtistSearchModal = ({
       header: "아티스트명",
       accessor: "name",
       type: "string",
-      width: 300,
+      width: 180,
+      align: "center",
+    },
+    {
+      header: "영문명",
+      accessor: "nameEn",
+      type: "string",
+      width: 180,
       align: "center",
     },
     {

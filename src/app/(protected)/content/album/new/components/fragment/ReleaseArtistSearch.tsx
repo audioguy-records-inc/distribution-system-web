@@ -101,7 +101,14 @@ export default function ReleaseArtistSearch({
       header: "아티스트명",
       accessor: "name",
       type: "string",
-      width: 337,
+      width: 200,
+      align: "center",
+    },
+    {
+      header: "영문명",
+      accessor: "nameEn",
+      type: "string",
+      width: 200,
       align: "center",
     },
     {
@@ -157,8 +164,13 @@ export default function ReleaseArtistSearch({
     const artistInfo: ArtistInfo = {
       artistId: artist._id,
       name: artist.name,
-      mainRole: "release",
-      subRole: "release",
+      nameEn: artist.nameEn || "",
+      roleList: [
+        {
+          mainRole: "release",
+          subRole: "release",
+        },
+      ],
     };
 
     onChange(value ? [...value, artistInfo] : [artistInfo]);

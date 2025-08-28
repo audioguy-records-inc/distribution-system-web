@@ -101,7 +101,14 @@ export default function ParticipateArtistSearch({
       header: "아티스트명",
       accessor: "name",
       type: "string",
-      width: 132,
+      width: 120,
+      align: "center",
+    },
+    {
+      header: "영문명",
+      accessor: "nameEn",
+      type: "string",
+      width: 120,
       align: "center",
     },
     {
@@ -155,12 +162,20 @@ export default function ParticipateArtistSearch({
 
         return (
           <CustomDropdown
-            selectedKey={artistInfo?.mainRole}
+            selectedKey={artistInfo?.roleList?.[0]?.mainRole || ""}
             onSelectKey={(selectedRole) => {
               if (value) {
                 const newValue = value.map((artist) =>
                   artist.artistId === record._id
-                    ? { ...artist, mainRole: selectedRole, subRole: "" }
+                    ? {
+                        ...artist,
+                        roleList: [
+                          {
+                            mainRole: selectedRole,
+                            subRole: "",
+                          },
+                        ],
+                      }
                     : artist,
                 );
                 onChange(newValue);
@@ -187,9 +202,9 @@ export default function ParticipateArtistSearch({
           (artist) => artist.artistId === record._id,
         );
 
-        const isCategory1Selected = !!artistInfo?.mainRole;
+        const isCategory1Selected = !!artistInfo?.roleList?.[0]?.mainRole;
         const roleCategory2List = isCategory1Selected
-          ? getArtistRoleCategory2List(artistInfo.mainRole)
+          ? getArtistRoleCategory2List(artistInfo.roleList[0].mainRole)
           : [];
 
         const roleCategory2Items = roleCategory2List.map((category) => ({
@@ -199,12 +214,20 @@ export default function ParticipateArtistSearch({
 
         return (
           <CustomDropdown
-            selectedKey={artistInfo?.subRole}
+            selectedKey={artistInfo?.roleList?.[0]?.subRole || ""}
             onSelectKey={(selectedRole) => {
               if (value) {
                 const newValue = value.map((artist) =>
                   artist.artistId === record._id
-                    ? { ...artist, subRole: selectedRole }
+                    ? {
+                        ...artist,
+                        roleList: [
+                          {
+                            mainRole: artist.roleList?.[0]?.mainRole || "",
+                            subRole: selectedRole,
+                          },
+                        ],
+                      }
                     : artist,
                 );
                 onChange(newValue);
@@ -242,8 +265,13 @@ export default function ParticipateArtistSearch({
     const artistInfo: ArtistInfo = {
       artistId: artist._id,
       name: artist.name,
-      mainRole: "participate",
-      subRole: "participate",
+      nameEn: artist.nameEn || "",
+      roleList: [
+        {
+          mainRole: "participate",
+          subRole: "participate",
+        },
+      ],
     };
 
     onChange(value ? [...value, artistInfo] : [artistInfo]);
