@@ -3,14 +3,12 @@ import styled from "styled-components";
 
 const Container = styled.div``;
 
-export type SettlementTaxInvoiceDateType = "settlement" | "sales";
-
-export default function SettlementTaxInvoiceDateTypeDropdown({
+export default function SettlementDetailDateTypeDropdown({
   selectedType,
   setSelectedType,
 }: {
-  selectedType: SettlementTaxInvoiceDateType;
-  setSelectedType: (type: SettlementTaxInvoiceDateType) => void;
+  selectedType: "settlement" | "sales";
+  setSelectedType: (type: "settlement" | "sales") => void;
 }) {
   const items = [
     {
@@ -27,9 +25,7 @@ export default function SettlementTaxInvoiceDateTypeDropdown({
       <CustomDropdown
         items={items}
         selectedKey={selectedType}
-        onSelectKey={(key) =>
-          setSelectedType(key as SettlementTaxInvoiceDateType)
-        }
+        onSelectKey={(key) => setSelectedType(key as "settlement" | "sales")}
       />
     </Container>
   );

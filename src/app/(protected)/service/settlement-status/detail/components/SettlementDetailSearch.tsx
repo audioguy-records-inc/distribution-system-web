@@ -1,15 +1,12 @@
-import {
-  GetSettlementTaxInvoicesRequest,
-  RegionType,
-} from "@/api/settlement/get-settlement-tax-invoices";
-import SettlementTaxInvoiceSearchTypeDropdown, {
-  SettlementTaxInvoiceSearchType,
-} from "./fragment/SettlementTaxInvoiceSearchType";
+import SettlementDetailSearchTypeDropdown, {
+  SettlementDetailSearchType,
+} from "./fragment/SettlementDetailSearchType";
 
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import CustomMonthCalendar from "@/components/basic/CustomMonthCalendar";
 import Gap from "@/components/basic/Gap";
-import SettlementTaxInvoiceDateTypeDropdown from "./fragment/SettlementTaxInvoiceDateType";
+import { GetSettlementDetailsRequest } from "@/api/settlement/get-settlement-details";
+import SettlementDetailDateTypeDropdown from "./fragment/SettlementDetailDateType";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
@@ -37,17 +34,17 @@ const DateDash = styled.div`
   border-radius: 10px;
 `;
 
-export default function SettlementTaxInvoiceSearch() {
+export default function SettlementDetailSearch() {
   const [dateType, setDateType] = useState<"settlement" | "sales">(
     "settlement",
   );
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [selectedType, setSelectedType] =
-    useState<SettlementTaxInvoiceSearchType>("all");
+    useState<SettlementDetailSearchType>("all");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { fetchSettlementTaxInvoices } = useSettlementStore();
+  const { fetchSettlementDetails } = useSettlementStore();
 
   const handleSearch = async () => {
     setIsLoading(true);
@@ -57,7 +54,7 @@ export default function SettlementTaxInvoiceSearch() {
       return;
     }
 
-    const __params: GetSettlementTaxInvoicesRequest = {};
+    const __params: GetSettlementDetailsRequest = {};
 
     if (dateType === "settlement") {
       __params.__kstSettlementStartMonth = startDate;
@@ -68,12 +65,12 @@ export default function SettlementTaxInvoiceSearch() {
     }
 
     if (selectedType !== "all") {
-      __params.regionType = selectedType as RegionType;
+      __params.__searchFields = selectedType;
     }
 
     __params.__limit = 100;
 
-    await fetchSettlementTaxInvoices(__params);
+    await fetchSettlementDetails(__params);
     setIsLoading(false);
   };
 
@@ -82,7 +79,7 @@ export default function SettlementTaxInvoiceSearch() {
       <DateLabel>기간 검색</DateLabel>
       <Gap height={8} />
       <RowWrapper>
-        <SettlementTaxInvoiceDateTypeDropdown
+        <SettlementDetailDateTypeDropdown
           selectedType={dateType}
           setSelectedType={setDateType}
         />
@@ -99,10 +96,10 @@ export default function SettlementTaxInvoiceSearch() {
         />
       </RowWrapper>
       <Gap height={12} />
-      <DateLabel>공급 범위</DateLabel>
+      <DateLabel>검색 조건</DateLabel>
       <Gap height={8} />
       <RowWrapper>
-        <SettlementTaxInvoiceSearchTypeDropdown
+        <SettlementDetailSearchTypeDropdown
           selectedType={selectedType}
           setSelectedType={setSelectedType}
         />

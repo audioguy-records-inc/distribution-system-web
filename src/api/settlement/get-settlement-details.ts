@@ -3,10 +3,12 @@ import { FetchResponse, apiFetch } from "../fetch";
 import { SettlementDetail } from "@/types/settlement-matched-record";
 
 export interface GetSettlementDetailsRequest {
-  __searchKeyword: string;
+  __searchKeyword?: string;
   __searchFields?: string;
   __kstSettlementStartMonth?: string;
   __kstSettlementEndMonth?: string;
+  __kstSalesStartMonth?: string;
+  __kstSalesEndMonth?: string;
   __skip?: number;
   __limit?: number;
   __sortOption?: string;
@@ -35,6 +37,10 @@ export const getSettlementDetails = async (
         "__kstSettlementEndMonth",
         request.__kstSettlementEndMonth,
       );
+    if (request.__kstSalesStartMonth)
+      queryParams.append("__kstSalesStartMonth", request.__kstSalesStartMonth);
+    if (request.__kstSalesEndMonth)
+      queryParams.append("__kstSalesEndMonth", request.__kstSalesEndMonth);
     if (request.__skip) queryParams.append("__skip", request.__skip.toString());
     if (request.__limit)
       queryParams.append("__limit", request.__limit.toString());

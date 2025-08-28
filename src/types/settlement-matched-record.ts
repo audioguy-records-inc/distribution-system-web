@@ -116,14 +116,19 @@ export interface SettlementMatchedRecord {
 
 // SettlementDetail
 export interface SettlementDetail {
-  albumTitle: string;
-  userDisplayName: string;
-  userAccount: string;
-  albumDistributionCode: string;
-  userSettlementFee: number;
-  artistNameList: string[];
-  utcReleasedAt: string;
-  agencyCompanyName: string;
+  settlementMonth: number; // 정산월
+  salesMonth: number; // 판매월
+  service: string; // 서비스채널
+  UPC: string; // UPC
+  ISRC: string; // ISRC
+  albumTitle: string; // 앨범 명
+  utcReleasedAt: string; // 앨범 발매일
+  agencyCompanyName: string; // 기획사 (album.agencyCompanyName)
+  userDisplayName: string; // 권리사명
+  userAccount: string; // 권리사계정(레이블코드)
+  albumDistributionCode: string; // 앨범 유통코드(album.albumUniqueId)
+  userSettlementFee: number; // 정산금
+  artistNameList: string[]; // 아티스트명 리스트
 }
 
 export interface SettlementTaxInvoice {

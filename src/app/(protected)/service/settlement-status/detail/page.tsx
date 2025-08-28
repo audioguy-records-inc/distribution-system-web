@@ -2,11 +2,9 @@
 
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
-import SettlementTaxInvoiceDomesticList from "./components/SettlementTaxInvoiceDomesticList";
-import SettlementTaxInvoiceDownloadButton from "./components/SettlementTaxInvoiceDownloadButton";
-import SettlementTaxInvoiceInternationalList from "./components/SettlementTaxInvoiceIntermationalList";
-import SettlementTaxInvoiceSearch from "./components/SettlementTaxInvoiceSearch";
-import SettlementTaxInvoiceTotalList from "./components/SettlementTaxInvoiceTotalList";
+import SettlementDetailDownloadButton from "./components/SettlementDetailDownloadButton";
+import SettlementDetailList from "./components/SettlementDetailList";
+import SettlementDetailSearch from "./components/SettlementDetailSearch";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
@@ -30,20 +28,14 @@ const TableLabel = styled.div`
 export default function AdminSettlementDetailPage() {
   return (
     <Container>
-      <PageHeader title="상세내역 조회" />
-      <SettlementTaxInvoiceSearch />
+      <PageHeader title="정산 상세 내역 조회" />
+      <SettlementDetailSearch />
       <ButtonRow>
-        <SettlementTaxInvoiceDownloadButton />
+        <SettlementDetailDownloadButton />
       </ButtonRow>
       <Gap height={32} />
-      <TableLabel>국내 세금계산서 발행금액 내역</TableLabel>
-      <SettlementTaxInvoiceDomesticList />
-      <Gap height={32} />
-      <TableLabel>해외 세금계산서 발행금액 내역</TableLabel>
-      <SettlementTaxInvoiceInternationalList />
-      <Gap height={32} />
-      <TableLabel>총 세금계산서 발행금액 내역</TableLabel>
-      <SettlementTaxInvoiceTotalList />
+      <TableLabel>정산 상세 내역</TableLabel>
+      <SettlementDetailList />
       <Gap height={32} />
     </Container>
   );
