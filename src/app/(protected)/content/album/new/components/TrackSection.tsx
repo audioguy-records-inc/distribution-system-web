@@ -264,7 +264,16 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       type: "input",
       width: 174,
       render: (value, record, index) => {
-        return <UploadTrackAudio track={record} />;
+        if (index === undefined) return null;
+        return (
+          <UploadTrackAudio
+            track={record}
+            tracks={edittingTracks}
+            setTracks={setEdittingTracks}
+            index={index}
+            showLabel={false}
+          />
+        );
       },
     },
     {
@@ -314,6 +323,10 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
     const newTrack: EditTrack = {
       albumId: albumData?._id,
       userId: albumData?.userId,
+      releaseCountryCode: albumData?.releaseCountryCode,
+      mainGenre: albumData?.mainGenre,
+      subGenre: albumData?.subGenre,
+      utcReleasedAt: albumData?.utcReleasedAt,
       isExposed: true,
       isSelected: true,
       titleList: [{ ko: "" }, { en: "" }],

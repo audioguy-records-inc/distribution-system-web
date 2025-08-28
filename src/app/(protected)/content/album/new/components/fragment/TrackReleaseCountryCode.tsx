@@ -11,10 +11,12 @@ export default function TrackReleaseCountryCode({
   value,
   onChange,
   readOnly = false,
+  required = false,
 }: {
   value: string;
   onChange: (value: string) => void;
   readOnly?: boolean;
+  required?: boolean;
 }) {
   return (
     <Container>
@@ -29,6 +31,7 @@ export default function TrackReleaseCountryCode({
         size="small"
         width={320}
         readOnly={readOnly}
+        required={required}
       />
     </Container>
   );

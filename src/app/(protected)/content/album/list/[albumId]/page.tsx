@@ -92,6 +92,7 @@ const AlbumDetailPage = () => {
       album.subGenre &&
       album.agencyCompanyName &&
       album.supplyRegion &&
+      album.releaseCountryCode &&
       album.utcReleasedAt &&
       album.isAdultOnly !== undefined &&
       album.coverImageList &&

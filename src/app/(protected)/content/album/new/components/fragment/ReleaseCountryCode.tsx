@@ -19,6 +19,7 @@ export default function ReleaseCountryCode({
       <Controller
         name="releaseCountryCode"
         control={control}
+        rules={{ required: true }}
         render={({ field }) => {
           return (
             <CustomDropdown
@@ -31,6 +32,7 @@ export default function ReleaseCountryCode({
               }}
               size="small"
               width={320}
+              required
             />
           );
         }}

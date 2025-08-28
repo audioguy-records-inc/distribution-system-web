@@ -3,58 +3,31 @@ import { useRef, useState } from "react";
 
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import CustomChip from "@/components/basic/CustomChip";
-import { EditTrack } from "../TrackSection";
 import { FileInfo } from "@/types/file-info";
+import Gap from "@/components/basic/Gap";
+import Track from "@/types/track";
 import TrashIcon from "@/components/icons/TrashIcon";
 import UploadIcon from "@/components/icons/UploadIcon";
 import XIcon from "@/components/icons/XIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
-import { useTrackStore } from "@/stores/use-track-store";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
+
+const Header = styled.div`
+  ${theme.fonts.body2.medium}
+  color: ${theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
 
 const AudioFileWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-const AudioFile = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px 8px 16px;
-  border-radius: 100px;
-  border: 1px solid ${theme.colors.gray[50]};
-  position: relative;
-`;
-
-const AudioFileName = styled.span`
-  ${theme.fonts.body2.medium}
-  color: ${theme.colors.gray[800]};
-  max-width: 40px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Duration = styled.span`
-  ${theme.fonts.body2.medium}
-  color: ${theme.colors.gray[500]};
-  margin-left: 8px;
-`;
-
-const DeleteButton = styled.div`
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-  cursor: pointer;
-
-  ${AudioFile}:hover & {
-    opacity: 1;
-  }
 `;
 
 const AudioContainer = styled.div`
@@ -104,13 +77,30 @@ const IconButton = styled.button`
   justify-content: center;
 `;
 
-export default function UploadTrackAudio({ track }: { track: EditTrack }) {
+const Duration = styled.span`
+  ${theme.fonts.body2.medium}
+  color: ${theme.colors.gray[500]};
+  margin-left: 8px;
+`;
+
+export default function UploadTrackAudio({
+  track,
+  tracks,
+  setTracks,
+  index,
+  showLabel = false,
+}: {
+  track: Track;
+  tracks: Track[];
+  setTracks: (tracks: Track[]) => void;
+  index: number;
+  showLabel?: boolean;
+}) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [audioFile, setAudioFile] = useState<FileInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [duration, setDuration] = useState<string>("");
   const { uploadToS3 } = useUploadStore();
-  const { updateTrack } = useTrackStore();
+
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
@@ -152,22 +142,24 @@ export default function UploadTrackAudio({ track }: { track: EditTrack }) {
 
       if (success) {
         toast.success(`${file.name} 업로드가 완료되었습니다.`);
-        // FileInfo 형식으로 변환
-        const fileInfo: FileInfo = {
-          name: success.name,
-          filePath: success.filePath,
-        };
-        setAudioFile(fileInfo);
 
-        // track의 trackFileList에 파일 정보 추가
-        if (!track.trackFileList) {
-          track.trackFileList = [];
-        }
-        track.trackFileList.push({
-          name: success.name,
-          filePath: success.filePath,
-        });
-        // await updateTrack(track);
+        // Track의 trackFileList 업데이트
+        setTracks(
+          tracks.map((t, i) =>
+            i === index
+              ? {
+                  ...t,
+                  trackFileList: [
+                    ...(t.trackFileList || []),
+                    {
+                      name: success.name,
+                      filePath: success.filePath,
+                    },
+                  ],
+                }
+              : t,
+          ),
+        );
 
         return true;
       }
@@ -209,37 +201,54 @@ export default function UploadTrackAudio({ track }: { track: EditTrack }) {
       .padStart(2, "0")}`;
   };
 
-  const handleRemoveFile = async () => {
-    // Implement the remove file logic here
-    if (track.trackFileList && track.trackFileList.length > 0) {
-      track.trackFileList = [];
-    }
-    // await updateTrack(track);
+  const handleRemoveFile = (fileIndex: number) => {
+    setTracks(
+      tracks.map((t, i) =>
+        i === index
+          ? {
+              ...t,
+              trackFileList:
+                t.trackFileList?.filter((_, fi) => fi !== fileIndex) || [],
+            }
+          : t,
+      ),
+    );
   };
 
   return (
     <Container>
-      {track.trackFileList && track.trackFileList.length > 0 ? (
-        <AudioFileWrapper>
-          <AudioContainer>
-            <AudioName>{track.trackFileList[0].name}</AudioName>
-            <AudioActions>
-              <IconButton onClick={handleRemoveFile}>
-                <TrashIcon color={theme.colors.gray[300]} />
-              </IconButton>
-            </AudioActions>
-          </AudioContainer>
-          <Duration>{duration}</Duration>
-        </AudioFileWrapper>
-      ) : (
-        <ButtonOutlinedPrimary
-          label={isLoading ? "업로드 중" : "업로드"}
-          size="small"
-          leftIcon={<UploadIcon />}
-          onClick={handleButtonClick}
-          disabled={isLoading}
-        />
+      {showLabel && (
+        <>
+          <Header>
+            음원파일 <span style={{ color: "red" }}>*</span>
+          </Header>
+          <Gap height={16} />
+        </>
       )}
+      {track.trackFileList && track.trackFileList.length > 0 ? (
+        <div>
+          {track.trackFileList.map((file, fileIndex) => (
+            <AudioFileWrapper key={fileIndex} style={{ marginBottom: "8px" }}>
+              <AudioContainer>
+                <AudioName>{file.name}</AudioName>
+                <AudioActions>
+                  <IconButton onClick={() => handleRemoveFile(fileIndex)}>
+                    <TrashIcon color={theme.colors.gray[300]} />
+                  </IconButton>
+                </AudioActions>
+              </AudioContainer>
+              <Duration>{duration}</Duration>
+            </AudioFileWrapper>
+          ))}
+        </div>
+      ) : null}
+      <ButtonOutlinedPrimary
+        label={isLoading ? "업로드 중" : "파일 업로드"}
+        size="small"
+        leftIcon={<UploadIcon />}
+        onClick={handleButtonClick}
+        disabled={isLoading}
+      />
       <input
         type="file"
         ref={fileInputRef}

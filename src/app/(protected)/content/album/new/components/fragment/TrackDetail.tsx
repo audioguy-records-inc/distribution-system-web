@@ -14,6 +14,7 @@ import TrackReleaseCountryCode from "./TrackReleaseCountryCode";
 import TrackReleaseDate from "./TrackReleaseDate";
 import TrackTitle from "./TrackTitle";
 import TrackUserContract from "./TrackUserContract";
+import UploadTrackAudio from "./UploadTrackAudio";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 
@@ -135,6 +136,47 @@ export default function TrackDetail({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
+          label="Disc 번호"
+          placeholder="Disc 번호를 입력"
+          size="small"
+          value={currentTrack.discNumber?.toString() || ""}
+          onChange={(e) => {
+            setTracks(
+              tracks.map((track, i) =>
+                i === index
+                  ? {
+                      ...track,
+                      discNumber: parseInt(e.target.value) || undefined,
+                    }
+                  : track,
+              ),
+            );
+          }}
+          required
+        />
+        <CustomInput
+          label="트랙 번호"
+          placeholder="트랙 번호를 입력"
+          size="small"
+          value={currentTrack.trackNumber?.toString() || ""}
+          onChange={(e) => {
+            setTracks(
+              tracks.map((track, i) =>
+                i === index
+                  ? {
+                      ...track,
+                      trackNumber: parseInt(e.target.value) || undefined,
+                    }
+                  : track,
+              ),
+            );
+          }}
+          required
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      <RowWrapper>
+        <CustomInput
           label="트랙 코드"
           placeholder="트랙 코드를 입력"
           size="small"
@@ -162,24 +204,33 @@ export default function TrackDetail({
               ),
             );
           }}
-          // readOnly={!isEdit}
+          required
         />
       </RowWrapper>
       <Gap height={56} />
-      <CustomInput
-        label="UCI"
-        placeholder="UCI 입력"
-        size="small"
-        value={currentTrack.UCI || ""}
-        onChange={(e) => {
-          setTracks(
-            tracks.map((track, i) =>
-              i === index ? { ...track, UCI: e.target.value } : track,
-            ),
-          );
-        }}
-        // readOnly={!isEdit}
-      />
+      <RowWrapper>
+        <CustomInput
+          label="UCI"
+          placeholder="UCI 입력"
+          size="small"
+          value={currentTrack.UCI || ""}
+          onChange={(e) => {
+            setTracks(
+              tracks.map((track, i) =>
+                i === index ? { ...track, UCI: e.target.value } : track,
+              ),
+            );
+          }}
+          // readOnly={!isEdit}
+        />
+        <UploadTrackAudio
+          track={currentTrack}
+          tracks={tracks}
+          setTracks={setTracks}
+          index={index}
+          showLabel={true}
+        />
+      </RowWrapper>
       <Gap height={56} />
       <ReleaseArtistSearch
         value={currentTrack.releaseArtistList || []}
@@ -195,6 +246,7 @@ export default function TrackDetail({
         placeholder="아티스트 검색"
         label="트랙 아티스트"
         modalHeader="트랙 아티스트 검색"
+        required
         // readOnly={!isEdit}
       />
       <Gap height={56} />
@@ -245,6 +297,7 @@ export default function TrackDetail({
               ),
             );
           }}
+          required
           // readOnly={!isEdit}
         />
         <TrackUserContract
