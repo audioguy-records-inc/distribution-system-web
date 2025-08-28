@@ -38,7 +38,7 @@ export default function SettlementSearch() {
   const [selectedType, setSelectedType] = useState<SettlementSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { settlementDetails, fetchSettlementDetails } = useSettlementStore();
+  const { fetchSettlementSummaries } = useSettlementStore();
 
   const handleSearch = async () => {
     setIsLoading(true);
@@ -51,13 +51,14 @@ export default function SettlementSearch() {
       return;
     }
 
-    await fetchSettlementDetails({
+    await fetchSettlementSummaries({
       __searchFields,
       __searchKeyword,
       __kstSettlementStartMonth: startDate,
       __kstSettlementEndMonth: endDate,
+      __skip: 0,
       __limit: 100,
-      // __sortOption: "createdAtDESC",
+      __sortOption: "settlementMonthASC",
     });
     setIsLoading(false);
   };

@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import DownloadIcon from "@/components/icons/DownloadIcon";
 import DownloadModal from "@/components/DownloadModal";
-import { SettlementDetail } from "@/types/settlement-matched-record";
+import { SettlementSummary } from "@/types/settlement-summary";
 import { saveAs } from "file-saver";
 import styled from "styled-components";
 import { useSettlementStore } from "@/stores/use-settlement-store";
@@ -13,7 +13,7 @@ const Container = styled.div``;
 
 export default function SettlementDownloadButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { settlementDetails } = useSettlementStore();
+  const { settlementSummaries } = useSettlementStore();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -23,19 +23,21 @@ export default function SettlementDownloadButton() {
     setIsModalOpen(false);
   };
 
-  // 앨범 데이터를 다운로드 가능한 형식으로 변환
-  const prepareDataForExport = async (albums: SettlementDetail[]) => {
-    return albums.map((album) => ({
-      음반코드: album.albumDistributionCode,
-      음반명: album.albumTitle,
-      아티스트: album.artistNameList?.map((artist) => artist).join(","),
-      권리자: album.userDisplayName,
-      정산금합계: album.userSettlementFee,
+  // 정산 요약 데이터를 다운로드 가능한 형식으로 변환
+  const prepareDataForExport = async (summaries: SettlementSummary[]) => {
+    return summaries.map((summary) => ({
+      권리자명: summary.userDisplayName,
+      권리자코드: summary.userAccount,
+      정산시작월: summary.settlementStartMonth,
+      정산종료월: summary.settlementEndMonth,
+      서비스매출: summary.settlementFee,
+      유통수수료: summary.distributionFee,
+      정산금: summary.userSettlementFee,
     }));
   };
 
   const handleExcelDownload = async () => {
-    const data = await prepareDataForExport(settlementDetails);
+    const data = await prepareDataForExport(settlementSummaries);
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "정산금");
@@ -57,7 +59,7 @@ export default function SettlementDownloadButton() {
   };
 
   const handleCsvDownload = async () => {
-    const data = await prepareDataForExport(settlementDetails);
+    const data = await prepareDataForExport(settlementSummaries);
     const worksheet = XLSX.utils.json_to_sheet(data);
     const csvOutput = XLSX.utils.sheet_to_csv(worksheet);
 
