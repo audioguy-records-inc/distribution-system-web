@@ -203,7 +203,7 @@ export const useSettlementStore = create<SettlementStore>()(
             throw new Error(response.message);
           }
 
-          toast.success("정산 파일 생성 완료");
+          toast.success("정산서가 업로드되었습니다.");
         } catch (error) {
           const errorMessage =
             error instanceof Error

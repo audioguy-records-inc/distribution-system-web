@@ -6,6 +6,7 @@ import { deleteAlbum } from "@/api/album/delete-album";
 import { getAlbum } from "@/api/album/get-album";
 import { getAlbums } from "@/api/album/get-albums";
 import { postAlbum } from "@/api/album/post-album";
+import { postAlbumFile } from "@/api/album/post-album-file";
 import { putAlbum } from "@/api/album/put-album";
 import { searchAlbums } from "@/api/album/search-albums";
 import toast from "react-hot-toast";
@@ -30,6 +31,7 @@ interface AlbumStore {
     __skip?: number;
     __limit?: number;
   }) => Promise<void>;
+  uploadAlbumFile: (name: string, filePath: string) => Promise<void>;
 
   resetNewAlbum: () => void;
 }
@@ -236,6 +238,32 @@ export const useAlbumStore = create<AlbumStore>()(
             error,
           );
           set({ error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      uploadAlbumFile: async (name: string, filePath: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await postAlbumFile({ name, filePath });
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          toast.success("앨범 파일이 업로드되었습니다.");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "앨범 파일 업로드 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useAlbumStore/uploadAlbumFile] Upload album file failed.",
+            error,
+          );
         } finally {
           set({ isLoading: false });
         }

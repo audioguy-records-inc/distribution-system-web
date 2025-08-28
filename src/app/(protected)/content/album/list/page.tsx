@@ -3,6 +3,7 @@
 import AlbumDownloadButton from "./components/fragment/AlbumDownloadButton";
 import AlbumList from "./components/AlbumList";
 import AlbumSearch from "./components/AlbumSearch";
+import AlbumUploadButton from "./components/fragment/AlbumUploadButton";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import styled from "styled-components";
@@ -27,6 +28,7 @@ export default function AlbumListPage() {
       <PageHeader title={"앨범 리스트"} />
       <AlbumSearch />
       <ButtonWrapper>
+        <AlbumUploadButton />
         <AlbumDownloadButton />
       </ButtonWrapper>
 
