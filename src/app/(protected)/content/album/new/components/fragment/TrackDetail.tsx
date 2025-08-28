@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import ContributorInput from "./ContributorInput";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomModal from "@/components/CustomModal";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
@@ -420,6 +421,57 @@ export default function TrackDetail({
         />
       </RowWrapper>
       <Gap height={56} />
+      <RowWrapper>
+        <CustomRadioWithLabel
+          label="Inst 트랙"
+          leftOption={{
+            label: "해당",
+            value: true,
+            checked: (currentTrack.isInstrumental ?? false) === true,
+          }}
+          rightOption={{
+            label: "해당없음",
+            value: false,
+            checked: (currentTrack.isInstrumental ?? false) === false,
+          }}
+          value={currentTrack.isInstrumental ?? false}
+          onChange={(e) => {
+            setTracks(
+              tracks.map((track, i) =>
+                i === index
+                  ? { ...track, isInstrumental: e.target.value }
+                  : track,
+              ),
+            );
+          }}
+          // readOnly={!isEdit}
+        />
+      </RowWrapper>
+      <Gap height={56} />
+      {currentTrack.isInstrumental === false && (
+        <>
+          <ContributorInput
+            value={currentTrack.contributorList || []}
+            onChange={(contributors) => {
+              console.log(
+                "ContributorInput onChange 호출됨 - contributors:",
+                contributors,
+              );
+              console.log("현재 tracks:", tracks);
+              console.log("현재 index:", index);
+              const updatedTracks = tracks.map((track, i) =>
+                i === index
+                  ? { ...track, contributorList: contributors || [] }
+                  : track,
+              );
+              console.log("업데이트된 tracks:", updatedTracks);
+              setTracks(updatedTracks);
+            }}
+            readOnly={false}
+          />
+          <Gap height={56} />
+        </>
+      )}
       <SpecialAudio
         track={currentTrack}
         tracks={tracks}

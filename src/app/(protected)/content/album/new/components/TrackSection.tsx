@@ -328,6 +328,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       subGenre: albumData?.subGenre,
       utcReleasedAt: albumData?.utcReleasedAt,
       isExposed: true,
+      isInstrumental: false,
+      contributorList: [], // Contributor[] 타입, 각 Contributor는 { name: "", nameEn: "", roleList: [{ mainRole: "", subRole: "" }] } (역할은 1개만)
       isSelected: true,
       titleList: [{ ko: "" }, { en: "" }],
     };

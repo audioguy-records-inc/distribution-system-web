@@ -16,6 +16,17 @@ export interface SpatialAudioInfo {
   trackFileList?: TrackFile[];
 }
 
+export interface ContributorRole {
+  mainRole: string;
+  subRole: string;
+}
+
+export interface Contributor {
+  name: string;
+  nameEn: string;
+  roleList: ContributorRole[];
+}
+
 export interface Track {
   _id?: string;
   titleList?: TitleLanguage[];
@@ -41,6 +52,9 @@ export interface Track {
 
   isExposed?: boolean;
   isAdultOnly?: boolean;
+
+  isInstrumental?: boolean;
+  contributorList?: Contributor[];
 
   trackFileList?: TrackFile[];
 
