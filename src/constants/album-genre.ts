@@ -7,6 +7,12 @@ export interface AlbumGenreItem {
 
 export const albumGenreList: AlbumGenreItem[] = [
   {
+    mainGenre: "오디오북",
+    subGenre: "오디오북",
+    international: "Audiobook",
+    domestic: "오디오북",
+  },
+  {
     mainGenre: "가요",
     subGenre: "가요",
     international: "K-pop",
@@ -592,12 +598,7 @@ export const albumGenreList: AlbumGenreItem[] = [
     international: "O.S.T",
     domestic: "게임",
   },
-  {
-    mainGenre: "O.S.T",
-    subGenre: "기타",
-    international: "K-pop",
-    domestic: "기타",
-  },
+
   {
     mainGenre: "월드뮤직",
     subGenre: "월드뮤직",
@@ -1078,12 +1079,7 @@ export const albumGenreList: AlbumGenreItem[] = [
     international: "Korean Traditional",
     domestic: "궁중음악",
   },
-  {
-    mainGenre: "기타",
-    subGenre: "기타",
-    international: "Music",
-    domestic: "기타",
-  },
+
   {
     mainGenre: "일렉트로니카",
     subGenre: "일렉트로니카",
