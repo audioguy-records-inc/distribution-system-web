@@ -38,7 +38,8 @@ const AlbumDetailPage = () => {
   const router = useRouter();
   const { albumId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const { albums, updateAlbum, deleteAlbum, fetchAlbum } = useAlbumStore();
+  const { albums, updateAlbum, deleteAlbum, fetchAlbum, sendAlbumDdex } =
+    useAlbumStore();
   const {
     edittingTracks,
     resetEdittingTracks,
@@ -113,6 +114,19 @@ const AlbumDetailPage = () => {
     }
   };
 
+  const handleDdexSend = async () => {
+    if (!albumId) return;
+
+    try {
+      setIsLoading(true);
+      await sendAlbumDdex(albumId as string);
+    } catch (error) {
+      console.error("DDEX 전송 중 오류 발생:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const isFilled = () => {
     const album = watch();
 
@@ -174,6 +188,7 @@ const AlbumDetailPage = () => {
       <HeaderWrapper>
         <PageHeader title={"앨범 상세"} />
         <ButtonWrapper>
+          <ButtonOutlinedSecondary label="DDEX 전송" onClick={handleDdexSend} />
           <ButtonOutlinedSecondary label="삭제" onClick={handleDelete} />
           {isLoading ? (
             <ButtonSpinner />

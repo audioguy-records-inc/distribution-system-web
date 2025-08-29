@@ -6,6 +6,7 @@ import { deleteAlbum } from "@/api/album/delete-album";
 import { getAlbum } from "@/api/album/get-album";
 import { getAlbums } from "@/api/album/get-albums";
 import { postAlbum } from "@/api/album/post-album";
+import { postAlbumDdex } from "@/api/album/post-album-ddex";
 import { postAlbumFile } from "@/api/album/post-album-file";
 import { putAlbum } from "@/api/album/put-album";
 import { searchAlbums } from "@/api/album/search-albums";
@@ -32,6 +33,7 @@ interface AlbumStore {
     __limit?: number;
   }) => Promise<void>;
   uploadAlbumFile: (name: string, filePath: string) => Promise<void>;
+  sendAlbumDdex: (albumId: string) => Promise<void>;
 
   resetNewAlbum: () => void;
 }
@@ -262,6 +264,32 @@ export const useAlbumStore = create<AlbumStore>()(
 
           console.error(
             "[useAlbumStore/uploadAlbumFile] Upload album file failed.",
+            error,
+          );
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      sendAlbumDdex: async (albumId: string) => {
+        set({ isLoading: true });
+        try {
+          const response = await postAlbumDdex(albumId);
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          toast.success("앨범 DDEX가 전송되었습니다.");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "앨범 DDEX 전송 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useAlbumStore/sendAlbumDdex] Send album DDEX failed.",
             error,
           );
         } finally {
