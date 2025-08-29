@@ -27,11 +27,13 @@ export default function VideoUserContract({
   watch,
   register,
   setValue,
+  required = false,
 }: {
   control: Control<Video>;
   watch: UseFormWatch<Video>;
   register: UseFormRegister<Video>;
   setValue: UseFormSetValue<Video>;
+  required?: boolean;
 }) {
   const { searchUserContracts } = useUserContractStore();
   const [searchedUserContracts, setSearchedUserContracts] = useState<
@@ -53,11 +55,12 @@ export default function VideoUserContract({
   return (
     <Container style={{ marginBottom: watch("userId") ? "48px" : "0px" }}>
       <CustomInput
-        label="계약 정보"
+        label={"계약 정보"}
         locked
         value={watch("userContractInfo")?.userContractUniqueId || ""}
         width={100}
         size="small"
+        required={required}
       />
       <CustomDropdown
         items={searchedUserContracts.map((userContract) => ({

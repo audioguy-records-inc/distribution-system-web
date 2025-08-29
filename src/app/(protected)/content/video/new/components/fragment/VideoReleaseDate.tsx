@@ -36,11 +36,13 @@ export default function VideoReleaseDate({
   watch,
   register,
   setValue,
+  required = false,
 }: {
   control: Control<Video>;
   watch: UseFormWatch<Video>;
   register: UseFormRegister<Video>;
   setValue: UseFormSetValue<Video>;
+  required?: boolean;
 }) {
   // watch를 통해 현재 값이 유효한지 체크
   const releaseDate = watch("utcReleasedAt");
@@ -53,7 +55,7 @@ export default function VideoReleaseDate({
         control={control}
         render={({ field }) => (
           <CustomCalendar
-            label="발매일"
+            label={"발매일"}
             value={
               field.value && moment(field.value).isValid()
                 ? moment(field.value).format("YYYYMMDD")
@@ -74,6 +76,7 @@ export default function VideoReleaseDate({
                 field.onChange(null);
               }
             }}
+            required={required}
           />
         )}
       />
@@ -85,7 +88,7 @@ export default function VideoReleaseDate({
           control={control}
           render={({ field }) => (
             <CustomCalendar
-              label="서비스 시간"
+              label={"서비스 시간"}
               value={
                 field.value && moment(field.value).isValid()
                   ? moment(field.value).format("YYYYMMDD")
@@ -136,6 +139,7 @@ export default function VideoReleaseDate({
                 }
               }}
               width={180}
+              required={required}
             />
           )}
         />

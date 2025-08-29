@@ -33,6 +33,7 @@ interface CensorSectionProps {
   watch: UseFormWatch<Video>;
   register: UseFormRegister<Video>;
   setValue: UseFormSetValue<Video>;
+  required?: boolean;
 }
 
 export default function CensorSection({
@@ -40,6 +41,7 @@ export default function CensorSection({
   watch,
   register,
   setValue,
+  required = false,
 }: CensorSectionProps) {
   return (
     <Container>
@@ -61,6 +63,7 @@ export default function CensorSection({
           }}
           size="small"
           width={320}
+          required={required}
         />
         {watch("ratingAuthority") === "심의제외" && (
           <CustomDropdown

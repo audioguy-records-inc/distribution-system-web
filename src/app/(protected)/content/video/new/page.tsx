@@ -47,6 +47,7 @@ export default function VideoNewPage() {
     ],
     supplyRegion: "Worldwide",
     ratingExemptionReason: "해당없음",
+    isFree: true,
   };
 
   const {
@@ -93,9 +94,18 @@ export default function VideoNewPage() {
     const releaseArtistList = watch("releaseArtistList");
     const isMatchedTrack = watch("isMathcedTrack");
     const videoType = watch("videoType");
-    const isFree = watch("isFree");
     const releaseCountryCode = watch("releaseCountryCode");
+    const distributionCompanyName = watch("distributionCompanyName");
     const agencyCompanyName = watch("agencyCompanyName");
+    const videoUniqueId = watch("videoUniqueId");
+    const UPC = watch("UPC");
+    const ISRC = watch("ISRC");
+    const utcReleasedAt = watch("utcReleasedAt");
+    const utcServiceStartedAt = watch("utcServiceStartedAt");
+    const ratingAuthority = watch("ratingAuthority");
+    const userId = watch("userId");
+    const userContractId = watch("userContractId");
+    const dspContractIdList = watch("dspContractIdList");
 
     if (!titleList || titleList.length === 0) {
       return false;
@@ -113,11 +123,15 @@ export default function VideoNewPage() {
       return false;
     }
 
-    if (isFree === undefined || isFree === null) {
+    if (releaseCountryCode === undefined || releaseCountryCode === null) {
       return false;
     }
 
-    if (releaseCountryCode === undefined || releaseCountryCode === null) {
+    if (
+      distributionCompanyName === undefined ||
+      distributionCompanyName === null ||
+      distributionCompanyName === ""
+    ) {
       return false;
     }
 
@@ -126,6 +140,42 @@ export default function VideoNewPage() {
       agencyCompanyName === null ||
       agencyCompanyName === ""
     ) {
+      return false;
+    }
+
+    if (!videoUniqueId || videoUniqueId === "") {
+      return false;
+    }
+
+    if (!UPC || UPC === "") {
+      return false;
+    }
+
+    if (!ISRC || ISRC === "") {
+      return false;
+    }
+
+    if (!utcReleasedAt) {
+      return false;
+    }
+
+    if (!utcServiceStartedAt) {
+      return false;
+    }
+
+    if (!ratingAuthority || ratingAuthority === "") {
+      return false;
+    }
+
+    if (!userId || userId === "") {
+      return false;
+    }
+
+    if (!userContractId || userContractId === "") {
+      return false;
+    }
+
+    if (!dspContractIdList || dspContractIdList.length === 0) {
       return false;
     }
 
@@ -174,6 +224,7 @@ export default function VideoNewPage() {
             watch={watch}
             register={register}
             setValue={setValue}
+            required={true}
           />
         }
       />

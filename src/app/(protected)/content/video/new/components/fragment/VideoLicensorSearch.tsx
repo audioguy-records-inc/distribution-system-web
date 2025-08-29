@@ -33,6 +33,7 @@ export default function VideoLicensorSearch({
   user,
   register,
   setValue,
+  required = false,
 }: {
   value: string;
   onChange: (value: string | null) => void;
@@ -40,6 +41,7 @@ export default function VideoLicensorSearch({
   user?: User;
   register: UseFormRegister<Video>;
   setValue: UseFormSetValue<Video>;
+  required?: boolean;
 }) {
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
@@ -65,7 +67,10 @@ export default function VideoLicensorSearch({
 
   return (
     <Container>
-      <Title>권리자명</Title>
+      <Title>
+        권리자명
+        {required && <span style={{ color: "#DC2626" }}> *</span>}
+      </Title>
       <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput

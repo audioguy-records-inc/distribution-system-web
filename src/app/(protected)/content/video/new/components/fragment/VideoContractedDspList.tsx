@@ -38,10 +38,12 @@ export default function VideoContractedDspList({
   watch,
   register,
   setValue,
+  required = false,
 }: {
   watch: UseFormWatch<Video>;
   register: UseFormRegister<Video>;
   setValue: UseFormSetValue<Video>;
+  required?: boolean;
 }) {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const contractedDspContractList =
@@ -77,7 +79,11 @@ export default function VideoContractedDspList({
 
   return (
     <Container>
-      <Label>{`계약된 DSP 리스트: ${dspContractIdList.length}개 선택됨`}</Label>
+      <Label>
+        {required ? "계약된 DSP 리스트" : "계약된 DSP 리스트"}:{" "}
+        {dspContractIdList.length}개 선택됨
+        {required && <span style={{ color: "#DC2626" }}> *</span>}
+      </Label>
       {!contractedDspContractList || contractedDspContractList.length === 0 ? (
         <HelpText>
           계약 정보를 선택하면 해당 계약의 dsp 리스트가 표시됩니다.
