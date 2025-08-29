@@ -36,6 +36,7 @@ interface VideoSectionProps {
   watch: UseFormWatch<Video>;
   register: UseFormRegister<Video>;
   setValue: UseFormSetValue<Video>;
+  required?: boolean;
 }
 
 export default function VideoSection({
@@ -43,6 +44,7 @@ export default function VideoSection({
   watch,
   register,
   setValue,
+  required = false,
 }: VideoSectionProps) {
   return (
     <Container>
@@ -73,7 +75,7 @@ export default function VideoSection({
               placeholder="아티스트 검색"
               label="영상 아티스트"
               modalHeader="영상 아티스트 검색"
-              required={true}
+              required={required}
             />
           );
         }}
@@ -98,6 +100,7 @@ export default function VideoSection({
               }}
               onChange={field.onChange}
               value={field.value}
+              required={required}
             />
           );
         }}
@@ -134,7 +137,7 @@ export default function VideoSection({
           }}
           size="small"
           width={320}
-          required={true}
+          required={required}
         />
         <CustomRadioWithLabel
           label="유/무료"
@@ -167,7 +170,7 @@ export default function VideoSection({
           }}
           size="small"
           width={320}
-          required={true}
+          required={required}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -181,7 +184,7 @@ export default function VideoSection({
           }}
           size="small"
           width={320}
-          required={true}
+          required={required}
         />
         <CustomInput
           label="기획사"
@@ -192,7 +195,7 @@ export default function VideoSection({
           }}
           size="small"
           width={320}
-          required={true}
+          required={required}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -256,7 +259,7 @@ export default function VideoSection({
           onChange={(e) => {
             setValue("videoUniqueId", e.target.value);
           }}
-          required={true}
+          required={required}
         />
         <CustomInput
           label="UPC"
@@ -266,7 +269,7 @@ export default function VideoSection({
           onChange={(e) => {
             setValue("UPC", e.target.value);
           }}
-          required={true}
+          required={required}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -278,7 +281,7 @@ export default function VideoSection({
         onChange={(e) => {
           setValue("ISRC", e.target.value);
         }}
-        required={true}
+        required={required}
       />
       <Gap height={56} />
       <VideoReleaseDate
@@ -286,7 +289,7 @@ export default function VideoSection({
         watch={watch}
         register={register}
         setValue={setValue}
-        required={true}
+        required={required}
       />
     </Container>
   );

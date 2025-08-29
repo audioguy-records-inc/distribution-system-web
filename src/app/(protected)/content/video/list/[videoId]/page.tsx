@@ -68,6 +68,100 @@ const VideoDetailPage = () => {
     setIsLoading(false);
     router.push("/content/video/list");
   };
+  console.log("moonsae watch", watch());
+
+  const isFilled = () => {
+    const titleList = watch("titleList");
+    const releaseArtistList = watch("releaseArtistList");
+    const isMatchedTrack = watch("isMathcedTrack");
+    const videoType = watch("videoType");
+    const releaseCountryCode = watch("releaseCountryCode");
+    const distributionCompanyName = watch("distributionCompanyName");
+    const agencyCompanyName = watch("agencyCompanyName");
+    const videoUniqueId = watch("videoUniqueId");
+    const UPC = watch("UPC");
+    const ISRC = watch("ISRC");
+    const utcReleasedAt = watch("utcReleasedAt");
+    const utcServiceStartedAt = watch("utcServiceStartedAt");
+    const ratingAuthority = watch("ratingAuthority");
+    const userId = watch("userId");
+    const userContractId = watch("userContractId");
+    const dspContractIdList = watch("dspContractIdList");
+
+    if (!titleList || titleList.length === 0) {
+      return false;
+    }
+
+    if (!releaseArtistList || releaseArtistList.length === 0) {
+      return false;
+    }
+
+    if (isMatchedTrack === undefined || isMatchedTrack === null) {
+      return false;
+    }
+
+    if (videoType === undefined || videoType === null) {
+      return false;
+    }
+
+    if (releaseCountryCode === undefined || releaseCountryCode === null) {
+      return false;
+    }
+
+    if (
+      distributionCompanyName === undefined ||
+      distributionCompanyName === null ||
+      distributionCompanyName === ""
+    ) {
+      return false;
+    }
+
+    if (
+      agencyCompanyName === undefined ||
+      agencyCompanyName === null ||
+      agencyCompanyName === ""
+    ) {
+      return false;
+    }
+
+    if (!videoUniqueId || videoUniqueId === "") {
+      return false;
+    }
+
+    if (!UPC || UPC === "") {
+      return false;
+    }
+
+    if (!ISRC || ISRC === "") {
+      return false;
+    }
+
+    if (!utcReleasedAt) {
+      return false;
+    }
+
+    if (!utcServiceStartedAt) {
+      return false;
+    }
+
+    if (!ratingAuthority || ratingAuthority === "") {
+      return false;
+    }
+
+    if (!userId || userId === "") {
+      return false;
+    }
+
+    if (!userContractId || userContractId === "") {
+      return false;
+    }
+
+    if (!dspContractIdList || dspContractIdList.length === 0) {
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = async () => {
     const _video = watch();
@@ -108,7 +202,7 @@ const VideoDetailPage = () => {
             <ButtonFilledPrimary
               label="수정"
               onClick={handleSubmit}
-              disabled={false}
+              disabled={!isFilled()}
             />
           )}
         </ButtonWrapper>
@@ -122,6 +216,7 @@ const VideoDetailPage = () => {
             watch={watch}
             register={register}
             setValue={setValue}
+            required={true}
           />
         }
       />
@@ -134,6 +229,7 @@ const VideoDetailPage = () => {
             watch={watch}
             register={register}
             setValue={setValue}
+            required={true}
           />
         }
       />

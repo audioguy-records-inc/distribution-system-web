@@ -19,7 +19,7 @@ export const censorshipBoardList: CensorshipBoard[] = [
   { key: "SBS M", value: "SBS M" },
   { key: "tvn", value: "tvn" },
   { key: "TV조선", value: "TV조선" },
-  { key: "영등위", value: "영등위" },
+  { key: "영상물등급위원회", value: "영상물등급위원회" },
   { key: "채널A", value: "채널A" },
   { key: "기타(직접입력)", value: "기타(직접입력)" },
 ];
@@ -40,9 +40,9 @@ export const censorshipExemptionList: CensorshipBoard[] = [
 
 export const censorshipRatingList: CensorshipBoard[] = [
   { key: "전체관람가", value: "전체관람가" },
-  { key: "7세이상관람가", value: "7세이상관람가" },
-  { key: "12세이상관람가", value: "12세이상관람가" },
-  { key: "15세이상관람가", value: "15세이상관람가" },
+  { key: "7세 이상 관람가", value: "7세 이상관 람가" },
+  { key: "12세 이상 관람가", value: "12세 이상 관람가" },
+  { key: "15세 이상 관람가", value: "15세 이상 관람가" },
   {
     key: "청소년 관람 불가 (19금 이상 관람가)",
     value: "청소년 관람 불가 (19금 이상 관람가)",
