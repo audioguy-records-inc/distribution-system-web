@@ -133,9 +133,7 @@ export default function AlbumNewPage() {
       album.coverImageList &&
       album.coverImageList.length > 0 &&
       album.userId &&
-      album.userContractId &&
-      album.dspContractIdList &&
-      album.dspContractIdList.length > 0
+      album.userContractId
     );
   };
 
