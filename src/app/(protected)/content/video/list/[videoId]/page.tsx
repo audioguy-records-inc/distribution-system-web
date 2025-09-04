@@ -156,10 +156,6 @@ const VideoDetailPage = () => {
       return false;
     }
 
-    if (!dspContractIdList || dspContractIdList.length === 0) {
-      return false;
-    }
-
     return true;
   };
 

@@ -222,7 +222,7 @@ export default function VideoSection({
         watch={watch}
         register={register}
         setValue={setValue}
-        required={true}
+        required={false}
       />
       <Gap height={56} />
       <RowWrapper>
