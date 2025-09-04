@@ -100,7 +100,6 @@ const DspContractInput = ({
         <Controller
           name="countryCode"
           control={control}
-          rules={{ required: true }}
           render={({ field }) => (
             <CountryCodeDropdown
               onChange={(value) => {
@@ -108,7 +107,6 @@ const DspContractInput = ({
               }}
               value={field.value}
               readOnly={!isEdit}
-              required
               // disabled={watch("regionType") === "domestic"}
             />
           )}

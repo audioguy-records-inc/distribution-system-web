@@ -117,11 +117,6 @@ const AddNewDspContract = () => {
       return true;
     }
 
-    // 국가 코드 체크
-    if (!watch("countryCode")) {
-      return true;
-    }
-
     // 계약 요율 체크
     if (watch("contractRate") === undefined || watch("contractRate") === null) {
       return true;
