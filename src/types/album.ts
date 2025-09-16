@@ -97,4 +97,23 @@ export interface Album {
   // deletedAt?: Date | null;
 }
 
+export interface AlbumFile {
+  _id: string;
+  name: string;
+  filePath: string;
+  state: string;
+  result: {
+    artistCount: number;
+    albumCount: number;
+    trackCount: number;
+  } | null;
+  error: string | null;
+  startedAt: string | null;
+  completedAt: string | null;
+  failedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
+
 export default Album;

@@ -1,9 +1,10 @@
+import Album, { AlbumFile } from "@/types/album";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import Album from "@/types/album";
 import { create } from "zustand";
 import { deleteAlbum } from "@/api/album/delete-album";
 import { getAlbum } from "@/api/album/get-album";
+import { getAlbumFiles } from "@/api/album/get-album-files";
 import { getAlbums } from "@/api/album/get-albums";
 import { postAlbum } from "@/api/album/post-album";
 import { postAlbumDdex } from "@/api/album/post-album-ddex";
@@ -15,6 +16,7 @@ import toast from "react-hot-toast";
 interface AlbumStore {
   newAlbum: Album | null;
   albums: Album[];
+  albumFiles: AlbumFile[];
   isLoading: boolean;
   error: string | null;
 
@@ -34,6 +36,11 @@ interface AlbumStore {
   }) => Promise<void>;
   uploadAlbumFile: (name: string, filePath: string) => Promise<void>;
   sendAlbumDdex: (albumId: string) => Promise<void>;
+  fetchAlbumFiles: (params?: {
+    __skip?: number;
+    __limit?: number;
+    __sortOption?: string;
+  }) => Promise<void>;
 
   resetNewAlbum: () => void;
 }
@@ -43,6 +50,7 @@ export const useAlbumStore = create<AlbumStore>()(
     (set) => ({
       newAlbum: null,
       albums: [],
+      albumFiles: [],
       isLoading: false,
       error: null,
 
@@ -292,6 +300,38 @@ export const useAlbumStore = create<AlbumStore>()(
             "[useAlbumStore/sendAlbumDdex] Send album DDEX failed.",
             error,
           );
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      fetchAlbumFiles: async (params?: {
+        __skip?: number;
+        __limit?: number;
+        __sortOption?: string;
+      }) => {
+        set({ isLoading: true });
+        try {
+          const response = await getAlbumFiles(params);
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set({ albumFiles: response.data.albumFileList, error: null });
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "앨범 파일 목록 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useAlbumStore/fetchAlbumFiles] Fetch album files failed.",
+            error,
+          );
+
+          set({ albumFiles: [], error: errorMessage });
         } finally {
           set({ isLoading: false });
         }

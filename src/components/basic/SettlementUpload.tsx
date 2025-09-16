@@ -51,6 +51,7 @@ interface CustomUploadProps {
   dataCollectionName: DataCollectionName;
   headerText: string;
   readOnly?: boolean;
+  onUploadComplete?: () => void;
 }
 
 const SettlementUpload = ({
@@ -59,6 +60,7 @@ const SettlementUpload = ({
   fileType,
   dataCollectionName,
   readOnly = false,
+  onUploadComplete,
 }: CustomUploadProps) => {
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -110,6 +112,10 @@ const SettlementUpload = ({
           filePath: success.filePath,
         };
         setSelectedFiles((prev) => [...prev, fileInfo]);
+
+        // 업로드 완료 콜백 호출
+        onUploadComplete?.();
+
         return true;
       }
       return false;

@@ -8,21 +8,39 @@ import { useSettlementStore } from "@/stores/use-settlement-store";
 
 const Container = styled.div``;
 
-export default function SettlementUploadButton() {
+interface SettlementUploadButtonProps {
+  onUploadComplete?: () => void;
+}
+
+export default function SettlementUploadButton({
+  onUploadComplete,
+}: SettlementUploadButtonProps) {
   const [uploadFilePath, setUploadFilePath] = useState<FileInfo[]>([]);
   const { createSettlementFiles } = useSettlementStore();
 
   useEffect(() => {
     if (uploadFilePath.length > 0) {
-      const fileInfos = uploadFilePath.map((file) => ({
-        filename: file.name,
-        filePath: file.filePath,
-      }));
-      createSettlementFiles({
-        fileInfos: fileInfos,
-      });
+      const handleCreateFiles = async () => {
+        const fileInfos = uploadFilePath.map((file) => ({
+          filename: file.name,
+          filePath: file.filePath,
+        }));
+        
+        try {
+          await createSettlementFiles({
+            fileInfos: fileInfos,
+          });
+          
+          // 파일 생성 완료 후 상태 체크 시작
+          onUploadComplete?.();
+        } catch (error) {
+          console.error("Settlement files creation failed:", error);
+        }
+      };
+      
+      handleCreateFiles();
     }
-  }, [uploadFilePath]);
+  }, [uploadFilePath, createSettlementFiles, onUploadComplete]);
   return (
     <Container>
       <SettlementUpload

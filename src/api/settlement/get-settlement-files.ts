@@ -2,7 +2,7 @@ import { FetchResponse, apiFetch } from "../fetch";
 
 import SettlementFile from "@/types/settlement-file";
 
-interface GetSettlementFilesRequest {
+export interface GetSettlementFilesRequest {
   __skip?: number;
   __limit?: number;
   __sortOption?: string;
@@ -30,7 +30,7 @@ export const getSettlementFiles = async (
     }
 
     const response = await apiFetch(
-      `/settlement-files?${queryParams.toString()}`,
+      `/settlements/files?${queryParams.toString()}`,
       {
         method: "GET",
       },

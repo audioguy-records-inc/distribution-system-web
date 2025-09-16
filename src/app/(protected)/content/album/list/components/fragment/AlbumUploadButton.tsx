@@ -12,7 +12,13 @@ import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
 
-export default function AlbumUploadButton() {
+interface AlbumUploadButtonProps {
+  onUploadComplete?: () => void;
+}
+
+export default function AlbumUploadButton({
+  onUploadComplete,
+}: AlbumUploadButtonProps) {
   const [uploadFilePath, setUploadFilePath] = useState<FileInfo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -59,6 +65,11 @@ export default function AlbumUploadButton() {
         };
         setUploadFilePath((prev) => [...prev, fileInfo]);
 
+        // 업로드 완료 콜백 호출 (약간의 지연 후)
+        setTimeout(() => {
+          onUploadComplete?.();
+        }, 500);
+
         return true;
       }
       return false;
@@ -93,9 +104,7 @@ export default function AlbumUploadButton() {
   };
 
   useEffect(() => {
-    if (uploadFilePath.length > 0) {
-      console.log("업로드된 파일:", uploadFilePath);
-    }
+    // 업로드된 파일 목록이 변경될 때 추가 처리가 필요하면 여기에 구현
   }, [uploadFilePath]);
 
   return (

@@ -7,6 +7,10 @@ import {
   getSettlementDetails,
 } from "@/api/settlement/get-settlement-details";
 import {
+  GetSettlementFilesRequest,
+  getSettlementFiles,
+} from "@/api/settlement/get-settlement-files";
+import {
   GetSettlementSummariesRequest,
   getSettlementSummaries,
 } from "@/api/settlement/get-settlement-summaries";
@@ -25,6 +29,7 @@ import {
 } from "@/types/settlement-matched-record";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import { SettlementFile } from "@/types/settlement-file";
 import { SettlementSummary } from "@/types/settlement-summary";
 import { create } from "zustand";
 import toast from "react-hot-toast";
@@ -34,6 +39,7 @@ interface SettlementStore {
   settlementTaxInvoices: SettlementTaxInvoice[];
   settlementAdminInvoices: SettlementAdminInvoice[];
   settlementSummaries: SettlementSummary[];
+  settlementFiles: SettlementFile[];
   isLoading: boolean;
   error: string | null;
 
@@ -55,6 +61,8 @@ interface SettlementStore {
 
   createSettlementFiles: (request: PostSettlementFilesRequest) => Promise<void>;
 
+  fetchSettlementFiles: (request?: GetSettlementFilesRequest) => Promise<void>;
+
   reset: () => void;
 }
 
@@ -65,6 +73,7 @@ export const useSettlementStore = create<SettlementStore>()(
       settlementTaxInvoices: [],
       settlementAdminInvoices: [],
       settlementSummaries: [],
+      settlementFiles: [],
       isLoading: false,
       error: null,
 
@@ -220,12 +229,45 @@ export const useSettlementStore = create<SettlementStore>()(
           set({ isLoading: false });
         }
       },
+
+      fetchSettlementFiles: async (request = {}) => {
+        set({ isLoading: true });
+        try {
+          const response = await getSettlementFiles(request);
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          set({
+            settlementFiles: response.data.settlementFileList,
+            error: null,
+          });
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "정산 파일 목록 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useSettlementStore/fetchSettlementFiles] error",
+            error,
+          );
+
+          set({ settlementFiles: [], error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
       reset: () => {
         set({
           settlementDetails: [],
           settlementTaxInvoices: [],
           settlementAdminInvoices: [],
           settlementSummaries: [],
+          settlementFiles: [],
         });
       },
     }),
