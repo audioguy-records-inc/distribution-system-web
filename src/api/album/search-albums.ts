@@ -14,6 +14,7 @@ interface SearchAlbumRequest {
 
 interface SearchAlbumResponse {
   albumList: Album[];
+  totalCount: number;
 }
 
 export const searchAlbums = async (
@@ -38,7 +39,7 @@ export const searchAlbums = async (
     if (request.__limit) {
       queryParams.append("__limit", request.__limit.toString());
     } else {
-      queryParams.append("__limit", "100");
+      queryParams.append("__limit", "1000");
     }
 
     if (request.__sortOption) {

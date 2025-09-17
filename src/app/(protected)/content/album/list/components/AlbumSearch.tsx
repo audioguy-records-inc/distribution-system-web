@@ -2,6 +2,7 @@ import AlbumSearchTypeDropdown, {
   AlbumSearchType,
 } from "./fragment/AlbumSearchType";
 
+import ButtonOutlinedSecondary from "@/components/basic/buttons/ButtonOutlinedSecondary";
 import CustomCalendar from "@/components/basic/CustomCalendar";
 import Gap from "@/components/basic/Gap";
 import SearchInput from "@/components/SearchInput";
@@ -39,22 +40,39 @@ export default function AlbumSearch() {
   const [selectedType, setSelectedType] = useState<AlbumSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { searchAlbums } = useAlbumStore();
+  const { searchAlbums, fetchAlbums, resetAlbums } = useAlbumStore();
 
   const handleSearch = async () => {
     setIsLoading(true);
     const __searchFields = selectedType === "all" ? "" : selectedType;
     const __searchKeyword = searchValue;
 
-    const response = await searchAlbums({
-      __searchKeyword,
-      __kstStartDate: startDate || undefined,
-      __kstEndDate: endDate || undefined,
-      __searchFields: __searchFields,
-      __limit: 20,
-    });
+    await searchAlbums(
+      {
+        __searchKeyword,
+        __kstStartDate: startDate || undefined,
+        __kstEndDate: endDate || undefined,
+        __searchFields: __searchFields,
+      },
+      1,
+      true,
+    ); // 첫 페이지, 리셋
+
     setIsLoading(false);
-    console.log(response);
+  };
+
+  const handleReset = async () => {
+    setIsLoading(true);
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedType("all");
+    setSearchValue("");
+
+    // 검색 초기화 후 일반 조회로 돌아가기
+    resetAlbums();
+    await fetchAlbums(1, true);
+
+    setIsLoading(false);
   };
 
   return (
@@ -123,6 +141,11 @@ export default function AlbumSearch() {
           onClickSearch={handleSearch}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           isLoading={isLoading}
+        />
+        <ButtonOutlinedSecondary
+          label="초기화"
+          onClick={handleReset}
+          disabled={isLoading}
         />
       </RowWrapper>
     </Container>

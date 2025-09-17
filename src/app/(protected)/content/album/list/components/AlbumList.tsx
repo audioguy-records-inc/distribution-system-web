@@ -2,13 +2,13 @@ import Album, { ArtistInfo, TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
+import { useCallback, useEffect, useRef } from "react";
 
 import { User } from "@/types/user";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTrackStore } from "@/stores/use-track-store";
 
@@ -26,10 +26,30 @@ const RenderLinkText = styled.div`
 `;
 
 export default function AlbumList() {
-  const { albums, fetchAlbums } = useAlbumStore();
+  const {
+    albums,
+    fetchAlbums,
+    searchAlbums,
+    isLoading,
+    hasMore,
+    currentPage,
+    searchParams,
+  } = useAlbumStore();
   const { resetTracks } = useTrackStore();
   const router = useRouter();
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const columns: Column<Album>[] = [
+    {
+      header: "번호",
+      accessor: "_id" as keyof Album,
+      type: "string",
+      width: 80,
+      align: "center",
+      render: (value, row, index) => {
+        return <RenderText>{(index ?? 0) + 1}</RenderText>;
+      },
+    },
     {
       header: "앨범 코드",
       accessor: "albumUniqueId",
@@ -130,9 +150,85 @@ export default function AlbumList() {
     },
   ];
 
+  // 무한 스크롤을 위한 추가 데이터 로드 함수
+  const loadMore = useCallback(async () => {
+    if (isLoading || !hasMore) {
+      return;
+    }
+
+    const nextPage = currentPage + 1;
+
+    if (searchParams) {
+      // 검색 중인 경우
+      await searchAlbums(searchParams, nextPage, false);
+    } else {
+      // 일반 조회인 경우
+      await fetchAlbums(nextPage, false);
+    }
+  }, [
+    isLoading,
+    hasMore,
+    currentPage,
+    searchParams,
+    fetchAlbums,
+    searchAlbums,
+  ]);
+
+  // Intersection Observer 설정
   useEffect(() => {
-    fetchAlbums();
-  }, []);
+    // 기존 observer 정리
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+      observerRef.current = null;
+    }
+
+    // hasMore가 false이면 observer 생성하지 않음
+    if (!hasMore) {
+      return;
+    }
+
+    // DOM 렌더링 후 observer 생성
+    const timeoutId = setTimeout(() => {
+      if (!loadMoreRef.current) {
+        return;
+      }
+
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          if (
+            entries[0].isIntersecting &&
+            hasMore &&
+            !isLoading &&
+            (searchParams ? albums.length >= 1000 : albums.length >= 100)
+          ) {
+            loadMore();
+          }
+        },
+        {
+          threshold: 0.1,
+          rootMargin: "50px",
+        },
+      );
+
+      observerRef.current.observe(loadMoreRef.current);
+    }, 0);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+    };
+  }, [hasMore, isLoading, loadMore, albums.length, searchParams]);
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    // 컴포넌트 마운트 시에만 초기 로드
+    if (albums.length === 0) {
+      fetchAlbums(1, true);
+    }
+  }, [albums.length, fetchAlbums]);
 
   const handleClickAlbumItem = (record: Album) => {
     resetTracks();
@@ -146,6 +242,31 @@ export default function AlbumList() {
         data={albums}
         onClick={handleClickAlbumItem}
       />
+
+      {/* 무한 스크롤 트리거 */}
+      {hasMore &&
+       (searchParams ? albums.length >= 1000 : albums.length >= 100) && (
+        <div ref={loadMoreRef} style={{ height: "20px", margin: "20px 0" }}>
+          {isLoading && (
+            <div style={{ textAlign: "center", padding: "20px" }}>
+              로딩 중...
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 더 이상 로드할 데이터가 없을 때 */}
+      {!hasMore && albums.length > 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            color: theme.colors.gray[500],
+          }}
+        >
+          모든 앨범을 불러왔습니다.
+        </div>
+      )}
     </Container>
   );
 }

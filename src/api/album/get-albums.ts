@@ -4,13 +4,29 @@ import Album from "@/types/album";
 
 interface GetAlbumResponse {
   albumList: Album[];
+  totalCount: number;
 }
 
-export const getAlbums = async (): Promise<FetchResponse<GetAlbumResponse>> => {
+interface GetAlbumsParams {
+  __skip?: number;
+  __limit?: number;
+  __sortOption?: string;
+}
+
+export const getAlbums = async (
+  params?: GetAlbumsParams,
+): Promise<FetchResponse<GetAlbumResponse>> => {
   try {
     const queryParams = new URLSearchParams();
-    queryParams.append("__limit", "100");
-    queryParams.append("__sortOption", "createdAtDESC");
+
+    // 기본값 설정
+    const skip = params?.__skip || 0;
+    const limit = params?.__limit || 100;
+    const sortOption = params?.__sortOption || "createdAtDESC";
+
+    queryParams.append("__skip", skip.toString());
+    queryParams.append("__limit", limit.toString());
+    queryParams.append("__sortOption", sortOption);
 
     const response = await apiFetch(`/albums?${queryParams.toString()}`);
 

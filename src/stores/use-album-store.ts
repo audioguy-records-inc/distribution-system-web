@@ -20,20 +20,36 @@ interface AlbumStore {
   isLoading: boolean;
   error: string | null;
 
-  fetchAlbum: (albumId: string) => Promise<Album | null>;
-  fetchAlbums: () => Promise<void>;
-  createAlbum: (album: Album) => Promise<void>;
-  updateAlbum: (album: Album, isNewAlbum: boolean) => Promise<void>;
-  deleteAlbum: (albumId: string) => Promise<void>;
-  searchAlbums: (params: {
+  // 페이지네이션 상태
+  currentPage: number;
+  hasMore: boolean;
+  totalCount: number;
+  searchParams: {
     __searchKeyword: string;
     __kstStartDate?: string;
     __kstEndDate?: string;
     __searchFields?: string;
     __sortOption?: string;
-    __skip?: number;
-    __limit?: number;
-  }) => Promise<void>;
+  } | null;
+
+  fetchAlbum: (albumId: string) => Promise<Album | null>;
+  fetchAlbums: (page?: number, reset?: boolean) => Promise<void>;
+  createAlbum: (album: Album) => Promise<void>;
+  updateAlbum: (album: Album, isNewAlbum: boolean) => Promise<void>;
+  deleteAlbum: (albumId: string) => Promise<void>;
+  searchAlbums: (
+    params: {
+      __searchKeyword: string;
+      __kstStartDate?: string;
+      __kstEndDate?: string;
+      __searchFields?: string;
+      __sortOption?: string;
+      __skip?: number;
+      __limit?: number;
+    },
+    page?: number,
+    reset?: boolean,
+  ) => Promise<void>;
   uploadAlbumFile: (name: string, filePath: string) => Promise<void>;
   sendAlbumDdex: (albumId: string) => Promise<void>;
   fetchAlbumFiles: (params?: {
@@ -43,6 +59,7 @@ interface AlbumStore {
   }) => Promise<void>;
 
   resetNewAlbum: () => void;
+  resetAlbums: () => void;
 }
 
 export const useAlbumStore = create<AlbumStore>()(
@@ -53,6 +70,12 @@ export const useAlbumStore = create<AlbumStore>()(
       albumFiles: [],
       isLoading: false,
       error: null,
+
+      // 페이지네이션 초기 상태
+      currentPage: 1,
+      hasMore: true,
+      totalCount: 0,
+      searchParams: null,
 
       fetchAlbum: async (albumId: string) => {
         set({ isLoading: true });
@@ -82,16 +105,56 @@ export const useAlbumStore = create<AlbumStore>()(
           set({ isLoading: false });
         }
       },
-      fetchAlbums: async () => {
+      fetchAlbums: async (page = 1, reset = false) => {
         set({ isLoading: true });
         try {
-          const response = await getAlbums();
+          const limit = 100;
+          const skip = (page - 1) * limit;
+
+          const response = await getAlbums({
+            __skip: skip,
+            __limit: limit,
+            __sortOption: "createdAtDESC", // 최신순 정렬
+          });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
-          set({ albums: response.data.albumList, error: null });
+          const newAlbums = response.data.albumList || [];
+          const totalCount = response.data.totalCount || 0;
+
+          // totalCount가 0이면 서버에서 제공하지 않는 것으로 간주하고
+          // 받은 데이터가 limit과 같은지로만 판단
+          const hasMore =
+            totalCount > 0
+              ? newAlbums.length === limit &&
+                skip + newAlbums.length < totalCount
+              : newAlbums.length === limit;
+
+          console.log("fetchAlbums debug:", {
+            page,
+            skip,
+            limit,
+            newAlbumsLength: newAlbums.length,
+            totalCount,
+            hasMore,
+            condition1: newAlbums.length === limit,
+            condition2:
+              totalCount > 0
+                ? skip + newAlbums.length < totalCount
+                : "N/A (totalCount=0)",
+            usingFallback: totalCount === 0,
+          });
+
+          set((state) => ({
+            albums: reset ? newAlbums : [...state.albums, ...newAlbums],
+            currentPage: page,
+            hasMore,
+            totalCount,
+            searchParams: null, // 일반 조회이므로 검색 파라미터 초기화
+            error: null,
+          }));
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -214,27 +277,62 @@ export const useAlbumStore = create<AlbumStore>()(
           set({ isLoading: false });
         }
       },
-      searchAlbums: async (params: {
-        __searchKeyword: string;
-        __kstStartDate?: string;
-        __kstEndDate?: string;
-        __searchFields?: string;
-        __sortOption?: string;
-        __skip?: number;
-        __limit?: number;
-      }) => {
+      searchAlbums: async (
+        params: {
+          __searchKeyword: string;
+          __kstStartDate?: string;
+          __kstEndDate?: string;
+          __searchFields?: string;
+          __sortOption?: string;
+          __skip?: number;
+          __limit?: number;
+        },
+        page = 1,
+        reset = false,
+      ) => {
         set({ isLoading: true });
         try {
-          const response = await searchAlbums(params);
+          const limit = 1000;
+          const skip = (page - 1) * limit;
+
+          const searchParams = {
+            ...params,
+            __skip: skip,
+            __limit: limit,
+            __sortOption: params.__sortOption || "createdAtDESC", // 기본값: 최신순 정렬
+          };
+
+          const response = await searchAlbums(searchParams);
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
           }
 
-          set({
-            albums: response.data!.albumList,
+          const newAlbums = response.data.albumList || [];
+          const totalCount = response.data.totalCount || 0;
+
+          // totalCount가 0이면 서버에서 제공하지 않는 것으로 간주하고
+          // 받은 데이터가 limit과 같은지로만 판단
+          const hasMore =
+            totalCount > 0
+              ? newAlbums.length === limit &&
+                skip + newAlbums.length < totalCount
+              : newAlbums.length === limit;
+
+          set((state) => ({
+            albums: reset ? newAlbums : [...state.albums, ...newAlbums],
+            currentPage: page,
+            hasMore,
+            totalCount,
+            searchParams: {
+              __searchKeyword: params.__searchKeyword,
+              __kstStartDate: params.__kstStartDate,
+              __kstEndDate: params.__kstEndDate,
+              __searchFields: params.__searchFields,
+              __sortOption: params.__sortOption,
+            },
             error: null,
-          });
+          }));
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -338,6 +436,15 @@ export const useAlbumStore = create<AlbumStore>()(
       },
       resetNewAlbum: () => {
         set({ newAlbum: null });
+      },
+      resetAlbums: () => {
+        set({
+          albums: [],
+          currentPage: 1,
+          hasMore: true,
+          totalCount: 0,
+          searchParams: null,
+        });
       },
     }),
     {
