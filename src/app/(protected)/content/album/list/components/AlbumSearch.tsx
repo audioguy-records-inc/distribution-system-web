@@ -44,7 +44,19 @@ export default function AlbumSearch() {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    const __searchFields = selectedType === "all" ? "" : selectedType;
+
+    // 전체검색 시 특정 필드들로 한정
+    const getAllSearchFields = () => {
+      return [
+        "albumUniqueId", // 앨범코드
+        "releaseArtistList.name", // 아티스트명
+        "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant", // 앨범명
+        "trackList.title", // 트랙명
+        "agencyCompanyName" // 기획사명
+      ].join(",");
+    };
+
+    const __searchFields = selectedType === "all" ? getAllSearchFields() : selectedType;
     const __searchKeyword = searchValue;
 
     await searchAlbums(

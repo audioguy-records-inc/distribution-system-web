@@ -5,7 +5,7 @@ const Container = styled.div``;
 
 export type AlbumSearchType =
   | "releaseArtistList.name"
-  | "titleList"
+  | "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant"
   | "trackList.title"
   | "all";
 
