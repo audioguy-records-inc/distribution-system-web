@@ -286,7 +286,6 @@ export default function AlbumSection({
         <Controller
           name="coverImageList"
           control={control}
-          rules={{ required: true }}
           render={({ field }) => (
             <ImageUpload
               headerText="앨범 커버"
@@ -295,7 +294,6 @@ export default function AlbumSection({
               fileType={FileType.IMAGES}
               dataCollectionName={DataCollectionName.ALBUMS}
               width="320px"
-              required
             />
           )}
         />

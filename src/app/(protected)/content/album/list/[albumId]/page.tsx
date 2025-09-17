@@ -145,8 +145,6 @@ const AlbumDetailPage = () => {
       album.releaseCountryCode &&
       album.utcReleasedAt &&
       album.isAdultOnly !== undefined &&
-      album.coverImageList &&
-      album.coverImageList.length > 0 &&
       album.userId &&
       album.userContractId
     );
