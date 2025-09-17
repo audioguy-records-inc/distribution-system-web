@@ -31,7 +31,7 @@ const MenuLabel = styled.div`
   align-self: stretch;
 `;
 
-const MenuItem = styled.div`
+const MenuItem = styled.div<{ $isActive?: boolean }>`
   display: flex;
   height: 52px;
   padding: 11px 12px 11px 32px;
@@ -43,12 +43,19 @@ const MenuItem = styled.div`
   border-radius: 8px;
   text-align: left;
 
+  background-color: ${({ $isActive }) =>
+    $isActive ? theme.colors.blue[50] : "transparent"};
+
+  color: ${({ $isActive }) =>
+    $isActive ? theme.colors.blue[600] : theme.colors.gray[800]};
+
   &:hover {
-    background-color: ${theme.colors.gray[50]};
+    background-color: ${({ $isActive }) =>
+      $isActive ? theme.colors.blue[50] : theme.colors.gray[50]};
   }
 
   ${theme.fonts.body1.medium};
-  color: ${theme.colors.gray[800]};
+  font-weight: ${({ $isActive }) => ($isActive ? "600" : "500")};
 `;
 
 const MenuItemLink = styled(Link)``;

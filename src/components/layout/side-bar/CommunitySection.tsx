@@ -11,12 +11,14 @@ import Gap from "@/components/basic/Gap";
 import Link from "next/link";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const Container = styled.div``;
 
 const CommunitySection = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
@@ -26,7 +28,14 @@ const CommunitySection = () => {
       <Gap height={12} />
       <MenuGroup $isOpen={isOpen}>
         <MenuItemLink href="/community/announcement">
-          <MenuItem>공지사항</MenuItem>
+          <MenuItem
+            $isActive={
+              pathname === "/community/announcement" ||
+              pathname.startsWith("/community/announcement/")
+            }
+          >
+            공지사항
+          </MenuItem>
         </MenuItemLink>
       </MenuGroup>
     </Container>

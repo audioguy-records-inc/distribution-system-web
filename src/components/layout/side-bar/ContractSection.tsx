@@ -10,12 +10,14 @@ import ArrowDownIcon from "@/components/icons/ArrowDownIcon";
 import ArrowUpIcon from "@/components/icons/ArrowUpIcon";
 import Gap from "@/components/basic/Gap";
 import styled from "styled-components";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const Container = styled.div``;
 
 const ContractSection = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
@@ -29,7 +31,14 @@ const ContractSection = () => {
         <Gap height={16} />
 
         <MenuItemLink href="/contract/dsp/list">
-          <MenuItem>리스트 조회/등록</MenuItem>
+          <MenuItem
+            $isActive={
+              pathname === "/contract/dsp/list" ||
+              pathname.startsWith("/contract/dsp/list/")
+            }
+          >
+            리스트 조회/등록
+          </MenuItem>
         </MenuItemLink>
 
         <Gap height={20} />
@@ -37,13 +46,27 @@ const ContractSection = () => {
         <Gap height={16} />
 
         <MenuItemLink href="/contract/licensor/list">
-          <MenuItem>리스트 조회/등록</MenuItem>
+          <MenuItem
+            $isActive={
+              pathname === "/contract/licensor/list" ||
+              pathname.startsWith("/contract/licensor/list/")
+            }
+          >
+            리스트 조회/등록
+          </MenuItem>
         </MenuItemLink>
 
         <Gap height={12} />
 
         <MenuItemLink href="/contract/licensor/contract-info">
-          <MenuItem>계약 정보 조회/등록</MenuItem>
+          <MenuItem
+            $isActive={
+              pathname === "/contract/licensor/contract-info" ||
+              pathname.startsWith("/contract/licensor/contract-info/")
+            }
+          >
+            계약 정보 조회/등록
+          </MenuItem>
         </MenuItemLink>
       </MenuGroup>
     </Container>
