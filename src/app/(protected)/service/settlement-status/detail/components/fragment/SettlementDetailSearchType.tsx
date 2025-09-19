@@ -7,6 +7,9 @@ export type SettlementDetailSearchType =
   | "artistList.name"
   | "albumTitle"
   | "trackTitle"
+  | "serviceName"
+  | "agencyCompanyName"
+  | "userInfo.displayName"
   | "all";
 
 export default function SettlementDetailSearchTypeDropdown({
