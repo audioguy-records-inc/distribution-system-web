@@ -29,50 +29,58 @@ export default function AlbumDownloadButton() {
 
   // 앨범 데이터를 다운로드 가능한 형식으로 변환
   const prepareDataForExport = async (albums: Album[]) => {
-    return albums.map((album) => ({
-      UCI: album.UCI,
-      UPC: album.UPC,
-      앨범코드: album.albumUniqueId,
-      아티스트이미지: album.artistImageList
-        ?.map((artist) => artist.imageOriginalPath)
-        .join(","),
-      앨범명: JSON.stringify(album.titleList),
-      아티스트: album.releaseArtistList?.map((artist) => artist.name).join(","),
-      참여아티스트: album.participateArtistList
-        ?.map((artist) => artist.name)
-        .join(","),
-      앨범타이틀: JSON.stringify(album.titleList),
-      앨범유형: album.albumType || "",
-      메인장르: album.mainGenre || "",
-      서브장르: album.subGenre || "",
-      발매국가: album.releaseCountryCode || "",
-      디스크수: album.numberOfDiscs || "",
-      CD별수록곡: album.numberOfTracksPerDisc || "",
-      유통사: album.distributionCompanyName || "",
-      기획사: album.agencyCompanyName || "",
-      권리자: album.userInfo?.displayName || "",
-      발매일: album.utcReleasedAt
-        ? new Date(album.utcReleasedAt).toLocaleDateString()
-        : "",
-      서비스시간: album.utcServiceStartedAt
-        ? new Date(album.utcServiceStartedAt).toLocaleDateString()
-        : "",
-      노출: album.isExposed ? "노출" : "미노출",
-      성인: album.isAdultOnly ? "성인" : "일반",
-      공간음향서비스: album.isSupportedSpatialAudio ? "지원" : "미지원",
-      소개: album.albumIntroduction || "",
-      요청사항: album.requestDetails || "",
-      커버이미지: album.coverImageList
-        ?.map((image) => getFullUrl(image.imageOriginalPath))
-        .join(","),
-      부클릿이미지: album.bookletImageList
-        ?.map((image) => getFullUrl(image.imageOriginalPath))
-        .join(","),
-      기타파일: album.etcFileList
-        ?.map((file) => getFullUrl(file.filePath))
-        .join(","),
-      트랙정보: album.trackList?.map((track) => track.title).join(","),
-    }));
+    return albums.map((album) => {
+      // titleList에서 국문과 영문 제목 추출
+      const koreanTitle = album.titleList?.find((title) => title.ko)?.ko || "";
+      const englishTitle = album.titleList?.find((title) => title.en)?.en || "";
+
+      return {
+        UCI: album.UCI,
+        UPC: album.UPC,
+        앨범코드: album.albumUniqueId,
+        아티스트이미지: album.artistImageList
+          ?.map((artist) => artist.imageOriginalPath)
+          .join(","),
+        "앨범명(국문)": koreanTitle,
+        "앨범명(영문)": englishTitle,
+        아티스트: album.releaseArtistList
+          ?.map((artist) => artist.name)
+          .join(","),
+        참여아티스트: album.participateArtistList
+          ?.map((artist) => artist.name)
+          .join(","),
+        앨범유형: album.albumType || "",
+        메인장르: album.mainGenre || "",
+        서브장르: album.subGenre || "",
+        발매국가: album.releaseCountryCode || "",
+        디스크수: album.numberOfDiscs || "",
+        CD별수록곡: album.numberOfTracksPerDisc || "",
+        유통사: album.distributionCompanyName || "",
+        기획사: album.agencyCompanyName || "",
+        권리자: album.userInfo?.displayName || "",
+        발매일: album.utcReleasedAt
+          ? new Date(album.utcReleasedAt).toLocaleDateString()
+          : "",
+        서비스시간: album.utcServiceStartedAt
+          ? new Date(album.utcServiceStartedAt).toLocaleDateString()
+          : "",
+        노출: album.isExposed ? "노출" : "미노출",
+        성인: album.isAdultOnly ? "성인" : "일반",
+        공간음향서비스: album.isSupportedSpatialAudio ? "지원" : "미지원",
+        소개: album.albumIntroduction || "",
+        요청사항: album.requestDetails || "",
+        커버이미지: album.coverImageList
+          ?.map((image) => getFullUrl(image.imageOriginalPath))
+          .join(","),
+        부클릿이미지: album.bookletImageList
+          ?.map((image) => getFullUrl(image.imageOriginalPath))
+          .join(","),
+        기타파일: album.etcFileList
+          ?.map((file) => getFullUrl(file.filePath))
+          .join(","),
+        트랙정보: album.trackList?.map((track) => track.title).join(","),
+      };
+    });
   };
 
   const handleExcelDownload = async () => {
