@@ -299,12 +299,12 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
 
   useEffect(() => {
     const _fetchTracks = async () => {
-      if (albumData?._id && albumData?.userId) {
+      if (albumData?._id) {
         await fetchTracks(albumData?._id);
       }
     };
     _fetchTracks();
-  }, [albumData._id, albumData.userId]);
+  }, [albumData._id]);
 
   useEffect(() => {
     // 모든 트랙의 isSelected를 true로 설정
