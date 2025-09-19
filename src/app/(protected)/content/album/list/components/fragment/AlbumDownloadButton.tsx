@@ -1,6 +1,7 @@
 import * as XLSX from "xlsx";
 
-import Album from "@/types/album";
+import Album, { TitleLanguage } from "@/types/album";
+
 import { Artist } from "@/types/artist";
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import DownloadIcon from "@/components/icons/DownloadIcon";
@@ -29,6 +30,7 @@ export default function AlbumDownloadButton() {
 
   // 앨범 데이터를 다운로드 가능한 형식으로 변환
   const prepareDataForExport = async (albums: Album[]) => {
+    console.log(albums);
     return albums.map((album) => {
       // titleList에서 국문과 영문 제목 추출
       const koreanTitle = album.titleList?.find((title) => title.ko)?.ko || "";
@@ -78,7 +80,19 @@ export default function AlbumDownloadButton() {
         기타파일: album.etcFileList
           ?.map((file) => getFullUrl(file.filePath))
           .join(","),
-        트랙정보: album.trackList?.map((track) => track.title).join(","),
+        트랙정보: album.trackList
+          ?.map((track) => {
+            // track이 titleList를 가지고 있는 경우 (실제 Track 타입)
+            if ("titleList" in track && track.titleList) {
+              const koreanTitle =
+                (track.titleList as TitleLanguage[]).find((title) => title.ko)
+                  ?.ko || "";
+              return koreanTitle;
+            }
+            // track이 title을 가지고 있는 경우 (Album의 Track 타입)
+            return track.title || "";
+          })
+          .join(","),
       };
     });
   };
