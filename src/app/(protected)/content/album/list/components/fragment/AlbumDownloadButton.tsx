@@ -14,11 +14,15 @@ import { useArtistStore } from "@/stores/use-artist-store";
 import { useState } from "react";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  gap: 8px;
+`;
 
 export default function AlbumDownloadButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { albums } = useAlbumStore();
+  const [isFullDownloadModalOpen, setIsFullDownloadModalOpen] = useState(false);
+  const { albums, fetchAllAlbums } = useAlbumStore();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -26,6 +30,14 @@ export default function AlbumDownloadButton() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleOpenFullDownloadModal = () => {
+    setIsFullDownloadModalOpen(true);
+  };
+
+  const handleCloseFullDownloadModal = () => {
+    setIsFullDownloadModalOpen(false);
   };
 
   // 앨범 데이터를 다운로드 가능한 형식으로 변환
@@ -131,6 +143,53 @@ export default function AlbumDownloadButton() {
     setIsModalOpen(false);
   };
 
+  const handleFullExcelDownload = async () => {
+    try {
+      const allAlbums = await fetchAllAlbums();
+      const data = await prepareDataForExport(allAlbums);
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "전체앨범");
+
+      // 엑셀 파일 생성 및 다운로드
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const blob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      await saveAs(
+        blob,
+        `전체_앨범_목록_${new Date().toISOString().split("T")[0]}.xlsx`,
+      );
+
+      setIsFullDownloadModalOpen(false);
+    } catch (error) {
+      console.error("전체 앨범 다운로드 실패:", error);
+    }
+  };
+
+  const handleFullCsvDownload = async () => {
+    try {
+      const allAlbums = await fetchAllAlbums();
+      const data = await prepareDataForExport(allAlbums);
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const csvOutput = XLSX.utils.sheet_to_csv(worksheet);
+
+      // CSV 파일 생성 및 다운로드
+      const blob = new Blob([csvOutput], { type: "text/csv;charset=utf-8;" });
+      saveAs(
+        blob,
+        `전체_앨범_목록_${new Date().toISOString().split("T")[0]}.csv`,
+      );
+
+      setIsFullDownloadModalOpen(false);
+    } catch (error) {
+      console.error("전체 앨범 다운로드 실패:", error);
+    }
+  };
+
   return (
     <Container>
       <ButtonOutlinedPrimary
@@ -139,11 +198,23 @@ export default function AlbumDownloadButton() {
         onClick={handleOpenModal}
         size="medium"
       />
+      <ButtonOutlinedPrimary
+        label="전체 앨범 다운로드"
+        leftIcon={<DownloadIcon />}
+        onClick={handleOpenFullDownloadModal}
+        size="medium"
+      />
       <DownloadModal
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         onClickExcel={handleExcelDownload}
         onClickCsv={handleCsvDownload}
+      />
+      <DownloadModal
+        isOpen={isFullDownloadModalOpen}
+        onRequestClose={handleCloseFullDownloadModal}
+        onClickExcel={handleFullExcelDownload}
+        onClickCsv={handleFullCsvDownload}
       />
     </Container>
   );

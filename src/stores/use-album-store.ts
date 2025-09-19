@@ -34,6 +34,7 @@ interface AlbumStore {
 
   fetchAlbum: (albumId: string) => Promise<Album | null>;
   fetchAlbums: (page?: number, reset?: boolean) => Promise<void>;
+  fetchAllAlbums: () => Promise<Album[]>;
   createAlbum: (album: Album) => Promise<void>;
   updateAlbum: (album: Album, isNewAlbum: boolean) => Promise<void>;
   deleteAlbum: (albumId: string) => Promise<void>;
@@ -169,6 +170,61 @@ export const useAlbumStore = create<AlbumStore>()(
           );
 
           set({ albums: [], error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+      fetchAllAlbums: async () => {
+        set({ isLoading: true });
+        try {
+          const allAlbums: Album[] = [];
+          let page = 1;
+          let hasMore = true;
+          const limit = 100;
+
+          while (hasMore) {
+            const skip = (page - 1) * limit;
+
+            const response = await getAlbums({
+              __skip: skip,
+              __limit: limit,
+              __sortOption: "createdAtDESC",
+            });
+
+            if (!response || response.error || !response.data) {
+              throw new Error(response.message);
+            }
+
+            const newAlbums = response.data.albumList || [];
+            const totalCount = response.data.totalCount || 0;
+
+            allAlbums.push(...newAlbums);
+
+            // 더 이상 가져올 데이터가 없으면 종료
+            hasMore =
+              totalCount > 0
+                ? newAlbums.length === limit &&
+                  skip + newAlbums.length < totalCount
+                : newAlbums.length === limit;
+
+            page++;
+          }
+
+          return allAlbums;
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "전체 앨범 조회 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useAlbumStore/fetchAllAlbums] Fetch all albums failed.",
+            error,
+          );
+
+          throw error;
         } finally {
           set({ isLoading: false });
         }
