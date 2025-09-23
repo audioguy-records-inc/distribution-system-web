@@ -1,6 +1,7 @@
 import SettlementDetailSearchTypeDropdown, {
   SettlementDetailSearchType,
 } from "./fragment/SettlementDetailSearchType";
+import { useEffect, useState } from "react";
 
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import CustomMonthCalendar from "@/components/basic/CustomMonthCalendar";
@@ -12,7 +13,6 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useSettlementStore } from "@/stores/use-settlement-store";
-import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -46,7 +46,17 @@ export default function SettlementDetailSearch() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { fetchSettlementDetails } = useSettlementStore();
+  const { fetchSettlementDetails, reset } = useSettlementStore();
+
+  // 컴포넌트 마운트 시 검색 폼 초기화
+  useEffect(() => {
+    setDateType("settlement");
+    setStartDate(null);
+    setEndDate(null);
+    setSelectedType("all");
+    setSearchValue("");
+    reset(); // store 데이터도 초기화
+  }, [reset]);
 
   const handleSearch = async () => {
     setIsLoading(true);
