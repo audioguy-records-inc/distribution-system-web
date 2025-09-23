@@ -2,7 +2,7 @@ import Album, { ArtistInfo, TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { User } from "@/types/user";
 import moment from "moment";
@@ -39,6 +39,7 @@ export default function AlbumList() {
   const router = useRouter();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [hasInitialLoad, setHasInitialLoad] = useState(false);
   const columns: Column<Album>[] = [
     {
       header: "번호",
@@ -225,10 +226,11 @@ export default function AlbumList() {
   // 초기 데이터 로드
   useEffect(() => {
     // 컴포넌트 마운트 시에만 초기 로드
-    if (albums.length === 0) {
+    if (!hasInitialLoad && !searchParams) {
+      setHasInitialLoad(true);
       fetchAlbums(1, true);
     }
-  }, [albums.length, fetchAlbums]);
+  }, [hasInitialLoad, searchParams, fetchAlbums]);
 
   const handleClickAlbumItem = (record: Album) => {
     resetTracks();
@@ -237,35 +239,71 @@ export default function AlbumList() {
 
   return (
     <Container>
-      <CustomTable
-        columns={columns}
-        data={albums}
-        onClick={handleClickAlbumItem}
-      />
-
-      {/* 무한 스크롤 트리거 */}
-      {hasMore &&
-       (searchParams ? albums.length >= 1000 : albums.length >= 100) && (
-        <div ref={loadMoreRef} style={{ height: "20px", margin: "20px 0" }}>
-          {isLoading && (
-            <div style={{ textAlign: "center", padding: "20px" }}>
-              로딩 중...
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* 더 이상 로드할 데이터가 없을 때 */}
-      {!hasMore && albums.length > 0 && (
+      {/* 검색 결과가 없을 때 */}
+      {searchParams && !isLoading && albums.length === 0 && (
         <div
           style={{
             textAlign: "center",
-            padding: "20px",
+            padding: "60px 20px",
             color: theme.colors.gray[500],
+            fontSize: "16px",
           }}
         >
-          모든 앨범을 불러왔습니다.
+          검색 결과가 없습니다.
         </div>
+      )}
+
+      {/* 일반 조회 결과가 없을 때 (초기 로드 후에만 표시) */}
+      {!searchParams && hasInitialLoad && !isLoading && albums.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "60px 20px",
+            color: theme.colors.gray[500],
+            fontSize: "16px",
+          }}
+        >
+          등록된 앨범이 없습니다.
+        </div>
+      )}
+
+      {/* 데이터가 있을 때만 테이블 표시 */}
+      {albums.length > 0 && (
+        <>
+          <CustomTable
+            columns={columns}
+            data={albums}
+            onClick={handleClickAlbumItem}
+          />
+
+          {/* 무한 스크롤 트리거 */}
+          {hasMore &&
+            (searchParams ? albums.length >= 1000 : albums.length >= 100) && (
+              <div
+                ref={loadMoreRef}
+                style={{ height: "20px", margin: "20px 0" }}
+              >
+                {isLoading && (
+                  <div style={{ textAlign: "center", padding: "20px" }}>
+                    로딩 중...
+                  </div>
+                )}
+              </div>
+            )}
+
+          {/* 더 이상 로드할 데이터가 없을 때 */}
+          {!hasMore && albums.length > 0 && (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "20px",
+                color: theme.colors.gray[500],
+              }}
+            >
+              모든 앨범을 불러왔습니다.
+            </div>
+          )}
+        </>
       )}
     </Container>
   );
