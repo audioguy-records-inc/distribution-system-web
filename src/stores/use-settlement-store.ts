@@ -1,4 +1,8 @@
 import {
+  DeleteSettlementFileRequest,
+  deleteSettlementFile,
+} from "@/api/settlement/delete-settlement-file";
+import {
   GetSettlementAdminInvoicesRequest,
   getSettlementAdminInvoices,
 } from "@/api/settlement/get-settlement-admin-invoices";
@@ -62,6 +66,8 @@ interface SettlementStore {
   createSettlementFiles: (request: PostSettlementFilesRequest) => Promise<void>;
 
   fetchSettlementFiles: (request?: GetSettlementFilesRequest) => Promise<void>;
+
+  deleteSettlementFile: (request: DeleteSettlementFileRequest) => Promise<void>;
 
   reset: () => void;
 }
@@ -257,6 +263,43 @@ export const useSettlementStore = create<SettlementStore>()(
           );
 
           set({ settlementFiles: [], error: errorMessage });
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      deleteSettlementFile: async (request) => {
+        set({ isLoading: true });
+        try {
+          const response = await deleteSettlementFile(request);
+
+          if (!response || response.error || !response.data) {
+            throw new Error(response.message);
+          }
+
+          // 삭제된 파일을 리스트에서 제거
+          set((state) => ({
+            settlementFiles: state.settlementFiles.filter(
+              (file) => file._id !== request.settlementFileId,
+            ),
+            error: null,
+          }));
+
+          toast.success("정산 파일이 삭제되었습니다.");
+        } catch (error) {
+          const errorMessage =
+            error instanceof Error
+              ? error.message
+              : "정산 파일 삭제 중 알 수 없는 오류가 발생했습니다.";
+
+          toast.error(errorMessage);
+
+          console.error(
+            "[useSettlementStore/deleteSettlementFile] error",
+            error,
+          );
+
+          set({ error: errorMessage });
         } finally {
           set({ isLoading: false });
         }
