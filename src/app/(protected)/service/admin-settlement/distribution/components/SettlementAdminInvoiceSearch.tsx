@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import CustomMonthCalendar from "@/components/basic/CustomMonthCalendar";
 import Gap from "@/components/basic/Gap";
@@ -5,7 +7,6 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useSettlementStore } from "@/stores/use-settlement-store";
-import { useState } from "react";
 
 const Container = styled.div``;
 
@@ -32,8 +33,15 @@ export default function SettlementAdminInvoiceSearch() {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { settlementAdminInvoices, fetchSettlementAdminInvoices } =
+  const { settlementAdminInvoices, fetchSettlementAdminInvoices, reset } =
     useSettlementStore();
+
+  // 컴포넌트 마운트 시 검색 폼 초기화
+  useEffect(() => {
+    setStartDate(null);
+    setEndDate(null);
+    reset(); // store 데이터도 초기화
+  }, [reset]);
 
   const handleSearch = async () => {
     setIsLoading(true);
