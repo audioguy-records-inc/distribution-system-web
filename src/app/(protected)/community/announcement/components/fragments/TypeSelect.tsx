@@ -35,10 +35,12 @@ const TypeSelect = ({
   watch,
   setValue,
   disabled = false,
+  announcement,
 }: {
   watch: UseFormWatch<Announcement>;
   setValue: UseFormSetValue<Announcement>;
   disabled?: boolean;
+  announcement?: Announcement;
 }) => {
   const { user } = useAuthStore();
 
@@ -77,11 +79,14 @@ const TypeSelect = ({
   ];
 
   if (disabled) {
+    const displayName =
+      announcement?.userInfo?.displayName || user?.displayName;
+
     return (
       <DisabledTypeContainer>
         <Label>작성자</Label>
         <RowGap width={12} />
-        <Value>{user?.displayName}</Value>
+        <Value>{displayName}</Value>
         <RowGap width={32} />
         <Label>구분</Label>
         <RowGap width={12} />

@@ -124,7 +124,12 @@ const AnnouncementDetailPage = () => {
         onChange={(e) => setValue("title", e.target.value)}
         disabled={!isEdit}
       />
-      <TypeSelect watch={watch} setValue={setValue} disabled={!isEdit} />
+      <TypeSelect
+        watch={watch}
+        setValue={setValue}
+        disabled={!isEdit}
+        announcement={announcement}
+      />
       <Editor
         value={watch("text") || ""}
         onChange={(value) => setValue("text", value)}
