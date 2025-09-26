@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
 import {
   SETTLEMENT_FILE_STATE,
   SettlementFileState,
 } from "@/constants/settlement-file-state";
+
+import { AuthLevel } from "@/types/user";
+import React from "react";
 import { STATUS_COLORS } from "@/constants/status-colors";
 import StatusDisplay from "@/components/common/StatusDisplay";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useFileStatusChecker } from "@/hooks/useFileStatusChecker";
 import { useSettlementStore } from "@/stores/use-settlement-store";
 
@@ -62,14 +65,23 @@ const isProgressState = (status: string): boolean => {
 };
 
 function SettlementFileStatusChecker() {
+  const user = useAuthStore((state) => state.user);
   const { settlementFiles, fetchSettlementFiles, isLoading } =
     useSettlementStore();
 
   const currentStatus = useFileStatusChecker({
-    files: settlementFiles,
-    fetchFiles: fetchSettlementFiles,
+    files: user?.authLevel === AuthLevel.ADMIN ? settlementFiles : [],
+    fetchFiles:
+      user?.authLevel === AuthLevel.ADMIN
+        ? fetchSettlementFiles
+        : async () => {},
     isProgressState,
   });
+
+  // 관리자가 아닌 경우 컴포넌트 렌더링하지 않음
+  if (user?.authLevel !== AuthLevel.ADMIN) {
+    return null;
+  }
 
   // 상태가 없으면 표시하지 않음
   if (!currentStatus) {
@@ -77,7 +89,7 @@ function SettlementFileStatusChecker() {
   }
 
   const status = currentStatus as SettlementFileState;
-  
+
   return (
     <StatusDisplay
       status={status}

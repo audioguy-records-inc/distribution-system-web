@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { AuthLevel } from "@/types/user";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SettlementDownloadButton from "./components/fragment/SettlementDownloadButton";
@@ -12,6 +13,7 @@ import SettlementList from "./components/SettlementList";
 import SettlementSearch from "./components/SettlementSearch";
 import SettlementUploadButton from "./components/fragment/SettlementUploadButton";
 import styled from "styled-components";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useSettlementStore } from "@/stores/use-settlement-store";
 
 const Container = styled.div`
@@ -29,6 +31,7 @@ const ButtonRow = styled.div`
 export default function AdminSettlementListPage() {
   const [statusCheckerKey, setStatusCheckerKey] = useState(0);
   const [isFileListModalOpen, setIsFileListModalOpen] = useState(false);
+  const user = useAuthStore((state) => state.user);
 
   const handleUploadComplete = useCallback(() => {
     // 컴포넌트를 새로 마운트하기 위해 key 변경
@@ -43,24 +46,35 @@ export default function AdminSettlementListPage() {
     setIsFileListModalOpen(false);
   }, []);
 
+  // 관리자(ADMIN)가 아닌 경우 업로드 관련 버튼들을 숨김
+  const isAdmin = user?.authLevel === AuthLevel.ADMIN;
+
   return (
     <Container>
       <PageHeader title="정산금 조회" />
       <SettlementSearch />
       <ButtonRow>
-        <SettlementFileStatusChecker
-          key={`settlement-status-checker-${statusCheckerKey}`}
-        />
-        <SettlementUploadButton onUploadComplete={handleUploadComplete} />
-        <SettlementFileListButton onClick={handleFileListButtonClick} />
+        {isAdmin && (
+          <SettlementFileStatusChecker
+            key={`settlement-status-checker-${statusCheckerKey}`}
+          />
+        )}
+        {isAdmin && (
+          <>
+            <SettlementUploadButton onUploadComplete={handleUploadComplete} />
+            <SettlementFileListButton onClick={handleFileListButtonClick} />
+          </>
+        )}
         <SettlementDownloadButton />
       </ButtonRow>
       <Gap height={32} />
       <SettlementList />
-      <SettlementFileListModal
-        isOpen={isFileListModalOpen}
-        onClose={handleFileListModalClose}
-      />
+      {isAdmin && (
+        <SettlementFileListModal
+          isOpen={isFileListModalOpen}
+          onClose={handleFileListModalClose}
+        />
+      )}
     </Container>
   );
 }

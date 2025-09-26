@@ -4,10 +4,12 @@ import CustomTable, {
 
 import ArrowDownIcon from "@/components/icons/ArrowDownIcon";
 import ArrowUpIcon from "@/components/icons/ArrowUpIcon";
+import { AuthLevel } from "@/types/user";
 import { SettlementSummary } from "@/types/settlement-summary";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useAuthStore } from "@/stores/use-auth-store";
 import { useSettlementStore } from "@/stores/use-settlement-store";
 import { useState } from "react";
 
@@ -108,6 +110,7 @@ const ExpandedRow = styled.div`
 
 export default function SettlementList() {
   const { settlementSummaries } = useSettlementStore();
+  const user = useAuthStore((state) => state.user);
 
   const columns: Column<SettlementSummary>[] = [
     {
@@ -158,6 +161,8 @@ export default function SettlementList() {
   ];
 
   const renderExpandedContent = (summary: SettlementSummary) => {
+    const isAdmin = user?.authLevel === AuthLevel.ADMIN;
+
     return (
       <ExpandedContent>
         <ExpandedTitle>플랫폼별 상세 내역</ExpandedTitle>
@@ -172,12 +177,14 @@ export default function SettlementList() {
                     {service.settlementFee.toLocaleString()}
                   </AmountValue>
                 </AmountItem>
-                <AmountItem>
-                  <AmountLabel>유통수수료:</AmountLabel>
-                  <AmountValue>
-                    {service.distributionFee.toLocaleString()}
-                  </AmountValue>
-                </AmountItem>
+                {isAdmin && (
+                  <AmountItem>
+                    <AmountLabel>유통수수료:</AmountLabel>
+                    <AmountValue>
+                      {service.distributionFee.toLocaleString()}
+                    </AmountValue>
+                  </AmountItem>
+                )}
                 <AmountItem>
                   <AmountLabel>정산금:</AmountLabel>
                   <AmountValue>
