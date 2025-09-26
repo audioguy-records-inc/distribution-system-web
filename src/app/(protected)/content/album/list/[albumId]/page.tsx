@@ -63,8 +63,13 @@ const AlbumDetailPage = () => {
       setIsLoading(true);
       const _album = await fetchAlbum(albumId as string);
       if (_album) {
-        setAlbum(_album);
-        reset(_album);
+        // 발매국가가 없는 경우 기본값으로 대한민국 설정
+        const albumWithDefaultCountry = {
+          ..._album,
+          releaseCountryCode: _album.releaseCountryCode || "KR",
+        };
+        setAlbum(albumWithDefaultCountry);
+        reset(albumWithDefaultCountry);
       }
       setIsLoading(false);
     };

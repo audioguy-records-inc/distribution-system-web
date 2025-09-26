@@ -50,6 +50,7 @@ export default function AlbumNewPage() {
     ],
     supplyRegion: "Worldwide",
     isExposed: true,
+    releaseCountryCode: "KR",
   };
   const {
     register,
