@@ -70,7 +70,7 @@ export default function SettlementDetailList() {
       },
     },
     {
-      header: "기획사",
+      header: "레이블(기획사)",
       accessor: "agencyCompanyName",
       type: "string",
       align: "center",
