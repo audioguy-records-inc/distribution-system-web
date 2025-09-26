@@ -103,8 +103,8 @@ export default function AlbumSection({
           {...register("distributionCompanyName", {})}
         />
         <CustomInput
-          label="기획사(레이블)"
-          placeholder="기획사명 입력"
+          label="레이블(기획사)"
+          placeholder="레이블명 입력"
           size="small"
           required
           {...register("agencyCompanyName", { required: true })}
