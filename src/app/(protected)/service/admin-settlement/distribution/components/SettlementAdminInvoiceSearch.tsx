@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ButtonFilledPrimary from "@/components/basic/buttons/ButtonFilledPrimary";
 import CustomMonthCalendar from "@/components/basic/CustomMonthCalendar";
 import Gap from "@/components/basic/Gap";
+import { GetSettlementAdminInvoicesRequest } from "@/api/settlement/get-settlement-admin-invoices";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
@@ -46,18 +47,18 @@ export default function SettlementAdminInvoiceSearch() {
   const handleSearch = async () => {
     setIsLoading(true);
 
-    if (!startDate || !endDate) {
-      toast.error("기간을 선택해주세요.");
-      setIsLoading(false);
-      return;
+    const params: GetSettlementAdminInvoicesRequest = {
+      __limit: 10000,
+      // __sortOption: "createdAtDESC",
+    };
+
+    // 기간이 입력되었을 때만 기간 파라미터 추가
+    if (startDate && endDate) {
+      params.__kstSettlementStartMonth = startDate;
+      params.__kstSettlementEndMonth = endDate;
     }
 
-    await fetchSettlementAdminInvoices({
-      __kstSettlementStartMonth: startDate,
-      __kstSettlementEndMonth: endDate,
-      __limit: 100,
-      // __sortOption: "createdAtDESC",
-    });
+    await fetchSettlementAdminInvoices(params);
     setIsLoading(false);
   };
 

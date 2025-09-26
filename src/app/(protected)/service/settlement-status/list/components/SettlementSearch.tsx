@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import CustomMonthCalendar from "@/components/basic/CustomMonthCalendar";
 import Gap from "@/components/basic/Gap";
+import { GetSettlementSummariesRequest } from "@/api/settlement/get-settlement-summaries";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
 import theme from "@/styles/theme";
@@ -54,21 +55,21 @@ export default function SettlementSearch() {
     const __searchFields = selectedType === "all" ? "" : selectedType;
     const __searchKeyword = searchValue;
 
-    if (!startDate || !endDate) {
-      toast.error("기간을 선택해주세요.");
-      setIsLoading(false);
-      return;
-    }
-
-    await fetchSettlementSummaries({
+    const params: GetSettlementSummariesRequest = {
       __searchFields,
       __searchKeyword,
-      __kstSettlementStartMonth: startDate,
-      __kstSettlementEndMonth: endDate,
       __skip: 0,
-      __limit: 100,
+      __limit: 10000,
       __sortOption: "settlementMonthASC",
-    });
+    };
+
+    // 기간이 입력되었을 때만 기간 파라미터 추가
+    if (startDate && endDate) {
+      params.__kstSettlementStartMonth = startDate;
+      params.__kstSettlementEndMonth = endDate;
+    }
+
+    await fetchSettlementSummaries(params);
     setIsLoading(false);
   };
 

@@ -60,11 +60,6 @@ export default function SettlementDetailSearch() {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    if (!startDate || !endDate) {
-      toast.error("기간을 선택해주세요.");
-      setIsLoading(false);
-      return;
-    }
 
     // 전체검색 시 특정 필드들로 한정
     const getAllSearchFields = () => {
@@ -74,18 +69,21 @@ export default function SettlementDetailSearch() {
         "serviceName", // 서비스명
         "artistList.name", // 아티스트명
         "agencyCompanyName", // 기획사
-        "userInfo.displayName", // 권리사명
+        "userInfo.displayName", // 권리자명
       ].join(",");
     };
 
     const __params: GetSettlementDetailsRequest = {};
 
-    if (dateType === "settlement") {
-      __params.__kstSettlementStartMonth = startDate;
-      __params.__kstSettlementEndMonth = endDate;
-    } else {
-      __params.__kstSalesStartMonth = startDate;
-      __params.__kstSalesEndMonth = endDate;
+    // 기간이 입력되었을 때만 기간 파라미터 추가
+    if (startDate && endDate) {
+      if (dateType === "settlement") {
+        __params.__kstSettlementStartMonth = startDate;
+        __params.__kstSettlementEndMonth = endDate;
+      } else {
+        __params.__kstSalesStartMonth = startDate;
+        __params.__kstSalesEndMonth = endDate;
+      }
     }
 
     const __searchFields =
@@ -96,7 +94,7 @@ export default function SettlementDetailSearch() {
       __params.__searchKeyword = searchValue.trim();
     }
 
-    __params.__limit = 100;
+    __params.__limit = 10000;
 
     await fetchSettlementDetails(__params);
     setIsLoading(false);
