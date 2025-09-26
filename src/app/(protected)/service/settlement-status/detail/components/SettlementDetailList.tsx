@@ -76,7 +76,7 @@ export default function SettlementDetailList() {
       align: "center",
     },
     {
-      header: "권리사명",
+      header: "권리자명",
       accessor: "userDisplayName",
       type: "string",
       align: "center",

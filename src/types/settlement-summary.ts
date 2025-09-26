@@ -6,8 +6,8 @@ export interface SettlementServiceSummary {
 }
 
 export interface SettlementSummary {
-  userDisplayName: string; // 권리사명
-  userAccount: string; // 권리사코드(user.account)
+  userDisplayName: string; // 권리자명
+  userAccount: string; // 권리자코드(user.account)
   serviceList: SettlementServiceSummary[]; // 서비스별 정산내역
   settlementFee: number; // 판매금액
   distributionFee: number; // 유통수수료
