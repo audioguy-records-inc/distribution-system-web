@@ -48,6 +48,7 @@ export default function VideoNewPage() {
     supplyRegion: "Worldwide",
     ratingExemptionReason: "해당없음",
     isFree: true,
+    releaseCountryCode: "KR",
   };
 
   const {

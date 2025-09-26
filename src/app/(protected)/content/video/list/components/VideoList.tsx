@@ -141,7 +141,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "기획사",
+      header: "레이블(기획사)",
       accessor: "agencyCompanyName",
       type: "string",
       width: 120,

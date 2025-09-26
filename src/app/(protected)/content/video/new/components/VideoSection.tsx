@@ -187,7 +187,7 @@ export default function VideoSection({
           required={required}
         />
         <CustomInput
-          label="기획사"
+          label="레이블(기획사)"
           placeholder="기획사 입력"
           value={watch("agencyCompanyName") || ""}
           onChange={(e) => {

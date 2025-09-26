@@ -54,8 +54,13 @@ const VideoDetailPage = () => {
       setIsLoading(true);
       const _video = await fetchVideo(videoId as string);
       if (_video) {
-        setVideo(_video);
-        reset(_video);
+        // 발매국가가 없는 경우 기본값으로 대한민국 설정
+        const videoWithDefaultCountry = {
+          ..._video,
+          releaseCountryCode: _video.releaseCountryCode || "KR",
+        };
+        setVideo(videoWithDefaultCountry);
+        reset(videoWithDefaultCountry);
       }
       setIsLoading(false);
     };
