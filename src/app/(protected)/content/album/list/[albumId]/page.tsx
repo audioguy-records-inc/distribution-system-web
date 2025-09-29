@@ -145,7 +145,6 @@ const AlbumDetailPage = () => {
       album.albumType &&
       album.mainGenre &&
       album.subGenre &&
-      album.agencyCompanyName &&
       album.supplyRegion &&
       album.releaseCountryCode &&
       album.utcReleasedAt &&

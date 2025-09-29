@@ -106,8 +106,7 @@ export default function AlbumSection({
           label="레이블(기획사)"
           placeholder="레이블명 입력"
           size="small"
-          required
-          {...register("agencyCompanyName", { required: true })}
+          {...register("agencyCompanyName", {})}
         />
       </RowWrapper>
       <Gap height={56} />
