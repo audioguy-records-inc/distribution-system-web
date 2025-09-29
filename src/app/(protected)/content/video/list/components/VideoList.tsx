@@ -2,6 +2,7 @@ import Album, { ArtistInfo, TitleLanguage } from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
+import { useEffect, useState } from "react";
 
 import { Artist } from "@/types/artist";
 import Link from "next/link";
@@ -11,7 +12,6 @@ import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useVideoStore } from "@/stores/use-video-store";
 
@@ -30,8 +30,9 @@ const RenderLinkText = styled.div`
 `;
 
 export default function VideoList() {
-  const { videos, fetchVideos } = useVideoStore();
+  const { videos, fetchVideos, isLoading, searchParams } = useVideoStore();
   const router = useRouter();
+  const [hasInitialLoad, setHasInitialLoad] = useState(false);
   const columns: Column<Video>[] = [
     {
       header: "영상 코드",
@@ -149,9 +150,13 @@ export default function VideoList() {
     },
   ];
 
+  // 초기 데이터 로드
   useEffect(() => {
-    fetchVideos();
-  }, []);
+    if (!hasInitialLoad) {
+      setHasInitialLoad(true);
+      fetchVideos();
+    }
+  }, [hasInitialLoad, fetchVideos]);
 
   const handleClickVideoItem = (record: Video) => {
     router.push(`/content/video/list/${record._id}`);
@@ -159,11 +164,42 @@ export default function VideoList() {
 
   return (
     <Container>
-      <CustomTable
-        columns={columns}
-        data={videos}
-        onClick={handleClickVideoItem}
-      />
+      {/* 검색 결과가 없을 때 */}
+      {searchParams && !isLoading && videos.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "60px 20px",
+            color: theme.colors.gray[500],
+            fontSize: "16px",
+          }}
+        >
+          검색 결과가 없습니다.
+        </div>
+      )}
+
+      {/* 일반 조회 결과가 없을 때 (초기 로드 후에만 표시) */}
+      {!searchParams && hasInitialLoad && !isLoading && videos.length === 0 && (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "60px 20px",
+            color: theme.colors.gray[500],
+            fontSize: "16px",
+          }}
+        >
+          등록된 영상이 없습니다.
+        </div>
+      )}
+
+      {/* 데이터가 있을 때만 테이블 표시 */}
+      {videos.length > 0 && (
+        <CustomTable
+          columns={columns}
+          data={videos}
+          onClick={handleClickVideoItem}
+        />
+      )}
     </Container>
   );
 }

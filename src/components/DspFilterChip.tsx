@@ -29,10 +29,7 @@ export type DspType =
   | "Genie"
   | "Bugs"
   | "Flo"
-  | "Vibe"
-  | "KKBOX"
-  | "JOOX"
-  | "Amazon Music";
+  | "Vibe";
 
 interface DspFilterChipProps {
   selectedDsps: DspType[];
@@ -123,24 +120,6 @@ const DspFilterChip = ({
         icon={<Vibe />}
         isSelected={selectedDsps.includes("Vibe")}
         onClick={() => handleChipClick("Vibe")}
-      />
-      <CustomChip
-        label="KKBOX"
-        icon={<KKBOX />}
-        isSelected={selectedDsps.includes("KKBOX")}
-        onClick={() => handleChipClick("KKBOX")}
-      />
-      <CustomChip
-        label="JOOX"
-        icon={<JOOX />}
-        isSelected={selectedDsps.includes("JOOX")}
-        onClick={() => handleChipClick("JOOX")}
-      />
-      <CustomChip
-        label="Amazon Music"
-        icon={<AmazonMusic />}
-        isSelected={selectedDsps.includes("Amazon Music")}
-        onClick={() => handleChipClick("Amazon Music")}
       />
     </Container>
   );

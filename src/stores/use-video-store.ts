@@ -15,6 +15,13 @@ interface VideoStore {
   videos: Video[];
   isLoading: boolean;
   error: string | null;
+  searchParams: {
+    __searchKeyword: string;
+    __kstStartDate?: string;
+    __kstEndDate?: string;
+    __searchFields?: string;
+    __sortOption?: string;
+  } | null;
 
   fetchVideo: (videoId: string) => Promise<Video | null>;
   fetchVideos: () => Promise<void>;
@@ -32,6 +39,15 @@ interface VideoStore {
   }) => Promise<void>;
 
   resetNewVideo: () => void;
+  setSearchParams: (
+    params: {
+      __searchKeyword: string;
+      __kstStartDate?: string;
+      __kstEndDate?: string;
+      __searchFields?: string;
+      __sortOption?: string;
+    } | null,
+  ) => void;
 }
 
 export const useVideoStore = create<VideoStore>()(
@@ -41,6 +57,7 @@ export const useVideoStore = create<VideoStore>()(
       videos: [],
       isLoading: false,
       error: null,
+      searchParams: null,
 
       fetchVideo: async (videoId: string) => {
         set({ isLoading: true });
@@ -71,7 +88,7 @@ export const useVideoStore = create<VideoStore>()(
         }
       },
       fetchVideos: async () => {
-        set({ isLoading: true });
+        set({ isLoading: true, searchParams: null });
         try {
           const response = await getVideos();
 
@@ -211,7 +228,7 @@ export const useVideoStore = create<VideoStore>()(
         __skip?: number;
         __limit?: number;
       }) => {
-        set({ isLoading: true });
+        set({ isLoading: true, searchParams: params });
         try {
           const response = await searchVideos(params);
 
@@ -242,6 +259,17 @@ export const useVideoStore = create<VideoStore>()(
       },
       resetNewVideo: () => {
         set({ newVideo: null });
+      },
+      setSearchParams: (
+        params: {
+          __searchKeyword: string;
+          __kstStartDate?: string;
+          __kstEndDate?: string;
+          __searchFields?: string;
+          __sortOption?: string;
+        } | null,
+      ) => {
+        set({ searchParams: params });
       },
     }),
     {
