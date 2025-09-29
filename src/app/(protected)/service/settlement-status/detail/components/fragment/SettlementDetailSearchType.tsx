@@ -10,6 +10,7 @@ export type SettlementDetailSearchType =
   | "serviceName"
   | "agencyCompanyName"
   | "userInfo.displayName"
+  | "userDisplayName,agencyCompanyName"
   | "all";
 
 export default function SettlementDetailSearchTypeDropdown({
@@ -35,6 +36,10 @@ export default function SettlementDetailSearchTypeDropdown({
     {
       key: "artistList.name",
       value: "아티스트명",
+    },
+    {
+      key: "userDisplayName,agencyCompanyName",
+      value: "권리자명",
     },
   ];
   return (

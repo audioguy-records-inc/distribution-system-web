@@ -52,7 +52,19 @@ export default function SettlementSearch() {
 
   const handleSearch = async () => {
     setIsLoading(true);
-    const __searchFields = selectedType === "all" ? "" : selectedType;
+
+    // 전체검색 시 특정 필드들로 한정
+    const getAllSearchFields = () => {
+      return [
+        "albumTitle", // 앨범명
+        "trackTitle", // 트랙명
+        "artistList.name", // 아티스트명
+        "userDisplayName,agencyCompanyName", // 권리자명(이름/기획사)
+      ].join(",");
+    };
+
+    const __searchFields =
+      selectedType === "all" ? getAllSearchFields() : selectedType;
     const __searchKeyword = searchValue;
 
     const params: GetSettlementSummariesRequest = {
@@ -97,7 +109,7 @@ export default function SettlementSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="앨범명, 트랙명, 아티스트명 입력"
+          placeholder="앨범명, 트랙명, 아티스트명, 권리자명"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

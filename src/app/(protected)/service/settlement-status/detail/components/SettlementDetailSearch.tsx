@@ -68,8 +68,7 @@ export default function SettlementDetailSearch() {
         "trackTitle", // 트랙명
         "serviceName", // 서비스명
         "artistList.name", // 아티스트명
-        "agencyCompanyName", // 기획사
-        "userInfo.displayName", // 권리자명
+        "userDisplayName,agencyCompanyName", // 권리자명(이름/기획사)
       ].join(",");
     };
 
@@ -130,7 +129,7 @@ export default function SettlementDetailSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="앨범명, 트랙명, 아티스트명 입력"
+          placeholder="앨범명, 트랙명, 아티스트명, 권리자명 입력"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}
