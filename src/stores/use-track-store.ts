@@ -49,7 +49,12 @@ export const useTrackStore = create<TrackStore>()(
             throw new Error(response.message);
           }
 
-          return response.data.track;
+          const track = response.data.track;
+          // 발매국가가 없는 경우 기본값으로 대한민국 설정
+          return {
+            ...track,
+            releaseCountryCode: track.releaseCountryCode || "KR",
+          };
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -77,7 +82,12 @@ export const useTrackStore = create<TrackStore>()(
             throw new Error(response.message);
           }
 
-          const fetchedTracks = response.data.trackList;
+          // 발매국가가 없는 경우 기본값으로 대한민국 설정
+          const fetchedTracks = response.data.trackList.map((track) => ({
+            ...track,
+            releaseCountryCode: track.releaseCountryCode || "KR",
+          }));
+
           set({
             tracks: fetchedTracks,
             edittingTracks: get().sortTracks(fetchedTracks),
