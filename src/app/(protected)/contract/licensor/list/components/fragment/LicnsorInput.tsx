@@ -7,7 +7,6 @@ import {
 import { DataCollectionName, FileType } from "@/types/upload";
 import { User, UserType } from "@/types/user";
 
-import BankNameDropdown from "./BankNameDropdown";
 import ContactPersonTable from "../../../../dsp/list/components/fragment/ContactPersonTable";
 import CustomInput from "@/components/basic/CustomInput";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
@@ -130,18 +129,12 @@ const LicensorInput = ({
       </RowWrapper>
       <Gap height={56} />
       <RowWrapper>
-        <Controller
-          name="bankName"
-          control={control}
-          render={({ field }) => (
-            <BankNameDropdown
-              onChange={(value) => {
-                field.onChange(value);
-              }}
-              value={field.value}
-              readOnly={!isEdit}
-            />
-          )}
+        <CustomInput
+          size="small"
+          label="은행명"
+          placeholder="은행명 입력"
+          readOnly={!isEdit}
+          {...register("bankName")}
         />
         <CustomInput
           size="small"
