@@ -129,9 +129,7 @@ export default function AlbumNewPage() {
       album.supplyRegion &&
       album.releaseCountryCode &&
       album.utcReleasedAt &&
-      album.isAdultOnly !== undefined &&
-      album.userId &&
-      album.userContractId
+      album.isAdultOnly !== undefined
     );
   };
 

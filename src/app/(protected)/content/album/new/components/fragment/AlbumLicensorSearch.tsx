@@ -83,7 +83,6 @@ export default function AlbumLicensorSearch({
           }}
           renderItem={(item) => `${item.displayName}`}
           size="small"
-          required
         />
       )}
       {selectedUser && (

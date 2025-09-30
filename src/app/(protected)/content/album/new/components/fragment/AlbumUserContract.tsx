@@ -58,7 +58,6 @@ export default function AlbumUserContract({
         value={watch("userContractInfo")?.userContractUniqueId || ""}
         width={100}
         size="small"
-        required
       />
       <CustomDropdown
         items={searchedUserContracts.map((userContract) => ({

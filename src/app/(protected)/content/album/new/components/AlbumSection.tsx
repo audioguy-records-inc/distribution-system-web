@@ -114,7 +114,6 @@ export default function AlbumSection({
         <Controller
           name="userId"
           control={control}
-          rules={{ required: true }}
           render={({ field }) => {
             return (
               <AlbumLicensorSearch
@@ -131,7 +130,6 @@ export default function AlbumSection({
         <Controller
           name="userContractId"
           control={control}
-          rules={{ required: true }}
           render={({ field }) => (
             <AlbumUserContract
               control={control}
