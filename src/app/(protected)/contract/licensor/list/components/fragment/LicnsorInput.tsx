@@ -94,8 +94,7 @@ const LicensorInput = ({
           <CustomInput
             size="small"
             label="사업자등록번호"
-            placeholder="사업자등록번호 입력(- 제외)"
-            type="number"
+            placeholder="사업자등록번호 입력"
             required
             {...register("companyRegistrationNumber")}
           />
@@ -104,8 +103,7 @@ const LicensorInput = ({
           <CustomInput
             size="small"
             label="주민등록번호"
-            placeholder="주민등록번호 입력(- 제외)"
-            type="number"
+            placeholder="주민등록번호 입력"
             required
             {...register("personalIdNumber")}
           />
@@ -148,8 +146,7 @@ const LicensorInput = ({
         <CustomInput
           size="small"
           label="계좌번호"
-          placeholder="계좌번호 입력(-제외)"
-          type="number"
+          placeholder="계좌번호 입력"
           readOnly={!isEdit}
           {...register("bankAccount")}
         />
