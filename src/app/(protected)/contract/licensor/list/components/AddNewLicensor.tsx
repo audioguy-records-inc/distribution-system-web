@@ -148,14 +148,6 @@ const AddNewLicensor = () => {
       return true;
     }
 
-    if (!watch("bankName")) {
-      return true;
-    }
-
-    if (!watch("bankAccount")) {
-      return true;
-    }
-
     return false;
   };
 

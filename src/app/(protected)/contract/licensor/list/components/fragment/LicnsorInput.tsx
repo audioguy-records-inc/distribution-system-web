@@ -135,10 +135,8 @@ const LicensorInput = ({
         <Controller
           name="bankName"
           control={control}
-          rules={{ required: true }}
           render={({ field }) => (
             <BankNameDropdown
-              required
               onChange={(value) => {
                 field.onChange(value);
               }}
@@ -153,7 +151,6 @@ const LicensorInput = ({
           placeholder="계좌번호 입력(-제외)"
           type="number"
           readOnly={!isEdit}
-          required
           {...register("bankAccount")}
         />
       </RowWrapper>
