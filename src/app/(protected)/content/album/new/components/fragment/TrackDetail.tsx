@@ -47,11 +47,13 @@ export default function TrackDetail({
   index,
   tracks,
   setTracks,
+  albumUPC,
 }: {
   record: Track;
   index: number;
   tracks: Track[];
   setTracks: (tracks: Track[]) => void;
+  albumUPC?: string;
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const currentTrack = tracks[index];
@@ -476,6 +478,7 @@ export default function TrackDetail({
         track={currentTrack}
         tracks={tracks}
         setTracks={setTracks}
+        albumUPC={albumUPC}
         // readOnly={!isEdit}
       />
       {/* <CustomModal

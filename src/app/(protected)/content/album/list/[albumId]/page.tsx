@@ -162,8 +162,27 @@ const AlbumDetailPage = () => {
     setIsLoading(true);
     await updateAlbum(_album, false);
 
+    // 공간 음향 UPC 자동 설정
+    const tracksWithUPC = edittingTracks.map((track) => {
+      // 공간 음향 서비스를 사용하고 UPC가 비어있으면 앨범 UPC로 채우기
+      if (
+        track.isSupportedSpatialAudio &&
+        !track.spatialAudioInfo?.UPC &&
+        _album.UPC
+      ) {
+        return {
+          ...track,
+          spatialAudioInfo: {
+            ...track.spatialAudioInfo,
+            UPC: _album.UPC,
+          },
+        };
+      }
+      return track;
+    });
+
     // 트랙 업데이트 및 생성 로직 추가
-    const trackPromises = edittingTracks.map((track) => {
+    const trackPromises = tracksWithUPC.map((track) => {
       if (track._id) {
         return updateTrack(track);
       } else {

@@ -77,10 +77,34 @@ export default function AlbumNewPage() {
   };
 
   const onSubmit = async (data: Album) => {
+    // 공간 음향 UPC 자동 설정 헬퍼 함수
+    const applyAlbumUPCToTracks = (tracks: Track[], albumUPC?: string) => {
+      return tracks.map((track) => {
+        // 공간 음향 서비스를 사용하고 UPC가 비어있으면 앨범 UPC로 채우기
+        if (
+          track.isSupportedSpatialAudio &&
+          !track.spatialAudioInfo?.UPC &&
+          albumUPC
+        ) {
+          return {
+            ...track,
+            spatialAudioInfo: {
+              ...track.spatialAudioInfo,
+              UPC: albumUPC,
+            },
+          };
+        }
+        return track;
+      });
+    };
+
     if (newAlbum) {
       await updateAlbum(data, true);
 
-      const trackPromises = edittingTracks.map((track) => {
+      // 앨범 UPC를 공간 음향 UPC에 적용
+      const tracksWithUPC = applyAlbumUPCToTracks(edittingTracks, data.UPC);
+
+      const trackPromises = tracksWithUPC.map((track) => {
         if (track._id) {
           return updateTrack(track);
         } else {
@@ -96,7 +120,10 @@ export default function AlbumNewPage() {
         // 앨범 생성 후 newAlbum에서 ID를 가져와서 트랙에 설정
         const currentNewAlbum = useAlbumStore.getState().newAlbum;
         if (currentNewAlbum?._id) {
-          const trackPromises = edittingTracks.map((track) => {
+          // 앨범 UPC를 공간 음향 UPC에 적용
+          const tracksWithUPC = applyAlbumUPCToTracks(edittingTracks, data.UPC);
+
+          const trackPromises = tracksWithUPC.map((track) => {
             const trackWithAlbumId = {
               ...track,
               albumId: currentNewAlbum._id,

@@ -16,11 +16,13 @@ export default function SpecialAudio({
   track,
   tracks = [],
   setTracks = () => {},
+  albumUPC,
   readOnly = false,
 }: {
   track: EditTrack;
   tracks: EditTrack[];
   setTracks: (tracks: EditTrack[]) => void;
+  albumUPC?: string;
   readOnly?: boolean;
 }) {
   return (
@@ -40,12 +42,25 @@ export default function SpecialAudio({
           }}
           value={track.isSupportedSpatialAudio}
           onChange={(e) => {
+            const isEnabled = e.target.value;
             setTracks(
-              tracks.map((t) =>
-                t._id === track._id
-                  ? { ...t, isSupportedSpatialAudio: e.target.value }
-                  : t,
-              ),
+              tracks.map((t) => {
+                if (t._id === track._id) {
+                  // 공간 음향 서비스를 활성화하고 UPC가 없으면 앨범 UPC로 설정
+                  if (isEnabled && !t.spatialAudioInfo?.UPC && albumUPC) {
+                    return {
+                      ...t,
+                      isSupportedSpatialAudio: isEnabled,
+                      spatialAudioInfo: {
+                        ...t.spatialAudioInfo,
+                        UPC: albumUPC,
+                      },
+                    };
+                  }
+                  return { ...t, isSupportedSpatialAudio: isEnabled };
+                }
+                return t;
+              }),
             );
           }}
           readOnly={readOnly}

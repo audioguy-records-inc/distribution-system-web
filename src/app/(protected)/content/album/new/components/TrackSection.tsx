@@ -381,6 +381,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
                 index={index}
                 tracks={edittingTracks}
                 setTracks={setEdittingTracks}
+                albumUPC={albumData?.UPC}
               />
             );
           },
