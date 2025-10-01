@@ -131,7 +131,7 @@ export const useTrackStore = create<TrackStore>()(
             error: null,
           }));
 
-          toast.success("트랙이 생성되었습니다.");
+          // toast.success("트랙이 생성되었습니다."); // 개별 알림 제거
         } catch (error) {
           const errorMessage =
             error instanceof Error
@@ -171,7 +171,7 @@ export const useTrackStore = create<TrackStore>()(
             error: null,
           }));
 
-          toast.success("트랙이 수정되었습니다.");
+          // toast.success("트랙이 수정되었습니다."); // 개별 알림 제거
         } catch (error) {
           const errorMessage =
             error instanceof Error

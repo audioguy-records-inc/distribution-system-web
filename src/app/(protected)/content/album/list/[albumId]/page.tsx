@@ -17,6 +17,7 @@ import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import TrackSection from "../../new/components/TrackSection";
 import styled from "styled-components";
+import toast from "react-hot-toast";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
 import { useTrackStore } from "@/stores/use-track-store";
@@ -180,14 +181,37 @@ const AlbumDetailPage = () => {
     });
 
     // 트랙 업데이트 및 생성 로직 추가
-    const trackPromises = tracksWithUPC.map((track) => {
-      if (track._id) {
-        return updateTrack(track);
-      } else {
-        return createTrack(track);
+    let successNewTracks = 0;
+    let successUpdatedTracks = 0;
+
+    // 트랙 처리 결과를 개별적으로 확인
+    for (const track of tracksWithUPC) {
+      try {
+        if (track._id) {
+          await updateTrack(track);
+          successUpdatedTracks++;
+        } else {
+          await createTrack(track);
+          successNewTracks++;
+        }
+      } catch (error) {
+        // 개별 트랙 실패 시 에러는 이미 toast로 표시됨
+        console.error(`트랙 처리 실패:`, error);
       }
-    });
-    await Promise.all(trackPromises);
+    }
+
+    // 성공한 트랙에 대해서만 통합 알림
+    if (successNewTracks > 0 || successUpdatedTracks > 0) {
+      if (successNewTracks > 0 && successUpdatedTracks > 0) {
+        toast.success(
+          `${successNewTracks}개 트랙이 등록되고 ${successUpdatedTracks}개 트랙이 수정되었습니다.`,
+        );
+      } else if (successNewTracks > 0) {
+        toast.success(`${successNewTracks}개 트랙이 등록되었습니다.`);
+      } else if (successUpdatedTracks > 0) {
+        toast.success(`${successUpdatedTracks}개 트랙이 수정되었습니다.`);
+      }
+    }
 
     setIsLoading(false);
   };

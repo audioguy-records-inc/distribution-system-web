@@ -14,6 +14,7 @@ import PageHeader from "@/components/PageHeader";
 import Track from "@/types/track";
 import TrackSection from "./components/TrackSection";
 import styled from "styled-components";
+import toast from "react-hot-toast";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -104,14 +105,37 @@ export default function AlbumNewPage() {
       // 앨범 UPC를 공간 음향 UPC에 적용
       const tracksWithUPC = applyAlbumUPCToTracks(edittingTracks, data.UPC);
 
-      const trackPromises = tracksWithUPC.map((track) => {
-        if (track._id) {
-          return updateTrack(track);
-        } else {
-          return createTrack(track);
+      let successNewTracks = 0;
+      let successUpdatedTracks = 0;
+
+      // 트랙 처리 결과를 개별적으로 확인
+      for (const track of tracksWithUPC) {
+        try {
+          if (track._id) {
+            await updateTrack(track);
+            successUpdatedTracks++;
+          } else {
+            await createTrack(track);
+            successNewTracks++;
+          }
+        } catch (error) {
+          // 개별 트랙 실패 시 에러는 이미 toast로 표시됨
+          console.error(`트랙 처리 실패:`, error);
         }
-      });
-      await Promise.all(trackPromises);
+      }
+
+      // 성공한 트랙에 대해서만 통합 알림
+      if (successNewTracks > 0 || successUpdatedTracks > 0) {
+        if (successNewTracks > 0 && successUpdatedTracks > 0) {
+          toast.success(
+            `${successNewTracks}개 트랙이 등록되고 ${successUpdatedTracks}개 트랙이 수정되었습니다.`,
+          );
+        } else if (successNewTracks > 0) {
+          toast.success(`${successNewTracks}개 트랙이 등록되었습니다.`);
+        } else if (successUpdatedTracks > 0) {
+          toast.success(`${successUpdatedTracks}개 트랙이 수정되었습니다.`);
+        }
+      }
     } else {
       await createAlbum(data);
 
@@ -123,14 +147,27 @@ export default function AlbumNewPage() {
           // 앨범 UPC를 공간 음향 UPC에 적용
           const tracksWithUPC = applyAlbumUPCToTracks(edittingTracks, data.UPC);
 
-          const trackPromises = tracksWithUPC.map((track) => {
-            const trackWithAlbumId = {
-              ...track,
-              albumId: currentNewAlbum._id,
-            };
-            return createTrack(trackWithAlbumId);
-          });
-          await Promise.all(trackPromises);
+          let successNewTracks = 0;
+
+          // 트랙 처리 결과를 개별적으로 확인
+          for (const track of tracksWithUPC) {
+            try {
+              const trackWithAlbumId = {
+                ...track,
+                albumId: currentNewAlbum._id,
+              };
+              await createTrack(trackWithAlbumId);
+              successNewTracks++;
+            } catch (error) {
+              // 개별 트랙 실패 시 에러는 이미 toast로 표시됨
+              console.error(`트랙 처리 실패:`, error);
+            }
+          }
+
+          // 성공한 트랙에 대해서만 통합 알림
+          if (successNewTracks > 0) {
+            toast.success(`${successNewTracks}개 트랙이 등록되었습니다.`);
+          }
         }
       }
 
