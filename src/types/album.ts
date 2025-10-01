@@ -43,6 +43,16 @@ export interface Track {
   title: string;
 }
 
+export interface AlbumTransferHistory {
+  _id: string;
+  startedAt: Date | string;
+  state: "PENDING" | "COMPLETED" | "FAILED";
+  completedAt: Date | string | null;
+  failedAt: Date | string | null;
+  error: string | null;
+  createdAt: Date | string;
+}
+
 export interface Album {
   _id?: string;
   titleList?: TitleLanguage[];
@@ -90,6 +100,7 @@ export interface Album {
 
   transmissionList?: Transmission[];
   trackList?: Track[];
+  albumTransferHistoryList?: AlbumTransferHistory[];
 
   // createdAt: Date;
   // updatedAt: Date;

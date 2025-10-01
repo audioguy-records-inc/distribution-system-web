@@ -1,4 +1,8 @@
-import Album, { ArtistInfo, TitleLanguage } from "@/types/album";
+import Album, {
+  AlbumTransferHistory,
+  ArtistInfo,
+  TitleLanguage,
+} from "@/types/album";
 import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
@@ -148,6 +152,50 @@ export default function AlbumList() {
       type: "string",
       width: 120,
       align: "center",
+    },
+    {
+      header: "DDEX 전송",
+      accessor: "albumTransferHistoryList",
+      type: "string",
+      width: 180,
+      align: "center",
+      render: (value, row, index) => {
+        const historyList = value as AlbumTransferHistory[] | undefined;
+
+        if (!historyList || historyList.length === 0) {
+          return <RenderText>-</RenderText>;
+        }
+
+        // 최신 전송 이력 가져오기 (createdAt 기준 정렬)
+        const latestHistory = [...historyList].sort((a, b) => {
+          const dateA = new Date(a.createdAt).getTime();
+          const dateB = new Date(b.createdAt).getTime();
+          return dateB - dateA;
+        })[0];
+
+        // 상태 한글 변환
+        const stateText =
+          latestHistory.state === "PENDING"
+            ? "대기중"
+            : latestHistory.state === "COMPLETED"
+            ? "완료"
+            : latestHistory.state === "FAILED"
+            ? "실패"
+            : latestHistory.state;
+
+        // 날짜 포맷팅
+        const formattedDate = moment(latestHistory.startedAt)
+          .utcOffset(9)
+          .format("YYYY. MM. DD HH:mm");
+
+        return (
+          <RenderText>
+            {stateText}
+            <br />
+            {formattedDate}
+          </RenderText>
+        );
+      },
     },
   ];
 
