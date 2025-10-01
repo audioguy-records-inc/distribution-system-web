@@ -211,7 +211,7 @@ const AlbumDetailPage = () => {
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label="수정"
+              label="저장"
               onClick={handleSubmit}
               disabled={!isFilled()}
             />
