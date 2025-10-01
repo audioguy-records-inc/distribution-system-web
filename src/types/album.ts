@@ -80,7 +80,6 @@ export interface Album {
 
   isExposed?: boolean;
   isAdultOnly?: boolean;
-  isSupportedSpatialAudio?: boolean;
 
   albumIntroduction?: string;
   requestDetails?: string;

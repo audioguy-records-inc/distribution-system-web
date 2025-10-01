@@ -84,7 +84,6 @@ export default function AlbumDownloadButton() {
           : "",
         노출: album.isExposed ? "노출" : "미노출",
         성인: album.isAdultOnly ? "성인" : "일반",
-        공간음향서비스: album.isSupportedSpatialAudio ? "지원" : "미지원",
         소개: album.albumIntroduction || "",
         요청사항: album.requestDetails || "",
         커버이미지: album.coverImageList

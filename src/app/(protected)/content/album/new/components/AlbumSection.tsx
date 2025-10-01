@@ -215,55 +215,30 @@ export default function AlbumSection({
         )}
       />
       <Gap height={56} />
-      <RowWrapper>
-        <Controller
-          name="isAdultOnly"
-          control={control}
-          rules={{ required: true }}
-          defaultValue={false}
-          render={({ field }) => (
-            <CustomRadioWithLabel
-              label="19금"
-              leftOption={{
-                label: "해당",
-                value: true,
-                checked: field.value === true,
-              }}
-              rightOption={{
-                label: "해당없음",
-                value: false,
-                checked: field.value === false,
-              }}
-              onChange={field.onChange}
-              value={field.value}
-              required
-            />
-          )}
-        />
-        <Controller
-          name="isSupportedSpatialAudio"
-          control={control}
-          rules={{ required: true }}
-          defaultValue={false}
-          render={({ field }) => (
-            <CustomRadioWithLabel
-              label="공간 음향 서비스"
-              leftOption={{
-                label: "해당",
-                value: true,
-                checked: field.value === true,
-              }}
-              rightOption={{
-                label: "해당없음",
-                value: false,
-                checked: field.value === false,
-              }}
-              onChange={field.onChange}
-              value={field.value}
-            />
-          )}
-        />
-      </RowWrapper>
+      <Controller
+        name="isAdultOnly"
+        control={control}
+        rules={{ required: true }}
+        defaultValue={false}
+        render={({ field }) => (
+          <CustomRadioWithLabel
+            label="19금"
+            leftOption={{
+              label: "해당",
+              value: true,
+              checked: field.value === true,
+            }}
+            rightOption={{
+              label: "해당없음",
+              value: false,
+              checked: field.value === false,
+            }}
+            onChange={field.onChange}
+            value={field.value}
+            required
+          />
+        )}
+      />
       <Gap height={56} />
       <CustomTextArea
         label="앨범 소개"
