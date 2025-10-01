@@ -304,7 +304,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       }
     };
     _fetchTracks();
-  }, [albumData._id]);
+  }, [albumData._id, fetchTracks]);
 
   useEffect(() => {
     // 모든 트랙의 isSelected를 true로 설정
@@ -319,7 +319,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
         })),
       );
     }
-  }, [edittingTracks.length]);
+  }, [edittingTracks, setEdittingTracks]);
 
   const handleAddTrack = async () => {
     const albumData = albumWatch();

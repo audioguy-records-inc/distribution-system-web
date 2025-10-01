@@ -38,7 +38,7 @@ const IconWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div<{ $isOpen: boolean }>`
-  max-height: ${({ $isOpen }) => ($isOpen ? "10000px" : "0")};
+  max-height: ${({ $isOpen }) => ($isOpen ? "none" : "0")};
   overflow: hidden;
   transition: max-height 0.1s ease-in-out;
 `;
