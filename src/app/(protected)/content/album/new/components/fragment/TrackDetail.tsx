@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import ContributorInput from "./ContributorInput";
 import CustomInput from "@/components/basic/CustomInput";
@@ -52,7 +52,7 @@ export default function TrackDetail({
   record: Track;
   index: number;
   tracks: Track[];
-  setTracks: (tracks: Track[]) => void;
+  setTracks: Dispatch<SetStateAction<Track[]>>;
   albumUPC?: string;
 }) {
   const [isEdit, setIsEdit] = useState(false);
@@ -459,15 +459,17 @@ export default function TrackDetail({
                 "ContributorInput onChange 호출됨 - contributors:",
                 contributors,
               );
-              console.log("현재 tracks:", tracks);
               console.log("현재 index:", index);
-              const updatedTracks = tracks.map((track, i) =>
-                i === index
-                  ? { ...track, contributorList: contributors || [] }
-                  : track,
-              );
-              console.log("업데이트된 tracks:", updatedTracks);
-              setTracks(updatedTracks);
+              setTracks((prevTracks: Track[]) => {
+                const updatedTracks = prevTracks.map(
+                  (track: Track, i: number) =>
+                    i === index
+                      ? { ...track, contributorList: contributors || [] }
+                      : track,
+                );
+                console.log("업데이트된 tracks:", updatedTracks);
+                return updatedTracks;
+              });
             }}
             readOnly={false}
           />

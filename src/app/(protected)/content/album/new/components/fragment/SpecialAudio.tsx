@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 import CustomInput from "@/components/basic/CustomInput";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
 import { EditTrack } from "../TrackSection";
@@ -21,7 +23,7 @@ export default function SpecialAudio({
 }: {
   track: EditTrack;
   tracks: EditTrack[];
-  setTracks: (tracks: EditTrack[]) => void;
+  setTracks: Dispatch<SetStateAction<EditTrack[]>>;
   albumUPC?: string;
   readOnly?: boolean;
 }) {
@@ -43,8 +45,8 @@ export default function SpecialAudio({
           value={track.isSupportedSpatialAudio}
           onChange={(e) => {
             const isEnabled = e.target.value;
-            setTracks(
-              tracks.map((t) => {
+            setTracks((prevTracks: EditTrack[]) =>
+              prevTracks.map((t: EditTrack) => {
                 if (t._id === track._id) {
                   // 공간 음향 서비스를 활성화하고 UPC가 없으면 앨범 UPC로 설정
                   if (isEnabled && !t.spatialAudioInfo?.UPC && albumUPC) {
@@ -79,8 +81,8 @@ export default function SpecialAudio({
             readOnly={readOnly}
             required
             onChange={(e) => {
-              setTracks(
-                tracks.map((t) =>
+              setTracks((prevTracks: EditTrack[]) =>
+                prevTracks.map((t: EditTrack) =>
                   t._id === track._id
                     ? {
                         ...t,
@@ -101,8 +103,8 @@ export default function SpecialAudio({
             readOnly={readOnly}
             required
             onChange={(e) => {
-              setTracks(
-                tracks.map((t) =>
+              setTracks((prevTracks: EditTrack[]) =>
+                prevTracks.map((t: EditTrack) =>
                   t._id === track._id
                     ? {
                         ...t,

@@ -8,6 +8,7 @@ import UserContract from "./user-contract";
 export interface TrackFile {
   name: string;
   filePath: string;
+  duration?: string;
 }
 
 export interface SpatialAudioInfo {

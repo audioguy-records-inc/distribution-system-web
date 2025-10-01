@@ -27,7 +27,9 @@ interface TrackStore {
     searchFields?: string,
   ) => Promise<Track[]>;
   resetTracks: () => void;
-  setEdittingTracks: (tracks: EditTrack[]) => void;
+  setEdittingTracks: (
+    tracks: EditTrack[] | ((prev: EditTrack[]) => EditTrack[]),
+  ) => void;
   sortTracks: (tracksToSort: EditTrack[]) => EditTrack[];
   resetEdittingTracks: () => void;
 }
@@ -258,8 +260,15 @@ export const useTrackStore = create<TrackStore>()(
       resetTracks: () => {
         set({ tracks: [], edittingTracks: [] });
       },
-      setEdittingTracks: (tracks: EditTrack[]) => {
-        set({ edittingTracks: tracks });
+      setEdittingTracks: (
+        tracks: EditTrack[] | ((prev: EditTrack[]) => EditTrack[]),
+      ) => {
+        set((state) => ({
+          edittingTracks:
+            typeof tracks === "function"
+              ? tracks(state.edittingTracks)
+              : tracks,
+        }));
       },
       sortTracks: (tracksToSort: EditTrack[]) => {
         return [...tracksToSort].sort((a, b) => {

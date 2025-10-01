@@ -153,9 +153,9 @@ const CustomTable = <T extends Record<string, any>>({
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
-  // columns나 data가 undefined인 경우를 처리
-  const safeColumns = columns || [];
-  const safeData = data || [];
+  // columns나 data가 undefined이거나 배열이 아닌 경우를 처리
+  const safeColumns = Array.isArray(columns) ? columns : [];
+  const safeData = Array.isArray(data) ? data : [];
 
   const toggleRow = (rowIndex: number) => {
     const newExpandedRows = new Set(expandedRows);

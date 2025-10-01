@@ -71,8 +71,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomCheckbox2
             checked={record.isSelected || false}
             onChange={(checked) => {
-              setEdittingTracks(
-                edittingTracks.map((track, i) =>
+              setEdittingTracks((prev) =>
+                prev.map((track, i) =>
                   i === index ? { ...track, isSelected: checked } : track,
                 ),
               );
@@ -103,8 +103,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
               if (_value && _value < 0) {
                 _value = undefined;
               }
-              setEdittingTracks(
-                edittingTracks.map((track, i) =>
+              setEdittingTracks((prev) =>
+                prev.map((track, i) =>
                   i === index
                     ? {
                         ...track,
@@ -143,8 +143,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
               if (_value && _value < 0) {
                 _value = undefined;
               }
-              setEdittingTracks(
-                edittingTracks.map((track, i) =>
+              setEdittingTracks((prev) =>
+                prev.map((track, i) =>
                   i === index
                     ? {
                         ...track,
@@ -191,8 +191,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomCheckbox2
             checked={_value}
             onChange={(checked) => {
-              setEdittingTracks(
-                edittingTracks.map((track, i) =>
+              setEdittingTracks((prev) =>
+                prev.map((track, i) =>
                   i === index ? { ...track, isMainTitle: checked } : track,
                 ),
               );
@@ -213,8 +213,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
           <CustomCheckbox2
             checked={_value}
             onChange={(checked) => {
-              setEdittingTracks(
-                edittingTracks.map((track, i) =>
+              setEdittingTracks((prev) =>
+                prev.map((track, i) =>
                   i === index ? { ...track, isTitle: checked } : track,
                 ),
               );
@@ -292,7 +292,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
         }
 
         // UI에서 트랙 제거
-        setEdittingTracks(edittingTracks.filter((_, i) => i !== index));
+        setEdittingTracks((prev) => prev.filter((_, i) => i !== index));
       },
     },
   ];
@@ -308,9 +308,12 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
 
   useEffect(() => {
     // 모든 트랙의 isSelected를 true로 설정
-    if (edittingTracks.length > 0) {
-      setEdittingTracks(
-        edittingTracks.map((track) => ({
+    if (
+      edittingTracks.length > 0 &&
+      edittingTracks.some((track) => !track.isSelected)
+    ) {
+      setEdittingTracks((prev) =>
+        prev.map((track) => ({
           ...track,
           isSelected: true,
         })),
@@ -336,12 +339,12 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       titleList: [{ ko: "" }, { en: "" }],
     };
 
-    setEdittingTracks([...edittingTracks, newTrack]);
+    setEdittingTracks((prev) => [...prev, newTrack]);
   };
 
   const handleCheckboxChange = (index: number, checked: boolean) => {
-    setEdittingTracks(
-      edittingTracks.map((track, i) =>
+    setEdittingTracks((prev) =>
+      prev.map((track, i) =>
         i === index ? { ...track, isSelected: checked } : track,
       ),
     );
@@ -351,8 +354,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
 
   const handleCheckAll = (checked: boolean) => {
     setIsCheckAll(checked);
-    setEdittingTracks(
-      edittingTracks.map((track) => ({
+    setEdittingTracks((prev) =>
+      prev.map((track) => ({
         ...track,
         isSelected: checked,
       })),

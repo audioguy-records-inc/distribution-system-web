@@ -1,5 +1,5 @@
 import { DataCollectionName, FileType } from "@/types/upload";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import CustomChip from "@/components/basic/CustomChip";
@@ -92,13 +92,12 @@ export default function UploadTrackAudio({
 }: {
   track: Track;
   tracks: Track[];
-  setTracks: (tracks: Track[]) => void;
+  setTracks: Dispatch<SetStateAction<Track[]>>;
   index: number;
   showLabel?: boolean;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [duration, setDuration] = useState<string>("");
   const { uploadToS3 } = useUploadStore();
 
   const handleButtonClick = () => {
@@ -120,9 +119,9 @@ export default function UploadTrackAudio({
 
       // 오디오 파일 재생 시간 계산
       const audioDuration = await getAudioDuration(file);
-      setDuration(formatDuration(audioDuration));
+      const formattedDuration = formatDuration(audioDuration);
 
-      await handleUpload(file);
+      await handleUpload(file, formattedDuration);
 
       // 파일 선택 초기화
       if (fileInputRef.current) {
@@ -131,7 +130,7 @@ export default function UploadTrackAudio({
     }
   };
 
-  const handleUpload = async (file: File) => {
+  const handleUpload = async (file: File, audioDuration: string) => {
     try {
       setIsLoading(true);
       const success = await uploadToS3({
@@ -143,9 +142,9 @@ export default function UploadTrackAudio({
       if (success) {
         toast.success(`${file.name} 업로드가 완료되었습니다.`);
 
-        // Track의 trackFileList 업데이트
-        setTracks(
-          tracks.map((t, i) =>
+        // Track의 trackFileList 업데이트 (함수형 업데이트로 변경)
+        setTracks((prevTracks: Track[]) =>
+          prevTracks.map((t: Track, i: number) =>
             i === index
               ? {
                   ...t,
@@ -154,6 +153,7 @@ export default function UploadTrackAudio({
                     {
                       name: success.name,
                       filePath: success.filePath,
+                      duration: audioDuration,
                     },
                   ],
                 }
@@ -202,13 +202,16 @@ export default function UploadTrackAudio({
   };
 
   const handleRemoveFile = (fileIndex: number) => {
-    setTracks(
-      tracks.map((t, i) =>
+    setTracks((prevTracks: Track[]) =>
+      prevTracks.map((t: Track, i: number) =>
         i === index
           ? {
               ...t,
               trackFileList:
-                t.trackFileList?.filter((_, fi) => fi !== fileIndex) || [],
+                t.trackFileList?.filter(
+                  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+                  (_: any, fi: number) => fi !== fileIndex,
+                ) || [],
             }
           : t,
       ),
@@ -237,7 +240,7 @@ export default function UploadTrackAudio({
                   </IconButton>
                 </AudioActions>
               </AudioContainer>
-              <Duration>{duration}</Duration>
+              <Duration>{file.duration || "00:00"}</Duration>
             </AudioFileWrapper>
           ))}
         </div>
