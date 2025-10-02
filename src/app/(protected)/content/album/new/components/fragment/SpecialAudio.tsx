@@ -68,7 +68,12 @@ export default function SpecialAudio({
           readOnly={readOnly}
         />
         {track.isSupportedSpatialAudio && (
-          <UploadSpecialTrackAudio track={track} readOnly={readOnly} />
+          <UploadSpecialTrackAudio
+            track={track}
+            tracks={tracks}
+            setTracks={setTracks}
+            readOnly={readOnly}
+          />
         )}
       </RowWrapper>
       <Gap height={56} />

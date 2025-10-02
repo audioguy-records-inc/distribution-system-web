@@ -146,9 +146,13 @@ const CancelButton = styled.button.attrs({ className: "cancel-button" })`
 
 export default function UploadSpecialTrackAudio({
   track,
+  tracks = [],
+  setTracks = () => {},
   readOnly = false,
 }: {
   track: EditTrack;
+  tracks: EditTrack[];
+  setTracks: (tracks: EditTrack[]) => void;
   readOnly?: boolean;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -272,14 +276,22 @@ export default function UploadSpecialTrackAudio({
   };
 
   const handleRemoveFile = async () => {
-    // Implement the remove file logic here
-    if (
-      track.spatialAudioInfo?.trackFileList &&
-      track.spatialAudioInfo.trackFileList.length > 0
-    ) {
-      track.spatialAudioInfo.trackFileList = [];
+    if (track._id) {
+      // 트랙 상태 업데이트
+      setTracks(
+        tracks.map((t) =>
+          t._id === track._id
+            ? {
+                ...t,
+                spatialAudioInfo: {
+                  ...t.spatialAudioInfo,
+                  trackFileList: [],
+                },
+              }
+            : t,
+        ),
+      );
     }
-    // await updateTrack(track);
   };
 
   return (
