@@ -98,7 +98,7 @@ export default function UploadTrackAudio({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { uploadToS3 } = useUploadStore();
+  const { uploadToS3, uploadProgress } = useUploadStore();
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -246,7 +246,11 @@ export default function UploadTrackAudio({
         </div>
       ) : (
         <ButtonOutlinedPrimary
-          label={isLoading ? "업로드 중" : "파일 업로드"}
+          label={
+            isLoading
+              ? `업로드 중 ${Math.round(uploadProgress)}%`
+              : "파일 업로드"
+          }
           size="small"
           leftIcon={<UploadIcon />}
           onClick={handleButtonClick}

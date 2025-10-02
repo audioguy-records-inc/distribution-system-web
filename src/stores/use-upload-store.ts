@@ -8,8 +8,47 @@ import { putMultipart } from "@/api/uploads/put-multipart";
 import { putUploadFile } from "@/api/uploads/put-upload-file";
 import toast from "react-hot-toast";
 
+// 진행률 콜백과 함께 파일 업로드하는 함수
+const putUploadFileWithProgress = async (
+  presignedUrl: string,
+  file: File | Blob,
+  onProgress: (progress: number) => void,
+): Promise<{ etag: string }> => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    // 업로드 진행률 이벤트 리스너
+    xhr.upload.addEventListener("progress", (event) => {
+      if (event.lengthComputable) {
+        const progress = (event.loaded / event.total) * 100;
+        onProgress(progress);
+      }
+    });
+
+    // 업로드 완료 이벤트 리스너
+    xhr.addEventListener("load", () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const etag = xhr.getResponseHeader("ETag")?.replace(/"/g, "") || "";
+        resolve({ etag });
+      } else {
+        reject(new Error(`업로드 실패 (${xhr.status}): ${xhr.statusText}`));
+      }
+    });
+
+    // 에러 이벤트 리스너
+    xhr.addEventListener("error", () => {
+      reject(new Error("네트워크 오류로 업로드에 실패했습니다."));
+    });
+
+    // PUT 요청 시작
+    xhr.open("PUT", presignedUrl);
+    xhr.send(file);
+  });
+};
+
 interface UploadStore {
   isLoading: boolean;
+  uploadProgress: number;
   error: string | null;
   uploadToS3: (params: {
     file: File;
@@ -58,12 +97,13 @@ export const useUploadStore = create<UploadStore>()(
   persist(
     (set) => ({
       isLoading: false,
+      uploadProgress: 0,
       error: null,
       uploadToS3: async ({ file, fileType, dataCollectionName }) => {
         try {
-          set({ isLoading: true });
+          set({ isLoading: true, uploadProgress: 0 });
 
-          // 1. Upload ID 생성
+          // 1. Upload ID 생성 (10%)
           const uploadIdResult = await postUploadId({
             filename: file.name,
             fileType,
@@ -74,9 +114,11 @@ export const useUploadStore = create<UploadStore>()(
             throw new Error(uploadIdResult?.message || "업로드 ID 생성 실패");
           }
 
+          set({ uploadProgress: 10 });
+
           const { uploadId, key } = uploadIdResult.data;
 
-          // 2. Presigned URL 생성
+          // 2. Presigned URL 생성 (20%)
           const presignedResult = await postPreSignedUrls({
             uploadId,
             key,
@@ -93,17 +135,24 @@ export const useUploadStore = create<UploadStore>()(
             );
           }
 
-          // 3. 파일 업로드
-          const { etag } = await putUploadFile(
+          set({ uploadProgress: 20 });
+
+          // 3. 파일 업로드 (20% -> 80%)
+          const { etag } = await putUploadFileWithProgress(
             presignedResult.data.urlList[0].url,
             file,
+            (progress) => {
+              set({ uploadProgress: 20 + (progress * 60) / 100 });
+            },
           );
 
           if (!etag) {
             throw new Error("파일 업로드 실패");
           }
 
-          // 4. 멀티파트 업로드 완료
+          set({ uploadProgress: 80 });
+
+          // 4. 멀티파트 업로드 완료 (80% -> 100%)
           const completeResult = await putMultipart({
             uploadId,
             key,
@@ -117,6 +166,8 @@ export const useUploadStore = create<UploadStore>()(
             );
           }
 
+          set({ uploadProgress: 100 });
+
           return { name: file.name, filePath: `/${key}` };
         } catch (error) {
           const errorMessage =
@@ -128,7 +179,7 @@ export const useUploadStore = create<UploadStore>()(
           console.error("[uploadToS3] error", error);
           return null;
         } finally {
-          set({ isLoading: false });
+          set({ isLoading: false, uploadProgress: 0 });
         }
       },
       createUploadId: async ({ filename, fileType, dataCollectionName }) => {

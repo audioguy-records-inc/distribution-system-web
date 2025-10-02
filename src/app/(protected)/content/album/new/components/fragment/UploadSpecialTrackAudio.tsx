@@ -121,7 +121,7 @@ export default function UploadSpecialTrackAudio({
   const [audioFile, setAudioFile] = useState<FileInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [duration, setDuration] = useState<string>("");
-  const { uploadToS3 } = useUploadStore();
+  const { uploadToS3, uploadProgress } = useUploadStore();
   const { updateTrack } = useTrackStore();
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -268,7 +268,11 @@ export default function UploadSpecialTrackAudio({
         </AudioFileWrapper>
       ) : (
         <ButtonOutlinedPrimary
-          label={isLoading ? "업로드 중" : "파일 업로드"}
+          label={
+            isLoading
+              ? `업로드 중 ${Math.round(uploadProgress)}%`
+              : "파일 업로드"
+          }
           size="small"
           leftIcon={<UploadIcon />}
           onClick={handleButtonClick}
