@@ -75,28 +75,6 @@ export default function SpecialAudio({
       {track.isSupportedSpatialAudio && (
         <RowWrapper>
           <CustomInput
-            label="공간 음향 음원 UPC"
-            size="small"
-            value={track.spatialAudioInfo?.UPC || ""}
-            readOnly={readOnly}
-            required
-            onChange={(e) => {
-              setTracks((prevTracks: EditTrack[]) =>
-                prevTracks.map((t: EditTrack) =>
-                  t._id === track._id
-                    ? {
-                        ...t,
-                        spatialAudioInfo: {
-                          ...t.spatialAudioInfo,
-                          UPC: e.target.value,
-                        },
-                      }
-                    : t,
-                ),
-              );
-            }}
-          />
-          <CustomInput
             label="공간 음향 음원 ISRC"
             size="small"
             value={track.spatialAudioInfo?.ISRC || ""}

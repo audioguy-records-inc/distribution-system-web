@@ -161,19 +161,15 @@ const AlbumDetailPage = () => {
     setIsLoading(true);
     await updateAlbum(_album, false);
 
-    // 공간 음향 UPC 자동 설정
+    // 공간 음향 UPC null 설정
     const tracksWithUPC = edittingTracks.map((track) => {
-      // 공간 음향 서비스를 사용하고 UPC가 비어있으면 앨범 UPC로 채우기
-      if (
-        track.isSupportedSpatialAudio &&
-        !track.spatialAudioInfo?.UPC &&
-        _album.UPC
-      ) {
+      // 공간 음향 서비스를 사용하면 UPC를 null로 설정
+      if (track.isSupportedSpatialAudio) {
         return {
           ...track,
           spatialAudioInfo: {
             ...track.spatialAudioInfo,
-            UPC: _album.UPC,
+            UPC: null,
           },
         };
       }

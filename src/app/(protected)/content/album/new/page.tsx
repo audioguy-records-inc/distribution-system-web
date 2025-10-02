@@ -78,20 +78,16 @@ export default function AlbumNewPage() {
   };
 
   const onSubmit = async (data: Album) => {
-    // 공간 음향 UPC 자동 설정 헬퍼 함수
-    const applyAlbumUPCToTracks = (tracks: Track[], albumUPC?: string) => {
+    // 공간 음향 UPC null 설정 헬퍼 함수
+    const setSpatialAudioUPCToNull = (tracks: Track[]) => {
       return tracks.map((track) => {
-        // 공간 음향 서비스를 사용하고 UPC가 비어있으면 앨범 UPC로 채우기
-        if (
-          track.isSupportedSpatialAudio &&
-          !track.spatialAudioInfo?.UPC &&
-          albumUPC
-        ) {
+        // 공간 음향 서비스를 사용하면 UPC를 null로 설정
+        if (track.isSupportedSpatialAudio) {
           return {
             ...track,
             spatialAudioInfo: {
               ...track.spatialAudioInfo,
-              UPC: albumUPC,
+              UPC: null,
             },
           };
         }
@@ -102,8 +98,8 @@ export default function AlbumNewPage() {
     if (newAlbum) {
       await updateAlbum(data, true);
 
-      // 앨범 UPC를 공간 음향 UPC에 적용
-      const tracksWithUPC = applyAlbumUPCToTracks(edittingTracks, data.UPC);
+      // 공간 음향 UPC를 null로 설정
+      const tracksWithUPC = setSpatialAudioUPCToNull(edittingTracks);
 
       let successNewTracks = 0;
       let successUpdatedTracks = 0;
@@ -144,8 +140,8 @@ export default function AlbumNewPage() {
         // 앨범 생성 후 newAlbum에서 ID를 가져와서 트랙에 설정
         const currentNewAlbum = useAlbumStore.getState().newAlbum;
         if (currentNewAlbum?._id) {
-          // 앨범 UPC를 공간 음향 UPC에 적용
-          const tracksWithUPC = applyAlbumUPCToTracks(edittingTracks, data.UPC);
+          // 공간 음향 UPC를 null로 설정
+          const tracksWithUPC = setSpatialAudioUPCToNull(edittingTracks);
 
           let successNewTracks = 0;
 

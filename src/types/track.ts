@@ -12,7 +12,7 @@ export interface TrackFile {
 }
 
 export interface SpatialAudioInfo {
-  UPC?: string;
+  UPC?: string | null;
   ISRC?: string;
   trackFileList?: TrackFile[];
 }
