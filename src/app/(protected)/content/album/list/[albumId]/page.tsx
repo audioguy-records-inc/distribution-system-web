@@ -227,7 +227,7 @@ const AlbumDetailPage = () => {
   return (
     <Container>
       <HeaderWrapper>
-        <PageHeader title={"앨범 상세"} />
+        <PageHeader title={"앨범 상세"} showRequiredInfo={true} />
         <ButtonWrapper>
           <ButtonOutlinedSecondary label="DDEX 전송" onClick={handleDdexSend} />
           <ButtonOutlinedSecondary label="삭제" onClick={handleDelete} />

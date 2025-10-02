@@ -200,7 +200,7 @@ export default function AlbumNewPage() {
   return (
     <Container key={resetKey}>
       <HeaderWrapper>
-        <PageHeader title={"신규 앨범 등록"} />
+        <PageHeader title={"신규 앨범 등록"} showRequiredInfo={true} />
         <ButtonWrapper>
           <ButtonOutlinedSecondary label="초기화" onClick={handleReset} />
           {isLoading ? (
