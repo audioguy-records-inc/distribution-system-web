@@ -110,6 +110,40 @@ const IconButton = styled.button`
   justify-content: center;
 `;
 
+const UploadContainer = styled.div`
+  position: relative;
+  display: inline-block;
+
+  &:hover .cancel-button {
+    opacity: 1;
+  }
+`;
+
+const CancelButton = styled.button.attrs({ className: "cancel-button" })`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: ${theme.colors.red[500]};
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background-color: ${theme.colors.red[600]};
+  }
+`;
+
 export default function UploadSpecialTrackAudio({
   track,
   readOnly = false,
@@ -121,10 +155,15 @@ export default function UploadSpecialTrackAudio({
   const [audioFile, setAudioFile] = useState<FileInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [duration, setDuration] = useState<string>("");
-  const { uploadToS3, uploadProgress } = useUploadStore();
+  const { uploadToS3, uploadProgress, cancelUpload } = useUploadStore();
   const { updateTrack } = useTrackStore();
   const handleButtonClick = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleCancelUpload = () => {
+    cancelUpload();
+    setIsLoading(false);
   };
 
   const handleFileChange = async (
@@ -267,17 +306,24 @@ export default function UploadSpecialTrackAudio({
           <Duration>{duration}</Duration>
         </AudioFileWrapper>
       ) : (
-        <ButtonOutlinedPrimary
-          label={
-            isLoading
-              ? `업로드 중 ${Math.round(uploadProgress)}%`
-              : "파일 업로드"
-          }
-          size="small"
-          leftIcon={<UploadIcon />}
-          onClick={handleButtonClick}
-          disabled={isLoading || readOnly}
-        />
+        <UploadContainer>
+          <ButtonOutlinedPrimary
+            label={
+              isLoading
+                ? `업로드 중 ${Math.round(uploadProgress)}%`
+                : "파일 업로드"
+            }
+            size="small"
+            leftIcon={<UploadIcon />}
+            onClick={handleButtonClick}
+            disabled={isLoading || readOnly}
+          />
+          {isLoading && !readOnly && (
+            <CancelButton onClick={handleCancelUpload} title="업로드 취소">
+              ×
+            </CancelButton>
+          )}
+        </UploadContainer>
       )}
       <input
         type="file"

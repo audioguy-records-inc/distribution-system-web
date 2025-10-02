@@ -13,9 +13,11 @@ const putUploadFileWithProgress = async (
   presignedUrl: string,
   file: File | Blob,
   onProgress: (progress: number) => void,
+  setXhr: (xhr: XMLHttpRequest | null) => void,
 ): Promise<{ etag: string }> => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
+    setXhr(xhr);
 
     // 업로드 진행률 이벤트 리스너
     xhr.upload.addEventListener("progress", (event) => {
@@ -27,6 +29,7 @@ const putUploadFileWithProgress = async (
 
     // 업로드 완료 이벤트 리스너
     xhr.addEventListener("load", () => {
+      setXhr(null); // 완료 시 xhr 참조 제거
       if (xhr.status >= 200 && xhr.status < 300) {
         const etag = xhr.getResponseHeader("ETag")?.replace(/"/g, "") || "";
         resolve({ etag });
@@ -37,7 +40,14 @@ const putUploadFileWithProgress = async (
 
     // 에러 이벤트 리스너
     xhr.addEventListener("error", () => {
+      setXhr(null); // 에러 시 xhr 참조 제거
       reject(new Error("네트워크 오류로 업로드에 실패했습니다."));
+    });
+
+    // 업로드 중단 이벤트 리스너
+    xhr.addEventListener("abort", () => {
+      setXhr(null); // 중단 시 xhr 참조 제거
+      reject(new Error("업로드가 취소되었습니다."));
     });
 
     // PUT 요청 시작
@@ -50,11 +60,13 @@ interface UploadStore {
   isLoading: boolean;
   uploadProgress: number;
   error: string | null;
+  currentXhr: XMLHttpRequest | null;
   uploadToS3: (params: {
     file: File;
     fileType: FileType;
     dataCollectionName: DataCollectionName;
   }) => Promise<{ name: string; filePath: string } | null>;
+  cancelUpload: () => void;
   createUploadId: ({
     filename,
     fileType,
@@ -95,10 +107,11 @@ interface UploadStore {
 
 export const useUploadStore = create<UploadStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       isLoading: false,
       uploadProgress: 0,
       error: null,
+      currentXhr: null,
       uploadToS3: async ({ file, fileType, dataCollectionName }) => {
         try {
           set({ isLoading: true, uploadProgress: 0 });
@@ -144,6 +157,9 @@ export const useUploadStore = create<UploadStore>()(
             (progress) => {
               set({ uploadProgress: 20 + (progress * 60) / 100 });
             },
+            (xhr) => {
+              set({ currentXhr: xhr });
+            },
           );
 
           if (!etag) {
@@ -179,7 +195,15 @@ export const useUploadStore = create<UploadStore>()(
           console.error("[uploadToS3] error", error);
           return null;
         } finally {
-          set({ isLoading: false, uploadProgress: 0 });
+          set({ isLoading: false, uploadProgress: 0, currentXhr: null });
+        }
+      },
+      cancelUpload: () => {
+        const { currentXhr } = get();
+        if (currentXhr) {
+          currentXhr.abort();
+          set({ isLoading: false, uploadProgress: 0, currentXhr: null });
+          toast.success("업로드가 취소되었습니다.");
         }
       },
       createUploadId: async ({ filename, fileType, dataCollectionName }) => {
