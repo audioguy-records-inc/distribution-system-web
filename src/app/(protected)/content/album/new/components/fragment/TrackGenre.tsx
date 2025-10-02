@@ -59,7 +59,6 @@ export default function TrackGenre({
         size="small"
         width={300}
         readOnly={readOnly}
-        required
       />
     </Container>
   );

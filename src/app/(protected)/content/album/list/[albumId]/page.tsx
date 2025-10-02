@@ -136,21 +136,25 @@ const AlbumDetailPage = () => {
   const isFilled = () => {
     const album = watch();
 
-    return (
-      album.UPC &&
-      album.albumUniqueId &&
-      album.releaseArtistList &&
-      album.releaseArtistList.length > 0 &&
-      album.titleList &&
-      album.titleList.length > 0 &&
-      album.albumType &&
-      album.mainGenre &&
-      album.subGenre &&
-      album.supplyRegion &&
-      album.releaseCountryCode &&
-      album.utcReleasedAt &&
-      album.isAdultOnly !== undefined
-    );
+    // DDEX 발행 시에만 필수값 검증하도록 주석처리
+    // return (
+    //   album.UPC &&
+    //   album.albumUniqueId &&
+    //   album.releaseArtistList &&
+    //   album.releaseArtistList.length > 0 &&
+    //   album.titleList &&
+    //   album.titleList.length > 0 &&
+    //   album.albumType &&
+    //   album.mainGenre &&
+    //   album.subGenre &&
+    //   album.supplyRegion &&
+    //   album.releaseCountryCode &&
+    //   album.utcReleasedAt &&
+    //   album.isAdultOnly !== undefined
+    // );
+
+    // 앨범 수정 시에는 항상 활성화
+    return true;
   };
 
   const handleSubmit = async () => {

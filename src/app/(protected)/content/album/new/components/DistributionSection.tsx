@@ -34,16 +34,12 @@ export default function DistributionSection({
     <Container>
       <Gap height={32} />
       <RowWrapper>
-        <CustomInput
-          label="UCI"
-          placeholder="UCI 입력"
-          {...register("UCI", { required: true })}
-        />
+        <CustomInput label="UCI" placeholder="UCI 입력" {...register("UCI")} />
         <CustomInput
           label="UPC"
           placeholder="UPC 입력"
           required
-          {...register("UPC", { required: true })}
+          {...register("UPC")}
         />
       </RowWrapper>
       <Gap height={56} />
@@ -51,8 +47,7 @@ export default function DistributionSection({
         <CustomInput
           label="앨범 코드"
           placeholder="앨범 코드 입력"
-          required
-          {...register("albumUniqueId", { required: true })}
+          {...register("albumUniqueId")}
         />
         <Controller
           name="artistImageList"

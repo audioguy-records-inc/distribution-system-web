@@ -50,7 +50,6 @@ export default function AlbumGenre({
       <Controller
         name="subGenre"
         control={control}
-        rules={{ required: true }}
         render={({ field }) => {
           return (
             <CustomDropdown
@@ -68,7 +67,6 @@ export default function AlbumGenre({
               }}
               size="small"
               width={300}
-              required
             />
           );
         }}

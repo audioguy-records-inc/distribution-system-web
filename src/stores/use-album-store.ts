@@ -1,17 +1,117 @@
 import Album, { AlbumFile } from "@/types/album";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+import Track from "@/types/track";
 import { create } from "zustand";
 import { deleteAlbum } from "@/api/album/delete-album";
 import { getAlbum } from "@/api/album/get-album";
 import { getAlbumFiles } from "@/api/album/get-album-files";
 import { getAlbums } from "@/api/album/get-albums";
+import { getTracks } from "@/api/track/get-tracks";
 import { postAlbum } from "@/api/album/post-album";
 import { postAlbumDdex } from "@/api/album/post-album-ddex";
 import { postAlbumFile } from "@/api/album/post-album-file";
 import { putAlbum } from "@/api/album/put-album";
 import { searchAlbums } from "@/api/album/search-albums";
 import toast from "react-hot-toast";
+
+// DDEX 발행 시 필수값 검증 함수
+const validateDdexRequiredFields = async (album: Album): Promise<string[]> => {
+  const errors: string[] = [];
+
+  // 앨범 필수값 검증
+  if (!album.UPC) errors.push("• UPC");
+  if (!album.releaseArtistList || album.releaseArtistList.length === 0) {
+    errors.push("• releaseArtistList");
+  }
+  if (!album.titleList || album.titleList.length === 0) {
+    errors.push("• titleList");
+  }
+  if (!album.albumType) errors.push("• albumType");
+  if (!album.mainGenre) errors.push("• mainGenre");
+  if (!album.agencyCompanyName) errors.push("• agencyCompanyName");
+  if (!album.supplyRegion) errors.push("• supplyRegion");
+  if (!album.utcReleasedAt) errors.push("• utcReleasedAt");
+  if (!album.coverImageList || album.coverImageList.length === 0) {
+    errors.push("• coverImageList");
+  }
+
+  // 트랙 필수값 검증
+  try {
+    if (!album._id) {
+      errors.push("• 앨범 ID가 없습니다");
+      return errors;
+    }
+
+    const tracksResponse = await getTracks({ albumId: album._id });
+    if (
+      !tracksResponse.data?.trackList ||
+      tracksResponse.data.trackList.length === 0
+    ) {
+      errors.push("• 트랙이 등록되지 않았습니다");
+    } else {
+      const tracks = tracksResponse.data.trackList;
+
+      tracks.forEach((track: Track, index: number) => {
+        const trackPrefix = `트랙 ${index + 1}:`;
+
+        if (!track.titleList || track.titleList.length === 0) {
+          errors.push(`${trackPrefix} titleList`);
+        }
+        if (!track.discNumber) errors.push(`${trackPrefix} discNumber`);
+        if (!track.trackNumber) errors.push(`${trackPrefix} trackNumber`);
+        if (!track.ISRC) errors.push(`${trackPrefix} ISRC`);
+        if (!track.trackFileList || track.trackFileList.length === 0) {
+          errors.push(`${trackPrefix} trackFileList`);
+        }
+        if (!track.releaseArtistList || track.releaseArtistList.length === 0) {
+          errors.push(`${trackPrefix} releaseArtistList`);
+        }
+        if (!track.mainGenre) errors.push(`${trackPrefix} mainGenre`);
+        if (!track.releaseCountryCode)
+          errors.push(`${trackPrefix} releaseCountryCode`);
+        if (!track.utcReleasedAt) errors.push(`${trackPrefix} utcReleasedAt`);
+        if (track.isAdultOnly === undefined)
+          errors.push(`${trackPrefix} isAdultOnly`);
+        if (track.isInstrumental === undefined)
+          errors.push(`${trackPrefix} isInstrumental`);
+        if (track.isSupportedSpatialAudio === undefined) {
+          errors.push(`${trackPrefix} isSupportedSpatialAudio`);
+        }
+
+        // isInstrumental이 false일 때만 contributorList 필수
+        if (track.isInstrumental === false) {
+          if (!track.contributorList || track.contributorList.length === 0) {
+            errors.push(
+              `${trackPrefix} contributorList (일반 트랙이므로 필수)`,
+            );
+          }
+        }
+
+        // isSupportedSpatialAudio가 true일 때만 spatialAudioInfo 필수
+        if (track.isSupportedSpatialAudio === true) {
+          if (
+            !track.spatialAudioInfo?.trackFileList ||
+            track.spatialAudioInfo.trackFileList.length === 0
+          ) {
+            errors.push(
+              `${trackPrefix} spatialAudioInfo.trackFileList (공간음향이므로 필수)`,
+            );
+          }
+          if (!track.spatialAudioInfo?.ISRC) {
+            errors.push(
+              `${trackPrefix} spatialAudioInfo.ISRC (공간음향이므로 필수)`,
+            );
+          }
+        }
+      });
+    }
+  } catch (error) {
+    errors.push("• 트랙 정보를 불러올 수 없습니다");
+  }
+
+  return errors;
+};
 
 interface AlbumStore {
   newAlbum: Album | null;
@@ -435,6 +535,23 @@ export const useAlbumStore = create<AlbumStore>()(
       sendAlbumDdex: async (albumId: string) => {
         set({ isLoading: true });
         try {
+          // DDEX 발행 전 필수값 검증
+          const albumResponse = await getAlbum({ albumId });
+          if (!albumResponse || albumResponse.error || !albumResponse.data) {
+            throw new Error("앨범 정보를 찾을 수 없습니다.");
+          }
+
+          const validationErrors = await validateDdexRequiredFields(
+            albumResponse.data.album,
+          );
+          if (validationErrors.length > 0) {
+            const errorMessage = `다음 필수값이 누락되었습니다:\n${validationErrors.join(
+              "\n",
+            )}`;
+            toast.error(errorMessage);
+            throw new Error(errorMessage);
+          }
+
           const response = await postAlbumDdex(albumId);
 
           if (!response || response.error || !response.data) {

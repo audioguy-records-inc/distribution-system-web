@@ -39,10 +39,12 @@ export default function ContributorInput({
   value,
   onChange,
   readOnly = false,
+  required = false,
 }: {
   value: Contributor[] | null;
   onChange: (value: Contributor[] | null) => void;
   readOnly?: boolean;
+  required?: boolean;
 }) {
   const contributors = value || [];
   console.log(
@@ -206,7 +208,9 @@ export default function ContributorInput({
 
   return (
     <Container>
-      <Label>기여자</Label>
+      <Label>
+        기여자 {required && <span style={{ color: "red" }}>*</span>}
+      </Label>
       <CustomTable columns={columns} data={contributors} size="small" />
       <Gap height={12} />
       <ButtonOutlinedSecondary

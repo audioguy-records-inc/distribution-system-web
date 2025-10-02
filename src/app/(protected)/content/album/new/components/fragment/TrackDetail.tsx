@@ -394,6 +394,7 @@ export default function TrackDetail({
             );
           }}
           value={currentTrack.isAdultOnly}
+          required
           // readOnly={!isEdit}
         />
       </RowWrapper>
@@ -446,6 +447,7 @@ export default function TrackDetail({
               ),
             );
           }}
+          required
           // readOnly={!isEdit}
         />
       </RowWrapper>
@@ -472,6 +474,7 @@ export default function TrackDetail({
               });
             }}
             readOnly={false}
+            required={true}
           />
           <Gap height={56} />
         </>
