@@ -71,6 +71,7 @@ export default function TrackUserContract({
         value={value?.userContractUniqueId || ""}
         width={100}
         size="small"
+        blueRequired
       />
       <CustomDropdown
         items={searchedUserContracts.map((userContract) => ({

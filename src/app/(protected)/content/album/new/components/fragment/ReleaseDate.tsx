@@ -74,6 +74,7 @@ export default function ReleaseDate({
               }
             }}
             required
+            blueRequired
           />
         )}
       />
@@ -136,6 +137,7 @@ export default function ReleaseDate({
                 }
               }}
               width={180}
+              blueRequired
             />
           )}
         />

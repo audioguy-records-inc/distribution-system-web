@@ -82,6 +82,7 @@ interface CustomCalendarProps {
   width?: number;
   size?: "small" | "normal";
   required?: boolean;
+  blueRequired?: boolean;
 }
 
 const CustomCalendar = ({
@@ -92,6 +93,7 @@ const CustomCalendar = ({
   width = 320,
   size = "small",
   required = false,
+  blueRequired = false,
 }: CustomCalendarProps) => {
   const [datePickerRef, setDatePickerRef] = useState<DatePicker | null>(null);
 
@@ -120,6 +122,7 @@ const CustomCalendar = ({
         <Label>
           {label}
           {required && <Required>*</Required>}
+          {blueRequired && <span style={{ color: "blue" }}>*</span>}
         </Label>
       )}
       <CalendarContainer>

@@ -208,6 +208,7 @@ export default function TrackDetail({
             );
           }}
           required
+          blueRequired
         />
       </RowWrapper>
       <Gap height={56} />

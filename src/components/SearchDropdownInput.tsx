@@ -84,6 +84,7 @@ interface SearchDropdownInputProps<T> {
   size?: "normal" | "small";
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   required?: boolean;
+  blueRequired?: boolean;
 }
 
 const SearchDropdownInput = <T,>({
@@ -95,6 +96,7 @@ const SearchDropdownInput = <T,>({
   size = "normal",
   onKeyDown,
   required = false,
+  blueRequired = false,
 }: SearchDropdownInputProps<T>) => {
   const [searched, setSearched] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -170,6 +172,7 @@ const SearchDropdownInput = <T,>({
       <Title>
         {title}
         {required && <span style={{ color: "red" }}>*</span>}
+        {blueRequired && <span style={{ color: "blue" }}>*</span>}
       </Title>
       <Gap height={8} />
       <SearchInput

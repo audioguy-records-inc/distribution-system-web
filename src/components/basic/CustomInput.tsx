@@ -126,6 +126,7 @@ const IconContainer = styled.div<{ $size?: "small" | "normal" }>`
 interface InputProps {
   label?: string;
   required?: boolean;
+  blueRequired?: boolean;
   locked?: boolean;
   helpText?: string;
   isError?: boolean;
@@ -148,6 +149,7 @@ const CustomInput = ({
   label,
   helpText,
   required,
+  blueRequired,
   locked,
   isError,
   placeholder,
@@ -170,10 +172,9 @@ const CustomInput = ({
           <Label $disabled={disabled} $size={size}>
             {label}
           </Label>
-          {required && (
-            <Required $disabled={disabled} $size={size}>
-              *
-            </Required>
+          {required && <Required $disabled={disabled}>*</Required>}
+          {blueRequired && (
+            <span style={{ color: "blue", marginLeft: "4px" }}>*</span>
           )}
         </LabelContainer>
       )}

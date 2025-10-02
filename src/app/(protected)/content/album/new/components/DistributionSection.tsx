@@ -39,6 +39,7 @@ export default function DistributionSection({
           label="UPC"
           placeholder="UPC 입력"
           required
+          blueRequired
           {...register("UPC")}
         />
       </RowWrapper>

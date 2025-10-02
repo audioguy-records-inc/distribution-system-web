@@ -100,6 +100,7 @@ export default function AlbumSection({
           label="유통사"
           placeholder="유통사명 입력"
           size="small"
+          blueRequired
           {...register("distributionCompanyName", {})}
         />
         <CustomInput
@@ -107,6 +108,7 @@ export default function AlbumSection({
           placeholder="레이블명 입력"
           size="small"
           required
+          blueRequired
           {...register("agencyCompanyName")}
         />
       </RowWrapper>
