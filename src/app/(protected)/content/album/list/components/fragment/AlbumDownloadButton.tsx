@@ -55,7 +55,7 @@ export default function AlbumDownloadButton() {
       const albumBaseData = {
         UCI: album.UCI,
         UPC: album.UPC,
-        앨범코드: album.albumUniqueId,
+        // 앨범코드: album.albumUniqueId,
         아티스트이미지: album.artistImageList
           ?.map((artist) => artist.imageOriginalPath)
           .join(","),

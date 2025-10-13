@@ -119,13 +119,13 @@ const TrackSearchModal = ({
   };
 
   const columns: Column<Track>[] = [
-    {
-      header: "트랙 코드",
-      accessor: "trackUniqueId",
-      type: "string",
-      width: 140,
-      align: "center",
-    },
+    // {
+    //   header: "트랙 코드",
+    //   accessor: "trackUniqueId",
+    //   type: "string",
+    //   width: 140,
+    //   align: "center",
+    // },
     {
       header: "트랙명",
       accessor: "titleList",

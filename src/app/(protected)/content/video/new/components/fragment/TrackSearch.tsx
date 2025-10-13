@@ -115,13 +115,13 @@ export default function TrackSearch({
   // trackIdList를 안정적으로 비교하기 위해 JSON.stringify 사용
 
   const columns: Column<Track>[] = [
-    {
-      header: "트랙 코드",
-      accessor: "trackUniqueId",
-      type: "string",
-      width: 140,
-      align: "center",
-    },
+    // {
+    //   header: "트랙 코드",
+    //   accessor: "trackUniqueId",
+    //   type: "string",
+    //   width: 140,
+    //   align: "center",
+    // },
     {
       header: "트랙명",
       accessor: "titleList",

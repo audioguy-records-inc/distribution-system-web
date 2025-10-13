@@ -332,7 +332,10 @@ export const useAlbumStore = create<AlbumStore>()(
       createAlbum: async (album: Album) => {
         set({ isLoading: true });
         try {
-          const response = await postAlbum({ albumList: [album] });
+          // 서버에서 자동 생성하므로 albumUniqueId 제거
+          const { albumUniqueId, ...albumWithoutCode } = album;
+
+          const response = await postAlbum({ albumList: [albumWithoutCode] });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
@@ -365,7 +368,10 @@ export const useAlbumStore = create<AlbumStore>()(
       updateAlbum: async (album: Album, isNewAlbum: boolean = false) => {
         set({ isLoading: true });
         try {
-          const response = await putAlbum({ album });
+          // 서버에서 자동 생성하므로 albumUniqueId 제거 (수정 시에는 기존 값 유지 가능하지만 일관성을 위해 제거)
+          const { albumUniqueId, ...albumWithoutCode } = album;
+
+          const response = await putAlbum({ album: albumWithoutCode as Album });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);

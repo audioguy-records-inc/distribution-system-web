@@ -180,22 +180,6 @@ export default function TrackDetail({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="트랙 코드"
-          placeholder="트랙 코드를 입력"
-          size="small"
-          value={currentTrack.trackUniqueId || ""}
-          onChange={(e) => {
-            setTracks(
-              tracks.map((track, i) =>
-                i === index
-                  ? { ...track, trackUniqueId: e.target.value }
-                  : track,
-              ),
-            );
-          }}
-          // readOnly={!isEdit}
-        />
-        <CustomInput
           label="ISRC"
           placeholder="ISRC 입력"
           size="small"

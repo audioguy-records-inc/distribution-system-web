@@ -116,7 +116,10 @@ export const useTrackStore = create<TrackStore>()(
       createTrack: async (track: Track) => {
         set({ isLoading: true });
         try {
-          const response = await postTrack({ trackList: [track] });
+          // 서버에서 자동 생성하므로 trackUniqueId 제거
+          const { trackUniqueId, ...trackWithoutCode } = track;
+
+          const response = await postTrack({ trackList: [trackWithoutCode] });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);
@@ -152,7 +155,10 @@ export const useTrackStore = create<TrackStore>()(
             throw new Error("앨범 ID가 없습니다.");
           }
 
-          const response = await putTrack({ track });
+          // 서버에서 자동 생성하므로 trackUniqueId 제거 (수정 시에는 기존 값 유지 가능하지만 일관성을 위해 제거)
+          const { trackUniqueId, ...trackWithoutCode } = track;
+
+          const response = await putTrack({ track: trackWithoutCode as Track });
 
           if (!response || response.error || !response.data) {
             throw new Error(response.message);

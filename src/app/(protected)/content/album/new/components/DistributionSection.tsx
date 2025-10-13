@@ -45,11 +45,6 @@ export default function DistributionSection({
       </RowWrapper>
       <Gap height={56} />
       <RowWrapper>
-        <CustomInput
-          label="앨범 코드"
-          placeholder="앨범 코드 입력"
-          {...register("albumUniqueId")}
-        />
         <Controller
           name="artistImageList"
           control={control}

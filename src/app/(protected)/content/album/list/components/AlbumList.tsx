@@ -55,13 +55,13 @@ export default function AlbumList() {
         return <RenderText>{(index ?? 0) + 1}</RenderText>;
       },
     },
-    {
-      header: "앨범 코드",
-      accessor: "albumUniqueId",
-      type: "string",
-      width: 140,
-      align: "center",
-    },
+    // {
+    //   header: "앨범 코드",
+    //   accessor: "albumUniqueId",
+    //   type: "string",
+    //   width: 140,
+    //   align: "center",
+    // },
     {
       header: "앨범명",
       accessor: "titleList",
