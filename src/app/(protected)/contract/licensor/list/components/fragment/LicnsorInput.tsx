@@ -94,7 +94,6 @@ const LicensorInput = ({
             size="small"
             label="사업자등록번호"
             placeholder="사업자등록번호 입력"
-            required
             {...register("companyRegistrationNumber")}
           />
         )}
@@ -103,7 +102,6 @@ const LicensorInput = ({
             size="small"
             label="주민등록번호"
             placeholder="주민등록번호 입력"
-            required
             {...register("personalIdNumber")}
           />
         )}
@@ -123,7 +121,6 @@ const LicensorInput = ({
           label="주소"
           placeholder="주소 입력"
           readOnly={!isEdit}
-          required
           {...register("address")}
         />
       </RowWrapper>

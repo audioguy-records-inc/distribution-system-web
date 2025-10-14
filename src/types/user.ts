@@ -27,7 +27,7 @@ export interface User {
 
   // 공통 필드
   representativeName: string;
-  address: string;
+  address?: string;
   bankName: string;
   bankAccount: string;
   albumCount: number;

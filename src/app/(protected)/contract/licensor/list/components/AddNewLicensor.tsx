@@ -129,22 +129,7 @@ const AddNewLicensor = () => {
       return true;
     }
 
-    if (
-      watch("type") === UserType.COMPANY &&
-      !watch("companyRegistrationNumber")
-    ) {
-      return true;
-    }
-
-    if (watch("type") === UserType.INDIVIDUAL && !watch("personalIdNumber")) {
-      return true;
-    }
-
     if (!watch("representativeName")) {
-      return true;
-    }
-
-    if (!watch("address")) {
       return true;
     }
 
