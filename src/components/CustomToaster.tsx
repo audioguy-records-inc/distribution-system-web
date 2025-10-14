@@ -7,7 +7,12 @@ import toast, { Toaster, resolveValue } from "react-hot-toast";
  */
 export default function CustomToaster() {
   return (
-    <Toaster position="top-center">
+    <Toaster
+      position="top-center"
+      toastOptions={{
+        duration: Infinity, // toast가 자동으로 사라지지 않도록 설정
+      }}
+    >
       {(t) => (
         <div
           style={{
