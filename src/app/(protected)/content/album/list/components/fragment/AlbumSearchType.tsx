@@ -7,6 +7,7 @@ export type AlbumSearchType =
   | "releaseArtistList.name"
   | "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant"
   | "trackList.title"
+  | "UPC"
   | "all";
 
 export default function AlbumSearchTypeDropdown({
@@ -32,6 +33,10 @@ export default function AlbumSearchTypeDropdown({
     {
       key: "trackList.title",
       value: "트랙명",
+    },
+    {
+      key: "UPC",
+      value: "UPC",
     },
   ];
   return (

@@ -52,6 +52,7 @@ export default function AlbumSearch() {
         "releaseArtistList.name", // 아티스트명
         "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant", // 앨범명
         "trackList.title", // 트랙명
+        "UPC", // UPC
         "agencyCompanyName", // 기획사명
       ].join(",");
     };
@@ -148,7 +149,7 @@ export default function AlbumSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="아티스트명, 앨범명, 트랙명 입력"
+          placeholder="아티스트명, 앨범명, 트랙명, UPC 입력"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}
