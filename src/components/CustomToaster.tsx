@@ -2,10 +2,21 @@
 
 import toast, { Toaster, resolveValue } from "react-hot-toast";
 
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+
 /**
  * x 버튼이 있는 커스텀 Toaster 컴포넌트
+ * 페이지 이동 시 모든 toast를 자동으로 닫습니다.
  */
 export default function CustomToaster() {
+  const pathname = usePathname();
+
+  // 페이지 경로가 변경될 때마다 모든 toast 닫기
+  useEffect(() => {
+    toast.dismiss();
+  }, [pathname]);
+
   return (
     <Toaster
       position="top-center"
