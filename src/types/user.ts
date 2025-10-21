@@ -28,8 +28,8 @@ export interface User {
   // 공통 필드
   representativeName: string;
   address?: string;
-  bankName: string;
-  bankAccount: string;
+  bankName?: string;
+  bankAccount?: string;
   albumCount: number;
 
   contactPersonList: ContactPerson[];
