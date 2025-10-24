@@ -32,6 +32,7 @@ interface TrackStore {
   ) => void;
   sortTracks: (tracksToSort: EditTrack[]) => EditTrack[];
   resetEdittingTracks: () => void;
+  validateTrackForSettlement: (track: Track) => boolean;
 }
 
 export const useTrackStore = create<TrackStore>()(
@@ -116,6 +117,13 @@ export const useTrackStore = create<TrackStore>()(
       createTrack: async (track: Track) => {
         set({ isLoading: true });
         try {
+          // 정산 필수값 검증
+          if (!get().validateTrackForSettlement(track)) {
+            throw new Error(
+              "정산에 필요한 필수값이 누락되었습니다. (ISRC, userId, userContractId, albumId)",
+            );
+          }
+
           // 서버에서 자동 생성하므로 trackUniqueId 제거
           const { trackUniqueId, ...trackWithoutCode } = track;
 
@@ -153,6 +161,13 @@ export const useTrackStore = create<TrackStore>()(
         try {
           if (!track.albumId) {
             throw new Error("앨범 ID가 없습니다.");
+          }
+
+          // 정산 필수값 검증
+          if (!get().validateTrackForSettlement(track)) {
+            throw new Error(
+              "정산에 필요한 필수값이 누락되었습니다. (ISRC, userId, userContractId, albumId)",
+            );
           }
 
           // 서버에서 자동 생성하므로 trackUniqueId 제거 (수정 시에는 기존 값 유지 가능하지만 일관성을 위해 제거)
@@ -301,6 +316,15 @@ export const useTrackStore = create<TrackStore>()(
       },
       resetEdittingTracks: () => {
         set({ edittingTracks: [] });
+      },
+      validateTrackForSettlement: (track: Track) => {
+        // 정산에 필요한 필수값 검증: ISRC, userId, userContractId, albumId
+        return !!(
+          track.ISRC &&
+          track.userId &&
+          track.userContractId &&
+          track.albumId
+        );
       },
     }),
     {

@@ -136,25 +136,16 @@ const AlbumDetailPage = () => {
   const isFilled = () => {
     const album = watch();
 
-    // DDEX 발행 시에만 필수값 검증하도록 주석처리
-    // return (
-    //   album.UPC &&
-    //   album.albumUniqueId &&
-    //   album.releaseArtistList &&
-    //   album.releaseArtistList.length > 0 &&
-    //   album.titleList &&
-    //   album.titleList.length > 0 &&
-    //   album.albumType &&
-    //   album.mainGenre &&
-    //   album.subGenre &&
-    //   album.supplyRegion &&
-    //   album.releaseCountryCode &&
-    //   album.utcReleasedAt &&
-    //   album.isAdultOnly !== undefined
-    // );
-
-    // 앨범 수정 시에는 항상 활성화
-    return true;
+    // 정산에 필요한 필수값 검증
+    return (
+      album.UPC &&
+      album.distributionCompanyName &&
+      album.agencyCompanyName &&
+      album.userInfo?._id &&
+      album.userContractInfo?._id &&
+      album.utcReleasedAt &&
+      album.utcServiceStartedAt
+    );
   };
 
   const handleSubmit = async () => {
@@ -188,10 +179,22 @@ const AlbumDetailPage = () => {
     for (const track of tracksWithUPC) {
       try {
         if (track._id) {
-          await updateTrack(track);
+          // 기존 트랙 수정 시에도 userId와 userContractId 설정
+          const trackWithUserInfo = {
+            ...track,
+            userId: _album.userInfo?._id,
+            userContractId: _album.userContractInfo?._id,
+          };
+          await updateTrack(trackWithUserInfo);
           successUpdatedTracks++;
         } else {
-          await createTrack(track);
+          // 신규 트랙 생성 시 userId와 userContractId 설정
+          const trackWithUserInfo = {
+            ...track,
+            userId: _album.userInfo?._id,
+            userContractId: _album.userContractInfo?._id,
+          };
+          await createTrack(trackWithUserInfo);
           successNewTracks++;
         }
       } catch (error) {

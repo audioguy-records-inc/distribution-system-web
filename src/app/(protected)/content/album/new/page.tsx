@@ -151,6 +151,8 @@ export default function AlbumNewPage() {
               const trackWithAlbumId = {
                 ...track,
                 albumId: currentNewAlbum._id,
+                userId: currentNewAlbum.userInfo?._id,
+                userContractId: currentNewAlbum.userContractInfo?._id,
               };
               await createTrack(trackWithAlbumId);
               successNewTracks++;
@@ -176,25 +178,16 @@ export default function AlbumNewPage() {
   const isFilled = () => {
     const album = watch();
 
-    // DDEX 발행 시에만 필수값 검증하도록 주석처리
-    // return (
-    //   album.UPC &&
-    //   album.albumUniqueId &&
-    //   album.releaseArtistList &&
-    //   album.releaseArtistList.length > 0 &&
-    //   album.titleList &&
-    //   album.titleList.length > 0 &&
-    //   album.albumType &&
-    //   album.mainGenre &&
-    //   album.subGenre &&
-    //   album.supplyRegion &&
-    //   album.releaseCountryCode &&
-    //   album.utcReleasedAt &&
-    //   album.isAdultOnly !== undefined
-    // );
-
-    // 앨범 등록 시에는 항상 활성화
-    return true;
+    // 정산에 필요한 필수값 검증
+    return (
+      album.UPC &&
+      album.distributionCompanyName &&
+      album.agencyCompanyName &&
+      album.userInfo?._id &&
+      album.userContractInfo?._id &&
+      album.utcReleasedAt &&
+      album.utcServiceStartedAt
+    );
   };
 
   return (
