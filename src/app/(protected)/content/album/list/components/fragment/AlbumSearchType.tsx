@@ -6,7 +6,8 @@ const Container = styled.div``;
 export type AlbumSearchType =
   | "releaseArtistList.name"
   | "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant"
-  | "trackList.title"
+  | "trackList.titleList.ko,trackList.titleList.en"
+  | "trackList.ISRC"
   | "UPC"
   | "all";
 
@@ -31,8 +32,12 @@ export default function AlbumSearchTypeDropdown({
       value: "앨범명",
     },
     {
-      key: "trackList.title",
+      key: "trackList.titleList.ko,trackList.titleList.en",
       value: "트랙명",
+    },
+    {
+      key: "trackList.ISRC",
+      value: "ISRC",
     },
     {
       key: "UPC",
