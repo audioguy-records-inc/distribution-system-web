@@ -181,7 +181,6 @@ export default function AlbumNewPage() {
     // 정산에 필요한 필수값 검증
     return (
       album.UPC &&
-      album.distributionCompanyName &&
       album.agencyCompanyName &&
       album.userInfo?._id &&
       album.userContractInfo?._id &&
