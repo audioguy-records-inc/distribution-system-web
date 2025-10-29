@@ -64,6 +64,8 @@ const isProgressState = (status: string): boolean => {
   );
 };
 
+const SETTLEMENT_UPLOAD_STORAGE_KEY = "settlement_upload_in_progress";
+
 function SettlementFileStatusChecker() {
   const user = useAuthStore((state) => state.user);
   const { settlementFiles, fetchSettlementFiles, isLoading } =
@@ -76,6 +78,7 @@ function SettlementFileStatusChecker() {
         ? fetchSettlementFiles
         : async () => {},
     isProgressState,
+    storageKey: SETTLEMENT_UPLOAD_STORAGE_KEY,
   });
 
   // 관리자가 아닌 경우 컴포넌트 렌더링하지 않음

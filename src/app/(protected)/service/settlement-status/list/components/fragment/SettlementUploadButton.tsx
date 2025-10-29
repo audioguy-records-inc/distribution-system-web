@@ -8,6 +8,8 @@ import { useSettlementStore } from "@/stores/use-settlement-store";
 
 const Container = styled.div``;
 
+const SETTLEMENT_UPLOAD_STORAGE_KEY = "settlement_upload_in_progress";
+
 interface SettlementUploadButtonProps {
   onUploadComplete?: () => void;
 }
@@ -25,19 +27,23 @@ export default function SettlementUploadButton({
           filename: file.name,
           filePath: file.filePath,
         }));
-        
+
         try {
+          // 업로드 시작 플래그 설정
+          sessionStorage.setItem(SETTLEMENT_UPLOAD_STORAGE_KEY, "true");
+
           await createSettlementFiles({
             fileInfos: fileInfos,
           });
-          
+
           // 파일 생성 완료 후 상태 체크 시작
           onUploadComplete?.();
         } catch (error) {
           console.error("Settlement files creation failed:", error);
+          // 실패 시에도 플래그 유지 (에러 상태를 표시하기 위해)
         }
       };
-      
+
       handleCreateFiles();
     }
   }, [uploadFilePath, createSettlementFiles, onUploadComplete]);
