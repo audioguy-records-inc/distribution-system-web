@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { AuthLevel } from "@/types/user";
 import Gap from "@/components/basic/Gap";
@@ -14,7 +14,6 @@ import SettlementSearch from "./components/SettlementSearch";
 import SettlementUploadButton from "./components/fragment/SettlementUploadButton";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
-import { useSettlementStore } from "@/stores/use-settlement-store";
 
 const Container = styled.div`
   display: flex;
