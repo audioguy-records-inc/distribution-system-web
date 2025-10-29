@@ -45,6 +45,8 @@ const isProgressState = (status: string): boolean => {
   );
 };
 
+const ALBUM_UPLOAD_STORAGE_KEY = "album_upload_in_progress";
+
 function AlbumFileStatusChecker() {
   const { albumFiles, fetchAlbumFiles, isLoading } = useAlbumStore();
 
@@ -52,6 +54,7 @@ function AlbumFileStatusChecker() {
     files: albumFiles,
     fetchFiles: fetchAlbumFiles,
     isProgressState,
+    storageKey: ALBUM_UPLOAD_STORAGE_KEY,
   });
 
   // 상태가 없으면 표시하지 않음

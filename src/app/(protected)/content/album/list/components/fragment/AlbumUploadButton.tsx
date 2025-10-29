@@ -12,6 +12,8 @@ import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
 
+const ALBUM_UPLOAD_STORAGE_KEY = "album_upload_in_progress";
+
 interface AlbumUploadButtonProps {
   onUploadComplete?: () => void;
 }
@@ -46,6 +48,9 @@ export default function AlbumUploadButton({
 
     try {
       setIsLoading(true);
+
+      // 업로드 시작 플래그 설정
+      sessionStorage.setItem(ALBUM_UPLOAD_STORAGE_KEY, "true");
 
       // 1. S3에 파일 업로드
       const success = await uploadToS3({
