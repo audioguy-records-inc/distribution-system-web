@@ -321,11 +321,39 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
     }
   }, [edittingTracks, setEdittingTracks]);
 
+  // 앨범의 계약 정보가 변경되면 모든 트랙의 계약 정보를 동기화
+  useEffect(() => {
+    if (edittingTracks.length > 0) {
+      const albumUserId = albumData?.userId;
+      const albumUserContractId = albumData?.userContractId;
+
+      // 앨범의 계약 정보와 트랙의 계약 정보가 다르면 동기화
+      const needsSync = edittingTracks.some(
+        (track) =>
+          track.userId !== albumUserId ||
+          track.userContractId !== albumUserContractId,
+      );
+
+      if (needsSync) {
+        setEdittingTracks((prev) =>
+          prev.map((track) => ({
+            ...track,
+            userId: albumUserId,
+            userContractId: albumUserContractId,
+            // userContractInfo는 TrackUserContract 컴포넌트에서 자동으로 업데이트됨
+          })),
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [albumData?.userId, albumData?.userContractId]);
+
   const handleAddTrack = async () => {
     const albumData = albumWatch();
     const newTrack: EditTrack = {
       albumId: albumData?._id,
       userId: albumData?.userId,
+      userContractId: albumData?.userContractId,
       releaseCountryCode: albumData?.releaseCountryCode,
       mainGenre: albumData?.mainGenre,
       subGenre: albumData?.subGenre,
@@ -385,6 +413,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
                 tracks={edittingTracks}
                 setTracks={setEdittingTracks}
                 albumUPC={albumData?.UPC}
+                albumUserContractId={albumData?.userContractId}
+                albumUserId={albumData?.userId}
               />
             );
           },

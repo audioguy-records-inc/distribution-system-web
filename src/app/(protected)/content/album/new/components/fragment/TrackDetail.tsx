@@ -48,12 +48,16 @@ export default function TrackDetail({
   tracks,
   setTracks,
   albumUPC,
+  albumUserContractId,
+  albumUserId,
 }: {
   record: Track;
   index: number;
   tracks: Track[];
   setTracks: Dispatch<SetStateAction<Track[]>>;
   albumUPC?: string;
+  albumUserContractId?: string;
+  albumUserId?: string;
 }) {
   const [isEdit, setIsEdit] = useState(false);
   const currentTrack = tracks[index];
@@ -290,18 +294,22 @@ export default function TrackDetail({
         />
         <TrackUserContract
           value={currentTrack.userContractInfo || null}
-          userId={currentTrack.userId}
-          userContractId={currentTrack.userContractId}
+          userId={albumUserId || currentTrack.userId}
+          userContractId={albumUserContractId || currentTrack.userContractId}
           onChange={(value) => {
             setTracks(
               tracks.map((track, i) =>
                 i === index
-                  ? { ...track, userContractInfo: value || undefined }
+                  ? {
+                      ...track,
+                      userContractInfo: value || undefined,
+                      userId: albumUserId || track.userId,
+                      userContractId: albumUserContractId || track.userContractId,
+                    }
                   : track,
               ),
             );
           }}
-          readOnly={false}
         />
       </RowWrapper>
       <Gap height={56} />

@@ -1,20 +1,8 @@
-import {
-  Control,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormWatch,
-} from "react-hook-form";
-import { useEffect, useState } from "react";
-
-import Album from "@/types/album";
-import CustomDropdown from "@/components/basic/CustomDropdown";
 import CustomInput from "@/components/basic/CustomInput";
-import Gap from "@/components/basic/Gap";
-import { User } from "@/types/user";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
+import { useEffect } from "react";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
-import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div`
   display: flex;
@@ -26,42 +14,36 @@ export default function TrackUserContract({
   value,
   userId,
   userContractId,
-  readOnly,
   onChange,
 }: {
   value: UserContract | null;
   userId: string | undefined;
   userContractId: string | undefined;
-  readOnly: boolean;
   onChange: (value: UserContract | null) => void;
 }) {
-  const { filterUserContracts, fetchUserContract } = useUserContractStore();
-  const [searchedUserContracts, setSearchedUserContracts] = useState<
-    UserContract[]
-  >([]);
+  const { fetchUserContract } = useUserContractStore();
 
-  useEffect(() => {
-    const fetchUserContract = async () => {
-      if (userId) {
-        const query = `userId=${userId}`;
-        const res = await filterUserContracts(query);
-        setSearchedUserContracts(res);
-      }
-    };
-    fetchUserContract();
-  }, [userId, filterUserContracts]);
-
+  // userContractId가 변경되면 해당 계약 정보를 가져와서 표시
   useEffect(() => {
     const _fetchUserContract = async () => {
       if (userContractId) {
+        // 이미 같은 계약 정보가 있으면 다시 가져오지 않음
+        if (value?._id === userContractId) {
+          return;
+        }
         const res = await fetchUserContract(userContractId);
         if (res) {
           onChange(res);
         }
+      } else {
+        // userContractId가 없으면 null로 설정 (이미 null이 아닌 경우만)
+        if (value !== null) {
+          onChange(null);
+        }
       }
     };
     _fetchUserContract();
-  }, [userContractId, fetchUserContract]);
+  }, [userContractId, fetchUserContract, onChange, value?._id]);
 
   return (
     <Container style={{ marginBottom: userId ? "48px" : "0px" }}>
@@ -73,21 +55,11 @@ export default function TrackUserContract({
         size="small"
         blueRequired
       />
-      <CustomDropdown
-        items={searchedUserContracts.map((userContract) => ({
-          key: userContract._id,
-          value: userContract.userContractName,
-        }))}
-        onSelectKey={(key) => {
-          onChange(
-            searchedUserContracts.find(
-              (userContract) => userContract._id === key,
-            ) || null,
-          );
-        }}
-        selectedKey={value?._id || ""}
+      <CustomInput
+        label=""
+        locked
+        value={value?.userContractName || ""}
         size="small"
-        readOnly={readOnly}
       />
     </Container>
   );
