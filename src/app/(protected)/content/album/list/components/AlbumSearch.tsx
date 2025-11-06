@@ -150,7 +150,7 @@ export default function AlbumSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="아티스트명, 앨범명, 트랙명, UPC, ISRC 입력"
+          placeholder="아티스트명, 앨범명, 트랙명, UPC, ISRC, 레이블(기획사) 입력"
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

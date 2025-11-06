@@ -9,6 +9,7 @@ export type AlbumSearchType =
   | "trackList.titleList.ko,trackList.titleList.en"
   | "trackList.ISRC"
   | "UPC"
+  | "agencyCompanyName"
   | "all";
 
 export default function AlbumSearchTypeDropdown({
@@ -42,6 +43,10 @@ export default function AlbumSearchTypeDropdown({
     {
       key: "UPC",
       value: "UPC",
+    },
+    {
+      key: "agencyCompanyName",
+      value: "레이블(기획사)",
     },
   ];
   return (
