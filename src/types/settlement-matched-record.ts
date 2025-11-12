@@ -121,6 +121,7 @@ export interface SettlementDetail {
   service: string; // 서비스채널
   UPC: string; // UPC
   ISRC: string; // ISRC
+  trackTitle: string; // 트랙 명
   albumTitle: string; // 앨범 명
   utcReleasedAt: string; // 앨범 발매일
   agencyCompanyName: string; // 기획사 (album.agencyCompanyName)

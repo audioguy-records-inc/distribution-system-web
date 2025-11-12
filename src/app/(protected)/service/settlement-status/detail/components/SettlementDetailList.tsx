@@ -50,6 +50,12 @@ export default function SettlementDetailList() {
       align: "center",
     },
     {
+      header: "트랙명",
+      accessor: "trackTitle",
+      type: "string",
+      align: "center",
+    },
+    {
       header: "아티스트",
       accessor: "artistNameList",
       type: "string",
