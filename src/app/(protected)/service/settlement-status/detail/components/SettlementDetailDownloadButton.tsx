@@ -34,6 +34,7 @@ export default function SettlementDetailDownloadButton() {
       UPC: detail.UPC,
       ISRC: detail.ISRC,
       앨범명: detail.albumTitle,
+      트랙명: detail.trackTitle,
       발매일: detail.utcReleasedAt,
       기획사: detail.agencyCompanyName,
       권리자명: detail.userDisplayName,
