@@ -10,8 +10,8 @@ const DEV_STORAGE_URL = "https://storage-test-distribution.sovo360.com";
 // export const STORAGE_URL =
 //   process.env.NODE_ENV === "production" ? PROD_STORAGE_URL : DEV_STORAGE_URL;
 
-export const API_URL = DEV_API_URL;
-export const STORAGE_URL = DEV_STORAGE_URL;
+export const API_URL = PROD_API_URL;
+export const STORAGE_URL = PROD_STORAGE_URL;
 
 // 이미지 URL을 생성하는 헬퍼 함수 추가
 export const getFullUrl = (path: string) => {
