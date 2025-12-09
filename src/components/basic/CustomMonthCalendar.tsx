@@ -7,7 +7,7 @@ import { ko } from "date-fns/locale";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -62,6 +62,8 @@ const CustomMonthCalendar = ({
   width = 320,
   size = "small",
 }: CustomMonthCalendarProps) => {
+  const datePickerRef = useRef<DatePicker>(null);
+
   const parseDate = (dateString: string | null) => {
     if (!dateString) return null;
     return moment(dateString, "YYYYMM").toDate();
@@ -75,13 +77,25 @@ const CustomMonthCalendar = ({
     }
   };
 
+  const handleIconClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.setOpen(true);
+    }
+  };
+
   return (
     <Container>
       {label && <Label>{label}</Label>}
       <CalendarContainer>
         <DatePicker
+          ref={datePickerRef}
           customInput={
-            <CustomInput size={size} icon={<CalendarIcon />} width={width} />
+            <CustomInput
+              size={size}
+              icon={<CalendarIcon />}
+              width={width}
+              onIconClick={handleIconClick}
+            />
           }
           locale={ko}
           selected={parseDate(value)}
