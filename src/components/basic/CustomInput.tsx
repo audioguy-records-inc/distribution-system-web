@@ -116,6 +116,7 @@ const IconContainer = styled.div<{ $size?: "small" | "normal" }>`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  cursor: pointer;
 
   svg {
     width: ${({ $size }) => ($size === "small" ? "18px" : "24px")};
