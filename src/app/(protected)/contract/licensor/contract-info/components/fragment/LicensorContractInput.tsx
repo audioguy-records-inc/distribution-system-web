@@ -212,6 +212,10 @@ const LicensorContractInput = ({
             placeholder="숫자 입력"
             type="number"
             readOnly={!isEdit}
+            onWheel={(e) => {
+              e.currentTarget.blur();
+              e.preventDefault();
+            }}
             value={
               field.value !== undefined
                 ? (field.value * 100).toFixed(0).toString()
@@ -219,8 +223,15 @@ const LicensorContractInput = ({
             }
             onChange={(e) => {
               e.preventDefault();
-              const value = parseFloat(e.target.value) / 100;
+              let percentValue = parseFloat(e.target.value);
 
+              if (percentValue > 100) percentValue = 100;
+              if (percentValue < 0) percentValue = 0;
+
+              // UI에 직접 적용 (preventDefault 때문에 필요)
+              e.target.value = percentValue.toString();
+
+              const value = percentValue / 100;
               const numValue = value;
 
               field.onChange(numValue);

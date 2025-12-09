@@ -140,6 +140,7 @@ interface InputProps {
   readOnly?: boolean;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onWheel?: (e: React.WheelEvent<HTMLInputElement>) => void;
   onIconClick?: () => void;
   defaultValue?: string;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;

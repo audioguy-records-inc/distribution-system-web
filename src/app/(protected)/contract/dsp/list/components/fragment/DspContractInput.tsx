@@ -175,6 +175,10 @@ const DspContractInput = ({
             icon={<PercentIcon />}
             placeholder="숫자 입력"
             type="number"
+            onWheel={(e) => {
+              e.currentTarget.blur();
+              e.preventDefault();
+            }}
             value={
               field.value !== undefined
                 ? (field.value * 100).toFixed(0).toString()
@@ -182,8 +186,16 @@ const DspContractInput = ({
             }
             onChange={(e) => {
               e.preventDefault();
-              const value = e.target.value;
 
+              let percentValue = parseFloat(e.target.value);
+
+              if (percentValue > 100) percentValue = 100;
+              if (percentValue < 0) percentValue = 0;
+
+              // UI에 직접 적용 (preventDefault 때문에 필요)
+              e.target.value = percentValue.toString();
+
+              const value = e.target.value;
               // 부동 소수점 정밀도 문제 해결을 위해 toFixed 사용
               const numValue = parseFloat((parseFloat(value) / 100).toFixed(4));
 
