@@ -10,6 +10,7 @@ import UserTypeBadge from "@/components/basic/custom-table/components/UserTypeBa
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 
 const Container = styled.div``;
@@ -19,6 +20,9 @@ export default function LicensorContractList({
 }: {
   userContracts: UserContract[];
 }) {
+  const tContract = useTranslations("contract");
+  const tLicensor = useTranslations("licensor");
+  const tCommon = useTranslations("common");
   const { user } = useAuthStore();
   const { fetchUserContracts } = useUserContractStore();
 
@@ -30,14 +34,14 @@ export default function LicensorContractList({
 
   const columns: Column<UserContract>[] = [
     {
-      header: "계약 코드",
+      header: tContract("contractCode"),
       accessor: "userContractUniqueId",
       type: "string",
       width: 120,
       align: "center",
     },
     {
-      header: "구분",
+      header: tCommon("category"),
       accessor: "userInfo",
       type: "string",
       width: 120,
@@ -54,7 +58,7 @@ export default function LicensorContractList({
       },
     },
     {
-      header: "권리자명",
+      header: tLicensor("licensorName"),
       accessor: "userInfo",
       type: "string",
       width: 200,
@@ -65,14 +69,14 @@ export default function LicensorContractList({
       },
     },
     {
-      header: "계약명",
+      header: tContract("contractName"),
       accessor: "userContractName",
       type: "string",
       width: 267,
       align: "center",
     },
     {
-      header: "계약 요율",
+      header: tContract("contractRate"),
       accessor: "contractRate",
       type: "string",
       width: 120,
@@ -85,7 +89,7 @@ export default function LicensorContractList({
       },
     },
     {
-      header: "활성 여부",
+      header: tCommon("active"),
       accessor: "isContractEnabled",
       type: "component",
       width: 170,
@@ -94,31 +98,31 @@ export default function LicensorContractList({
       render: (value) => <ActivateStateBadge isActive={Boolean(value)} />,
     },
     {
-      header: "계약 유형",
+      header: tContract("contractType"),
       accessor: "userContractType",
       type: "string",
       width: 120,
       align: "center",
       render: (value): string => {
         const typeMap: Record<string, string> = {
-          GENERAL: "일반",
-          INVESTMENT: "투자",
-          MG: "MG",
+          GENERAL: tContract("typeNormal"),
+          INVESTMENT: tContract("typeInvestment"),
+          MG: tContract("typeMG"),
         };
         return typeMap[value as string] || (value as string);
       },
     },
     {
-      header: "업체 유형",
+      header: tContract("businessType"),
       accessor: "userContractBusinessType",
       type: "string",
       width: 120,
       align: "center",
       render: (value): string => {
         const businessTypeMap: Record<string, string> = {
-          INDIVIDUAL: "개인",
-          INDIVIDUAL_BUSINESS: "개인사업자",
-          CORPORATION_BUSINESS: "법인사업자",
+          INDIVIDUAL: tContract("typeIndividual"),
+          INDIVIDUAL_BUSINESS: tContract("typeIndividualBusiness"),
+          CORPORATION_BUSINESS: tContract("typeCorporateBusiness"),
         };
         return businessTypeMap[value as string] || (value as string);
       },

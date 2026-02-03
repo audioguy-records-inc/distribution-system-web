@@ -5,6 +5,7 @@ import CheckIcon from "../icons/CheckIcon";
 import CustomChip from "./CustomChip";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div<{ $hasLabel?: boolean }>`
   display: flex;
@@ -216,6 +217,7 @@ const CustomDropdownSearch = ({
   multiple = false,
   readOnly = false,
 }: CustomDropdownProps) => {
+  const t = useTranslations("common");
   const [isOpen, setIsOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -383,7 +385,7 @@ const CustomDropdownSearch = ({
                 </ListItem>
               ))
             ) : (
-              <ListItem $size={size}>검색 결과가 없습니다</ListItem>
+              <ListItem $size={size}>{t("noSearchResults")}</ListItem>
             )}
           </List>
         )}

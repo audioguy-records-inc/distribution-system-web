@@ -20,6 +20,7 @@ import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -35,6 +36,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const AnnouncementDetailPage = () => {
+  const t = useTranslations("announcement");
+  const tc = useTranslations("common");
   const router = useRouter();
   const { user } = useAuthStore();
   const { announcements, updateAnnouncement, deleteAnnouncement } =
@@ -100,13 +103,13 @@ const AnnouncementDetailPage = () => {
   };
 
   if (!announcement) {
-    return <div>공지사항을 찾을 수 없습니다.</div>;
+    return <div>{t("notFound")}</div>;
   }
 
   return (
     <Container>
       <HeaderWrapper>
-        <PageHeader title={"공지사항 상세"} />
+        <PageHeader title={t("detail")} />
         {isAdmin && (
           <DetailHeaderButton
             isEdit={isEdit}
@@ -120,7 +123,7 @@ const AnnouncementDetailPage = () => {
       </HeaderWrapper>
       <Title
         value={watch("title") || ""}
-        placeholder="제목 입력"
+        placeholder={t("subjectPlaceholder")}
         onChange={(e) => setValue("title", e.target.value)}
         disabled={!isEdit}
       />
@@ -140,14 +143,14 @@ const AnnouncementDetailPage = () => {
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 공지사항을 삭제할까요?"
+        content={t("deleteConfirm")}
       />
 
       <CustomModal
         isOpen={isUpdateModalOpen}
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
-        content="변경사항을 저장할까요?"
+        content={t("saveConfirm")}
       />
     </Container>
   );

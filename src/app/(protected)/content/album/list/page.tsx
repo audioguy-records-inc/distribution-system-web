@@ -11,6 +11,7 @@ import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function AlbumListPage() {
+  const tContent = useTranslations("content");
   const [statusCheckerKey, setStatusCheckerKey] = useState(0);
 
   const handleUploadComplete = useCallback(() => {
@@ -34,7 +36,7 @@ export default function AlbumListPage() {
 
   return (
     <Container>
-      <PageHeader title={"앨범 리스트"} />
+      <PageHeader title={tContent("albumList")} />
       <AlbumSearch />
       <ButtonWrapper>
         <AlbumFileStatusChecker

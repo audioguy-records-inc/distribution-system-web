@@ -12,6 +12,7 @@ import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ const SearchContainer = styled.div`
 const ListContainer = styled.div``;
 
 export default function DspListPage() {
+  const tDsp = useTranslations("dsp");
   const { dspContracts, isLoading, error } = useDspContractStore();
   const [selectedDsps, setSelectedDsps] = useState<DspType[]>(["ALL"]);
   const [searchValue, setSearchValue] = useState<string>("");
@@ -98,10 +100,10 @@ export default function DspListPage() {
 
   return (
     <Container>
-      <PageHeader title={"DSP 리스트"} />
+      <PageHeader title={tDsp("dspList")} />
       <SearchContainer>
         <SearchInput
-          placeholder="DPID 또는 계약명 검색"
+          placeholder={tDsp("dpidOrContractSearch")}
           onClickSearch={handleSearch}
           onChange={(e) => setSearchValue(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}

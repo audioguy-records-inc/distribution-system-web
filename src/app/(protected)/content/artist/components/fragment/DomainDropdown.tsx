@@ -1,5 +1,6 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import { getCountryKeyValueList } from "@/constants/country";
+import { useLocale, useTranslations } from "next-intl";
 
 interface DomainDropdownProps {
   onChange: (domain: string) => void;
@@ -15,13 +16,15 @@ const DomainDropdown = ({
   readOnly = false,
   required = false,
 }: DomainDropdownProps) => {
+  const ta = useTranslations("artist");
+  const locale = useLocale();
   return (
     <CustomDropdown
-      label={"국가"}
+      label={ta("country")}
       selectedKey={value}
       onSelectKey={onChange}
-      items={getCountryKeyValueList()}
-      placeholder="국가 선택"
+      items={getCountryKeyValueList(locale)}
+      placeholder={ta("countrySelect")}
       size={"small"}
       width={320}
       readOnly={readOnly}

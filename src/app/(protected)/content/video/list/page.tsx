@@ -5,6 +5,7 @@ import VideoDownloadButton from "./components/fragment/VideoDownloadButton";
 import VideoList from "./components/VideoList";
 import VideoSearch from "./components/VideoSearch";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -19,9 +20,11 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function VideoListPage() {
+  const tVideo = useTranslations("video");
+
   return (
     <Container>
-      <PageHeader title="영상 리스트" />
+      <PageHeader title={tVideo("videoList")} />
       <VideoSearch />
       <ButtonWrapper>
         <VideoDownloadButton />

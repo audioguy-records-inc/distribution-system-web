@@ -11,6 +11,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
+import { useTranslations } from "next-intl";
 import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div`
@@ -36,6 +37,7 @@ const RowWrapper = styled.div`
 `;
 
 const LicensorDetail = ({ licensor }: { licensor: User }) => {
+  const tLicensor = useTranslations("licensor");
   const [isEdit, setIsEdit] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -84,7 +86,7 @@ const LicensorDetail = ({ licensor }: { licensor: User }) => {
     <Container>
       <Header>
         <TitleWrapper>
-          권리자 정보
+          {tLicensor("licensorInfo")}
           {isEdit ? (
             <Controller
               name="isEnabled"
@@ -125,14 +127,14 @@ const LicensorDetail = ({ licensor }: { licensor: User }) => {
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 권리자를 삭제할까요?"
+        content={tLicensor("deleteConfirm")}
       />
 
       <CustomModal
         isOpen={isUpdateModalOpen}
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
-        content="변경사항을 저장할까요?"
+        content={tLicensor("saveConfirm")}
       />
     </Container>
   );

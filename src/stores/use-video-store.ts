@@ -9,6 +9,7 @@ import { postVideo } from "@/api/video/post-video";
 import { putVideo } from "@/api/video/put-video";
 import { searchVideos } from "@/api/video/search-videos";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface VideoStore {
   newVideo: Video | null;
@@ -73,7 +74,7 @@ export const useVideoStore = create<VideoStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "영상 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.video.fetchError");
 
           toast.error(errorMessage);
 
@@ -101,7 +102,7 @@ export const useVideoStore = create<VideoStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "영상 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.video.fetchError");
 
           toast.error(errorMessage);
 
@@ -134,12 +135,12 @@ export const useVideoStore = create<VideoStore>()(
             error: null,
           }));
 
-          toast.success("영상이 생성되었습니다.");
+          toast.success(t("toast.video.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "영상 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.video.createError");
 
           toast.error(errorMessage);
 
@@ -171,12 +172,12 @@ export const useVideoStore = create<VideoStore>()(
           if (isNewVideo) {
             set({ newVideo: response.data.video });
           }
-          toast.success("영상이 수정되었습니다.");
+          toast.success(t("toast.video.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "영상 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.video.updateError");
 
           toast.error(errorMessage);
 
@@ -202,12 +203,12 @@ export const useVideoStore = create<VideoStore>()(
             error: null,
           }));
 
-          toast.success("영상이 삭제되었습니다.");
+          toast.success(t("toast.video.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "영상 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.video.deleteError");
 
           toast.error(errorMessage);
 
@@ -244,7 +245,7 @@ export const useVideoStore = create<VideoStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "영상 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.video.searchError");
 
           toast.error(errorMessage);
 

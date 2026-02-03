@@ -13,6 +13,7 @@ import { getLanguageKeyValueList } from "@/constants/language";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useLocale, useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -25,9 +26,13 @@ export default function AlbumTitle({
   onChange: (value: TitleLanguage[]) => void;
   readOnly: boolean;
 }) {
+  const t = useTranslations("content");
+  const tc = useTranslations("common");
+  const tu = useTranslations("upload");
+  const locale = useLocale();
   const columns: Column<TitleLanguage>[] = [
     {
-      header: "언어",
+      header: t("language"),
       accessor: "language",
       align: "center",
       type: "string",
@@ -36,8 +41,8 @@ export default function AlbumTitle({
         const oldKey = Object.keys(record)[0] || "";
         return (
           <CustomDropdown
-            placeholder="언어 선택"
-            items={getLanguageKeyValueList()}
+            placeholder={t("languageSelect")}
+            items={getLanguageKeyValueList(locale)}
             selectedKey={oldKey}
             onSelectKey={(newKey) => {
               if (
@@ -49,7 +54,7 @@ export default function AlbumTitle({
                     item[newKey] !== undefined,
                 )
               ) {
-                toast.error("이미 선택된 언어입니다.");
+                toast.error(tu("alreadySelectedLanguage"));
                 return;
               }
               // 기존의 title 값을 유지하면서 새 key로 업데이트
@@ -69,7 +74,7 @@ export default function AlbumTitle({
       },
     },
     {
-      header: "앨범명",
+      header: t("albumName"),
       accessor: "string",
       align: "center",
       type: "string",
@@ -117,7 +122,7 @@ export default function AlbumTitle({
   return (
     <Container>
       <div style={{ marginBottom: "16px" }}>
-        앨범명 <span style={{ color: "red", fontSize: "15px" }}>*</span>
+        {t("albumName")} <span style={{ color: "red", fontSize: "15px" }}>*</span>
       </div>
       <CustomTable columns={columns} data={value || []} size="small" />
       <Gap height={12} />
@@ -126,7 +131,7 @@ export default function AlbumTitle({
           size="medium"
           expand
           leftIcon={<PlusIcon />}
-          label="추가"
+          label={tc("add")}
           onClick={() => {
             if (readOnly) return;
             const newValue = [...(value || []), { "": "" }];

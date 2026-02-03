@@ -9,6 +9,7 @@ import XIcon from "@/components/icons/XIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -160,24 +161,24 @@ const EmptyState = styled.div`
   color: ${theme.colors.gray[500]};
 `;
 
-const getStatusText = (status: string) => {
+const getStatusTextKey = (status: string): string => {
   switch (status) {
     case "PENDING":
-      return "대기중";
+      return "statusPendingShort";
     case "CONVERTING":
-      return "변환중";
+      return "statusConvertingShort";
     case "CONVERTING_SUCCESS":
-      return "변환완료";
+      return "statusConvertingSuccessShort";
     case "CONVERTING_ERROR":
-      return "변환실패";
+      return "statusConvertingErrorShort";
     case "MATCHING":
-      return "매칭중";
+      return "statusMatchingShort";
     case "MATCHING_SUCCESS":
-      return "매칭완료";
+      return "statusMatchingSuccessShort";
     case "MATCHING_ERROR":
-      return "매칭실패";
+      return "statusMatchingErrorShort";
     default:
-      return status;
+      return "";
   }
 };
 
@@ -190,6 +191,8 @@ export default function SettlementFileListModal({
   isOpen,
   onClose,
 }: SettlementFileListModalProps) {
+  const t = useTranslations("settlement");
+  const tCommon = useTranslations("common");
   const {
     settlementFiles,
     fetchSettlementFiles,
@@ -263,11 +266,11 @@ export default function SettlementFileListModal({
         <CloseButton onClick={onClose}>
           <XIcon />
         </CloseButton>
-        <Title>업로드한 파일 리스트</Title>
+        <Title>{t("uploadedFileList")}</Title>
         {isLoading ? (
-          <EmptyState>파일 목록을 불러오는 중...</EmptyState>
+          <EmptyState>{t("loadingFileList")}</EmptyState>
         ) : settlementFiles.length === 0 ? (
-          <EmptyState>업로드된 파일이 없습니다.</EmptyState>
+          <EmptyState>{t("noUploadedFiles")}</EmptyState>
         ) : (
           <FileList>
             {settlementFiles.map((file) => (
@@ -276,19 +279,19 @@ export default function SettlementFileListModal({
                   <FileName>{file.filename}</FileName>
                   <FileInfo>
                     <StatusBadge status={file.state}>
-                      {getStatusText(file.state)}
+                      {getStatusTextKey(file.state) ? t(getStatusTextKey(file.state)) : file.state}
                     </StatusBadge>
-                    <span>업로드: {formatDate(file.createdAt)}</span>
+                    <span>{t("uploadDate")} {formatDate(file.createdAt)}</span>
                     {file.isMissingTrackMatchingField && (
                       <span style={{ color: theme.colors.red[500] }}>
-                        매칭 필드 누락
+                        {t("matchingFieldMissing")}
                       </span>
                     )}
                   </FileInfo>
                 </FileContent>
                 <DeleteButton
                   onClick={() => handleDeleteClick(file._id!, file.filename)}
-                  title="파일 삭제"
+                  title={t("deleteFileTitle")}
                 >
                   <TrashIcon />
                 </DeleteButton>
@@ -321,16 +324,16 @@ export default function SettlementFileListModal({
       >
         <ConfirmModalContainer>
           <ConfirmContent>
-            정말 삭제하시겠습니까?
+            {t("deleteConfirm")}
             <br />
             <strong>{deleteConfirmModal.fileName}</strong>
           </ConfirmContent>
           <ConfirmButtonContainer>
             <ButtonOutlinedSecondary
-              label="취소"
+              label={tCommon("cancel")}
               onClick={handleDeleteCancel}
             />
-            <ButtonFilledPrimary label="삭제" onClick={handleDeleteConfirm} />
+            <ButtonFilledPrimary label={tCommon("delete")} onClick={handleDeleteConfirm} />
           </ConfirmButtonContainer>
         </ConfirmModalContainer>
       </Modal>

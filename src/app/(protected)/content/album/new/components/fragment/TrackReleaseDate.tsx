@@ -12,6 +12,7 @@ import CustomTimePicker from "@/components/basic/CustomTimePicker";
 import Gap from "@/components/basic/Gap";
 import moment from "moment";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const RowWrapper = styled.div`
   display: flex;
@@ -43,11 +44,12 @@ export default function TrackReleaseDate({
   readOnly: boolean;
   required?: boolean;
 }) {
+  const t = useTranslations("content");
   return (
     <RowWrapper>
       {/* 발매일 선택 */}
       <CustomCalendar
-        label="발매일"
+        label={t("releaseDate")}
         value={
           utcReleasedAt && moment(utcReleasedAt).isValid()
             ? moment(utcReleasedAt).format("YYYYMMDD")
@@ -74,7 +76,7 @@ export default function TrackReleaseDate({
 
       <ServiceDateWrapper>
         <CustomCalendar
-          label="서비스 시간"
+          label={t("serviceTime")}
           value={
             utcServiceStartedAt && moment(utcServiceStartedAt).isValid()
               ? moment(utcServiceStartedAt).format("YYYYMMDD")

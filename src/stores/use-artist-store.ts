@@ -9,6 +9,7 @@ import { postArtist } from "@/api/artist/post-artist";
 import { putArtist } from "@/api/artist/put-artist";
 import { searchArtists } from "@/api/artist/search-artists";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface ArtistStore {
   artists: Artist[];
@@ -47,7 +48,7 @@ export const useArtistStore = create<ArtistStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "아티스트 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.artist.fetchError");
 
           toast.error(errorMessage);
 
@@ -75,7 +76,7 @@ export const useArtistStore = create<ArtistStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "아티스트 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.artist.fetchError");
 
           toast.error(errorMessage);
 
@@ -107,12 +108,12 @@ export const useArtistStore = create<ArtistStore>()(
             error: null,
           }));
 
-          toast.success("아티스트가 생성되었습니다.");
+          toast.success(t("toast.artist.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "아티스트 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.artist.createError");
 
           toast.error(errorMessage);
 
@@ -144,12 +145,12 @@ export const useArtistStore = create<ArtistStore>()(
             error: null,
           }));
 
-          toast.success("아티스트가 수정되었습니다.");
+          toast.success(t("toast.artist.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "아티스트 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.artist.updateError");
 
           toast.error(errorMessage);
 
@@ -176,12 +177,12 @@ export const useArtistStore = create<ArtistStore>()(
             error: null,
           }));
 
-          toast.success("아티스트가 삭제되었습니다.");
+          toast.success(t("toast.artist.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "아티스트 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.artist.deleteError");
 
           toast.error(errorMessage);
 
@@ -217,7 +218,7 @@ export const useArtistStore = create<ArtistStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "아티스트 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.artist.searchError");
 
           toast.error(errorMessage);
 

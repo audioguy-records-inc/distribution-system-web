@@ -13,6 +13,7 @@ import Gap from "@/components/basic/Gap";
 import UserContract from "@/types/user-contract";
 import Video from "@/types/video";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -36,6 +37,7 @@ export default function VideoUserContract({
   required?: boolean;
 }) {
   const { searchUserContracts } = useUserContractStore();
+  const tcon = useTranslations("contract");
   const [searchedUserContracts, setSearchedUserContracts] = useState<
     UserContract[]
   >([]);
@@ -55,7 +57,7 @@ export default function VideoUserContract({
   return (
     <Container style={{ marginBottom: watch("userId") ? "48px" : "0px" }}>
       <CustomInput
-        label={"계약 정보"}
+        label={tcon("contractInfo")}
         locked
         value={watch("userContractInfo")?.userContractUniqueId || ""}
         width={100}

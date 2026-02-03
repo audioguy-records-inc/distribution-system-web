@@ -3,10 +3,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import ClockIcon from "../icons/ClockIcon";
 import CustomInput from "./CustomInput";
 import DatePicker from "react-datepicker";
-import { ko } from "date-fns/locale";
+import { enUS, ja, ko } from "date-fns/locale";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useLocale, useTranslations } from "next-intl";
+
+const dateFnsLocaleMap: Record<string, typeof ko> = { ko, en: enUS, ja };
 
 const Container = styled.div`
   display: flex;
@@ -66,6 +69,8 @@ const CustomTimePicker = ({
   timeIntervals = 30,
   width = 320,
 }: CustomTimePickerProps) => {
+  const currentLocale = useLocale();
+  const t = useTranslations("common");
   const parseTime = (timeString: string | null) => {
     if (!timeString) return null;
     return moment(timeString, "HHmm").toDate();
@@ -87,13 +92,13 @@ const CustomTimePicker = ({
           customInput={
             <CustomInput size="small" icon={<ClockIcon />} width={width} />
           }
-          locale={ko}
+          locale={dateFnsLocaleMap[currentLocale] || ko}
           selected={parseTime(value)}
           onChange={handleChange}
           showTimeSelect
           showTimeSelectOnly
           timeIntervals={timeIntervals}
-          timeCaption="시간"
+          timeCaption={t("time")}
           dateFormat="HH:mm"
           timeFormat="HH:mm"
           readOnly={readOnly}

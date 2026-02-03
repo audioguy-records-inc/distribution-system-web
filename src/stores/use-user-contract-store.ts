@@ -10,6 +10,7 @@ import { postUserContract } from "@/api/user-contract/post-user-contract";
 import { putUserContract } from "@/api/user-contract/put-user-contract";
 import { searchUserContracts } from "@/api/user-contract/search-user-contracts";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface UserContractStore {
   userContracts: UserContract[];
@@ -48,7 +49,7 @@ export const useUserContractStore = create<UserContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "유저 계약 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.fetchError");
 
           toast.error(errorMessage);
 
@@ -73,7 +74,7 @@ export const useUserContractStore = create<UserContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "유저 계약 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.fetchError");
 
           toast.error(errorMessage);
 
@@ -110,12 +111,12 @@ export const useUserContractStore = create<UserContractStore>()(
             error: null,
           }));
 
-          toast.success("유저 계약이 생성되었습니다.");
+          toast.success(t("toast.userContract.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "유저 계약 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.createError");
 
           toast.error(errorMessage);
 
@@ -149,12 +150,12 @@ export const useUserContractStore = create<UserContractStore>()(
             error: null,
           }));
 
-          toast.success("유저 계약이 수정되었습니다.");
+          toast.success(t("toast.userContract.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "유저 계약 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.updateError");
 
           toast.error(errorMessage);
 
@@ -184,12 +185,12 @@ export const useUserContractStore = create<UserContractStore>()(
             error: null,
           }));
 
-          toast.success("유저 계약이 삭제되었습니다.");
+          toast.success(t("toast.userContract.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "유저 계약 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.deleteError");
 
           toast.error(errorMessage);
 
@@ -222,7 +223,7 @@ export const useUserContractStore = create<UserContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "권리자 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.licensorSearchError");
 
           toast.error(errorMessage);
 
@@ -251,7 +252,7 @@ export const useUserContractStore = create<UserContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "유저 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.userContract.searchError");
 
           toast.error(errorMessage);
 

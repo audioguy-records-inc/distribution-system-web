@@ -6,15 +6,17 @@ import { SettlementDetail } from "@/types/settlement-matched-record";
 import moment from "moment";
 import styled from "styled-components";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
 export default function SettlementDetailList() {
+  const t = useTranslations("settlement");
   const { settlementDetails } = useSettlementStore();
 
   const columns: Column<SettlementDetail>[] = [
     {
-      header: "정산월",
+      header: t("settlementMonth"),
       accessor: "settlementMonth",
       type: "string",
       align: "center",
@@ -26,7 +28,7 @@ export default function SettlementDetailList() {
       },
     },
     {
-      header: "판매월",
+      header: t("salesMonth"),
       accessor: "salesMonth",
       type: "string",
       align: "center",
@@ -38,25 +40,25 @@ export default function SettlementDetailList() {
       },
     },
     {
-      header: "서비스채널",
+      header: t("serviceChannel"),
       accessor: "service",
       type: "string",
       align: "center",
     },
     {
-      header: "앨범명",
+      header: t("albumName"),
       accessor: "albumTitle",
       type: "string",
       align: "center",
     },
     {
-      header: "트랙명",
+      header: t("trackName"),
       accessor: "trackTitle",
       type: "string",
       align: "center",
     },
     {
-      header: "아티스트",
+      header: t("artist"),
       accessor: "artistNameList",
       type: "string",
       align: "center",
@@ -66,7 +68,7 @@ export default function SettlementDetailList() {
       },
     },
     {
-      header: "발매일",
+      header: t("releaseDate"),
       accessor: "utcReleasedAt",
       type: "string",
       align: "center",
@@ -76,19 +78,19 @@ export default function SettlementDetailList() {
       },
     },
     {
-      header: "레이블(기획사)",
+      header: t("label"),
       accessor: "agencyCompanyName",
       type: "string",
       align: "center",
     },
     {
-      header: "권리자명",
+      header: t("licensorName"),
       accessor: "userDisplayName",
       type: "string",
       align: "center",
     },
     {
-      header: "정산금",
+      header: t("settlementAmount"),
       accessor: "userSettlementFee",
       type: "string",
       align: "center",

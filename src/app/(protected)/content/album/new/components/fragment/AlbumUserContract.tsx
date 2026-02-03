@@ -12,6 +12,7 @@ import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -34,6 +35,7 @@ export default function AlbumUserContract({
   setValue: UseFormSetValue<Album>;
 }) {
   const { searchUserContracts } = useUserContractStore();
+  const t = useTranslations("content");
   const [searchedUserContracts, setSearchedUserContracts] = useState<
     UserContract[]
   >([]);
@@ -53,7 +55,7 @@ export default function AlbumUserContract({
   return (
     <Container style={{ marginBottom: watch("userId") ? "48px" : "0px" }}>
       <CustomInput
-        label="계약 정보"
+        label={t("contractInfo")}
         locked
         value={watch("userContractInfo")?.userContractUniqueId || ""}
         width={100}

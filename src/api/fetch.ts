@@ -1,6 +1,7 @@
 import { API_URL } from "@/constants/api";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useUserStore } from "@/stores/use-user-store";
+import { t } from "@/i18n/client";
 
 interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -58,7 +59,7 @@ export const apiFetch = async <T>(
           ? data.error.message
           : typeof data.error === "string"
           ? data.error
-          : "알 수 없는 오류가 발생했습니다";
+          : t("toast.common.unknownError");
       throw new Error(errorMessage);
     }
 
@@ -75,7 +76,7 @@ export const apiFetch = async <T>(
       message:
         error instanceof Error
           ? error.message
-          : "알 수 없는 오류가 발생했습니다",
+          : t("toast.common.unknownError"),
       data: undefined,
     };
   }

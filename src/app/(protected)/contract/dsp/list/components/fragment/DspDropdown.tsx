@@ -2,6 +2,7 @@ import CustomDropdown from "@/components/basic/CustomDropdown";
 import { Dsp } from "@/types/dsp";
 import { useDspStore } from "@/stores/use-dsp-store";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 interface DspDropdownProps {
   onChange: (dsp: string) => void;
@@ -18,6 +19,7 @@ const DspDropdown = ({
   readOnly = false,
   required = false,
 }: DspDropdownProps) => {
+  const tDsp = useTranslations("dsp");
   const { dsps, fetchDsps, isLoading } = useDspStore();
 
   useEffect(() => {
@@ -31,12 +33,12 @@ const DspDropdown = ({
 
   return (
     <CustomDropdown
-      label={"DSP명"}
+      label={tDsp("dspName")}
       required={required}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
-      placeholder="DSP 선택"
+      placeholder={tDsp("dspSelect")}
       disabled={disabled || isLoading}
       size={"small"}
       width={320}

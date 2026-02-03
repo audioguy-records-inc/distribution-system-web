@@ -14,6 +14,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAnnouncementStore } from "@/stores/use-announcement-store";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -23,11 +24,12 @@ const Title = styled.div`
 `;
 
 export default function AnnouncementList() {
+  const t = useTranslations("announcement");
   const { announcements, fetchAnnouncements } = useAnnouncementStore();
   const router = useRouter();
   const columns: Column<Announcement>[] = [
     {
-      header: "날짜",
+      header: t("date"),
       accessor: "createdAt",
       type: "string",
       width: 132,
@@ -39,14 +41,14 @@ export default function AnnouncementList() {
       },
     },
     {
-      header: "제목",
+      header: t("subject"),
       accessor: "title",
       type: "string",
       width: 553,
       align: "center",
     },
     {
-      header: "작성자",
+      header: t("author"),
       accessor: "userInfo",
       type: "string",
       width: 140,
@@ -58,7 +60,7 @@ export default function AnnouncementList() {
       },
     },
     {
-      header: "구분",
+      header: t("type"),
       accessor: "type",
       type: "string",
       width: 120,
@@ -68,13 +70,13 @@ export default function AnnouncementList() {
         let _type = "";
         switch (_value) {
           case "TRANSMISSION":
-            _type = "전송";
+            _type = t("typeTransmission");
             break;
           case "SETTLEMENT":
-            _type = "정산";
+            _type = t("typeSettlement");
             break;
           case "ETC":
-            _type = "기타";
+            _type = t("typeEtc");
             break;
         }
         return <Title>{_value}</Title>;

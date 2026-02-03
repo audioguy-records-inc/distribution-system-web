@@ -3,20 +3,30 @@
 import { API_URL } from "@/constants/api";
 import { AuthLevel } from "@/types/user";
 import Image from "next/image";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import LoginForm from "./components/LoginForm";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/stores/use-user-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   height: 100vh;
   width: 100%;
   padding: 3rem 3.75rem; /* 48px 60px */
   gap: 1.25rem;
   box-sizing: border-box;
+`;
+
+const LanguageSwitcherWrapper = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  z-index: 10;
 `;
 
 const LeftSection = styled.div`
@@ -37,6 +47,7 @@ export default function LoginPage() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const isHydrated = useAuthStore((state) => state.isHydrated);
+  const t = useTranslations("login");
 
   // console.log("moonsae env", process.env.NODE_ENV);
   // console.log("moonsae api", API_URL);
@@ -55,11 +66,14 @@ export default function LoginPage() {
 
   // 하이드레이션이 완료되지 않았을 때 로딩 표시 (선택사항)
   if (!isHydrated) {
-    return <div>로딩 중...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   return (
     <Container>
+      <LanguageSwitcherWrapper>
+        <LanguageSwitcher />
+      </LanguageSwitcherWrapper>
       <LeftSection>
         <Image
           src="/assets/images/login.png"

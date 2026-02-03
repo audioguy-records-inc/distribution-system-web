@@ -7,6 +7,7 @@ import SettlementDetailList from "./components/SettlementDetailList";
 import SettlementDetailSearch from "./components/SettlementDetailSearch";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -26,15 +27,17 @@ const TableLabel = styled.div`
 `;
 
 export default function AdminSettlementDetailPage() {
+  const tSettlement = useTranslations("settlement");
+
   return (
     <Container>
-      <PageHeader title="정산 상세 내역 조회" />
+      <PageHeader title={tSettlement("settlementDetail")} />
       <SettlementDetailSearch />
       <ButtonRow>
         <SettlementDetailDownloadButton />
       </ButtonRow>
       <Gap height={32} />
-      <TableLabel>정산 상세 내역</TableLabel>
+      <TableLabel>{tSettlement("settlementDetail")}</TableLabel>
       <SettlementDetailList />
       <Gap height={32} />
     </Container>

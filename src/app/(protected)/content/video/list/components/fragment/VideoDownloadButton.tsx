@@ -7,12 +7,19 @@ import Video from "@/types/video";
 import { getFullUrl } from "@/constants/api";
 import { saveAs } from "file-saver";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
 
 export default function VideoDownloadButton() {
+  const tc = useTranslations("common");
+  const tv = useTranslations("video");
+  const tt = useTranslations("track");
+  const tco = useTranslations("content");
+  const tcon = useTranslations("contract");
+  const tl = useTranslations("licensor");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { videos } = useVideoStore();
 
@@ -27,40 +34,40 @@ export default function VideoDownloadButton() {
   // 앨범 데이터를 다운로드 가능한 형식으로 변환
   const prepareDataForExport = async (videos: Video[]) => {
     return videos.map((video) => ({
-      앨범명: JSON.stringify(video.titleList),
-      아티스트: video.releaseArtistList?.map((artist) => artist.name).join(","),
-      트랙매칭: video.isMathcedTrack ? "해당" : "해당없음",
-      앨범유형: video.videoType || "",
-      유무료: video.isFree ? "무료" : "유료",
-      발매국가: video.releaseCountryCode || "",
-      기획사: video.agencyCompanyName || "",
-      발매사: video.userInfo?.displayName || "",
-      계약정보: video.userContractInfo?.userContractName || "",
-      공급지역: video.supplyRegion || "",
-      공급제외지역: video.excludedRegionList?.join(",") || "",
-      영상코드: video.videoUniqueId,
+      [tv("videoName")]: JSON.stringify(video.titleList),
+      [tv("videoArtist")]: video.releaseArtistList?.map((artist) => artist.name).join(","),
+      [tt("trackMatching")]: video.isMathcedTrack ? tt("applicable") : tt("notApplicable"),
+      [tv("videoType")]: video.videoType || "",
+      [tv("paidFree")]: video.isFree ? tv("free") : tv("paid"),
+      [tv("releaseCountry")]: video.releaseCountryCode || "",
+      [tco("label")]: video.agencyCompanyName || "",
+      [tv("publisher")]: video.userInfo?.displayName || "",
+      [tcon("contractInfo")]: video.userContractInfo?.userContractName || "",
+      [tv("supplyRegion")]: video.supplyRegion || "",
+      [tv("excludeRegion")]: video.excludedRegionList?.join(",") || "",
+      [tv("videoCode")]: video.videoUniqueId,
       UPC: video.UPC,
       ISRC: video.ISRC,
-      발매일: video.utcReleasedAt
+      [tco("releaseDate")]: video.utcReleasedAt
         ? new Date(video.utcReleasedAt).toLocaleDateString()
         : "",
-      서비스시간: video.utcServiceStartedAt
+      [tco("serviceTime")]: video.utcServiceStartedAt
         ? new Date(video.utcServiceStartedAt).toLocaleDateString()
         : "",
-      심의처: video.ratingAuthority || "",
-      심의제외사유: video.ratingExemptionReason || "",
-      심의등급: video.rating || "",
-      심의일자: video.utcRatedAt
+      [tv("censorOrg")]: video.ratingAuthority || "",
+      [tv("censorExemptReason")]: video.ratingExemptionReason || "",
+      [tv("censorRating")]: video.rating || "",
+      [tv("censorDate")]: video.utcRatedAt
         ? new Date(video.utcRatedAt).toLocaleDateString()
         : "",
-      심의파일: video.ratingFileList
+      [tv("censorFile")]: video.ratingFileList
         ?.map((file) => getFullUrl(file.filePath))
         .join(","),
-      요청사항: video.requestDetails || "",
-      뮤직비디오: video.videoFileList
+      [tv("requestNote")]: video.requestDetails || "",
+      [tv("musicVideo")]: video.videoFileList
         ?.map((file) => getFullUrl(file.filePath))
         .join(","),
-      썸네일: video.thumbnailImageList
+      [tv("thumbnailImage")]: video.thumbnailImageList
         ?.map((image) => getFullUrl(image.imageOriginalPath))
         .join(","),
     }));
@@ -70,7 +77,7 @@ export default function VideoDownloadButton() {
     const data = await prepareDataForExport(videos);
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "앨범");
+    XLSX.utils.book_append_sheet(workbook, worksheet, tv("videoList"));
 
     // 엑셀 파일 생성 및 다운로드
     const excelBuffer = XLSX.write(workbook, {
@@ -82,7 +89,7 @@ export default function VideoDownloadButton() {
     });
     const res = await saveAs(
       blob,
-      `앨범_목록_${new Date().toISOString().split("T")[0]}.xlsx`,
+      `${tv("videoList")}_${new Date().toISOString().split("T")[0]}.xlsx`,
     );
 
     setIsModalOpen(false);
@@ -95,7 +102,7 @@ export default function VideoDownloadButton() {
 
     // CSV 파일 생성 및 다운로드
     const blob = new Blob([csvOutput], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, `영상_목록_${new Date().toISOString().split("T")[0]}.csv`);
+    saveAs(blob, `${tv("videoList")}_${new Date().toISOString().split("T")[0]}.csv`);
 
     setIsModalOpen(false);
   };
@@ -103,7 +110,7 @@ export default function VideoDownloadButton() {
   return (
     <Container>
       <ButtonOutlinedPrimary
-        label="다운로드"
+        label={tc("download")}
         leftIcon={<DownloadIcon />}
         onClick={handleOpenModal}
         size="medium"

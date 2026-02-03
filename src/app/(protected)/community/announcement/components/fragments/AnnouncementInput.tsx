@@ -12,6 +12,7 @@ import Title from "./Title";
 import TypeSelect from "./TypeSelect";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -22,6 +23,7 @@ const AnnouncementInput = ({
   watch: UseFormWatch<Announcement>;
   setValue: UseFormSetValue<Announcement>;
 }) => {
+  const t = useTranslations("announcement");
   const content = watch("text") || "";
   const title = watch("title") || "";
 
@@ -29,7 +31,7 @@ const AnnouncementInput = ({
     <Container>
       <Title
         value={title}
-        placeholder="제목 입력"
+        placeholder={t("subjectPlaceholder")}
         onChange={(e) => setValue("title", e.target.value)}
       />
       <TypeSelect watch={watch} setValue={setValue} />

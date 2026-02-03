@@ -13,6 +13,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
@@ -161,6 +162,8 @@ export default function UploadSpecialTrackAudio({
   const [duration, setDuration] = useState<string>("");
   const { uploadToS3, uploadProgress, cancelUpload } = useUploadStore();
   const { updateTrack } = useTrackStore();
+  const t = useTranslations("content");
+  const tu = useTranslations("upload");
   const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
@@ -179,7 +182,7 @@ export default function UploadSpecialTrackAudio({
 
       // 오디오 파일 타입 체크
       if (!file.type.startsWith("audio/")) {
-        toast.error("오디오 파일만 업로드 가능합니다.");
+        toast.error(tu("audioOnly"));
         return;
       }
 
@@ -206,7 +209,7 @@ export default function UploadSpecialTrackAudio({
       });
 
       if (success) {
-        toast.success(`${file.name} 업로드가 완료되었습니다.`);
+        toast.success(t("uploadCompleteWithName", { name: file.name }));
         // FileInfo 형식으로 변환
         const fileInfo: FileInfo = {
           name: success.name,
@@ -239,7 +242,7 @@ export default function UploadSpecialTrackAudio({
       }
       return false;
     } catch (err) {
-      toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
+      toast.error(t("uploadErrorWithName", { name: file.name }));
       return false;
     } finally {
       setIsLoading(false);
@@ -297,7 +300,7 @@ export default function UploadSpecialTrackAudio({
   return (
     <Container>
       <Header>
-        공간 음향 음원 파일 <span style={{ color: "red" }}>*</span>
+        {t("spatialAudioFile")} <span style={{ color: "red" }}>*</span>
       </Header>
       <Gap height={16} />
       {track.spatialAudioInfo?.trackFileList &&
@@ -322,8 +325,8 @@ export default function UploadSpecialTrackAudio({
           <ButtonOutlinedPrimary
             label={
               isLoading
-                ? `업로드 중 ${Math.round(uploadProgress)}%`
-                : "파일 업로드"
+                ? t("uploadingPercent", { percent: Math.round(uploadProgress) })
+                : t("fileUpload")
             }
             size="small"
             leftIcon={<UploadIcon />}
@@ -331,7 +334,7 @@ export default function UploadSpecialTrackAudio({
             disabled={isLoading || readOnly}
           />
           {isLoading && !readOnly && (
-            <CancelButton onClick={handleCancelUpload} title="업로드 취소">
+            <CancelButton onClick={handleCancelUpload} title={tu("uploadCancel")}>
               ×
             </CancelButton>
           )}

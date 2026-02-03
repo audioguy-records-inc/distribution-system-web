@@ -194,7 +194,18 @@ export const languageList: LanguageItem[] = [
   { name: "줄루어", languageCode: "zu" },
 ];
 
-export const getLanguageKeyValueList = () => {
+export const getLanguageKeyValueList = (locale?: string) => {
+  if (locale && locale !== "ko") {
+    try {
+      const displayNames = new Intl.DisplayNames([locale], { type: "language" });
+      return languageList.map((language) => ({
+        key: language.languageCode,
+        value: `${displayNames.of(language.languageCode) || language.name} (${language.languageCode})`,
+      }));
+    } catch {
+      // fallback to Korean names
+    }
+  }
   return languageList.map((language) => ({
     key: language.languageCode,
     value: `${language.name} (${language.languageCode})`,

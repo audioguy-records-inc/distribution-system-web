@@ -37,6 +37,7 @@ import { SettlementFile } from "@/types/settlement-file";
 import { SettlementSummary } from "@/types/settlement-summary";
 import { create } from "zustand";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface SettlementStore {
   settlementDetails: SettlementDetail[];
@@ -100,7 +101,7 @@ export const useSettlementStore = create<SettlementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 상세 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.detailError");
 
           toast.error(errorMessage);
 
@@ -132,7 +133,7 @@ export const useSettlementStore = create<SettlementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 세금 영수증 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.taxError");
 
           toast.error(errorMessage);
 
@@ -164,7 +165,7 @@ export const useSettlementStore = create<SettlementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 관리자 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.adminError");
 
           toast.error(errorMessage);
 
@@ -194,7 +195,7 @@ export const useSettlementStore = create<SettlementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 요약 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.summaryError");
 
           toast.error(errorMessage);
 
@@ -218,12 +219,12 @@ export const useSettlementStore = create<SettlementStore>()(
             throw new Error(response.message);
           }
 
-          toast.success("정산서가 업로드되었습니다.");
+          toast.success(t("toast.settlement.uploaded"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 파일 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.createError");
 
           toast.error(errorMessage);
 
@@ -253,7 +254,7 @@ export const useSettlementStore = create<SettlementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 파일 목록 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.listError");
 
           toast.error(errorMessage);
 
@@ -285,12 +286,12 @@ export const useSettlementStore = create<SettlementStore>()(
             error: null,
           }));
 
-          toast.success("정산 파일이 삭제되었습니다.");
+          toast.success(t("toast.settlement.fileDeleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "정산 파일 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.settlement.deleteError");
 
           toast.error(errorMessage);
 

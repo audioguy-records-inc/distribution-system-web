@@ -5,6 +5,7 @@ import Video from "@/types/video";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -33,12 +34,13 @@ export default function LabelInfo({
   watch: UseFormWatch<Video>;
 }) {
   const { user } = useAuthStore();
+  const tv = useTranslations("video");
   const code = watch("userInfo")?.account || user?.account || "";
   const name = watch("userInfo")?.displayName || user?.displayName || "";
 
   return (
     <Container>
-      <Label>발매사</Label>
+      <Label>{tv("publisher")}</Label>
       <RowWrapper>
         <CustomInput
           value={code}

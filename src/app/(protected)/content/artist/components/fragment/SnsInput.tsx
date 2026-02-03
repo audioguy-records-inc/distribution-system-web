@@ -10,6 +10,7 @@ import Youtube from "@/components/icons/sns/Youtube";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -29,6 +30,8 @@ interface SnsInputProps {
 }
 
 const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
+  const ta = useTranslations("artist");
+  const ts = useTranslations("artist.snsPlaceholders");
   const snsLinkList = useWatch({
     control,
     name: "snsLinkList",
@@ -58,7 +61,7 @@ const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
 
   return (
     <Container>
-      <Label>SNS</Label>
+      <Label>{ta("sns")}</Label>
       <Controller
         name="snsLinkList"
         control={control}
@@ -66,7 +69,7 @@ const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
           <>
             <CustomInput
               size="small"
-              placeholder={"인스타그램"}
+              placeholder={ts("instagram")}
               icon={<Instagram />}
               readOnly={!isEdit}
               required={required}
@@ -80,7 +83,7 @@ const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
             />
             <CustomInput
               size="small"
-              placeholder={"유튜브"}
+              placeholder={ts("youtube")}
               icon={<Youtube />}
               readOnly={!isEdit}
               required={required}
@@ -93,7 +96,7 @@ const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
             />
             <CustomInput
               size="small"
-              placeholder={"엑스"}
+              placeholder={ts("x")}
               icon={<X />}
               readOnly={!isEdit}
               required={required}
@@ -106,7 +109,7 @@ const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
             />
             <CustomInput
               size="small"
-              placeholder={"페이스북"}
+              placeholder={ts("facebook")}
               icon={<Facebook />}
               readOnly={!isEdit}
               required={required}
@@ -120,7 +123,7 @@ const SnsInput = ({ isEdit, required, control }: SnsInputProps) => {
             />
             <CustomInput
               size="small"
-              placeholder={"틱톡"}
+              placeholder={ts("tiktok")}
               icon={<TikTok />}
               readOnly={!isEdit}
               required={required}

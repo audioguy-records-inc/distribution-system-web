@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 interface ActivateStateBadgeProps {
   isActive: boolean;
@@ -33,10 +34,11 @@ const Badge = styled.div``;
 const ActivateStateBadge: React.FC<ActivateStateBadgeProps> = ({
   isActive,
 }) => {
+  const t = useTranslations("common");
   return (
     <Container $isActive={isActive}>
       <Dot $isActive={isActive} />
-      <Badge>{isActive ? "활성화" : "비활성화"}</Badge>
+      <Badge>{isActive ? t("activated") : t("deactivated")}</Badge>
     </Container>
   );
 };

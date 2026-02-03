@@ -14,6 +14,7 @@ import Gap from "@/components/basic/Gap";
 import Image from "next/image";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -46,6 +47,8 @@ export default function ContractedDspList({
   setValue: UseFormSetValue<Album>;
 }) {
   const [isSelectedAll, setIsSelectedAll] = useState(false);
+  const t = useTranslations("content");
+  const tc = useTranslations("common");
   const contractedDspContractList =
     watch("userContractInfo.dspContractList") || [];
   const dspContractIdList = watch("dspContractIdList") || [];
@@ -97,16 +100,16 @@ export default function ContractedDspList({
 
   return (
     <Container>
-      <Label>{`계약된 DSP 리스트: ${dspContractIdList.length}개 선택됨`}</Label>
+      <Label>{t("contractedDspListLabel", { count: dspContractIdList.length })}</Label>
       {!contractedDspContractList || contractedDspContractList.length === 0 ? (
         <HelpText>
-          계약 정보를 선택하면 해당 계약의 dsp 리스트가 표시됩니다.
+          {t("contractedDspHelpText")}
         </HelpText>
       ) : (
         <>
           <Gap height={8} />
           <CustomCheckbox
-            label="전체 선택"
+            label={tc("selectAll")}
             checked={isSelectedAll}
             onChange={handleSelectAll}
           />

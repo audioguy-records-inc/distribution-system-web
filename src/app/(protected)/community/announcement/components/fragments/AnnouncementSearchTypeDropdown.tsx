@@ -1,6 +1,7 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
 import { useAnnouncementStore } from "@/stores/use-announcement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -19,23 +20,24 @@ export default function AnnouncementSearchTypeDropdown({
   selectedType: AnnouncementSearchType;
   setSelectedType: (type: AnnouncementSearchType) => void;
 }) {
+  const t = useTranslations("announcement");
   const { searchAnnouncements } = useAnnouncementStore();
   const items = [
     {
       key: "ALL",
-      value: "전체",
+      value: t("recipientAll"),
     },
     {
       key: "TRANSMISSION",
-      value: "전송",
+      value: t("typeTransmission"),
     },
     {
       key: "SETTLEMENT",
-      value: "정산",
+      value: t("typeSettlement"),
     },
     {
       key: "ETC",
-      value: "기타",
+      value: t("typeEtc"),
     },
   ];
   const handleSearch = async (key: AnnouncementSearchType) => {
@@ -55,7 +57,7 @@ export default function AnnouncementSearchTypeDropdown({
   return (
     <Container>
       <CustomDropdown
-        label={"구분"}
+        label={t("type")}
         items={items}
         selectedKey={selectedType}
         onSelectKey={(key) => {

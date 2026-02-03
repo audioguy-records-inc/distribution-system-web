@@ -19,6 +19,7 @@ import UploadTrackAudio from "./fragment/UploadTrackAudio";
 import { UseFormWatch } from "react-hook-form";
 import styled from "styled-components";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -43,6 +44,8 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
     useTrackStore();
 
   const albumData = albumWatch();
+  const t = useTranslations("track");
+  const tc = useTranslations("common");
   const [isLyricsModalOpen, setIsLyricsModalOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState<EditTrack | null>(null);
   const [isCheckAll, setIsCheckAll] = useState(true);
@@ -122,7 +125,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       },
     },
     {
-      header: "트랙 번호",
+      header: t("trackNumber"),
       accessor: "trackNumber",
       align: "center",
       type: "input",
@@ -162,7 +165,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       },
     },
     {
-      header: "트랙명",
+      header: t("trackName"),
       accessor: "titleList",
       align: "center",
       type: "input",
@@ -180,7 +183,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       },
     },
     {
-      header: "메인타이틀",
+      header: t("mainTitle"),
       accessor: "isMainTitle",
       align: "center",
       type: "input",
@@ -202,7 +205,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       },
     },
     {
-      header: "타이틀",
+      header: t("title"),
       accessor: "isTitle",
       align: "center",
       type: "input",
@@ -224,20 +227,20 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       },
     },
     {
-      header: "트랙 아티스트",
+      header: t("trackArtist"),
       accessor: "releaseArtistList",
       align: "center",
       type: "string",
       width: 120,
       render: (value, record, index) => {
         const _value = value as ArtistInfo[];
-        if (!_value || _value.length === 0) return "없음";
+        if (!_value || _value.length === 0) return t("none");
         if (_value.length === 1) return _value[0].name;
-        return `${_value[0].name} 외 ${_value.length - 1}`;
+        return `${_value[0].name} ${t("andOthers", { count: _value.length - 1 })}`;
       },
     },
     {
-      header: "가사",
+      header: t("lyrics"),
       accessor: "lyrics",
       align: "center",
       type: "input",
@@ -246,7 +249,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
         const hasLyrics = record.lyrics && record.lyrics.trim() !== "";
         return (
           <ButtonOutlinedPrimary
-            label={hasLyrics ? "수정" : "등록"}
+            label={hasLyrics ? tc("edit") : tc("register")}
             size="small"
             onClick={() => {
               if (!record) return;
@@ -258,7 +261,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       },
     },
     {
-      header: "음원",
+      header: t("audio"),
       accessor: "trackFileList",
       align: "center",
       type: "input",
@@ -424,7 +427,7 @@ export default function TrackSection({ albumWatch }: TrackSectionProps) {
       />
       <Gap height={12} />
       <ButtonOutlinedSecondary
-        label="추가"
+        label={tc("add")}
         size="medium"
         onClick={handleAddTrack}
         leftIcon={<PlusIcon />}

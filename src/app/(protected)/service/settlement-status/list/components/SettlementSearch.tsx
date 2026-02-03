@@ -11,6 +11,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -34,6 +35,8 @@ const DateDash = styled.div`
 `;
 
 export default function SettlementSearch() {
+  const t = useTranslations("settlement");
+  const tCommon = useTranslations("common");
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<SettlementSearchType>("all");
@@ -87,7 +90,7 @@ export default function SettlementSearch() {
 
   return (
     <Container>
-      <DateLabel>기간 검색</DateLabel>
+      <DateLabel>{tCommon("periodSearch")}</DateLabel>
       <Gap height={8} />
       <RowWrapper>
         <CustomMonthCalendar
@@ -109,7 +112,7 @@ export default function SettlementSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="앨범명, 트랙명, 아티스트명, 권리자명"
+          placeholder={t("searchPlaceholder")}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

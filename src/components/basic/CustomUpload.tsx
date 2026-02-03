@@ -14,6 +14,7 @@ import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
@@ -72,6 +73,7 @@ const CustomUpload = ({
   readOnly = false,
   required = false,
 }: CustomUploadProps) => {
+  const t = useTranslations("upload");
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<FileInfo[]>(value || []);
@@ -94,7 +96,7 @@ const CustomUpload = ({
     if (dataCollectionName === DataCollectionName.USER_CONTRACTS) {
       const fileExtension = file.name.split(".").pop()?.toLowerCase();
       if (fileExtension !== "pdf") {
-        toast.error("계약서는 PDF 파일만 업로드 가능합니다.");
+        toast.error(t("pdfOnly"));
         return false;
       }
     }
@@ -108,7 +110,7 @@ const CustomUpload = ({
       });
 
       if (success) {
-        toast.success(`${file.name} 업로드가 완료되었습니다.`);
+        toast.success(t("uploadCompleteWithName", { name: file.name }));
         // FileInfo 형식으로 변환
         const fileInfo: FileInfo = {
           name: success.name,
@@ -119,7 +121,7 @@ const CustomUpload = ({
       }
       return false;
     } catch (err) {
-      toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
+      toast.error(t("uploadErrorWithName", { name: file.name }));
       return false;
     } finally {
       setIsLoading(false);
@@ -142,7 +144,7 @@ const CustomUpload = ({
         });
 
         if (nonPdfFiles.length > 0) {
-          toast.error("계약서는 PDF 파일만 업로드 가능합니다.");
+          toast.error(t("pdfOnly"));
           filesToUpload = filesToUpload.filter((file) => {
             const fileExtension = file.name.split(".").pop()?.toLowerCase();
             return fileExtension === "pdf";
@@ -201,7 +203,7 @@ const CustomUpload = ({
         });
 
         if (nonPdfFiles.length > 0) {
-          toast.error("계약서는 PDF 파일만 업로드 가능합니다.");
+          toast.error(t("pdfOnly"));
           filesToUpload = filesToUpload.filter((file) => {
             const fileExtension = file.name.split(".").pop()?.toLowerCase();
             return fileExtension === "pdf";
@@ -239,21 +241,21 @@ const CustomUpload = ({
       type: "string",
     },
     {
-      header: "파일명",
+      header: t("fileName"),
       accessor: "name",
       width: 300,
       align: "left",
       type: "string",
     },
     {
-      header: "파일크기",
+      header: t("fileSize"),
       accessor: "size",
       width: 100,
       align: "right",
       type: "string",
     },
     {
-      header: "다운로드",
+      header: t("download"),
       accessor: "filePath",
       width: 80,
       align: "center",
@@ -266,7 +268,7 @@ const CustomUpload = ({
   // 삭제 버튼은 readOnly가 아닐 때만 추가
   if (!readOnly) {
     columns.push({
-      header: "삭제",
+      header: t("fileDelete"),
       accessor: "name",
       width: 80,
       align: "center",
@@ -292,7 +294,7 @@ const CustomUpload = ({
       <Gap height={16} />
       {!readOnly && (
         <ButtonOutlinedSecondary
-          label={isLoading ? "업로드 중" : "파일 업로드"}
+          label={isLoading ? t("uploading") : t("fileUpload")}
           leftIcon={<UploadIcon />}
           size="medium"
           onClick={handleButtonClick}
@@ -325,12 +327,12 @@ const CustomUpload = ({
           <UploadIcon color={theme.colors.purple[600]} />
           <DropZoneText>
             {isLoading
-              ? "업로드 중..."
+              ? t("uploadingEllipsis")
               : dataCollectionName === DataCollectionName.USER_CONTRACTS
-              ? "PDF 파일을 끌어놓아 주세요."
+              ? t("dragDropPdf")
               : fileType === FileType.IMAGES
-              ? "이미지를 끌어놓아 주세요."
-              : "파일을 끌어놓아 주세요."}
+              ? t("dragDropImage")
+              : t("dragDropFile")}
           </DropZoneText>
         </DropZone>
       )}

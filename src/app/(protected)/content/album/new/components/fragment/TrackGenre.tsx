@@ -7,6 +7,7 @@ import {
 import Album from "@/types/album";
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -27,15 +28,16 @@ export default function TrackGenre({
   onChangeSubGenre: (value: string) => void;
   readOnly?: boolean;
 }) {
+  const t = useTranslations("content");
   return (
     <Container>
       <CustomDropdown
-        label="메인 장르"
+        label={t("mainGenre")}
         items={getAlbumGenreMainGenreList().map((item) => ({
           key: item,
           value: item,
         }))}
-        placeholder="장르 선택"
+        placeholder={t("genreSelect")}
         selectedKey={mainGenre}
         onSelectKey={(selectedKey) => {
           onChangeMainGenre(selectedKey);
@@ -46,12 +48,12 @@ export default function TrackGenre({
         required
       />
       <CustomDropdown
-        label="서브 장르"
+        label={t("subGenre")}
         items={getAlbumGenreSubGenreList(mainGenre || "").map((item) => ({
           key: item,
           value: item,
         }))}
-        placeholder="장르 선택"
+        placeholder={t("genreSelect")}
         selectedKey={subGenre}
         onSelectKey={(selectedKey) => {
           onChangeSubGenre(selectedKey);

@@ -10,6 +10,7 @@ import LicensorInput from "./fragment/LicnsorInput";
 import ReactModal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -50,6 +51,8 @@ const Form = styled.form`
 `;
 
 const AddNewLicensor = () => {
+  const tCommon = useTranslations("common");
+  const tLicensor = useTranslations("licensor");
   const [isOpen, setIsOpen] = useState(false);
   const { createUser, fetchUsers } = useUserStore();
   const {
@@ -149,11 +152,11 @@ const AddNewLicensor = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          권리자 등록
+          {tLicensor("licensorRegister")}
           <ButtonWrapper>
-            <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
+            <ButtonOutlinedSecondary label={tCommon("cancel")} onClick={handleClose} />
             <ButtonFilledPrimary
-              label="등록"
+              label={tCommon("register")}
               onClick={() => {
                 onSubmit();
               }}
@@ -164,7 +167,7 @@ const AddNewLicensor = () => {
         <Gap height={48} />
 
         <VisibleWrapper>
-          <VisibleLabel>권리자 정보</VisibleLabel>
+          <VisibleLabel>{tLicensor("licensorInfo")}</VisibleLabel>
           <Controller
             name="isEnabled"
             control={control}

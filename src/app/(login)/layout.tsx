@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "오디오가이 유통시스템 - 로그인",
-  description: "",
-};
+export async function generateMetadata() {
+  const t = await getTranslations("metadata");
+  return { title: t("titleLogin"), description: "" };
+}
 
 export default function LoginLayout({
   children,

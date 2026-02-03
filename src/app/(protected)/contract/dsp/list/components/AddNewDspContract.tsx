@@ -12,6 +12,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const AddNewWrapper = styled.div`
   cursor: pointer;
@@ -52,6 +53,9 @@ const Form = styled.form`
 const AddNewDspContract = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { createDspContract } = useDspContractStore();
+  const tCommon = useTranslations("common");
+  const tContract = useTranslations("contract");
+  const tDsp = useTranslations("dsp");
   const defaultFormValues: Partial<DspContract> = {
     dspContractName: "",
     dspContractUniqueId: "",
@@ -157,11 +161,11 @@ const AddNewDspContract = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          DSP 계약 등록
+          {tDsp("dspContractRegister")}
           <ButtonWrapper>
-            <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
+            <ButtonOutlinedSecondary label={tCommon("cancel")} onClick={handleClose} />
             <ButtonFilledPrimary
-              label="등록"
+              label={tCommon("register")}
               onClick={() => onSubmit(watch())}
               disabled={isSubmitDisabled()}
             />
@@ -170,7 +174,7 @@ const AddNewDspContract = () => {
         <Gap height={48} />
 
         <VisibleWrapper>
-          <VisibleLabel>계약 정보</VisibleLabel>
+          <VisibleLabel>{tContract("contractInfo")}</VisibleLabel>
           <Controller
             name="isContractEnabled"
             control={control}

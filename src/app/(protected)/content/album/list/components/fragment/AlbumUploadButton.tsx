@@ -8,6 +8,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useAlbumStore } from "@/stores/use-album-store";
+import { useTranslations } from "next-intl";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
@@ -27,6 +28,8 @@ export default function AlbumUploadButton({
 
   const { uploadToS3 } = useUploadStore();
   const { uploadAlbumFile } = useAlbumStore();
+  const t = useTranslations("content");
+  const tu = useTranslations("upload");
 
   // 파일 확장자 검증 함수
   const validateFileType = (file: File): boolean => {
@@ -35,7 +38,7 @@ export default function AlbumUploadButton({
     const fileExtension = fileName.substring(fileName.lastIndexOf("."));
 
     if (!allowedExtensions.includes(fileExtension)) {
-      toast.error("xlsx 또는 csv 파일만 업로드 가능합니다.");
+      toast.error(tu("xlsxOnly"));
       return false;
     }
     return true;
@@ -79,7 +82,7 @@ export default function AlbumUploadButton({
       }
       return false;
     } catch (err) {
-      toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
+      toast.error(t("uploadErrorWithName", { name: file.name }));
       return false;
     } finally {
       setIsLoading(false);
@@ -115,7 +118,7 @@ export default function AlbumUploadButton({
   return (
     <Container>
       <ButtonOutlinedPrimary
-        label={isLoading ? "업로드 중..." : "앨범 엑셀 업로드"}
+        label={isLoading ? t("uploading") : t("albumExcelUpload")}
         leftIcon={<UploadIcon />}
         size="medium"
         onClick={handleButtonClick}

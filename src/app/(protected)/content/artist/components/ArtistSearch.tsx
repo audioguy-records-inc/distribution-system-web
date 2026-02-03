@@ -1,11 +1,13 @@
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
 import { useArtistStore } from "@/stores/use-artist-store";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const Container = styled.div``;
 
 export default function ArtistSearch() {
+  const ta = useTranslations("artist");
   const [searchValue, setSearchValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { artists, searchArtists } = useArtistStore();
@@ -19,7 +21,7 @@ export default function ArtistSearch() {
   return (
     <Container>
       <SearchInput
-        placeholder="아티스트 검색"
+        placeholder={ta("artistSearch")}
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
         onClickSearch={handleSearch}

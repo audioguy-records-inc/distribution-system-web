@@ -15,6 +15,7 @@ import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div<{ $width: string }>`
@@ -77,6 +78,7 @@ const ImageUpload = ({
   width = "100%",
   required = false,
 }: ImageUploadProps) => {
+  const t = useTranslations("upload");
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<ImageInfo[]>(value || []);
@@ -104,7 +106,7 @@ const ImageUpload = ({
       });
 
       if (success) {
-        toast.success(`${file.name} 업로드가 완료되었습니다.`);
+        toast.success(t("uploadCompleteWithName", { name: file.name }));
         // FileInfo 형식으로 변환
         const fileInfo: ImageInfo = {
           name: success.name,
@@ -117,7 +119,7 @@ const ImageUpload = ({
       }
       return false;
     } catch (err) {
-      toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
+      toast.error(t("uploadErrorWithName", { name: file.name }));
       return false;
     } finally {
       setIsLoading(false);
@@ -202,7 +204,7 @@ const ImageUpload = ({
       <Gap height={16} />
       {!readOnly && (
         <ButtonOutlinedSecondary
-          label={isLoading ? "업로드 중" : "파일 업로드"}
+          label={isLoading ? t("uploading") : t("fileUpload")}
           leftIcon={<UploadIcon />}
           size="medium"
           onClick={handleButtonClick}
@@ -231,10 +233,10 @@ const ImageUpload = ({
           <UploadIcon color={theme.colors.purple[600]} />
           <DropZoneText>
             {isLoading
-              ? "업로드 중..."
+              ? t("uploadingEllipsis")
               : fileType === FileType.IMAGES
-              ? "이미지를 끌어놓아 주세요."
-              : "파일을 끌어놓아 주세요."}
+              ? t("dragDropImage")
+              : t("dragDropFile")}
           </DropZoneText>
         </DropZone>
       )}

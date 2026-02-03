@@ -1,14 +1,14 @@
 interface VideoTypeItem {
   key: string;
-  value: string;
+  translationKey: string;
 }
 
 export const videoTypeList: VideoTypeItem[] = [
-  { key: "뮤직비디오", value: "뮤직비디오" },
-  { key: "공연영상", value: "공연영상" },
-  { key: "티저영상", value: "티저영상" },
-  { key: "팬미팅", value: "팬미팅" },
-  { key: "메이킹필름", value: "메이킹필름" },
-  { key: "라이브", value: "라이브" },
-  { key: "기타", value: "기타" },
+  { key: "뮤직비디오", translationKey: "videoTypeMV" },
+  { key: "공연영상", translationKey: "videoTypePerformance" },
+  { key: "티저영상", translationKey: "videoTypeTeaser" },
+  { key: "팬미팅", translationKey: "videoTypeFanmeeting" },
+  { key: "메이킹필름", translationKey: "videoTypeMakingFilm" },
+  { key: "라이브", translationKey: "videoTypeLive" },
+  { key: "기타", translationKey: "videoTypeEtc" },
 ];

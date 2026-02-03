@@ -7,6 +7,7 @@ import {
 import Album from "@/types/album";
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ export default function AlbumGenre({
   control: Control<Album>;
   watch: UseFormWatch<Album>;
 }) {
+  const t = useTranslations("content");
   return (
     <Container>
       <Controller
@@ -30,12 +32,12 @@ export default function AlbumGenre({
         render={({ field }) => {
           return (
             <CustomDropdown
-              label="앨범 장르"
+              label={t("albumGenre")}
               items={getAlbumGenreMainGenreList().map((item) => ({
                 key: item,
                 value: item,
               }))}
-              placeholder="장르 선택"
+              placeholder={t("genreSelect")}
               selectedKey={field.value}
               onSelectKey={(selectedKey) => {
                 field.onChange(selectedKey);
@@ -53,14 +55,14 @@ export default function AlbumGenre({
         render={({ field }) => {
           return (
             <CustomDropdown
-              label="서브 장르"
+              label={t("subGenre")}
               items={getAlbumGenreSubGenreList(watch("mainGenre") || "").map(
                 (item) => ({
                   key: item,
                   value: item,
                 }),
               )}
-              placeholder="장르 선택"
+              placeholder={t("genreSelect")}
               selectedKey={field.value}
               onSelectKey={(selectedKey) => {
                 field.onChange(selectedKey);

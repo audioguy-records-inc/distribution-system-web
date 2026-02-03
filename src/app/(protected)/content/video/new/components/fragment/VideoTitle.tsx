@@ -12,6 +12,7 @@ import TrashIcon from "@/components/icons/TrashIcon";
 import { getLanguageKeyValueList } from "@/constants/language";
 import styled from "styled-components";
 import toast from "react-hot-toast";
+import { useLocale, useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -24,9 +25,13 @@ export default function VideoTitle({
   onChange: (value: TitleLanguage[]) => void;
   readOnly: boolean;
 }) {
+  const tv = useTranslations("video");
+  const tc = useTranslations("common");
+  const tu = useTranslations("upload");
+  const locale = useLocale();
   const columns: Column<TitleLanguage>[] = [
     {
-      header: "언어",
+      header: tv("language"),
       accessor: "language",
       align: "center",
       type: "string",
@@ -35,8 +40,8 @@ export default function VideoTitle({
         const oldKey = Object.keys(record)[0] || "";
         return (
           <CustomDropdown
-            placeholder="언어 선택"
-            items={getLanguageKeyValueList()}
+            placeholder={tv("languageSelect")}
+            items={getLanguageKeyValueList(locale)}
             selectedKey={oldKey}
             onSelectKey={(newKey) => {
               if (
@@ -48,7 +53,7 @@ export default function VideoTitle({
                     item[newKey] !== undefined,
                 )
               ) {
-                toast.error("이미 선택된 언어입니다.");
+                toast.error(tu("alreadySelectedLanguage"));
                 return;
               }
               // 기존의 title 값을 유지하면서 새 key로 업데이트
@@ -68,7 +73,7 @@ export default function VideoTitle({
       },
     },
     {
-      header: "영상명",
+      header: tv("videoName"),
       accessor: "string",
       align: "center",
       type: "string",
@@ -116,7 +121,7 @@ export default function VideoTitle({
   return (
     <Container>
       <div style={{ fontWeight: "500", color: "#374151" }}>
-        영상명 <span style={{ color: "#DC2626" }}>*</span>
+        {tv("videoName")} <span style={{ color: "#DC2626" }}>*</span>
       </div>
       <CustomTable columns={columns} data={value || []} size="small" />
       <Gap height={12} />
@@ -125,7 +130,7 @@ export default function VideoTitle({
           size="medium"
           expand
           leftIcon={<PlusIcon />}
-          label="추가"
+          label={tc("add")}
           onClick={() => {
             if (readOnly) return;
             const newValue = [...(value || []), { "": "" }];

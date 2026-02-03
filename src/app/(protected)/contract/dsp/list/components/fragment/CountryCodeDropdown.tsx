@@ -1,7 +1,8 @@
-import { CountryItem, countryList } from "@/constants/country";
+import { CountryItem, countryList, getCountryKeyValueList } from "@/constants/country";
 import { useEffect, useState } from "react";
 
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import { useLocale, useTranslations } from "next-intl";
 
 interface CountryCodeDropdownProps {
   onChange: (country: string) => void;
@@ -17,19 +18,18 @@ const CountryCodeDropdown = ({
   readOnly = false,
   required = false,
 }: CountryCodeDropdownProps) => {
+  const tCommon = useTranslations("common");
+  const locale = useLocale();
   const [isLoading, setIsLoading] = useState(true);
-  const dropdownItems = countryList.map((country) => ({
-    key: country.countryCode,
-    value: `${country.name} (${country.countryCode})`,
-  }));
+  const dropdownItems = getCountryKeyValueList(locale);
 
   return (
     <CustomDropdown
-      label={"국가"}
+      label={tCommon("country")}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
-      placeholder="국가 선택"
+      placeholder={tCommon("countrySelect")}
       size={"small"}
       width={320}
       readOnly={readOnly}

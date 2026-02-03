@@ -1,5 +1,6 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -20,26 +21,28 @@ export default function SettlementDetailSearchTypeDropdown({
   selectedType: SettlementDetailSearchType;
   setSelectedType: (type: SettlementDetailSearchType) => void;
 }) {
+  const tCommon = useTranslations("common");
+  const t = useTranslations("settlement");
   const items = [
     {
       key: "all",
-      value: "전체",
+      value: tCommon("all"),
     },
     {
       key: "albumTitle",
-      value: "앨범명",
+      value: t("albumName"),
     },
     {
       key: "trackTitle",
-      value: "트랙명",
+      value: t("trackName"),
     },
     {
       key: "artistList.name",
-      value: "아티스트명",
+      value: t("artistName"),
     },
     {
       key: "userDisplayName,agencyCompanyName",
-      value: "권리자명",
+      value: t("licensorName"),
     },
   ];
   return (

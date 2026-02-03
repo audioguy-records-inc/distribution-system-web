@@ -1,14 +1,14 @@
 import AuthGuard from "@/components/AuthGuard";
 import Breadcrumbs from "@/components/BreadCrumbs";
 import LayoutContainer from "@/components/layout/LayoutContainer";
-import type { Metadata } from "next";
 import PageLayout from "@/components/layout/PageLayout";
 import Sidebar from "@/components/layout/side-bar/Sidebar";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: "오디오가이 유통시스템 - 관리자",
-  description: "",
-};
+export async function generateMetadata() {
+  const t = await getTranslations("metadata");
+  return { title: t("titleAdmin"), description: "" };
+}
 
 export default function SidebarLayout({
   children,

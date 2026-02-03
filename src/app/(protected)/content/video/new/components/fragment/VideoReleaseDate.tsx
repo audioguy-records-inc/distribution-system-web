@@ -13,6 +13,7 @@ import Gap from "@/components/basic/Gap";
 import Video from "@/types/video";
 import moment from "moment";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -44,6 +45,7 @@ export default function VideoReleaseDate({
   setValue: UseFormSetValue<Video>;
   required?: boolean;
 }) {
+  const tc = useTranslations("content");
   // watch를 통해 현재 값이 유효한지 체크
   const releaseDate = watch("utcReleasedAt");
 
@@ -55,7 +57,7 @@ export default function VideoReleaseDate({
         control={control}
         render={({ field }) => (
           <CustomCalendar
-            label={"발매일"}
+            label={tc("releaseDate")}
             value={
               field.value && moment(field.value).isValid()
                 ? moment(field.value).format("YYYYMMDD")
@@ -88,7 +90,7 @@ export default function VideoReleaseDate({
           control={control}
           render={({ field }) => (
             <CustomCalendar
-              label={"서비스 시간"}
+              label={tc("serviceTime")}
               value={
                 field.value && moment(field.value).isValid()
                   ? moment(field.value).format("YYYYMMDD")

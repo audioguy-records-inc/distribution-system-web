@@ -1,4 +1,5 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import { useTranslations } from "next-intl";
 import styled from "styled-components";
 
 const Container = styled.div``;
@@ -16,22 +17,25 @@ const LicensorContractSearchTypeDropdown = ({
   selectedType: LicensorContractSearchType;
   setSelectedType: (type: LicensorContractSearchType) => void;
 }) => {
+  const tCommon = useTranslations("common");
+  const tContract = useTranslations("contract");
+  const tLicensor = useTranslations("licensor");
   const items = [
     {
       key: "all",
-      value: "전체",
+      value: tCommon("all"),
     },
     {
       key: "userContractName",
-      value: "계약명",
+      value: tContract("contractName"),
     },
     {
       key: "userInfo.displayName",
-      value: "권리자명",
+      value: tLicensor("licensorName"),
     },
     {
       key: "userContractUniqueId",
-      value: "계약 코드",
+      value: tContract("contractCode"),
     },
   ];
   return (

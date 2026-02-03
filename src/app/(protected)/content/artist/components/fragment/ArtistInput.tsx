@@ -16,6 +16,7 @@ import Gap from "@/components/basic/Gap";
 import PercentIcon from "@/components/icons/PercentIcon";
 import SnsInput from "./SnsInput";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const RowWrapper = styled.div`
   display: flex;
@@ -33,22 +34,23 @@ const ArtistInput = ({
   control: Control<Artist>;
   isEdit: boolean;
 }) => {
+  const ta = useTranslations("artist");
   return (
     <>
       <Gap height={42} />
       <RowWrapper>
         <CustomInput
-          label="아티스트명"
+          label={ta("artistName")}
           size="small"
-          placeholder="아티스트명 입력"
+          placeholder={ta("artistNamePlaceholder")}
           {...register("name", { required: true })}
           required={isEdit}
           readOnly={!isEdit}
         />
         <CustomInput
-          label="아티스트 코드"
+          label={ta("artistCode")}
           size="small"
-          placeholder="아티스트 코드 입력"
+          placeholder={ta("artistCodePlaceholder")}
           {...register("artistUniqueId")}
           readOnly={!isEdit}
         />
@@ -57,9 +59,9 @@ const ArtistInput = ({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="아티스트 영문명"
+          label={ta("artistEnName")}
           size="small"
-          placeholder="아티스트 영문명 입력"
+          placeholder={ta("artistEnNamePlaceholder")}
           {...register("nameEn")}
           readOnly={!isEdit}
         />

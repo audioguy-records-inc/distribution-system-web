@@ -10,6 +10,7 @@ import ArtistSearch from "./components/ArtistSearch";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -25,9 +26,11 @@ const ButtonWrapper = styled.div`
 `;
 
 export default function ArtistPage() {
+  const tArtist = useTranslations("artist");
+
   return (
     <Container>
-      <PageHeader title={"아티스트 리스트"} />
+      <PageHeader title={tArtist("artistList")} />
       <SearchContainer>
         <ArtistSearch />
         <ButtonWrapper>

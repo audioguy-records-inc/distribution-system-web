@@ -9,6 +9,7 @@ import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useVideoStore } from "@/stores/use-video-store";
 
@@ -34,6 +35,8 @@ const DateDash = styled.div`
 `;
 
 export default function VideoSearch() {
+  const tc = useTranslations("common");
+  const tv = useTranslations("video");
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [selectedType, setSelectedType] = useState<VideoSearchType>("all");
@@ -59,7 +62,7 @@ export default function VideoSearch() {
 
   return (
     <Container>
-      <DateLabel>발매일 검색</DateLabel>
+      <DateLabel>{tc("dateSearch")}</DateLabel>
       <Gap height={8} />
       <RowWrapper>
         <CustomCalendar
@@ -117,7 +120,7 @@ export default function VideoSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="아티스트, 영상명, 트랙명, 영상코드"
+          placeholder={tv("videoSearchPlaceholder")}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

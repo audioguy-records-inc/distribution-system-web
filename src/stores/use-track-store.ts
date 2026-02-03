@@ -10,6 +10,7 @@ import { postTrack } from "@/api/track/post-track";
 import { putTrack } from "@/api/track/put-track";
 import { searchTracks } from "@/api/track/search-tracks";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface TrackStore {
   tracks: Track[];
@@ -62,7 +63,7 @@ export const useTrackStore = create<TrackStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "트랙 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.track.fetchError");
 
           toast.error(errorMessage);
 
@@ -100,7 +101,7 @@ export const useTrackStore = create<TrackStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "트랙 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.track.fetchError");
 
           toast.error(errorMessage);
 
@@ -120,7 +121,7 @@ export const useTrackStore = create<TrackStore>()(
           // 정산 필수값 검증
           if (!get().validateTrackForSettlement(track)) {
             throw new Error(
-              "정산에 필요한 필수값이 누락되었습니다. (ISRC, userId, userContractId, albumId)",
+              t("toast.track.missingSettlementRequired"),
             );
           }
 
@@ -147,7 +148,7 @@ export const useTrackStore = create<TrackStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "트랙 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.track.createError");
 
           toast.error(errorMessage);
 
@@ -160,13 +161,13 @@ export const useTrackStore = create<TrackStore>()(
         set({ isLoading: true });
         try {
           if (!track.albumId) {
-            throw new Error("앨범 ID가 없습니다.");
+            throw new Error(t("toast.track.missingAlbumId"));
           }
 
           // 정산 필수값 검증
           if (!get().validateTrackForSettlement(track)) {
             throw new Error(
-              "정산에 필요한 필수값이 누락되었습니다. (ISRC, userId, userContractId, albumId)",
+              t("toast.track.missingSettlementRequired"),
             );
           }
 
@@ -197,7 +198,7 @@ export const useTrackStore = create<TrackStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "트랙 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.track.updateError");
 
           toast.error(errorMessage);
 
@@ -223,12 +224,12 @@ export const useTrackStore = create<TrackStore>()(
             error: null,
           }));
 
-          toast.success("트랙이 삭제되었습니다.");
+          toast.success(t("toast.track.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "트랙 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.track.deleteError");
 
           toast.error(errorMessage);
 
@@ -264,7 +265,7 @@ export const useTrackStore = create<TrackStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "트랙 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.track.searchError");
 
           toast.error(errorMessage);
 

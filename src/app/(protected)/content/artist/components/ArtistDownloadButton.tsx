@@ -7,6 +7,7 @@ import DownloadModal from "@/components/DownloadModal";
 import { saveAs } from "file-saver";
 import styled from "styled-components";
 import { useArtistStore } from "@/stores/use-artist-store";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const Container = styled.div``;
@@ -14,6 +15,8 @@ const Container = styled.div``;
 export default function ArtistDownloadButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { artists } = useArtistStore();
+  const tc = useTranslations("common");
+  const ta = useTranslations("artist");
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -26,13 +29,13 @@ export default function ArtistDownloadButton() {
   // 아티스트 데이터를 다운로드 가능한 형식으로 변환
   const prepareDataForExport = (artists: Artist[]) => {
     return artists.map((artist) => ({
-      아티스트명: artist.name,
-      고유ID: artist.artistUniqueId,
-      국가코드: artist.countryCode,
-      국가유형: artist.countryType || "",
-      성별유형: artist.genderType,
-      아티스트유형: artist.artistType,
-      SNS링크: artist.snsLinkList
+      [ta("artistName")]: artist.name,
+      [ta("artistCode")]: artist.artistUniqueId,
+      [ta("countryCode")]: artist.countryCode,
+      [ta("countryType")]: artist.countryType || "",
+      [ta("genderType")]: artist.genderType,
+      [ta("artistType")]: artist.artistType,
+      [ta("snsLink")]: artist.snsLinkList
         .map((sns) => `${sns.site}: ${sns.link}`)
         .join(", "),
     }));
@@ -42,7 +45,7 @@ export default function ArtistDownloadButton() {
     const data = prepareDataForExport(artists);
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "아티스트");
+    XLSX.utils.book_append_sheet(workbook, worksheet, ta("artistList"));
 
     // 엑셀 파일 생성 및 다운로드
     const excelBuffer = XLSX.write(workbook, {
@@ -54,7 +57,7 @@ export default function ArtistDownloadButton() {
     });
     const res = await saveAs(
       blob,
-      `아티스트_목록_${new Date().toISOString().split("T")[0]}.xlsx`,
+      `${ta("artistList")}_${new Date().toISOString().split("T")[0]}.xlsx`,
     );
 
     setIsModalOpen(false);
@@ -67,7 +70,7 @@ export default function ArtistDownloadButton() {
 
     // CSV 파일 생성 및 다운로드
     const blob = new Blob([csvOutput], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, `아티스트_목록_${new Date().toISOString().split("T")[0]}.csv`);
+    saveAs(blob, `${ta("artistList")}_${new Date().toISOString().split("T")[0]}.csv`);
 
     setIsModalOpen(false);
   };
@@ -75,7 +78,7 @@ export default function ArtistDownloadButton() {
   return (
     <Container>
       <ButtonOutlinedPrimary
-        label="다운로드"
+        label={tc("download")}
         leftIcon={<DownloadIcon />}
         onClick={handleOpenModal}
         size="medium"

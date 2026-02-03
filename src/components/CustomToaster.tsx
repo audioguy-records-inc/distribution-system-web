@@ -4,6 +4,7 @@ import toast, { Toast, Toaster, resolveValue } from "react-hot-toast";
 import { useEffect, useRef } from "react";
 
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 /**
  * x 버튼이 있는 커스텀 Toaster 컴포넌트
@@ -12,6 +13,7 @@ import { usePathname } from "next/navigation";
 export default function CustomToaster() {
   const pathname = usePathname();
   const processedToasts = useRef<Set<string>>(new Set());
+  const tCommon = useTranslations("common");
 
   // 페이지 경로가 변경될 때마다 모든 toast 닫기
   useEffect(() => {
@@ -152,7 +154,7 @@ export default function CustomToaster() {
                 onMouseLeave={(e) => {
                   e.currentTarget.style.opacity = "0.5";
                 }}
-                aria-label="닫기"
+                aria-label={tCommon("close")}
               >
                 <svg
                   width="16"

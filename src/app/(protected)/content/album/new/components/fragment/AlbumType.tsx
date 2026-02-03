@@ -1,6 +1,7 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import { albumTypeList } from "@/constants/album-type";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -13,12 +14,17 @@ export default function AlbumType({
   onChange: (value: string) => void;
   readOnly: boolean;
 }) {
+  const t = useTranslations("content");
+  const translatedAlbumTypes = albumTypeList.map((item) => ({
+    key: item.key,
+    value: t(item.translationKey),
+  }));
   return (
     <Container>
       <CustomDropdown
-        label={"앨범 유형"}
-        items={albumTypeList}
-        placeholder="앨범 타입 선택"
+        label={t("albumType")}
+        items={translatedAlbumTypes}
+        placeholder={t("albumTypeSelect")}
         selectedKey={value}
         onSelectKey={(selectedKey) => {
           onChange(selectedKey);

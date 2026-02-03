@@ -23,6 +23,7 @@ import LicensorSearch from "./LicensorSearch";
 import PercentIcon from "@/components/icons/PercentIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const RowWrapper = styled.div`
   display: flex;
@@ -62,18 +63,21 @@ const LicensorContractInput = ({
   control: Control<UserContract>;
   isEdit: boolean;
 }) => {
+  const tContract = useTranslations("contract");
+  const tCommon = useTranslations("common");
+
   // 계약 유형 옵션
   const contractTypeOptions = [
-    { key: "GENERAL", value: "일반" },
-    { key: "INVESTMENT", value: "투자" },
-    { key: "MG", value: "MG" },
+    { key: "GENERAL", value: tContract("typeNormal") },
+    { key: "INVESTMENT", value: tContract("typeInvestment") },
+    { key: "MG", value: tContract("typeMG") },
   ];
 
   // 업체 유형 옵션
   const businessTypeOptions = [
-    { key: "INDIVIDUAL", value: "개인" },
-    { key: "INDIVIDUAL_BUSINESS", value: "개인사업자" },
-    { key: "CORPORATION_BUSINESS", value: "법인사업자" },
+    { key: "INDIVIDUAL", value: tContract("typeIndividual") },
+    { key: "INDIVIDUAL_BUSINESS", value: tContract("typeIndividualBusiness") },
+    { key: "CORPORATION_BUSINESS", value: tContract("typeCorporateBusiness") },
   ];
 
   return (
@@ -82,16 +86,16 @@ const LicensorContractInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="계약명"
-          placeholder="계약명 입력"
+          label={tContract("contractName")}
+          placeholder={tContract("contractNamePlaceholder")}
           readOnly={!isEdit}
           required
           {...register("userContractName", { required: true })}
         />
         <CustomInput
           size="small"
-          label="계약 코드"
-          placeholder="계약 코드 입력"
+          label={tContract("contractCode")}
+          placeholder={tContract("contractCodePlaceholder")}
           readOnly={!isEdit}
           required
           {...register("userContractUniqueId", { required: true })}
@@ -105,7 +109,7 @@ const LicensorContractInput = ({
           rules={{ required: true }}
           render={({ field }) => (
             <CustomDropdown
-              label="계약 유형"
+              label={tContract("contractType")}
               required
               selectedKey={field.value}
               onSelectKey={field.onChange}
@@ -122,7 +126,7 @@ const LicensorContractInput = ({
           rules={{ required: true }}
           render={({ field }) => (
             <CustomDropdown
-              label="업체 유형"
+              label={tContract("businessType")}
               required
               selectedKey={field.value}
               onSelectKey={field.onChange}
@@ -151,7 +155,7 @@ const LicensorContractInput = ({
       />
       <Gap height={56} />
       <ContractTitleRowWrapper>
-        <ContractTitle>계약 기간</ContractTitle>
+        <ContractTitle>{tContract("contractPeriod")}</ContractTitle>
         <Controller
           name="isContractAutoRenewEnabled"
           control={control}
@@ -159,7 +163,7 @@ const LicensorContractInput = ({
             <CustomCheckbox
               checked={field.value}
               onChange={field.onChange}
-              label="자동 연장(1년)"
+              label={tContract("autoExtend")}
               readOnly={!isEdit}
             />
           )}
@@ -173,7 +177,7 @@ const LicensorContractInput = ({
           rules={{ required: true }}
           render={({ field }) => (
             <CustomCalendar
-              label={"계약 시작일"}
+              label={tContract("contractStartDate")}
               required
               value={field.value}
               onChange={field.onChange}
@@ -188,7 +192,7 @@ const LicensorContractInput = ({
           rules={{ required: true }}
           render={({ field }) => (
             <CustomCalendar
-              label={"계약 종료일"}
+              label={tContract("contractEndDate")}
               required
               value={field.value}
               onChange={field.onChange}
@@ -206,10 +210,10 @@ const LicensorContractInput = ({
           <CustomInput
             defaultValue={undefined}
             size="small"
-            label="계약 요율"
+            label={tContract("contractRate")}
             required
             icon={<PercentIcon />}
-            placeholder="숫자 입력"
+            placeholder={tContract("contractRatePlaceholder")}
             type="number"
             readOnly={!isEdit}
             onWheel={(e) => {
@@ -262,7 +266,7 @@ const LicensorContractInput = ({
             value={field.value}
             fileType={FileType.DOCS}
             dataCollectionName={DataCollectionName.USER_CONTRACTS}
-            headerText="계약서"
+            headerText={tContract("contractDocument")}
             readOnly={!isEdit}
           />
         )}

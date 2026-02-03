@@ -6,6 +6,7 @@ import MinusIcon from "@/components/icons/MinusIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -61,6 +62,7 @@ export default function NumberOfTracksPerDisc({
   control: Control<Album>;
   watch: UseFormWatch<Album>;
 }) {
+  const t = useTranslations("content");
   return (
     <Container>
       <Controller
@@ -70,7 +72,7 @@ export default function NumberOfTracksPerDisc({
           return (
             <Wrapper>
               <CustomInput
-                label={"CD별 수록곡 수"}
+                label={t("tracksPerDisc")}
                 value={field.value?.toString() || "0"}
                 onChange={(e) => {
                   const value = e.target.value;

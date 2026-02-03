@@ -6,6 +6,7 @@ import {
 } from "react-hook-form";
 import { DataCollectionName, FileType } from "@/types/upload";
 import {
+  CensorshipBoard,
   censorshipBoardList,
   censorshipExemptionList,
   censorshipRatingList,
@@ -20,6 +21,7 @@ import Gap from "@/components/basic/Gap";
 import Video from "@/types/video";
 import moment from "moment";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -43,14 +45,22 @@ export default function CensorSection({
   setValue,
   required = false,
 }: CensorSectionProps) {
+  const tv = useTranslations("video");
+
+  const translateItems = (items: CensorshipBoard[]) =>
+    items.map((item) => ({
+      key: item.key,
+      value: item.translationKey ? tv(item.translationKey) : item.value,
+    }));
+
   return (
     <Container>
       <Gap height={32} />
       <RowWrapper>
         <CustomDropdown
-          label="심의처"
-          placeholder="심의처 선택"
-          items={censorshipBoardList}
+          label={tv("censorOrg")}
+          placeholder={tv("censorOrgSelect")}
+          items={translateItems(censorshipBoardList)}
           selectedKey={watch("ratingAuthority")}
           onSelectKey={(selectedKey) => {
             setValue("ratingAuthority", selectedKey);
@@ -67,9 +77,9 @@ export default function CensorSection({
         />
         {watch("ratingAuthority") === "심의제외" && (
           <CustomDropdown
-            label="심의 제외 사유"
-            placeholder="심의 제외 사유 선택"
-            items={censorshipExemptionList}
+            label={tv("censorExemptReason")}
+            placeholder={tv("censorExemptReasonSelect")}
+            items={translateItems(censorshipExemptionList)}
             selectedKey={watch("ratingExemptionReason")}
             onSelectKey={(selectedKey) => {
               setValue("ratingExemptionReason", selectedKey);
@@ -80,8 +90,8 @@ export default function CensorSection({
         )}
         {watch("ratingAuthority") === "기타(직접입력)" && (
           <CustomInput
-            label="심의처 직접입력"
-            placeholder="심의처 입력"
+            label={tv("censorOrgDirect")}
+            placeholder={tv("censorOrgPlaceholder")}
             value={watch("ratingAuthorityOther") || ""}
             onChange={(e) => {
               setValue("ratingAuthorityOther", e.target.value);
@@ -94,9 +104,9 @@ export default function CensorSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomDropdown
-          label="심의 등급"
-          placeholder="심의 등급 선택"
-          items={censorshipRatingList}
+          label={tv("censorRating")}
+          placeholder={tv("censorRatingSelect")}
+          items={translateItems(censorshipRatingList)}
           selectedKey={watch("rating")}
           onSelectKey={(selectedKey) => {
             setValue("rating", selectedKey);
@@ -105,7 +115,7 @@ export default function CensorSection({
           width={320}
         />
         <CustomCalendar
-          label="심의 일자"
+          label={tv("censorDate")}
           value={
             watch("utcRatedAt") && moment(watch("utcRatedAt")).isValid()
               ? moment(watch("utcRatedAt")).format("YYYYMMDD")
@@ -135,12 +145,12 @@ export default function CensorSection({
         value={watch("ratingFileList") || []}
         fileType={FileType.DOCS}
         dataCollectionName={DataCollectionName.VIDEOS}
-        headerText="심의 파일"
+        headerText={tv("censorFile")}
       />
       <Gap height={56} />
       <CustomTextArea
-        label="요청 사항"
-        placeholder="요청 사항을 입력해주세요."
+        label={tv("requestNote")}
+        placeholder={tv("requestNotePlaceholder")}
         expand={true}
         {...register("requestDetails", { required: true })}
       />

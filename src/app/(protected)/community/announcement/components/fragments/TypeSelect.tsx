@@ -9,6 +9,7 @@ import RowGap from "@/components/basic/RowGap";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
+import { useTranslations } from "next-intl";
 
 const TypeContainer = styled.div`
   display: flex;
@@ -42,39 +43,40 @@ const TypeSelect = ({
   disabled?: boolean;
   announcement?: Announcement;
 }) => {
+  const t = useTranslations("announcement");
   const { user } = useAuthStore();
 
   const announcementTypeItems = [
     {
       key: "TRANSMISSION",
-      value: "전송",
+      value: t("typeTransmission"),
     },
     {
       key: "SETTLEMENT",
-      value: "정산",
+      value: t("typeSettlement"),
     },
     {
       key: "ETC",
-      value: "기타",
+      value: t("typeEtc"),
     },
   ];
 
   const recipientResponsibilityItems = [
     {
       key: "all",
-      value: "전체",
+      value: t("recipientAll"),
     },
     {
       key: "settlement",
-      value: "정산",
+      value: t("recipientSettlement"),
     },
     {
       key: "contract",
-      value: "계약",
+      value: t("recipientContract"),
     },
     {
       key: "promotion",
-      value: "프로모션",
+      value: t("recipientPromotion"),
     },
   ];
 
@@ -84,11 +86,11 @@ const TypeSelect = ({
 
     return (
       <DisabledTypeContainer>
-        <Label>작성자</Label>
+        <Label>{t("author")}</Label>
         <RowGap width={12} />
         <Value>{displayName}</Value>
         <RowGap width={32} />
-        <Label>구분</Label>
+        <Label>{t("type")}</Label>
         <RowGap width={12} />
         <Value>
           {
@@ -97,7 +99,7 @@ const TypeSelect = ({
           }
         </Value>
         <RowGap width={32} />
-        <Label>전송 대상</Label>
+        <Label>{t("recipientTarget")}</Label>
         <RowGap width={12} />
         <Value>
           {
@@ -113,14 +115,14 @@ const TypeSelect = ({
   return (
     <TypeContainer>
       <CustomInput
-        label="작성자"
+        label={t("author")}
         value={user?.displayName || ""}
         width={180}
         size="small"
         locked
       />
       <CustomDropdown
-        label="구분"
+        label={t("type")}
         items={announcementTypeItems}
         selectedKey={watch("type")}
         onSelectKey={(value) => setValue("type", value as AnnouncementType)}
@@ -128,7 +130,7 @@ const TypeSelect = ({
         size="small"
       />
       <CustomDropdown
-        label="전송 대상"
+        label={t("recipientTarget")}
         items={recipientResponsibilityItems}
         selectedKey={watch("recipientResponsibility")}
         onSelectKey={(value) => setValue("recipientResponsibility", value)}

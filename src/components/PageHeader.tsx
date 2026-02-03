@@ -1,5 +1,8 @@
+"use client";
+
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const HeaderContainer = styled.div`
   padding: 42px 0;
@@ -34,15 +37,16 @@ interface PageHeaderProps {
 }
 
 const PageHeader = ({ title, showRequiredInfo = false }: PageHeaderProps) => {
+  const t = useTranslations("common");
   return (
     <HeaderContainer>
       <Title>{title}</Title>
       {showRequiredInfo && (
         <RequiredInfo>
           <RequiredText>*</RequiredText>
-          <span>빨간색은 DDEX 전송 필수값,</span>
+          <span>{t("requiredDdex")}</span>
           <OptionalText>*</OptionalText>
-          <span>파란색은 정산 필수값</span>
+          <span>{t("requiredSettlement")}</span>
         </RequiredInfo>
       )}
     </HeaderContainer>

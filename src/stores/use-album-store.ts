@@ -14,6 +14,7 @@ import { postAlbumFile } from "@/api/album/post-album-file";
 import { putAlbum } from "@/api/album/put-album";
 import { searchAlbums } from "@/api/album/search-albums";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 // DDEX 발행 시 필수값 검증 함수
 const validateDdexRequiredFields = async (album: Album): Promise<string[]> => {
@@ -39,7 +40,7 @@ const validateDdexRequiredFields = async (album: Album): Promise<string[]> => {
   // 트랙 필수값 검증
   try {
     if (!album._id) {
-      errors.push("• 앨범 ID가 없습니다");
+      errors.push(t("toast.album.missingAlbumId"));
       return errors;
     }
 
@@ -48,7 +49,7 @@ const validateDdexRequiredFields = async (album: Album): Promise<string[]> => {
       !tracksResponse.data?.trackList ||
       tracksResponse.data.trackList.length === 0
     ) {
-      errors.push("• 트랙이 등록되지 않았습니다");
+      errors.push(t("toast.album.missingTracks"));
     } else {
       const tracks = tracksResponse.data.trackList;
 
@@ -107,7 +108,7 @@ const validateDdexRequiredFields = async (album: Album): Promise<string[]> => {
       });
     }
   } catch (error) {
-    errors.push("• 트랙 정보를 불러올 수 없습니다");
+    errors.push(t("toast.album.trackLoadError"));
   }
 
   return errors;
@@ -192,7 +193,7 @@ export const useAlbumStore = create<AlbumStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.fetchError");
 
           toast.error(errorMessage);
 
@@ -260,7 +261,7 @@ export const useAlbumStore = create<AlbumStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.fetchError");
 
           toast.error(errorMessage);
 
@@ -315,7 +316,7 @@ export const useAlbumStore = create<AlbumStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "전체 앨범 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.fetchAllError");
 
           toast.error(errorMessage);
 
@@ -351,12 +352,12 @@ export const useAlbumStore = create<AlbumStore>()(
             error: null,
           }));
 
-          toast.success("앨범이 생성되었습니다.");
+          toast.success(t("toast.album.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.createError");
 
           toast.error(errorMessage);
 
@@ -391,12 +392,12 @@ export const useAlbumStore = create<AlbumStore>()(
           if (isNewAlbum) {
             set({ newAlbum: response.data.album });
           }
-          toast.success("앨범이 수정되었습니다.");
+          toast.success(t("toast.album.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.updateError");
 
           toast.error(errorMessage);
 
@@ -422,12 +423,12 @@ export const useAlbumStore = create<AlbumStore>()(
             error: null,
           }));
 
-          toast.success("앨범이 삭제되었습니다.");
+          toast.success(t("toast.album.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.deleteError");
 
           toast.error(errorMessage);
 
@@ -499,7 +500,7 @@ export const useAlbumStore = create<AlbumStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.searchError");
 
           toast.error(errorMessage);
 
@@ -521,12 +522,12 @@ export const useAlbumStore = create<AlbumStore>()(
             throw new Error(response.message);
           }
 
-          toast.success("앨범 파일이 업로드되었습니다.");
+          toast.success(t("toast.album.fileUploaded"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 파일 업로드 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.fileUploadError");
 
           toast.error(errorMessage);
 
@@ -544,7 +545,7 @@ export const useAlbumStore = create<AlbumStore>()(
           // DDEX 발행 전 필수값 검증
           const albumResponse = await getAlbum({ albumId });
           if (!albumResponse || albumResponse.error || !albumResponse.data) {
-            throw new Error("앨범 정보를 찾을 수 없습니다.");
+            throw new Error(t("toast.album.notFound"));
           }
 
           const validationErrors = await validateDdexRequiredFields(
@@ -564,12 +565,12 @@ export const useAlbumStore = create<AlbumStore>()(
             throw new Error(response.message);
           }
 
-          toast.success("앨범 DDEX가 전송되었습니다.");
+          toast.success(t("toast.album.ddexSent"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 DDEX 전송 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.ddexSendError");
 
           toast.error(errorMessage);
 
@@ -599,7 +600,7 @@ export const useAlbumStore = create<AlbumStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "앨범 파일 목록 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.album.fileListError");
 
           toast.error(errorMessage);
 

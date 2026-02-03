@@ -11,6 +11,7 @@ import CustomInput from "@/components/basic/CustomInput";
 import Gap from "@/components/basic/Gap";
 import ImageUpload from "@/components/basic/ImageUpload";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -30,14 +31,15 @@ export default function DistributionSection({
   watch,
   register,
 }: DistributionSectionProps) {
+  const t = useTranslations("content");
   return (
     <Container>
       <Gap height={32} />
       <RowWrapper>
-        <CustomInput label="UCI" placeholder="UCI 입력" {...register("UCI")} />
+        <CustomInput label="UCI" placeholder={t("uciPlaceholder")} {...register("UCI")} />
         <CustomInput
           label="UPC"
-          placeholder="UPC 입력"
+          placeholder={t("upcPlaceholder")}
           required
           blueRequired
           {...register("UPC")}
@@ -50,7 +52,7 @@ export default function DistributionSection({
           control={control}
           render={({ field }) => (
             <ImageUpload
-              headerText="아티스트 이미지"
+              headerText={t("artistImage")}
               onChange={field.onChange}
               value={field.value || []}
               fileType={FileType.IMAGES}

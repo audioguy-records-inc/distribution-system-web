@@ -17,6 +17,7 @@ import DspDropdown from "./DspDropdown";
 import Gap from "@/components/basic/Gap";
 import PercentIcon from "@/components/icons/PercentIcon";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const RowWrapper = styled.div`
   display: flex;
@@ -34,14 +35,18 @@ const DspContractInput = ({
   control: Control<DspContract>;
   isEdit: boolean;
 }) => {
+  const tContract = useTranslations("contract");
+  const tDsp = useTranslations("dsp");
+  const tCommon = useTranslations("common");
+
   return (
     <>
       <Gap height={42} />
       <RowWrapper>
         <CustomInput
           size="small"
-          label="계약명"
-          placeholder="계약명 입력"
+          label={tContract("contractName")}
+          placeholder={tContract("contractNamePlaceholder")}
           readOnly={!isEdit}
           required
           {...register("dspContractName", { required: true })}
@@ -66,10 +71,10 @@ const DspContractInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="DPID"
-          placeholder="DPID 입력"
+          label={tDsp("dpid")}
+          placeholder={tDsp("dpidPlaceholder")}
           required
-          helpText="중복된 id 요청시 생성되지 않습니다."
+          helpText={tDsp("dpidHelp")}
           {...register("dspContractUniqueId", { required: true })}
         />
         <Controller
@@ -77,14 +82,14 @@ const DspContractInput = ({
           control={control}
           render={({ field }) => (
             <CustomRadioWithLabel
-              label="구분"
+              label={tCommon("category")}
               leftOption={{
-                label: "국내",
+                label: tCommon("domestic"),
                 value: "domestic",
                 checked: field.value === "domestic",
               }}
               rightOption={{
-                label: "해외",
+                label: tCommon("international"),
                 value: "international",
                 checked: field.value === "international",
               }}
@@ -116,14 +121,14 @@ const DspContractInput = ({
           control={control}
           render={({ field }) => (
             <CustomRadioWithLabel
-              label="T/R"
+              label={tDsp("timeRelease")}
               leftOption={{
-                label: "사용",
+                label: tCommon("use"),
                 value: true,
                 checked: field.value === true,
               }}
               rightOption={{
-                label: "미사용",
+                label: tCommon("notUse"),
                 value: false,
                 checked: field.value === false,
               }}
@@ -156,7 +161,7 @@ const DspContractInput = ({
             value={field.value}
             fileType={FileType.DOCS}
             dataCollectionName={DataCollectionName.DSP_CONTRACTS}
-            headerText="계약서"
+            headerText={tContract("contractDocument")}
             readOnly={!isEdit}
           />
         )}
@@ -170,10 +175,10 @@ const DspContractInput = ({
           <CustomInput
             defaultValue={undefined}
             size="small"
-            label="계약 요율"
+            label={tContract("contractRate")}
             required
             icon={<PercentIcon />}
-            placeholder="숫자 입력"
+            placeholder={tContract("contractRatePlaceholder")}
             type="number"
             onWheel={(e) => {
               e.currentTarget.blur();

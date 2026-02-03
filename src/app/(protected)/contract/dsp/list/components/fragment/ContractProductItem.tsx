@@ -2,6 +2,7 @@ import CustomCheckbox from "@/components/basic/CustomCheckbox";
 import { contractProductItemList } from "@/constants/contract-product-item";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -36,9 +37,10 @@ const ContractProductItem = ({
   onChange,
   readOnly,
 }: ContractProductItemProps) => {
+  const tContract = useTranslations("contract");
   return (
     <Container>
-      <Header>계약 상품</Header>
+      <Header>{tContract("contractProduct")}</Header>
       <Row>
         {contractProductItemList.map((item) => (
           <CheckboxWrapper key={item.key}>
@@ -50,7 +52,7 @@ const ContractProductItem = ({
                   : (value || []).filter((key: string) => key !== item.key);
                 onChange(newValue);
               }}
-              label={item.value}
+              label={tContract(item.translationKey)}
               readOnly={readOnly}
             />
           </CheckboxWrapper>

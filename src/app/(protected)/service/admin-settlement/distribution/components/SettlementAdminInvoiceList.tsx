@@ -5,33 +5,35 @@ import CustomTable, {
 import { SettlementAdminInvoice } from "@/types/settlement-matched-record";
 import styled from "styled-components";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
 export default function SettlementAdminInvoiceList() {
+  const t = useTranslations("settlement");
   const { settlementAdminInvoices } = useSettlementStore();
 
   const columns: Column<SettlementAdminInvoice>[] = [
     {
-      header: "정산월",
+      header: t("settlementMonth"),
       accessor: "settlementMonth",
       type: "string",
       align: "center",
     },
     {
-      header: "판매금액",
+      header: t("salesAmount"),
       accessor: "totalSettlementFee",
       type: "string",
       align: "center",
     },
     {
-      header: "유통 수수료 수익",
+      header: t("distributionFee"),
       accessor: "totalDistributionFee",
       type: "string",
       align: "center",
     },
     {
-      header: "권리자 정산 금액",
+      header: t("licensorSettlement"),
       accessor: "totalUserSettlementFee",
       type: "string",
       align: "center",

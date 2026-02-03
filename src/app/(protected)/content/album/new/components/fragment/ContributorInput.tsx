@@ -3,6 +3,8 @@ import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
 import {
+  category1TranslationMap,
+  category2TranslationMap,
   getArtistRoleCategory1List,
   getArtistRoleCategory2List,
 } from "@/constants/artist-role";
@@ -14,6 +16,7 @@ import Gap from "@/components/basic/Gap";
 import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -22,18 +25,6 @@ const Label = styled.div`
   font-weight: 500;
   color: #374151;
 `;
-
-// 기여자 유형1 옵션 (참여 아티스트와 동일)
-const contributorType1Options = () => {
-  const category1List = getArtistRoleCategory1List();
-  return category1List.map((category) => ({ key: category, value: category }));
-};
-
-// 기여자 유형2 옵션 (참여 아티스트와 동일)
-const getContributorType2Options = (selectedType1: string) => {
-  const category2List = getArtistRoleCategory2List(selectedType1);
-  return category2List.map((category) => ({ key: category, value: category }));
-};
 
 export default function ContributorInput({
   value,
@@ -47,6 +38,28 @@ export default function ContributorInput({
   required?: boolean;
 }) {
   const contributors = value || [];
+  const t = useTranslations("content");
+  const tRole = useTranslations("artistRole");
+
+  // 기여자 유형1 옵션 (key=한국어 서버값, value=번역된 표시값)
+  const contributorType1Options = () => {
+    const category1List = getArtistRoleCategory1List();
+    return category1List.map((category) => ({
+      key: category,
+      value: tRole(category1TranslationMap[category] || category),
+    }));
+  };
+
+  // 기여자 유형2 옵션
+  const getContributorType2Options = (selectedType1: string) => {
+    const category2List = getArtistRoleCategory2List(selectedType1);
+    return category2List.map((category) => ({
+      key: category,
+      value: tRole(category2TranslationMap[category] || category),
+    }));
+  };
+  const tc = useTranslations("common");
+  const tu = useTranslations("upload");
   console.log(
     "ContributorInput 렌더링 - value:",
     value,
@@ -56,7 +69,7 @@ export default function ContributorInput({
 
   const columns: Column<Contributor>[] = [
     {
-      header: "한국명",
+      header: t("koreanName"),
       accessor: "name",
       align: "center",
       type: "string",
@@ -79,7 +92,7 @@ export default function ContributorInput({
       },
     },
     {
-      header: "영문명",
+      header: t("englishName"),
       accessor: "nameEn",
       align: "center",
       type: "string",
@@ -105,7 +118,7 @@ export default function ContributorInput({
       },
     },
     {
-      header: "유형1",
+      header: tu("type1Select"),
       accessor: "roleList",
       align: "center",
       type: "string",
@@ -116,7 +129,7 @@ export default function ContributorInput({
         const firstRole = record.roleList?.[0];
         return (
           <CustomDropdown
-            placeholder="유형1 선택"
+            placeholder={tu("type1Select")}
             items={contributorType1Options()}
             selectedKey={firstRole?.mainRole || ""}
             onSelectKey={(newType1) => {
@@ -148,7 +161,7 @@ export default function ContributorInput({
       },
     },
     {
-      header: "유형2",
+      header: tu("type2Select"),
       accessor: "roleList",
       align: "center",
       type: "string",
@@ -159,7 +172,7 @@ export default function ContributorInput({
         const firstRole = record.roleList?.[0];
         return (
           <CustomDropdown
-            placeholder="유형2 선택"
+            placeholder={tu("type2Select")}
             items={getContributorType2Options(firstRole?.mainRole || "")}
             selectedKey={firstRole?.subRole || ""}
             onSelectKey={(newType2) => {
@@ -209,12 +222,12 @@ export default function ContributorInput({
   return (
     <Container>
       <Label>
-        기여자 {required && <span style={{ color: "red" }}>*</span>}
+        {t("contributor")} {required && <span style={{ color: "red" }}>*</span>}
       </Label>
       <CustomTable columns={columns} data={contributors} size="small" />
       <Gap height={12} />
       <ButtonOutlinedSecondary
-        label="추가"
+        label={tc("add")}
         size="medium"
         onClick={() => {
           if (readOnly) return;

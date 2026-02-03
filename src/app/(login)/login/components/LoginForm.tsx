@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -23,10 +24,11 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isLoading, user, jsonWebToken, login } = useAuthStore();
+  const t = useTranslations("login");
 
   const handleLogin = () => {
     if (!email || !password) {
-      toast.error("아이디와 비밀번호를 입력해주세요.");
+      toast.error(t("loginError"));
       return;
     }
     login(email, password);
@@ -34,20 +36,20 @@ export default function LoginForm() {
 
   return (
     <Container>
-      <Title>로그인</Title>
+      <Title>{t("title")}</Title>
       <CustomInput
-        label="아이디"
-        placeholder="아이디를 입력해주세요."
+        label={t("id")}
+        placeholder={t("idPlaceholder")}
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <CustomInput
-        label="비밀번호"
-        placeholder="비밀번호를 입력해주세요."
+        label={t("password")}
+        placeholder={t("passwordPlaceholder")}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <ButtonFilledPrimary label="로그인" expand onClick={handleLogin} />
+      <ButtonFilledPrimary label={t("loginButton")} expand onClick={handleLogin} />
     </Container>
   );
 }

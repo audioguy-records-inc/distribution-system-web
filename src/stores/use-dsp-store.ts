@@ -6,6 +6,7 @@ import { deleteDsp } from "@/api/dsp/delete-dsp";
 import { getDsp } from "@/api/dsp/get-dsp";
 import { postDsp } from "@/api/dsp/post-dsp";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface DspStore {
   dsps: Dsp[];
@@ -44,7 +45,7 @@ export const useDspStore = create<DspStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dsp.fetchError");
 
           toast.error(errorMessage);
 
@@ -72,7 +73,7 @@ export const useDspStore = create<DspStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dsp.createError");
 
           toast.error(errorMessage);
 
@@ -97,12 +98,12 @@ export const useDspStore = create<DspStore>()(
             dsps: state.dsps.filter((dsp) => dsp._id !== dspId),
           }));
 
-          toast.success("DSP 삭제가 완료되었습니다.");
+          toast.success(t("toast.dsp.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dsp.deleteError");
 
           toast.error(errorMessage);
 

@@ -7,6 +7,7 @@ import SettlementAdminInvoiceList from "./components/SettlementAdminInvoiceList"
 import SettlementAdminInvoiceSearch from "./components/SettlementAdminInvoiceSearch";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -26,14 +27,16 @@ const HelpText = styled.div`
 `;
 
 export default function SettlementStatusPage() {
+  const tSettlement = useTranslations("settlement");
+
   return (
     <Container>
-      <PageHeader title="유통정산 현황" />
+      <PageHeader title={tSettlement("distributionSettlement")} />
       <SettlementAdminInvoiceSearch />
       <Gap height={32} />
       <ButtonRow>
         <HelpText>
-          {`정산금 상세 조회는 정산현황 > 정산금 조회 메뉴를 이용해주세요.`}
+          {tSettlement("distributionHelpText")}
         </HelpText>
         <SettlementAdminInvoiceDownloadButton />
       </ButtonRow>

@@ -10,6 +10,7 @@ import UserTypeBadge from "@/components/basic/custom-table/components/UserTypeBa
 import Video from "@/types/video";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -45,6 +46,7 @@ export default function VideoLicensorSearch({
 }) {
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
+  const tl = useTranslations("licensor");
 
   const handleDelete = () => {
     setSelectedUser(null);
@@ -68,14 +70,14 @@ export default function VideoLicensorSearch({
   return (
     <Container>
       <Title>
-        권리자명
+        {tl("licensorName")}
         {required && <span style={{ color: "#DC2626" }}> *</span>}
       </Title>
       <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput
-          title="권리자명 검색"
-          placeholder="권리자명 검색"
+          title={tl("licensorNameSearch")}
+          placeholder={tl("licensorNameSearch")}
           onClickSearch={handleSearch}
           onSelect={(selectedItem: User) => {
             onSelect(selectedItem);

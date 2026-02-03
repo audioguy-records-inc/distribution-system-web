@@ -11,6 +11,7 @@ import Gap from "@/components/basic/Gap";
 import ImageUpload from "@/components/basic/ImageUpload";
 import Video from "@/types/video";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -32,6 +33,7 @@ export default function UploadSection({
   register,
   setValue,
 }: UploadSectionProps) {
+  const tv = useTranslations("video");
   return (
     <Container>
       <Gap height={32} />
@@ -43,7 +45,7 @@ export default function UploadSection({
         value={watch("videoFileList") || []}
         fileType={FileType.VIDEOS}
         dataCollectionName={DataCollectionName.VIDEOS}
-        headerText="뮤직 비디오"
+        headerText={tv("musicVideo")}
       />
       <Gap height={56} />
       <ImageUpload
@@ -53,7 +55,7 @@ export default function UploadSection({
         value={watch("thumbnailImageList") || []}
         fileType={FileType.IMAGES}
         dataCollectionName={DataCollectionName.VIDEOS}
-        headerText="썸네일 이미지"
+        headerText={tv("thumbnailImage")}
       />
     </Container>
   );

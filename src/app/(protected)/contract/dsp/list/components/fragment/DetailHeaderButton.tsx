@@ -4,6 +4,7 @@ import DspContract from "@/types/dsp-contract";
 import PencilIcon from "@/components/icons/PencilIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const ButtonWrapper = styled.div`
   display: flex;
@@ -25,19 +26,21 @@ const DetailHeaderButton = ({
   onCancel: () => void;
   isDisabled: boolean;
 }) => {
+  const tCommon = useTranslations("common");
+
   return (
     <ButtonWrapper>
       {isEdit ? (
         <>
           <ButtonOutlinedAssistive
-            label="취소"
+            label={tCommon("cancel")}
             onClick={() => {
               setIsEdit(false);
               onCancel?.();
             }}
           />
           <ButtonOutlinedPrimary
-            label="완료"
+            label={tCommon("complete")}
             onClick={onSubmit}
             disabled={isDisabled}
             size="medium"
@@ -46,12 +49,12 @@ const DetailHeaderButton = ({
       ) : (
         <>
           <ButtonOutlinedAssistive
-            label="삭제"
+            label={tCommon("delete")}
             leftIcon={<TrashIcon />}
             onClick={onDelete}
           />
           <ButtonOutlinedPrimary
-            label="수정"
+            label={tCommon("edit")}
             size="medium"
             leftIcon={<PencilIcon />}
             onClick={() => setIsEdit(true)}

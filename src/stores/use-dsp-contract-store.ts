@@ -8,6 +8,7 @@ import { postDspContract } from "@/api/dsp-contract/post-dsp-contract";
 import { putDspContract } from "@/api/dsp-contract/put-dsp-contract";
 import { searchDspContracts } from "@/api/dsp-contract/search-dsp-contracts";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface DspContractStore {
   dspContracts: DspContract[];
@@ -45,7 +46,7 @@ export const useDspContractStore = create<DspContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 계약 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dspContract.fetchError");
 
           toast.error(errorMessage);
 
@@ -83,12 +84,12 @@ export const useDspContractStore = create<DspContractStore>()(
             error: null,
           }));
 
-          toast.success("DSP 계약이 생성되었습니다.");
+          toast.success(t("toast.dspContract.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 계약 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dspContract.createError");
 
           toast.error(errorMessage);
 
@@ -121,12 +122,12 @@ export const useDspContractStore = create<DspContractStore>()(
             error: null,
           }));
 
-          toast.success("DSP 계약이 수정되었습니다.");
+          toast.success(t("toast.dspContract.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 계약 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dspContract.updateError");
 
           toast.error(errorMessage);
 
@@ -155,12 +156,12 @@ export const useDspContractStore = create<DspContractStore>()(
             error: null,
           }));
 
-          toast.success("DSP 계약이 삭제되었습니다.");
+          toast.success(t("toast.dspContract.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 계약 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dspContract.deleteError");
 
           toast.error(errorMessage);
 
@@ -194,7 +195,7 @@ export const useDspContractStore = create<DspContractStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "DSP 계약 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.dspContract.searchError");
 
           toast.error(errorMessage);
 

@@ -11,6 +11,7 @@ import { User } from "@/types/user";
 import UserTypeBadge from "@/components/basic/custom-table/components/UserTypeBadge";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div`
@@ -43,6 +44,7 @@ export default function AlbumLicensorSearch({
 }) {
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
+  const tl = useTranslations("licensor");
 
   useEffect(() => {
     if (user) {
@@ -71,12 +73,12 @@ export default function AlbumLicensorSearch({
 
   return (
     <Container>
-      <Title>권리자명</Title>
+      <Title>{tl("licensorName")}</Title>
       <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput
-          title="권리자명 검색"
-          placeholder="권리자명 검색"
+          title={tl("licensorNameSearch")}
+          placeholder={tl("licensorNameSearch")}
           onClickSearch={handleSearch}
           onSelect={(selectedItem: User) => {
             onSelect(selectedItem);

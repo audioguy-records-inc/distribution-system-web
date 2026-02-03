@@ -12,6 +12,7 @@ import LicensorList from "./components/LicensorList";
 import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div``;
@@ -28,6 +29,7 @@ const SearchInputWrapper = styled.div`
 `;
 
 export default function LicensorListPage() {
+  const tLicensor = useTranslations("licensor");
   const { users, searchUsers } = useUserStore();
   const [selectedType, setSelectedType] = useState<LicensorSearchType>("all");
   const [searchValue, setSearchValue] = useState<string>("");
@@ -49,7 +51,7 @@ export default function LicensorListPage() {
 
   return (
     <Container>
-      <PageHeader title={"권리자 리스트"} />
+      <PageHeader title={tLicensor("licensorList")} />
       <SearchContainer>
         <SearchInputWrapper>
           <LicensorSearchTypeDropdown
@@ -57,7 +59,7 @@ export default function LicensorListPage() {
             setSelectedType={setSelectedType}
           />
           <SearchInput
-            placeholder="권리자 코드 또는 권리자명 입력"
+            placeholder={tLicensor("licensorSearchPlaceholder")}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClickSearch={handleSearch}

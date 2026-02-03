@@ -15,6 +15,7 @@ import ReactModal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useArtistStore } from "@/stores/use-artist-store";
+import { useTranslations } from "next-intl";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useState } from "react";
 
@@ -47,6 +48,8 @@ const AddNewArtist = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { createArtist, isLoading } = useArtistStore();
+  const ta = useTranslations("artist");
+  const tc = useTranslations("common");
   const {
     register,
     handleSubmit,
@@ -121,14 +124,14 @@ const AddNewArtist = ({
         ariaHideApp={false}
       >
         <ModalHeader>
-          아티스트 신규 등록
+          {ta("newArtistRegister")}
           <ButtonWrapper>
-            <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
+            <ButtonOutlinedSecondary label={tc("cancel")} onClick={handleClose} />
             {isLoading ? (
               <ButtonSpinner />
             ) : (
               <ButtonFilledPrimary
-                label="등록"
+                label={tc("register")}
                 onClick={handleSubmit(onSubmit)}
                 disabled={isDisabled()}
               />

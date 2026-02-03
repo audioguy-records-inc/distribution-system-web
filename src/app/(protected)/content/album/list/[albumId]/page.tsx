@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -38,6 +39,10 @@ const ButtonWrapper = styled.div`
 const AlbumDetailPage = () => {
   const router = useRouter();
   const { albumId } = useParams();
+  const t = useTranslations("content");
+  const tc = useTranslations("common");
+  const tt = useTranslations("track");
+  const tToast = useTranslations("toast.track");
   const [isLoading, setIsLoading] = useState(false);
   const { albums, updateAlbum, deleteAlbum, fetchAlbum, sendAlbumDdex } =
     useAlbumStore();
@@ -113,9 +118,9 @@ const AlbumDetailPage = () => {
 
       // 사용자에게 에러 메시지 표시
       if (error instanceof Error) {
-        alert(`삭제 중 오류가 발생했습니다: ${error.message}`);
+        alert(`${t("deleteErrorWithMessage", { message: error.message })}`);
       } else {
-        alert("삭제 중 알 수 없는 오류가 발생했습니다.");
+        alert(t("deleteErrorUnknown"));
       }
     }
   };
@@ -206,12 +211,12 @@ const AlbumDetailPage = () => {
     if (successNewTracks > 0 || successUpdatedTracks > 0) {
       if (successNewTracks > 0 && successUpdatedTracks > 0) {
         toast.success(
-          `${successNewTracks}개 트랙이 등록되고 ${successUpdatedTracks}개 트랙이 수정되었습니다.`,
+          t("tracksRegisteredAndUpdated", { newCount: successNewTracks, updatedCount: successUpdatedTracks }),
         );
       } else if (successNewTracks > 0) {
-        toast.success(`${successNewTracks}개 트랙이 등록되었습니다.`);
+        toast.success(t("tracksRegistered", { count: successNewTracks }));
       } else if (successUpdatedTracks > 0) {
-        toast.success(`${successUpdatedTracks}개 트랙이 수정되었습니다.`);
+        toast.success(t("tracksUpdated", { count: successUpdatedTracks }));
       }
     }
 
@@ -223,21 +228,21 @@ const AlbumDetailPage = () => {
   }
 
   if (!album) {
-    return <div>앨범을 찾을 수 없습니다.</div>;
+    return <div>{t("albumNotFound")}</div>;
   }
 
   return (
     <Container>
       <HeaderWrapper>
-        <PageHeader title={"앨범 상세"} showRequiredInfo={true} />
+        <PageHeader title={t("albumDetail")} showRequiredInfo={true} />
         <ButtonWrapper>
-          <ButtonOutlinedSecondary label="DDEX 전송" onClick={handleDdexSend} />
-          <ButtonOutlinedSecondary label="삭제" onClick={handleDelete} />
+          <ButtonOutlinedSecondary label={t("ddexSend")} onClick={handleDdexSend} />
+          <ButtonOutlinedSecondary label={tc("delete")} onClick={handleDelete} />
           {isLoading ? (
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label="저장"
+              label={tc("save")}
               onClick={handleSubmit}
               disabled={!isFilled()}
             />
@@ -246,7 +251,7 @@ const AlbumDetailPage = () => {
       </HeaderWrapper>
       <Gap height={32} />
       <CollapsibleHeader
-        title="1. 유통 정보"
+        title={t("sectionDistribution")}
         renderComponent={
           <DistributionSection
             control={control}
@@ -257,14 +262,14 @@ const AlbumDetailPage = () => {
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="2. 아티스트 정보"
+        title={t("sectionArtist")}
         renderComponent={
           <ArtistSection control={control} watch={watch} register={register} />
         }
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="3. 앨범 정보"
+        title={t("sectionAlbum")}
         renderComponent={
           <AlbumSection
             control={control}
@@ -276,7 +281,7 @@ const AlbumDetailPage = () => {
       />
       <Gap height={56} />
       <CollapsibleTrackHeader
-        title="4. 트랙 정보"
+        title={t("sectionTrack")}
         renderComponent={<TrackSection albumWatch={watch} />}
       />
     </Container>

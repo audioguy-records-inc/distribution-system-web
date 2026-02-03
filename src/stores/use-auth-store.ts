@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { getUsers } from "@/api/user/get-users";
 import { login } from "@/api/user/login";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 import { useSettlementStore } from "./use-settlement-store";
 
 interface AuthStore {
@@ -53,7 +54,7 @@ export const useAuthStore = create<AuthStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "로그인 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.auth.loginError");
 
           toast.error(errorMessage);
 

@@ -13,6 +13,7 @@ import { getFullUrl } from "@/constants/api";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
@@ -62,6 +63,8 @@ const SettlementUpload = ({
   readOnly = false,
   onUploadComplete,
 }: CustomUploadProps) => {
+  const t = useTranslations("upload");
+  const tSettlement = useTranslations("settlement");
   // 파일 입력을 위한 ref와 상태 추가
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<FileInfo[]>(value || []);
@@ -83,7 +86,7 @@ const SettlementUpload = ({
     const fileExtension = fileName.substring(fileName.lastIndexOf("."));
 
     if (!allowedExtensions.includes(fileExtension)) {
-      toast.error("xlsx 또는 csv 파일만 업로드 가능합니다.");
+      toast.error(t("xlsxOnly"));
       return false;
     }
     return true;
@@ -120,7 +123,7 @@ const SettlementUpload = ({
       }
       return false;
     } catch (err) {
-      toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
+      toast.error(t("uploadErrorWithName", { name: file.name }));
       return false;
     } finally {
       setIsLoading(false);
@@ -204,21 +207,21 @@ const SettlementUpload = ({
       type: "string",
     },
     {
-      header: "파일명",
+      header: t("fileName"),
       accessor: "name",
       width: 300,
       align: "left",
       type: "string",
     },
     {
-      header: "파일크기",
+      header: t("fileSize"),
       accessor: "size",
       width: 100,
       align: "right",
       type: "string",
     },
     {
-      header: "다운로드",
+      header: t("download"),
       accessor: "filePath",
       width: 80,
       align: "center",
@@ -231,7 +234,7 @@ const SettlementUpload = ({
   // 삭제 버튼은 readOnly가 아닐 때만 추가
   if (!readOnly) {
     columns.push({
-      header: "삭제",
+      header: t("fileDelete"),
       accessor: "name",
       width: 80,
       align: "center",
@@ -251,7 +254,7 @@ const SettlementUpload = ({
   return (
     <Container>
       <ButtonOutlinedPrimary
-        label={isLoading ? "업로드 중" : "정산서 업로드"}
+        label={isLoading ? t("uploading") : tSettlement("settlementUpload")}
         leftIcon={<UploadIcon />}
         size="medium"
         onClick={handleButtonClick}

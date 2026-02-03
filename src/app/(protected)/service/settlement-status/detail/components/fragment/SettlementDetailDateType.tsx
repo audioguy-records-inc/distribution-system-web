@@ -1,5 +1,6 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -10,14 +11,15 @@ export default function SettlementDetailDateTypeDropdown({
   selectedType: "settlement" | "sales";
   setSelectedType: (type: "settlement" | "sales") => void;
 }) {
+  const t = useTranslations("settlement");
   const items = [
     {
       key: "settlement",
-      value: "정산월",
+      value: t("settlementMonth"),
     },
     {
       key: "sales",
-      value: "판매월",
+      value: t("salesMonth"),
     },
   ];
   return (

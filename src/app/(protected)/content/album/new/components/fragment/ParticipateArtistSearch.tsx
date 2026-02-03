@@ -2,6 +2,8 @@ import CustomTable, {
   Column,
 } from "@/components/basic/custom-table/CustomTable";
 import {
+  category1TranslationMap,
+  category2TranslationMap,
   getArtistRoleCategory1List,
   getArtistRoleCategory2List,
 } from "@/constants/artist-role";
@@ -22,6 +24,7 @@ import TrashIcon from "@/components/icons/TrashIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useArtistStore } from "@/stores/use-artist-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -64,6 +67,9 @@ export default function ParticipateArtistSearch({
   modalHeader?: string;
 }) {
   const { fetchArtist } = useArtistStore();
+  const ta = useTranslations("artist");
+  const t = useTranslations("content");
+  const tRole = useTranslations("artistRole");
   const [registeredArtistList, setRegisteredArtistList] = useState<Artist[]>(
     [],
   );
@@ -91,28 +97,28 @@ export default function ParticipateArtistSearch({
 
   const columns: Column<Artist>[] = [
     {
-      header: "아티스트 코드",
+      header: ta("artistCode"),
       accessor: "artistUniqueId",
       type: "string",
       width: 140,
       align: "center",
     },
     {
-      header: "아티스트명",
+      header: ta("artistName"),
       accessor: "name",
       type: "string",
       width: 120,
       align: "center",
     },
     {
-      header: "영문명",
+      header: ta("englishName"),
       accessor: "nameEn",
       type: "string",
       width: 120,
       align: "center",
     },
     {
-      header: "국가",
+      header: ta("country"),
       accessor: "countryCode",
       type: "string",
       width: 120,
@@ -122,7 +128,7 @@ export default function ParticipateArtistSearch({
       },
     },
     {
-      header: "성별",
+      header: ta("gender"),
       accessor: "genderType",
       type: "string",
       width: 120,
@@ -132,7 +138,7 @@ export default function ParticipateArtistSearch({
       },
     },
     {
-      header: "유형",
+      header: ta("type"),
       accessor: "artistType",
       type: "string",
       width: 100,
@@ -142,7 +148,7 @@ export default function ParticipateArtistSearch({
       },
     },
     {
-      header: "역할 구분1",
+      header: t("roleCategory1"),
       accessor: "_id",
       type: "component",
       width: 132,
@@ -157,7 +163,7 @@ export default function ParticipateArtistSearch({
         const roleCategory1List = getArtistRoleCategory1List();
         const roleCategory1Items = roleCategory1List.map((category) => ({
           key: category,
-          value: category,
+          value: tRole(category1TranslationMap[category] || category),
         }));
 
         return (
@@ -190,7 +196,7 @@ export default function ParticipateArtistSearch({
       },
     },
     {
-      header: "역할 구분2",
+      header: t("roleCategory2"),
       accessor: "_id",
       type: "component",
       width: 132,
@@ -209,7 +215,7 @@ export default function ParticipateArtistSearch({
 
         const roleCategory2Items = roleCategory2List.map((category) => ({
           key: category,
-          value: category,
+          value: tRole(category2TranslationMap[category] || category),
         }));
 
         return (

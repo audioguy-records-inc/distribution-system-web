@@ -9,6 +9,7 @@ import { postUser } from "@/api/user/post-user";
 import { putUser } from "@/api/user/put-user";
 import { searchUsers } from "@/api/user/search-users";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface UserStore {
   users: User[];
@@ -45,7 +46,7 @@ export const useUserStore = create<UserStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "사용자 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.user.fetchError");
 
           toast.error(errorMessage);
 
@@ -74,12 +75,12 @@ export const useUserStore = create<UserStore>()(
             error: null,
           }));
 
-          toast.success("사용자가 생성되었습니다.");
+          toast.success(t("toast.user.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "사용자 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.user.createError");
 
           toast.error(errorMessage);
 
@@ -108,12 +109,12 @@ export const useUserStore = create<UserStore>()(
             error: null,
           }));
 
-          toast.success("사용자가 수정되었습니다.");
+          toast.success(t("toast.user.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "사용자 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.user.updateError");
 
           toast.error(errorMessage);
 
@@ -137,12 +138,12 @@ export const useUserStore = create<UserStore>()(
             error: null,
           }));
 
-          toast.success("사용자가 삭제되었습니다.");
+          toast.success(t("toast.user.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "사용자 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.user.deleteError");
 
           toast.error(errorMessage);
 
@@ -175,7 +176,7 @@ export const useUserStore = create<UserStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "사용자 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.user.searchError");
 
           toast.error(errorMessage);
 

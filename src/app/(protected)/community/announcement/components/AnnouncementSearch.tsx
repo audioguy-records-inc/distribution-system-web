@@ -8,6 +8,7 @@ import Gap from "@/components/basic/Gap";
 import SearchInput from "@/components/SearchInput";
 import styled from "styled-components";
 import { useAnnouncementStore } from "@/stores/use-announcement-store";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const Container = styled.div``;
@@ -22,6 +23,7 @@ const RowWrapper = styled.div`
 type SearchType = "title" | "text" | "title,text";
 
 export default function AnnouncementSearch() {
+  const t = useTranslations("announcement");
   const [selectedType, setSelectedType] =
     useState<AnnouncementSearchType>("ALL");
   const [searchType, setSearchType] = useState<SearchType>("title,text");
@@ -44,15 +46,15 @@ export default function AnnouncementSearch() {
   const items = [
     {
       key: "title",
-      value: "제목",
+      value: t("searchTitle"),
     },
     {
       key: "text",
-      value: "내용",
+      value: t("searchContent"),
     },
     {
       key: "title,text",
-      value: "제목+내용",
+      value: t("searchTitleContent"),
     },
   ];
 
@@ -70,7 +72,7 @@ export default function AnnouncementSearch() {
           onSelectKey={(key) => setSearchType(key as SearchType)}
         />
         <SearchInput
-          placeholder="제목, 내용 입력"
+          placeholder={t("searchPlaceholder")}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}

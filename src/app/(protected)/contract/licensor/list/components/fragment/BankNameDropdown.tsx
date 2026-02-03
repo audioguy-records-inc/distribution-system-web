@@ -2,6 +2,7 @@ import { BankNameItem, bankNameList } from "@/constants/bank-name";
 import { useEffect, useState } from "react";
 
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import { useTranslations } from "next-intl";
 
 interface BankNameDropdownProps {
   onChange: (bankName: string) => void;
@@ -18,6 +19,7 @@ const BankNameDropdown = ({
   readOnly = false,
   required = false,
 }: BankNameDropdownProps) => {
+  const tLicensor = useTranslations("licensor");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -31,12 +33,12 @@ const BankNameDropdown = ({
 
   return (
     <CustomDropdown
-      label={"은행명"}
+      label={tLicensor("bankName")}
       required={required}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
-      placeholder="은행 선택"
+      placeholder={tLicensor("bankSelect")}
       disabled={disabled || isLoading}
       size={"small"}
       width={320}

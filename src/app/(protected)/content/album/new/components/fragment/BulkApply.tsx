@@ -11,6 +11,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   width: 100%;
@@ -46,6 +47,8 @@ BulkApplyProps) {
   const [expose, setExpose] = useState<boolean>(false);
   const [contractInfo, setContractInfo] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const t = useTranslations("content");
+  const tToast = useTranslations("toast.track");
   // const { updateTrack } = useTrackStore();
 
   const handleApply = async () => {
@@ -103,9 +106,9 @@ BulkApplyProps) {
       //   .map((track) => updateTrack(track as Track));
 
       // await Promise.all(updatePromises);
-      toast.success("일괄 적용 완료");
+      toast.success(tToast("bulkApplyComplete"));
     } catch (error) {
-      toast.error("트랙 업데이트 중 오류가 발생했습니다");
+      toast.error(tToast("trackUpdateError"));
       console.error("트랙 업데이트 오류:", error);
     } finally {
       // 로딩 상태 종료
@@ -117,32 +120,32 @@ BulkApplyProps) {
     <Container>
       <ButtonWrapper>
         <CustomCheckbox
-          label="앨범 장르"
+          label={t("albumGenre")}
           checked={albumGenre}
           onChange={() => setAlbumGenre(!albumGenre)}
         />
         <CustomCheckbox
-          label="서비스 시간"
+          label={t("serviceTime")}
           checked={serviceTime}
           onChange={() => setServiceTime(!serviceTime)}
         />
         <CustomCheckbox
-          label="발매 국가"
+          label={t("releaseCountry")}
           checked={countryCode}
           onChange={() => setCountryCode(!countryCode)}
         />
         <CustomCheckbox
-          label="노출"
+          label={t("exposure")}
           checked={expose}
           onChange={() => setExpose(!expose)}
         />
         <CustomCheckbox
-          label="계약 정보"
+          label={t("contractInfo")}
           checked={contractInfo}
           onChange={() => setContractInfo(!contractInfo)}
         />
         <ButtonOutlinedPrimary
-          label={isLoading ? "적용 중" : "일괄 적용"}
+          label={isLoading ? t("applying") : t("bulkApply")}
           onClick={handleApply}
           size="small"
           disabled={isLoading}

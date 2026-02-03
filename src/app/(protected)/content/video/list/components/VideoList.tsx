@@ -13,6 +13,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
@@ -32,17 +33,21 @@ const RenderLinkText = styled.div`
 export default function VideoList() {
   const { videos, fetchVideos, isLoading, searchParams } = useVideoStore();
   const router = useRouter();
+  const tv = useTranslations("video");
+  const tc = useTranslations("content");
+  const tt = useTranslations("track");
+  const tl = useTranslations("licensor");
   const [hasInitialLoad, setHasInitialLoad] = useState(false);
   const columns: Column<Video>[] = [
     {
-      header: "영상 코드",
+      header: tv("videoCode"),
       accessor: "videoUniqueId",
       type: "string",
       width: 140,
       align: "center",
     },
     {
-      header: "영상명",
+      header: tv("videoName"),
       accessor: "titleList",
       type: "string",
       width: 103,
@@ -71,7 +76,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "트랙명",
+      header: tt("trackName"),
       accessor: "trackList",
       type: "string",
       width: 103,
@@ -86,7 +91,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "아티스트",
+      header: tv("videoArtist"),
       accessor: "releaseArtistList",
       type: "string",
       width: 120,
@@ -101,7 +106,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "발매일",
+      header: tc("releaseDate"),
       accessor: "utcReleasedAt",
       type: "string",
       width: 132,
@@ -116,7 +121,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "서비스 일시",
+      header: tc("serviceDate"),
       accessor: "utcServiceStartedAt",
       type: "string",
       width: 132,
@@ -131,7 +136,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "권리자",
+      header: tl("licensorName"),
       accessor: "userInfo",
       type: "string",
       width: 120,
@@ -142,7 +147,7 @@ export default function VideoList() {
       },
     },
     {
-      header: "레이블(기획사)",
+      header: tc("label"),
       accessor: "agencyCompanyName",
       type: "string",
       width: 120,
@@ -174,7 +179,7 @@ export default function VideoList() {
             fontSize: "16px",
           }}
         >
-          검색 결과가 없습니다.
+          {tv("noSearchResults")}
         </div>
       )}
 
@@ -188,7 +193,7 @@ export default function VideoList() {
             fontSize: "16px",
           }}
         >
-          등록된 영상이 없습니다.
+          {tv("noVideos")}
         </div>
       )}
 

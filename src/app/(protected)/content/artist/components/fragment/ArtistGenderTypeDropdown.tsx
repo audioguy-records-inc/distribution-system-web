@@ -1,5 +1,6 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import { GenderType } from "@/types/artist";
+import { useTranslations } from "next-intl";
 
 interface ArtistGenderTypeDropdownProps {
   onChange: (genderType: string) => void;
@@ -15,18 +16,29 @@ const ArtistGenderTypeDropdown = ({
   readOnly = false,
   required = false,
 }: ArtistGenderTypeDropdownProps) => {
+  const ta = useTranslations("artist");
+
+  const genderTypeTranslationMap: Record<string, string> = {
+    [GenderType.MALE_SOLO]: "genderMaleSolo",
+    [GenderType.FEMALE_SOLO]: "genderFemaleSolo",
+    [GenderType.MIXED]: "genderMixed",
+    [GenderType.MALE_GROUP]: "genderMaleGroup",
+    [GenderType.FEMALE_GROUP]: "genderFemaleGroup",
+    [GenderType.UNKNOWN]: "genderUnknown",
+  };
+
   const dropdownItems = Object.values(GenderType).map((genderType) => ({
     key: genderType,
-    value: genderType,
+    value: ta(genderTypeTranslationMap[genderType] || genderType),
   }));
 
   return (
     <CustomDropdown
-      label={"성별"}
+      label={ta("gender")}
       selectedKey={value}
       onSelectKey={onChange}
       items={dropdownItems}
-      placeholder="성별 선택"
+      placeholder={ta("genderSelect")}
       size={"small"}
       width={320}
       readOnly={readOnly}

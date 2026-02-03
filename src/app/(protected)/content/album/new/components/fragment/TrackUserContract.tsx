@@ -2,6 +2,7 @@ import CustomInput from "@/components/basic/CustomInput";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 
 const Container = styled.div`
@@ -22,6 +23,7 @@ export default function TrackUserContract({
   onChange: (value: UserContract | null) => void;
 }) {
   const { fetchUserContract } = useUserContractStore();
+  const t = useTranslations("content");
 
   // userContractId가 변경되면 해당 계약 정보를 가져와서 표시
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function TrackUserContract({
   return (
     <Container style={{ marginBottom: userId ? "48px" : "0px" }}>
       <CustomInput
-        label="계약 정보"
+        label={t("contractInfo")}
         locked
         value={value?.userContractUniqueId || ""}
         width={100}

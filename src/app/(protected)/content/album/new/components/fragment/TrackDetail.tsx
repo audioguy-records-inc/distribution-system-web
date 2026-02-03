@@ -18,6 +18,7 @@ import TrackUserContract from "./TrackUserContract";
 import UploadTrackAudio from "./UploadTrackAudio";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   padding-left: 32px;
@@ -60,6 +61,9 @@ export default function TrackDetail({
   albumUserId?: string;
 }) {
   const [isEdit, setIsEdit] = useState(false);
+  const t = useTranslations("content");
+  const tt = useTranslations("track");
+  const ta = useTranslations("artist");
   const currentTrack = tracks[index];
   const [prefTrack, setPrefTrack] = useState(currentTrack);
 
@@ -110,7 +114,7 @@ export default function TrackDetail({
     <Container>
       <Gap height={48} />
       <Header>
-        <TitleWrapper>트랙 상세 정보</TitleWrapper>
+        <TitleWrapper>{t("trackDetailInfo")}</TitleWrapper>
         {/* <DetailHeaderButton
           isEdit={isEdit}
           setIsEdit={(value) => {
@@ -143,8 +147,8 @@ export default function TrackDetail({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="Disc 번호"
-          placeholder="Disc 번호를 입력"
+          label={t("discNumber")}
+          placeholder={t("discNumberPlaceholder")}
           size="small"
           value={currentTrack.discNumber?.toString() || ""}
           onChange={(e) => {
@@ -162,8 +166,8 @@ export default function TrackDetail({
           required
         />
         <CustomInput
-          label="트랙 번호"
-          placeholder="트랙 번호를 입력"
+          label={tt("trackNumber")}
+          placeholder={t("trackNumberPlaceholder")}
           size="small"
           value={currentTrack.trackNumber?.toString() || ""}
           onChange={(e) => {
@@ -185,7 +189,7 @@ export default function TrackDetail({
       <RowWrapper>
         <CustomInput
           label="ISRC"
-          placeholder="ISRC 입력"
+          placeholder={t("isrcPlaceholder")}
           size="small"
           value={currentTrack.ISRC || ""}
           onChange={(e) => {
@@ -203,7 +207,7 @@ export default function TrackDetail({
       <RowWrapper>
         <CustomInput
           label="UCI"
-          placeholder="UCI 입력"
+          placeholder={t("uciPlaceholder")}
           size="small"
           value={currentTrack.UCI || ""}
           onChange={(e) => {
@@ -235,9 +239,9 @@ export default function TrackDetail({
             ),
           );
         }}
-        placeholder="아티스트 검색"
-        label="트랙 아티스트"
-        modalHeader="트랙 아티스트 검색"
+        placeholder={ta("artistSearch")}
+        label={tt("trackArtist")}
+        modalHeader={t("trackArtistSearch")}
         required
         // readOnly={!isEdit}
       />
@@ -253,9 +257,9 @@ export default function TrackDetail({
             ),
           );
         }}
-        placeholder="아티스트 검색"
-        label="참여 아티스트"
-        modalHeader="참여 아티스트 검색"
+        placeholder={ta("artistSearch")}
+        label={t("participateArtist")}
+        modalHeader={t("participateArtistSearch")}
         // readOnly={!isEdit}
       />
       <Gap height={56} />
@@ -346,14 +350,14 @@ export default function TrackDetail({
       <Gap height={56} />
       <RowWrapper>
         <CustomRadioWithLabel
-          label="노출"
+          label={t("exposure")}
           leftOption={{
-            label: "해당",
+            label: tt("applicable"),
             value: true,
             checked: currentTrack.isExposed === true,
           }}
           rightOption={{
-            label: "해당없음",
+            label: tt("notApplicable"),
             value: false,
             checked: currentTrack.isExposed === false,
           }}
@@ -368,14 +372,14 @@ export default function TrackDetail({
           // readOnly={!isEdit}
         />
         <CustomRadioWithLabel
-          label="19금"
+          label={t("adultOnly")}
           leftOption={{
-            label: "해당",
+            label: tt("applicable"),
             value: true,
             checked: currentTrack.isAdultOnly === true,
           }}
           rightOption={{
-            label: "해당없음",
+            label: tt("notApplicable"),
             value: false,
             checked: currentTrack.isAdultOnly === false,
           }}
@@ -394,14 +398,14 @@ export default function TrackDetail({
       <Gap height={56} />
       <RowWrapper>
         <CustomRadioWithLabel
-          label="MV 서비스"
+          label={t("mvService")}
           leftOption={{
-            label: "해당",
+            label: tt("applicable"),
             value: true,
             checked: (currentTrack.isMVService ?? false) === true,
           }}
           rightOption={{
-            label: "해당없음",
+            label: tt("notApplicable"),
             value: false,
             checked: (currentTrack.isMVService ?? false) === false,
           }}
@@ -419,14 +423,14 @@ export default function TrackDetail({
       <Gap height={56} />
       <RowWrapper>
         <CustomRadioWithLabel
-          label="Inst 트랙"
+          label={t("instTrack")}
           leftOption={{
-            label: "해당",
+            label: tt("applicable"),
             value: true,
             checked: (currentTrack.isInstrumental ?? false) === true,
           }}
           rightOption={{
-            label: "해당없음",
+            label: tt("notApplicable"),
             value: false,
             checked: (currentTrack.isInstrumental ?? false) === false,
           }}

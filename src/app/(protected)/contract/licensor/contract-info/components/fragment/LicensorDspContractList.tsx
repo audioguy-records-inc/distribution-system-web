@@ -17,6 +17,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { toast } from "react-hot-toast";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -54,6 +55,9 @@ const LicensorDspContractList = ({
   readOnly,
   isEdit,
 }: LicensorDspContractListProps) => {
+  const tContract = useTranslations("contract");
+  const tCommon = useTranslations("common");
+  const tLicensor = useTranslations("licensor");
   const {
     dspContracts,
     isLoading,
@@ -85,7 +89,7 @@ const LicensorDspContractList = ({
       },
     },
     {
-      header: "계약명",
+      header: tContract("contractName"),
       accessor: "dspContractName",
       type: "component",
       width: 220,
@@ -97,7 +101,7 @@ const LicensorDspContractList = ({
           <CustomDropdown
             width={180}
             size="small"
-            placeholder="계약명 선택"
+            placeholder={tContract("contractNameSelect")}
             selectedKey={_selectedKey}
             items={dropdownList}
             onSelectKey={(key) => {
@@ -108,7 +112,7 @@ const LicensorDspContractList = ({
               );
 
               if (isAlreadySelected) {
-                toast.error("해당 계약은 이미 선택되었습니다");
+                toast.error(tLicensor("duplicateContract"));
                 return;
               }
 
@@ -135,14 +139,14 @@ const LicensorDspContractList = ({
       },
     },
     {
-      header: "계약 요율",
+      header: tContract("contractRate"),
       accessor: "contractRate",
       type: "string",
       width: 120,
       align: "center",
       dropdownOptions: [
-        { key: "domestic", value: "국내" },
-        { key: "international", value: "해외" },
+        { key: "domestic", value: tCommon("domestic") },
+        { key: "international", value: tCommon("international") },
       ],
       render: (value) => {
         const rate = ((value as number) * 100).toFixed(0);
@@ -150,7 +154,7 @@ const LicensorDspContractList = ({
       },
     },
     {
-      header: "상품",
+      header: tContract("contractProduct"),
       accessor: "contractItemList",
       type: "component",
       width: 439,
@@ -234,11 +238,11 @@ const LicensorDspContractList = ({
 
   return (
     <Container>
-      <Header>공급 범위</Header>
+      <Header>{tContract("supplyRange")}</Header>
       {isEdit && (
         <ButtonWrapper>
           <ButtonOutlinedAssistive
-            label="전체 DSP 불러오기"
+            label={tContract("loadAllDsp")}
             leftIcon={<LoadIcon />}
             onClick={async () => {
               const response = await searchDspContracts("", "");
@@ -248,7 +252,7 @@ const LicensorDspContractList = ({
             size="small"
           />
           <ButtonOutlinedAssistive
-            label="국내 DSP 불러오기"
+            label={tContract("loadDomesticDsp")}
             leftIcon={<LoadIcon />}
             onClick={async () => {
               const response = await searchDspContracts(
@@ -261,7 +265,7 @@ const LicensorDspContractList = ({
             size="small"
           />
           <ButtonOutlinedAssistive
-            label="해외 DSP 불러오기"
+            label={tContract("loadInternationalDsp")}
             leftIcon={<LoadIcon />}
             onClick={async () => {
               const response = await searchDspContracts(
@@ -289,7 +293,7 @@ const LicensorDspContractList = ({
             size="medium"
             expand
             leftIcon={<PlusIcon />}
-            label="추가"
+            label={tCommon("add")}
             onClick={() => {
               if (readOnly) return;
               const newValue = [...value];

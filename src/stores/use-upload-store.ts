@@ -7,6 +7,7 @@ import { postUploadId } from "@/api/uploads/post-upload-id";
 import { putMultipart } from "@/api/uploads/put-multipart";
 import { putUploadFile } from "@/api/uploads/put-upload-file";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 // 진행률 콜백과 함께 파일 업로드하는 함수
 const putUploadFileWithProgress = async (
@@ -41,13 +42,13 @@ const putUploadFileWithProgress = async (
     // 에러 이벤트 리스너
     xhr.addEventListener("error", () => {
       setXhr(null); // 에러 시 xhr 참조 제거
-      reject(new Error("네트워크 오류로 업로드에 실패했습니다."));
+      reject(new Error(t("toast.upload.networkError")));
     });
 
     // 업로드 중단 이벤트 리스너
     xhr.addEventListener("abort", () => {
       setXhr(null); // 중단 시 xhr 참조 제거
-      reject(new Error("업로드가 취소되었습니다."));
+      reject(new Error(t("toast.upload.cancelled")));
     });
 
     // PUT 요청 시작
@@ -124,7 +125,7 @@ export const useUploadStore = create<UploadStore>()(
           });
 
           if (!uploadIdResult || uploadIdResult.error || !uploadIdResult.data) {
-            throw new Error(uploadIdResult?.message || "업로드 ID 생성 실패");
+            throw new Error(uploadIdResult?.message || t("toast.upload.uploadIdFailed"));
           }
 
           set({ uploadProgress: 10 });
@@ -144,7 +145,7 @@ export const useUploadStore = create<UploadStore>()(
             !presignedResult.data
           ) {
             throw new Error(
-              presignedResult?.message || "Presigned URL 생성 실패",
+              presignedResult?.message || t("toast.upload.presignedUrlFailed"),
             );
           }
 
@@ -163,7 +164,7 @@ export const useUploadStore = create<UploadStore>()(
           );
 
           if (!etag) {
-            throw new Error("파일 업로드 실패");
+            throw new Error(t("toast.upload.uploadFailed"));
           }
 
           set({ uploadProgress: 80 });
@@ -178,7 +179,7 @@ export const useUploadStore = create<UploadStore>()(
 
           if (!completeResult || completeResult.error || !completeResult.data) {
             throw new Error(
-              completeResult?.message || "멀티파트 업로드 완료 실패",
+              completeResult?.message || t("toast.upload.multipartFailed"),
             );
           }
 
@@ -189,7 +190,7 @@ export const useUploadStore = create<UploadStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "파일 업로드 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.upload.uploadError");
 
           toast.error(errorMessage);
           console.error("[uploadToS3] error", error);
@@ -203,7 +204,7 @@ export const useUploadStore = create<UploadStore>()(
         if (currentXhr) {
           currentXhr.abort();
           set({ isLoading: false, uploadProgress: 0, currentXhr: null });
-          toast.success("업로드가 취소되었습니다.");
+          toast.success(t("toast.upload.cancelled"));
         }
       },
       createUploadId: async ({ filename, fileType, dataCollectionName }) => {
@@ -224,7 +225,7 @@ export const useUploadStore = create<UploadStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "업로드 ID 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.upload.uploadIdError");
 
           toast.error(errorMessage);
 
@@ -254,7 +255,7 @@ export const useUploadStore = create<UploadStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "업로드 전 서명 주소 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.upload.presignedUrlError");
 
           toast.error(errorMessage);
 
@@ -272,7 +273,7 @@ export const useUploadStore = create<UploadStore>()(
           const response = await putUploadFile(presignedUrl, file);
 
           if (!response || !response.etag) {
-            throw new Error("파일 업로드 실패");
+            throw new Error(t("toast.upload.uploadFailed"));
           }
 
           return response.etag;
@@ -280,7 +281,7 @@ export const useUploadStore = create<UploadStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "파일 업로드 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.upload.uploadError");
 
           toast.error(errorMessage);
           console.error("[putUploadFile] error", error);
@@ -309,7 +310,7 @@ export const useUploadStore = create<UploadStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "멀티파트 업로드 완료 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.upload.multipartError");
 
           toast.error(errorMessage);
           console.error("[putMultipart] error", error);

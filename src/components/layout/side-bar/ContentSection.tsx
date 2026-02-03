@@ -14,6 +14,7 @@ import styled from "styled-components";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -21,16 +22,17 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { resetTracks } = useTrackStore();
   const pathname = usePathname();
+  const t = useTranslations("sidebar");
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
-        콘텐츠 관리
+        {t("content")}
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </MenuGroupButton>
 
       <MenuGroup $isOpen={isOpen}>
         <Gap height={12} />
-        <MenuLabel>앨범</MenuLabel>
+        <MenuLabel>{t("album")}</MenuLabel>
 
         {authLevel === AuthLevel.ADMIN && (
           <>
@@ -40,7 +42,7 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               onClick={() => resetTracks()}
             >
               <MenuItem $isActive={pathname === "/content/album/new"}>
-                신규 앨범 등록
+                {t("newAlbum")}
               </MenuItem>
             </MenuItemLink>
           </>
@@ -52,19 +54,19 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               pathname.startsWith("/content/album/list/")
             }
           >
-            리스트 조회
+            {t("listView")}
           </MenuItem>
         </MenuItemLink>
 
         <Gap height={20} />
-        <MenuLabel>영상</MenuLabel>
+        <MenuLabel>{t("video")}</MenuLabel>
 
         {authLevel === AuthLevel.ADMIN && (
           <>
             <Gap height={12} />
             <MenuItemLink href="/content/video/new">
               <MenuItem $isActive={pathname === "/content/video/new"}>
-                신규 영상 등록
+                {t("newVideo")}
               </MenuItem>
             </MenuItemLink>
           </>
@@ -76,14 +78,14 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               pathname.startsWith("/content/video/list/")
             }
           >
-            리스트 조회
+            {t("listView")}
           </MenuItem>
         </MenuItemLink>
 
         {authLevel === AuthLevel.ADMIN && (
           <>
             <Gap height={20} />
-            <MenuLabel>아티스트</MenuLabel>
+            <MenuLabel>{t("artist")}</MenuLabel>
             <MenuItemLink href="/content/artist">
               <MenuItem
                 $isActive={
@@ -91,7 +93,7 @@ const ContentSection = ({ authLevel }: { authLevel: AuthLevel }) => {
                   pathname.startsWith("/content/artist/")
                 }
               >
-                아티스트 관리
+                {t("artistManage")}
               </MenuItem>
             </MenuItemLink>
           </>

@@ -9,6 +9,7 @@ import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -30,32 +31,34 @@ const ContactPersonTable = ({
   disabled,
   readOnly,
 }: ContactPersonTableProps) => {
+  const tContact = useTranslations("contact");
+  const tCommon = useTranslations("common");
   const columns: Column<ContactPerson>[] = [
     {
-      header: "담당자명",
+      header: tContact("contactName"),
       accessor: "name",
       type: "input",
       width: 160,
     },
     {
-      header: "구분",
+      header: tContact("contactType"),
       accessor: "responsibility",
       type: "dropdown",
       width: 160,
       dropdownOptions: [
-        { key: "contract", value: "계약" },
-        { key: "settlement", value: "정산" },
-        { key: "promotion", value: "프로모션" },
+        { key: "contract", value: tContact("typeContract") },
+        { key: "settlement", value: tContact("typeSettlement") },
+        { key: "promotion", value: tContact("typePromotion") },
       ],
     },
     {
-      header: "이메일",
+      header: tContact("email"),
       accessor: "email",
       type: "input",
       width: 268,
     },
     {
-      header: "연락처",
+      header: tContact("phone"),
       accessor: "phone",
       type: "input",
       width: 268,
@@ -74,7 +77,7 @@ const ContactPersonTable = ({
   ];
   return (
     <Container>
-      <Header>담당자 정보</Header>
+      <Header>{tContact("contactInfo")}</Header>
       <Gap height={16} />
       <CustomTable
         columns={columns}
@@ -90,7 +93,7 @@ const ContactPersonTable = ({
           size="medium"
           expand
           leftIcon={<PlusIcon />}
-          label="추가"
+          label={tCommon("add")}
           onClick={() => {
             if (readOnly || disabled) return;
 

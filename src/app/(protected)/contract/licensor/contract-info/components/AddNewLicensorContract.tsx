@@ -13,6 +13,7 @@ import ReactModal from "react-modal";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 import { useUserStore } from "@/stores/use-user-store";
@@ -54,6 +55,8 @@ const Form = styled.form`
 `;
 
 const AddNewLicensorContract = () => {
+  const tCommon = useTranslations("common");
+  const tLicensor = useTranslations("licensor");
   const [isOpen, setIsOpen] = useState(false);
   const { createUserContract, isLoading } = useUserContractStore();
   const {
@@ -167,14 +170,14 @@ const AddNewLicensorContract = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          권리자 계약 등록
+          {tLicensor("licensorContractRegister")}
           <ButtonWrapper>
-            <ButtonOutlinedSecondary label="취소" onClick={handleClose} />
+            <ButtonOutlinedSecondary label={tCommon("cancel")} onClick={handleClose} />
             {isLoading ? (
               <ButtonSpinner />
             ) : (
               <ButtonFilledPrimary
-                label="등록"
+                label={tCommon("register")}
                 onClick={handleSubmit(onSubmit)}
                 disabled={isSubmitDisabled()}
               />
@@ -184,7 +187,7 @@ const AddNewLicensorContract = () => {
         <Gap height={48} />
 
         <VisibleWrapper>
-          <VisibleLabel>권리자 계약 정보</VisibleLabel>
+          <VisibleLabel>{tLicensor("licensorContractInfo")}</VisibleLabel>
           <Controller
             name="isContractEnabled"
             control={control}

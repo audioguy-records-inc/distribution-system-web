@@ -12,6 +12,7 @@ import CustomInput from "@/components/basic/CustomInput";
 import CustomRadioWithLabel from "@/components/basic/CustomRadioWithLabel";
 import CustomUpload from "@/components/basic/CustomUpload";
 import Gap from "@/components/basic/Gap";
+import { useTranslations } from "next-intl";
 import styled from "styled-components";
 
 const RowWrapper = styled.div`
@@ -32,6 +33,8 @@ const LicensorInput = ({
   isEdit: boolean;
   inputType: "create" | "update";
 }) => {
+  const tLicensor = useTranslations("licensor");
+  const tCommon = useTranslations("common");
   const locked = inputType === "create" ? false : true;
 
   return (
@@ -40,15 +43,15 @@ const LicensorInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="권리자 코드"
-          placeholder="아이디 입력"
+          label={tLicensor("licensorCode")}
+          placeholder={tLicensor("idPlaceholder")}
           readOnly={!isEdit}
           {...register("account")}
         />
         <CustomInput
           size="small"
-          label="비밀번호"
-          placeholder="비밀번호 입력"
+          label={tLicensor("password")}
+          placeholder={tLicensor("passwordPlaceholder")}
           readOnly={!isEdit}
           required
           {...register("password")}
@@ -57,8 +60,8 @@ const LicensorInput = ({
       <Gap height={56} />
       <CustomInput
         size="small"
-        label="권리자명"
-        placeholder="권리자명 입력"
+        label={tLicensor("licensorName")}
+        placeholder={tLicensor("licensorNamePlaceholder")}
         readOnly={!isEdit}
         required
         {...register("displayName", { required: true })}
@@ -71,15 +74,15 @@ const LicensorInput = ({
           defaultValue={UserType.COMPANY}
           render={({ field }) => (
             <CustomRadioWithLabel
-              label="구분"
+              label={tCommon("category")}
               required
               leftOption={{
-                label: "사업자",
+                label: tCommon("business"),
                 value: UserType.COMPANY,
                 checked: field.value === UserType.COMPANY,
               }}
               rightOption={{
-                label: "개인",
+                label: tCommon("individual"),
                 value: UserType.INDIVIDUAL,
                 checked: field.value === UserType.INDIVIDUAL,
               }}
@@ -92,16 +95,16 @@ const LicensorInput = ({
         {watch("type") === UserType.COMPANY && (
           <CustomInput
             size="small"
-            label="사업자등록번호"
-            placeholder="사업자등록번호 입력"
+            label={tLicensor("businessNumber")}
+            placeholder={tLicensor("businessNumberPlaceholder")}
             {...register("companyRegistrationNumber")}
           />
         )}
         {watch("type") === UserType.INDIVIDUAL && (
           <CustomInput
             size="small"
-            label="주민등록번호"
-            placeholder="주민등록번호 입력"
+            label={tLicensor("residentNumber")}
+            placeholder={tLicensor("residentNumberPlaceholder")}
             {...register("personalIdNumber")}
           />
         )}
@@ -110,16 +113,16 @@ const LicensorInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="대표자명"
-          placeholder="대표자명 입력"
+          label={tLicensor("ceoName")}
+          placeholder={tLicensor("ceoNamePlaceholder")}
           readOnly={!isEdit}
           required
           {...register("representativeName")}
         />
         <CustomInput
           size="small"
-          label="주소"
-          placeholder="주소 입력"
+          label={tLicensor("address")}
+          placeholder={tLicensor("addressPlaceholder")}
           readOnly={!isEdit}
           {...register("address")}
         />
@@ -128,15 +131,15 @@ const LicensorInput = ({
       <RowWrapper>
         <CustomInput
           size="small"
-          label="은행명"
-          placeholder="은행명 입력"
+          label={tLicensor("bankName")}
+          placeholder={tLicensor("bankNamePlaceholder")}
           readOnly={!isEdit}
           {...register("bankName")}
         />
         <CustomInput
           size="small"
-          label="계좌번호"
-          placeholder="계좌번호 입력"
+          label={tLicensor("accountNumber")}
+          placeholder={tLicensor("accountNumberPlaceholder")}
           readOnly={!isEdit}
           {...register("bankAccount")}
         />
@@ -163,7 +166,7 @@ const LicensorInput = ({
             value={field.value}
             fileType={FileType.DOCS}
             dataCollectionName={DataCollectionName.USERS}
-            headerText="업체정보"
+            headerText={tLicensor("companyInfo")}
             readOnly={!isEdit}
           />
         )}

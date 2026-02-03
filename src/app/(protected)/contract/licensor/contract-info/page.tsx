@@ -12,6 +12,7 @@ import PageHeader from "@/components/PageHeader";
 import SearchInput from "@/components/SearchInput";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 
 const Container = styled.div``;
@@ -28,6 +29,7 @@ const SearchInputWrapper = styled.div`
 `;
 
 export default function LicensorContractInfoPage() {
+  const tLicensor = useTranslations("licensor");
   const { userContracts, searchUserContracts } = useUserContractStore();
   const [selectedType, setSelectedType] =
     useState<LicensorContractSearchType>("all");
@@ -52,7 +54,7 @@ export default function LicensorContractInfoPage() {
 
   return (
     <Container>
-      <PageHeader title={"권리자 계약 리스트"} />
+      <PageHeader title={tLicensor("licensorContractList")} />
       <SearchContainer>
         <SearchInputWrapper>
           <LicensorContractSearchTypeDropdown
@@ -60,7 +62,7 @@ export default function LicensorContractInfoPage() {
             setSelectedType={setSelectedType}
           />
           <SearchInput
-            placeholder="계약명, 권리자명, 계약코드 입력"
+            placeholder={tLicensor("licensorContractSearch")}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClickSearch={handleSearch}

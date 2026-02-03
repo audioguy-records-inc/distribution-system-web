@@ -12,6 +12,7 @@ import ImageUpload from "@/components/basic/ImageUpload";
 import ParticipateArtistSearch from "./fragment/ParticipateArtistSearch";
 import ReleaseArtistSearch from "./fragment/ReleaseArtistSearch";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -31,6 +32,8 @@ export default function ArtistSection({
   watch,
   register,
 }: ArtistSectionProps) {
+  const ta = useTranslations("artist");
+  const t = useTranslations("content");
   return (
     <Container>
       <Gap height={32} />
@@ -43,9 +46,9 @@ export default function ArtistSection({
             value={field.value || []}
             onChange={field.onChange}
             readOnly={false}
-            placeholder="아티스트 검색"
-            label="앨범 아티스트"
-            modalHeader="앨범 아티스트 검색"
+            placeholder={ta("artistSearch")}
+            label={t("albumArtist")}
+            modalHeader={t("albumArtistSearch")}
             required={true}
           />
         )}
@@ -59,9 +62,9 @@ export default function ArtistSection({
             value={field.value || []}
             onChange={field.onChange}
             readOnly={false}
-            placeholder="아티스트 검색"
-            label="참여 아티스트"
-            modalHeader="참여 아티스트 검색"
+            placeholder={ta("artistSearch")}
+            label={t("participateArtist")}
+            modalHeader={t("participateArtistSearch")}
           />
         )}
       />

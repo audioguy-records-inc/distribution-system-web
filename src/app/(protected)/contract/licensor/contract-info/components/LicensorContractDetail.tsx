@@ -10,6 +10,7 @@ import { User } from "@/types/user";
 import UserContract from "@/types/user-contract";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -40,6 +41,7 @@ const LicensorContractDetail = ({
 }: {
   licensorContract: UserContract;
 }) => {
+  const tLicensor = useTranslations("licensor");
   const [isEdit, setIsEdit] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -89,7 +91,7 @@ const LicensorContractDetail = ({
     <Container>
       <Header>
         <TitleWrapper>
-          권리자 계약 정보
+          {tLicensor("licensorContractInfo")}
           {isEdit ? (
             <Controller
               name="isContractEnabled"
@@ -129,7 +131,7 @@ const LicensorContractDetail = ({
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 계약을 삭제할까요?"
+        content={tLicensor("deleteContractConfirm")}
         isLoading={isLoading}
       />
 
@@ -137,7 +139,7 @@ const LicensorContractDetail = ({
         isOpen={isUpdateModalOpen}
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
-        content="변경사항을 저장할까요?"
+        content={tLicensor("saveConfirm")}
         isLoading={isLoading}
       />
     </Container>

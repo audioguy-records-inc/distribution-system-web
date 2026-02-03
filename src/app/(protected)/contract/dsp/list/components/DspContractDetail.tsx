@@ -15,6 +15,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   padding: 48px 32px 64px;
@@ -44,6 +45,8 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [formData, setFormData] = useState<DspContract | null>(null);
   const { updateDspContract, deleteDspContract } = useDspContractStore();
+  const tContract = useTranslations("contract");
+  const tDsp = useTranslations("dsp");
   const {
     register,
     handleSubmit,
@@ -63,7 +66,7 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
 
   const onSubmit = async (data: DspContract) => {
     if (data.contractRate === undefined || isNaN(data.contractRate)) {
-      toast.error("계약 요율을 입력해주세요.");
+      toast.error(tContract("contractRateError"));
       return;
     }
     setFormData(data);
@@ -91,7 +94,7 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
     <Container>
       <Header>
         <TitleWrapper>
-          계약 정보
+          {tContract("contractInfo")}
           {isEdit ? (
             <Controller
               name="isContractEnabled"
@@ -131,14 +134,14 @@ const DspContractDetail = ({ dspContract }: { dspContract: DspContract }) => {
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 DSP 계약을 삭제할까요?"
+        content={tDsp("deleteConfirm")}
       />
 
       <CustomModal
         isOpen={isUpdateModalOpen}
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
-        content="변경사항을 저장할까요?"
+        content={tDsp("saveConfirm")}
       />
     </Container>
   );

@@ -12,6 +12,7 @@ import CustomTimePicker from "@/components/basic/CustomTimePicker";
 import Gap from "@/components/basic/Gap";
 import moment from "moment";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -41,6 +42,7 @@ export default function ReleaseDate({
   register: UseFormRegister<Album>;
   setValue: UseFormSetValue<Album>;
 }) {
+  const t = useTranslations("content");
   // watch를 통해 현재 값이 유효한지 체크
   const releaseDate = watch("utcReleasedAt");
 
@@ -52,7 +54,7 @@ export default function ReleaseDate({
         control={control}
         render={({ field }) => (
           <CustomCalendar
-            label="발매일"
+            label={t("releaseDate")}
             value={
               field.value && moment(field.value).isValid()
                 ? moment(field.value).format("YYYYMMDD")
@@ -66,7 +68,7 @@ export default function ReleaseDate({
                   const utcDate = m.utc().format();
                   field.onChange(utcDate);
                 } else {
-                  console.error("발매일 유효하지 않음:", date);
+                  console.error("Release date invalid:", date);
                   field.onChange(null);
                 }
               } else {
@@ -86,7 +88,7 @@ export default function ReleaseDate({
           control={control}
           render={({ field }) => (
             <CustomCalendar
-              label="서비스 시간"
+              label={t("serviceTime")}
               value={
                 field.value && moment(field.value).isValid()
                   ? moment(field.value).format("YYYYMMDD")

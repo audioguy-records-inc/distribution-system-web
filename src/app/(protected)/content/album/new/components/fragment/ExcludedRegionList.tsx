@@ -11,6 +11,7 @@ import CustomDropdown from "@/components/basic/CustomDropdown";
 import CustomDropdownSearch from "@/components/basic/CustomDropdownSearch";
 import { getCountryKeyValueList } from "@/constants/country";
 import styled from "styled-components";
+import { useLocale, useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -25,7 +26,9 @@ export default function ExcludedRegionList({
   register: UseFormRegister<Album>;
   setValue: UseFormSetValue<Album>;
 }) {
-  const itemList = getCountryKeyValueList();
+  const locale = useLocale();
+  const itemList = getCountryKeyValueList(locale);
+  const tv = useTranslations("video");
 
   return (
     <Container>
@@ -34,9 +37,9 @@ export default function ExcludedRegionList({
         control={control}
         render={({ field }) => (
           <CustomDropdownSearch
-            label="서비스 제외 지역"
+            label={tv("serviceExcludeRegion")}
             items={itemList}
-            placeholder="서비스 제외 지역 선택"
+            placeholder={tv("excludeRegionPlaceholder")}
             selectedKeys={field.value || []}
             size="small"
             width={320}

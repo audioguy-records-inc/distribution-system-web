@@ -11,6 +11,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useArtistStore } from "@/stores/use-artist-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   padding: 48px 32px 64px;
@@ -35,6 +36,8 @@ const RowWrapper = styled.div`
 `;
 
 const ArtistDetail = ({ artist }: { artist: Artist }) => {
+  const ta = useTranslations("artist");
+  const tToast = useTranslations("toast.artist");
   const [isEdit, setIsEdit] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -66,13 +69,13 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
     // 필수 필드 검증
     if (!data._id) {
       console.error("Artist ID is missing");
-      toast.error("아티스트 ID가 누락되었습니다.");
+      toast.error(tToast("missingId"));
       return;
     }
 
     if (!data.name || data.name.trim() === "") {
       console.error("Artist name is missing");
-      toast.error("아티스트명이 누락되었습니다.");
+      toast.error(tToast("missingName"));
       return;
     }
 
@@ -88,14 +91,14 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
         await updateArtist(formData);
         setIsUpdateModalOpen(false);
         setIsEdit(false);
-        toast.success("아티스트가 성공적으로 수정되었습니다.");
+        toast.success(tToast("updateSuccess"));
       } catch (error) {
         console.error("Update failed:", error);
-        toast.error("아티스트 수정에 실패했습니다.");
+        toast.error(tToast("updateFail"));
       }
     } else {
       console.error("formData is null");
-      toast.error("수정할 데이터가 없습니다.");
+      toast.error(tToast("noChanges"));
     }
   };
 
@@ -111,7 +114,7 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
   return (
     <Container>
       <Header>
-        <TitleWrapper>아티스트 정보</TitleWrapper>
+        <TitleWrapper>{ta("artistInfo")}</TitleWrapper>
         <DetailHeaderButton
           isEdit={isEdit}
           setIsEdit={setIsEdit}
@@ -135,14 +138,14 @@ const ArtistDetail = ({ artist }: { artist: Artist }) => {
         isOpen={isDeleteModalOpen}
         onRequestClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        content="해당 아티스트를 삭제할까요?"
+        content={ta("deleteConfirm")}
       />
 
       <CustomModal
         isOpen={isUpdateModalOpen}
         onRequestClose={() => setIsUpdateModalOpen(false)}
         onConfirm={handleConfirmUpdate}
-        content="변경사항을 저장할까요?"
+        content={ta("saveConfirm")}
       />
     </Container>
   );

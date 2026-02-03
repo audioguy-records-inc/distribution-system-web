@@ -13,16 +13,18 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
 const CommunitySection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("sidebar");
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
-        커뮤니티
+        {t("community")}
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </MenuGroupButton>
       <Gap height={12} />
@@ -34,7 +36,7 @@ const CommunitySection = () => {
               pathname.startsWith("/community/announcement/")
             }
           >
-            공지사항
+            {t("announcement")}
           </MenuItem>
         </MenuItemLink>
       </MenuGroup>

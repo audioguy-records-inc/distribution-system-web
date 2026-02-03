@@ -12,6 +12,7 @@ import StatusDisplay from "@/components/common/StatusDisplay";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useFileStatusChecker } from "@/hooks/useFileStatusChecker";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const getStatusColor = (status: SettlementFileState): string => {
   switch (status) {
@@ -34,24 +35,24 @@ const getStatusColor = (status: SettlementFileState): string => {
   }
 };
 
-const getStatusText = (status: SettlementFileState): string => {
+const getStatusTextKey = (status: SettlementFileState): string => {
   switch (status) {
     case SETTLEMENT_FILE_STATE.PENDING:
-      return "대기 중...";
+      return "statusPending";
     case SETTLEMENT_FILE_STATE.CONVERTING:
-      return "변환 중...";
+      return "statusConverting";
     case SETTLEMENT_FILE_STATE.CONVERTING_SUCCESS:
-      return "변환 완료";
+      return "statusConvertingSuccess";
     case SETTLEMENT_FILE_STATE.CONVERTING_ERROR:
-      return "변환 실패";
+      return "statusConvertingError";
     case SETTLEMENT_FILE_STATE.MATCHING:
-      return "매칭 중...";
+      return "statusMatching";
     case SETTLEMENT_FILE_STATE.MATCHING_SUCCESS:
-      return "매칭 완료";
+      return "statusMatchingSuccess";
     case SETTLEMENT_FILE_STATE.MATCHING_ERROR:
-      return "매칭 실패";
+      return "statusMatchingError";
     default:
-      return "알 수 없음";
+      return "statusUnknown";
   }
 };
 
@@ -67,6 +68,7 @@ const isProgressState = (status: string): boolean => {
 const SETTLEMENT_UPLOAD_STORAGE_KEY = "settlement_upload_in_progress";
 
 function SettlementFileStatusChecker() {
+  const t = useTranslations("settlement");
   const user = useAuthStore((state) => state.user);
   const { settlementFiles, fetchSettlementFiles, isLoading } =
     useSettlementStore();
@@ -96,7 +98,7 @@ function SettlementFileStatusChecker() {
   return (
     <StatusDisplay
       status={status}
-      text={getStatusText(status)}
+      text={t(getStatusTextKey(status))}
       color={getStatusColor(status)}
       isLoading={isLoading}
     />

@@ -12,6 +12,7 @@ import TrashIcon from "@/components/icons/TrashIcon";
 import { getLanguageKeyValueList } from "@/constants/language";
 import styled from "styled-components";
 import toast from "react-hot-toast";
+import { useLocale, useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -24,9 +25,14 @@ export default function TrackTitle({
   onChange: (value: TitleLanguage[]) => void;
   readOnly: boolean;
 }) {
+  const t = useTranslations("track");
+  const tc = useTranslations("common");
+  const tu = useTranslations("upload");
+  const tContent = useTranslations("content");
+  const locale = useLocale();
   const columns: Column<TitleLanguage>[] = [
     {
-      header: "언어",
+      header: tContent("language"),
       accessor: "language",
       align: "center",
       type: "string",
@@ -35,8 +41,8 @@ export default function TrackTitle({
         const oldKey = Object.keys(record)[0] || "";
         return (
           <CustomDropdown
-            placeholder="언어 선택"
-            items={getLanguageKeyValueList()}
+            placeholder={tContent("languageSelect")}
+            items={getLanguageKeyValueList(locale)}
             selectedKey={oldKey}
             onSelectKey={(newKey) => {
               if (
@@ -48,7 +54,7 @@ export default function TrackTitle({
                     item[newKey] !== undefined,
                 )
               ) {
-                toast.error("이미 선택된 언어입니다.");
+                toast.error(tu("alreadySelectedLanguage"));
                 return;
               }
               // 기존의 title 값을 유지하면서 새 key로 업데이트
@@ -68,7 +74,7 @@ export default function TrackTitle({
       },
     },
     {
-      header: "트랙명",
+      header: t("trackName"),
       accessor: "string",
       align: "center",
       type: "string",
@@ -125,7 +131,7 @@ export default function TrackTitle({
           color: "#374151",
         }}
       >
-        트랙명 <span style={{ color: "red" }}>*</span>
+        {t("trackName")} <span style={{ color: "red" }}>*</span>
       </div>
       <CustomTable columns={columns} data={value || []} size="small" />
       <Gap height={12} />
@@ -134,7 +140,7 @@ export default function TrackTitle({
           size="medium"
           expand
           leftIcon={<PlusIcon />}
-          label="추가"
+          label={tc("add")}
           onClick={() => {
             if (readOnly) return;
             const newValue = [...(value || []), { "": "" }];

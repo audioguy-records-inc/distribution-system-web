@@ -2,6 +2,7 @@ import React from "react";
 import { UserType } from "@/types/user";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 interface UserTypeBadgeProps {
   type: UserType;
@@ -28,9 +29,10 @@ const Container = styled.div<{ $type: UserType }>`
 const Badge = styled.div``;
 
 const UserTypeBadge: React.FC<UserTypeBadgeProps> = ({ type }) => {
+  const t = useTranslations("common");
   return (
     <Container $type={type}>
-      <Badge>{type === UserType.COMPANY ? "사업자" : "개인"}</Badge>
+      <Badge>{type === UserType.COMPANY ? t("business") : t("individual")}</Badge>
     </Container>
   );
 };

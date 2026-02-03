@@ -4,6 +4,7 @@ import { countryList, getCountryKeyValueList } from "@/constants/country";
 import Album from "@/types/album";
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useLocale, useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -14,6 +15,8 @@ export default function ReleaseCountryCode({
   control: Control<Album>;
   watch: UseFormWatch<Album>;
 }) {
+  const tv = useTranslations("video");
+  const locale = useLocale();
   return (
     <Container>
       <Controller
@@ -23,9 +26,9 @@ export default function ReleaseCountryCode({
         render={({ field }) => {
           return (
             <CustomDropdown
-              label={"발매 국가"}
-              items={getCountryKeyValueList()}
-              placeholder="국가 선택"
+              label={tv("releaseCountry")}
+              items={getCountryKeyValueList(locale)}
+              placeholder={tv("countrySelect")}
               selectedKey={field.value}
               onSelectKey={(selectedKey) => {
                 field.onChange(selectedKey);

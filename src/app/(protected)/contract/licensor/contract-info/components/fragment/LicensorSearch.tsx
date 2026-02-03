@@ -9,6 +9,7 @@ import { User } from "@/types/user";
 import UserTypeBadge from "@/components/basic/custom-table/components/UserTypeBadge";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useUserStore } from "@/stores/use-user-store";
 
@@ -40,12 +41,14 @@ export default function LicensorSearch({
   user?: User;
   required?: boolean;
 }) {
+  const tLicensor = useTranslations("licensor");
+  const tCommon = useTranslations("common");
   const [selectedUser, setSelectedUser] = useState<User | null>(user || null);
   const { searchUsers } = useUserStore();
 
   const columns: Column<User>[] = [
     {
-      header: "구분",
+      header: tCommon("category"),
       accessor: "type",
       type: "component",
       width: 140,
@@ -55,14 +58,14 @@ export default function LicensorSearch({
       },
     },
     {
-      header: "권리자 코드",
+      header: tLicensor("licensorCode"),
       accessor: "account",
       type: "string",
       width: 220,
       align: "center",
     },
     {
-      header: "권리자명",
+      header: tLicensor("licensorName"),
       accessor: "displayName",
       type: "string",
       width: 449,
@@ -93,14 +96,14 @@ export default function LicensorSearch({
   return (
     <Container>
       <Title>
-        권리자명
+        {tLicensor("licensorName")}
         {required && <Required>*</Required>}
       </Title>
       <Gap height={20} />
       {!readOnly && (
         <SearchDropdownInput
-          title="권리자명 검색"
-          placeholder="권리자명 검색"
+          title={tLicensor("licensorNameSearch")}
+          placeholder={tLicensor("licensorNameSearch")}
           onClickSearch={handleSearch}
           onSelect={(selectedItem: User) => {
             onSelect(selectedItem);

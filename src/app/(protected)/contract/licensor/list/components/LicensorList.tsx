@@ -14,11 +14,15 @@ import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { useUserStore } from "@/stores/use-user-store";
 
 const Container = styled.div``;
 
 export default function LicensorList({ licensors }: { licensors: User[] }) {
+  const tLicensor = useTranslations("licensor");
+  const tCommon = useTranslations("common");
+  const tContent = useTranslations("content");
   const { user } = useAuthStore();
   const { fetchUsers } = useUserStore();
 
@@ -30,14 +34,14 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
 
   const columns: Column<User>[] = [
     {
-      header: "권리자 코드",
+      header: tLicensor("licensorCode"),
       accessor: "account",
       type: "string",
       width: 100,
       align: "center",
     },
     {
-      header: "구분",
+      header: tCommon("category"),
       accessor: "type",
       type: "component",
       width: 150,
@@ -47,21 +51,21 @@ export default function LicensorList({ licensors }: { licensors: User[] }) {
       },
     },
     {
-      header: "권리자명",
+      header: tLicensor("licensorName"),
       accessor: "displayName",
       type: "string",
       width: 280,
       align: "center",
     },
     {
-      header: "앨범수",
+      header: tContent("albumCount"),
       accessor: "albumCount",
       type: "string",
       width: 100,
       align: "center",
     },
     {
-      header: "활성 여부",
+      header: tCommon("active"),
       accessor: "isEnabled",
       type: "component",
       width: 170,

@@ -5,6 +5,7 @@ import { FileInfo } from "@/types/file-info";
 import SettlementUpload from "@/components/basic/SettlementUpload";
 import styled from "styled-components";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -17,6 +18,7 @@ interface SettlementUploadButtonProps {
 export default function SettlementUploadButton({
   onUploadComplete,
 }: SettlementUploadButtonProps) {
+  const t = useTranslations("settlement");
   const [uploadFilePath, setUploadFilePath] = useState<FileInfo[]>([]);
   const { createSettlementFiles } = useSettlementStore();
 
@@ -54,7 +56,7 @@ export default function SettlementUploadButton({
         value={uploadFilePath}
         fileType={FileType.DOCS}
         dataCollectionName={DataCollectionName.SETTLEMENTS}
-        headerText="정산금 업로드"
+        headerText={t("settlementUpload")}
       />
     </Container>
   );

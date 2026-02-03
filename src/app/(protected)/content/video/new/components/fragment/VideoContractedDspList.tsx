@@ -14,6 +14,7 @@ import Image from "next/image";
 import Video from "@/types/video";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const Container = styled.div``;
@@ -45,6 +46,8 @@ export default function VideoContractedDspList({
   setValue: UseFormSetValue<Video>;
   required?: boolean;
 }) {
+  const tv = useTranslations("video");
+  const tc = useTranslations("common");
   const [isSelectedAll, setIsSelectedAll] = useState(false);
   const contractedDspContractList =
     watch("userContractInfo.dspContractList") || [];
@@ -80,19 +83,19 @@ export default function VideoContractedDspList({
   return (
     <Container>
       <Label>
-        {required ? "계약된 DSP 리스트" : "계약된 DSP 리스트"}:{" "}
-        {dspContractIdList.length}개 선택됨
+        {tv("contractedDspList")}:{" "}
+        {tv("selectedCount", { count: dspContractIdList.length })}
         {required && <span style={{ color: "#DC2626" }}> *</span>}
       </Label>
       {!contractedDspContractList || contractedDspContractList.length === 0 ? (
         <HelpText>
-          계약 정보를 선택하면 해당 계약의 dsp 리스트가 표시됩니다.
+          {tv("contractedDspHelp")}
         </HelpText>
       ) : (
         <>
           <Gap height={8} />
           <CustomCheckbox
-            label="전체 선택"
+            label={tc("selectAll")}
             checked={isSelectedAll}
             onChange={handleSelectAll}
           />

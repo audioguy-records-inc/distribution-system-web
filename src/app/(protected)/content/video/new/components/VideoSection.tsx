@@ -22,6 +22,7 @@ import VideoTitle from "./fragment/VideoTitle";
 import VideoUserContract from "./fragment/VideoUserContract";
 import { getCountryKeyValueList } from "@/constants/country";
 import styled from "styled-components";
+import { useLocale, useTranslations } from "next-intl";
 import { videoTypeList } from "@/constants/video-type";
 
 const Container = styled.div``;
@@ -46,6 +47,11 @@ export default function VideoSection({
   setValue,
   required = false,
 }: VideoSectionProps) {
+  const tv = useTranslations("video");
+  const tc = useTranslations("content");
+  const tt = useTranslations("track");
+  const tcon = useTranslations("contract");
+  const locale = useLocale();
   return (
     <Container>
       <Gap height={32} />
@@ -72,9 +78,9 @@ export default function VideoSection({
               value={field.value || []}
               onChange={field.onChange}
               readOnly={false}
-              placeholder="아티스트 검색"
-              label="영상 아티스트"
-              modalHeader="영상 아티스트 검색"
+              placeholder={tv("videoArtistSearch")}
+              label={tv("videoArtist")}
+              modalHeader={tv("videoArtistSearchModal")}
               required={required}
             />
           );
@@ -87,14 +93,14 @@ export default function VideoSection({
         render={({ field }) => {
           return (
             <CustomRadioWithLabel
-              label="트랙 매칭"
+              label={tt("trackMatching")}
               leftOption={{
-                label: "해당",
+                label: tt("applicable"),
                 value: true,
                 checked: field.value === true,
               }}
               rightOption={{
-                label: "해당없음",
+                label: tt("notApplicable"),
                 value: false,
                 checked: field.value === false,
               }}
@@ -117,8 +123,8 @@ export default function VideoSection({
                 onChange={(value) => {
                   field.onChange(value);
                 }}
-                placeholder="트랙 검색"
-                label="트랙"
+                placeholder={tt("trackSearch")}
+                label={tt("track")}
                 setValue={setValue}
                 watch={watch}
               />
@@ -129,8 +135,8 @@ export default function VideoSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomDropdown
-          label="영상 유형"
-          items={videoTypeList}
+          label={tv("videoType")}
+          items={videoTypeList.map((item) => ({ key: item.key, value: tv(item.translationKey) }))}
           selectedKey={watch("videoType")}
           onSelectKey={(selectedKey) => {
             setValue("videoType", selectedKey);
@@ -140,14 +146,14 @@ export default function VideoSection({
           required={required}
         />
         <CustomRadioWithLabel
-          label="유/무료"
+          label={tv("paidFree")}
           leftOption={{
-            label: "유료",
+            label: tv("paid"),
             value: false,
             checked: watch("isFree") === false,
           }}
           rightOption={{
-            label: "무료",
+            label: tv("free"),
             value: true,
             checked: watch("isFree") === true,
           }}
@@ -161,9 +167,9 @@ export default function VideoSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomDropdown
-          label="발매국가"
-          placeholder="국가 선택"
-          items={getCountryKeyValueList()}
+          label={tv("releaseCountry")}
+          placeholder={tv("countrySelect")}
+          items={getCountryKeyValueList(locale)}
           selectedKey={watch("releaseCountryCode")}
           onSelectKey={(selectedKey) => {
             setValue("releaseCountryCode", selectedKey);
@@ -176,8 +182,8 @@ export default function VideoSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="유통사"
-          placeholder="유통사 입력"
+          label={tc("distributor")}
+          placeholder={tv("distributorPlaceholder")}
           value={watch("distributionCompanyName") || ""}
           onChange={(e) => {
             setValue("distributionCompanyName", e.target.value);
@@ -187,8 +193,8 @@ export default function VideoSection({
           required={required}
         />
         <CustomInput
-          label="레이블(기획사)"
-          placeholder="기획사 입력"
+          label={tc("label")}
+          placeholder={tv("plannerPlaceholder")}
           value={watch("agencyCompanyName") || ""}
           onChange={(e) => {
             setValue("agencyCompanyName", e.target.value);
@@ -227,8 +233,8 @@ export default function VideoSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="공급 지역"
-          placeholder="공급 지역 입력"
+          label={tv("supplyRegion")}
+          placeholder={tv("supplyRegionPlaceholder")}
           size="small"
           locked={true}
           value={watch("supplyRegion") || ""}
@@ -237,9 +243,9 @@ export default function VideoSection({
           }}
         />
         <CustomDropdown
-          label="공급 제외 지역"
-          placeholder="공급 제외 지역 선택"
-          items={getCountryKeyValueList()}
+          label={tv("excludeRegion")}
+          placeholder={tv("excludeRegionPlaceholder")}
+          items={getCountryKeyValueList(locale)}
           selectedKeys={watch("excludedRegionList") || []}
           onMultiSelectKeys={(selectedKeys) => {
             setValue("excludedRegionList", selectedKeys);
@@ -252,8 +258,8 @@ export default function VideoSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="영상 코드"
-          placeholder="영상 코드 입력"
+          label={tv("videoCode")}
+          placeholder={tv("videoCodePlaceholder")}
           size="small"
           value={watch("videoUniqueId") || ""}
           onChange={(e) => {
@@ -263,7 +269,7 @@ export default function VideoSection({
         />
         <CustomInput
           label="UPC"
-          placeholder="UPC 입력"
+          placeholder={tv("upcPlaceholder")}
           size="small"
           value={watch("UPC") || ""}
           onChange={(e) => {
@@ -275,7 +281,7 @@ export default function VideoSection({
       <Gap height={56} />
       <CustomInput
         label="ISRC"
-        placeholder="ISRC 입력"
+        placeholder={tv("isrcPlaceholder")}
         size="small"
         value={watch("ISRC") || ""}
         onChange={(e) => {

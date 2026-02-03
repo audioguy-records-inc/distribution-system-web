@@ -5,6 +5,7 @@ import Gap from "./basic/Gap";
 import Modal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -63,6 +64,7 @@ const CustomModal = ({
   content,
   isLoading,
 }: CustomModalProps) => {
+  const t = useTranslations("common");
   return (
     <Modal
       isOpen={isOpen}
@@ -79,8 +81,8 @@ const CustomModal = ({
           </LoadingContainer>
         ) : (
           <ButtonContainer>
-            <ButtonOutlinedSecondary label="취소" onClick={onRequestClose} />
-            <ButtonFilledPrimary label="확인" onClick={onConfirm} />
+            <ButtonOutlinedSecondary label={t("cancel")} onClick={onRequestClose} />
+            <ButtonFilledPrimary label={t("confirm")} onClick={onConfirm} />
           </ButtonContainer>
         )}
       </Container>

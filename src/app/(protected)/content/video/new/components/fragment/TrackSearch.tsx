@@ -15,6 +15,7 @@ import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -62,6 +63,8 @@ export default function TrackSearch({
 }) {
   const { fetchTrack } = useTrackStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const tt = useTranslations("track");
+  const tc = useTranslations("content");
 
   // watch("trackList")를 TrackInfo[]로 명시적 캐스팅
   const trackList: TrackInfo[] = (watch("trackList") as TrackInfo[]) || [];
@@ -123,7 +126,7 @@ export default function TrackSearch({
     //   align: "center",
     // },
     {
-      header: "트랙명",
+      header: tt("trackName"),
       accessor: "titleList",
       type: "string",
       width: 337,
@@ -134,7 +137,7 @@ export default function TrackSearch({
       },
     },
     {
-      header: "아티스트명",
+      header: tt("trackArtist"),
       accessor: "releaseArtistList",
       type: "string",
       width: 160,
@@ -145,7 +148,7 @@ export default function TrackSearch({
       },
     },
     {
-      header: "발매일",
+      header: tc("releaseDate"),
       accessor: "utcReleasedAt",
       type: "string",
       width: 120,

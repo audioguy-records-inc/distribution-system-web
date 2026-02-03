@@ -4,6 +4,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -35,6 +36,7 @@ const UserName = styled.div`
 const LoginInfo = () => {
   const { user, logout } = useAuthStore();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const t = useTranslations("loginInfo");
 
   const handleLogoutClick = () => {
     setIsLogoutModalOpen(true);
@@ -48,19 +50,19 @@ const LoginInfo = () => {
   return (
     <Container>
       <UserInfoWrapper>
-        <UserInfoLabel>로그인 정보</UserInfoLabel>
+        <UserInfoLabel>{t("label")}</UserInfoLabel>
         <UserName>{user?.displayName}</UserName>
       </UserInfoWrapper>
       <ButtonOutlinedAssistive
         onClick={handleLogoutClick}
-        label="로그아웃"
+        label={t("logout")}
         size="medium"
       />
       <CustomModal
         isOpen={isLogoutModalOpen}
         onRequestClose={() => setIsLogoutModalOpen(false)}
         onConfirm={handleLogoutConfirm}
-        content="정말 로그아웃 하시겠어요?"
+        content={t("logoutConfirm")}
       />
     </Container>
   );

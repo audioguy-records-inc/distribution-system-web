@@ -259,7 +259,18 @@ export const countryList: CountryItem[] = [
   { name: "홍콩", countryCode: "HK" },
 ];
 
-export const getCountryKeyValueList = () => {
+export const getCountryKeyValueList = (locale?: string) => {
+  if (locale && locale !== "ko") {
+    try {
+      const displayNames = new Intl.DisplayNames([locale], { type: "region" });
+      return countryList.map((country) => ({
+        key: country.countryCode,
+        value: `${displayNames.of(country.countryCode) || country.name} (${country.countryCode})`,
+      }));
+    } catch {
+      // fallback to Korean names
+    }
+  }
   return countryList.map((country) => ({
     key: country.countryCode,
     value: `${country.name} (${country.countryCode})`,

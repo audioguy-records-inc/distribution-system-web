@@ -12,6 +12,7 @@ import ReactModal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAnnouncementStore } from "@/stores/use-announcement-store";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const AddNewWrapper = styled.div`
@@ -37,6 +38,8 @@ const RowWrapper = styled.div`
 `;
 
 const AddNewAnnouncement = () => {
+  const t = useTranslations("announcement");
+  const tc = useTranslations("common");
   const [isOpen, setIsOpen] = useState(false);
   const { createAnnouncement } = useAnnouncementStore();
   const {
@@ -115,10 +118,10 @@ const AddNewAnnouncement = () => {
         ariaHideApp={false}
       >
         <ModalHeader>
-          공지사항 작성
+          {t("write")}
           <ButtonWrapper>
             <ButtonOutlinedSecondary
-              label="취소"
+              label={tc("cancel")}
               onClick={handleClose}
               disabled={isLoading}
             />
@@ -126,7 +129,7 @@ const AddNewAnnouncement = () => {
               <ButtonSpinner />
             ) : (
               <ButtonFilledPrimary
-                label="등록"
+                label={tc("register")}
                 onClick={handleSubmit(onSubmit)}
                 disabled={isDisabledConfirmButton()}
               />

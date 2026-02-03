@@ -14,6 +14,7 @@ import styled from "styled-components";
 import { useArtistStore } from "@/stores/use-artist-store";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -33,23 +34,25 @@ const SnsIconWrapper = styled.a`
 
 export default function ArtistList() {
   const { artists, fetchArtists } = useArtistStore();
+  const ta = useTranslations("artist");
+  const tc = useTranslations("content");
   const columns: Column<Artist>[] = [
     {
-      header: "아티스트 코드",
+      header: ta("artistCode"),
       accessor: "artistUniqueId",
       type: "string",
       width: 120,
       align: "center",
     },
     {
-      header: "아티스트명",
+      header: ta("artistName"),
       accessor: "name",
       type: "string",
       width: 155,
       align: "center",
     },
     {
-      header: "국가",
+      header: ta("country"),
       accessor: "countryCode",
       type: "string",
       width: 155,
@@ -62,14 +65,14 @@ export default function ArtistList() {
       },
     },
     {
-      header: "성별",
+      header: ta("gender"),
       accessor: "genderType",
       type: "component",
       width: 100,
       align: "center",
     },
     {
-      header: "유형",
+      header: ta("type"),
       accessor: "artistType",
       type: "string",
       width: 100,
@@ -156,7 +159,7 @@ export default function ArtistList() {
       },
     },
     {
-      header: "앨범수",
+      header: tc("albumCount"),
       accessor: "releaseAlbumCount",
       type: "string",
       width: 100,
@@ -167,7 +170,7 @@ export default function ArtistList() {
       },
     },
     {
-      header: "트랙수",
+      header: tc("trackCount"),
       accessor: "releaseTrackCount",
       type: "string",
       width: 100,

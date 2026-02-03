@@ -19,6 +19,7 @@ import VideoSection from "../../new/components/VideoSection";
 import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { useVideoStore } from "@/stores/use-video-store";
 
 const Container = styled.div``;
@@ -37,6 +38,9 @@ const ButtonWrapper = styled.div`
 const VideoDetailPage = () => {
   const router = useRouter();
   const { videoId } = useParams();
+  const tv = useTranslations("video");
+  const tc = useTranslations("common");
+  const tco = useTranslations("content");
   const [isLoading, setIsLoading] = useState(false);
   const { videos, updateVideo, deleteVideo, fetchVideo } = useVideoStore();
 
@@ -188,20 +192,20 @@ const VideoDetailPage = () => {
   }
 
   if (!video) {
-    return <div>영상을 찾을 수 없습니다.</div>;
+    return <div>{tv("notFound")}</div>;
   }
 
   return (
     <Container>
       <HeaderWrapper>
-        <PageHeader title={"영상 상세"} />
+        <PageHeader title={tv("videoDetail")} />
         <ButtonWrapper>
-          <ButtonOutlinedSecondary label="삭제" onClick={handleDelete} />
+          <ButtonOutlinedSecondary label={tc("delete")} onClick={handleDelete} />
           {isLoading ? (
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label="저장"
+              label={tc("save")}
               onClick={handleSubmit}
               disabled={!isFilled()}
             />
@@ -210,7 +214,7 @@ const VideoDetailPage = () => {
       </HeaderWrapper>
       <Gap height={32} />
       <CollapsibleHeader
-        title="1. 영상 정보"
+        title={tv("sectionVideoInfo")}
         renderComponent={
           <VideoSection
             control={control}
@@ -223,7 +227,7 @@ const VideoDetailPage = () => {
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="2. 영상 트랙 정보"
+        title={tv("sectionVideoTrackInfo")}
         renderComponent={
           <CensorSection
             control={control}
@@ -236,7 +240,7 @@ const VideoDetailPage = () => {
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="3. 영상 파일"
+        title={tv("sectionVideoFile")}
         renderComponent={
           <UploadSection
             control={control}

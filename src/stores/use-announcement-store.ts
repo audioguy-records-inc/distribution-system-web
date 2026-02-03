@@ -8,6 +8,7 @@ import { postAnnouncement } from "@/api/announcement/post-announcement";
 import { putAnnouncement } from "@/api/announcement/put-announcement";
 import { searchAnnouncement } from "@/api/announcement/search-aanouncement";
 import toast from "react-hot-toast";
+import { t } from "@/i18n/client";
 
 interface AnnouncementStore {
   announcements: Announcement[];
@@ -52,7 +53,7 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "공지사항 조회 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.announcement.fetchError");
 
           toast.error(errorMessage);
 
@@ -89,12 +90,12 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
             error: null,
           }));
 
-          toast.success("공지사항이 생성되었습니다.");
+          toast.success(t("toast.announcement.created"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "공지사항 생성 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.announcement.createError");
 
           toast.error(errorMessage);
 
@@ -133,12 +134,12 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
             error: null,
           }));
 
-          toast.success("공지사항이 수정되었습니다.");
+          toast.success(t("toast.announcement.updated"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "공지사항 수정 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.announcement.updateError");
 
           toast.error(errorMessage);
 
@@ -168,12 +169,12 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
             error: null,
           }));
 
-          toast.success("공지사항이 삭제되었습니다.");
+          toast.success(t("toast.announcement.deleted"));
         } catch (error) {
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "공지사항 삭제 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.announcement.deleteError");
 
           toast.error(errorMessage);
 
@@ -208,7 +209,7 @@ export const useAnnouncementStore = create<AnnouncementStore>()(
           const errorMessage =
             error instanceof Error
               ? error.message
-              : "공지사항 검색 중 알 수 없는 오류가 발생했습니다.";
+              : t("toast.announcement.searchError");
 
           toast.error(errorMessage);
 

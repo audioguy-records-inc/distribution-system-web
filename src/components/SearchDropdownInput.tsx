@@ -5,6 +5,7 @@ import SearchInput from "@/components/SearchInput";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   position: relative;
@@ -98,6 +99,7 @@ const SearchDropdownInput = <T,>({
   required = false,
   blueRequired = false,
 }: SearchDropdownInputProps<T>) => {
+  const t = useTranslations("common");
   const [searched, setSearched] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [searchResult, setSearchResult] = useState<T[]>([]);
@@ -159,7 +161,7 @@ const SearchDropdownInput = <T,>({
               </ListItem>
             ))
           ) : (
-            <EmptyResultItem>검색결과가 없습니다.</EmptyResultItem>
+            <EmptyResultItem>{t("noSearchResults")}</EmptyResultItem>
           )}
         </List>
       </div>,

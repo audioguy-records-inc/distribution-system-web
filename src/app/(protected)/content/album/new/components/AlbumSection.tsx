@@ -27,6 +27,7 @@ import ReleaseCountryCode from "./fragment/ReleaseCountryCode";
 import ReleaseDate from "./fragment/ReleaseDate";
 import RequestDetails from "./RequestDetails";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   overflow-y: visible;
@@ -50,6 +51,10 @@ export default function AlbumSection({
   register,
   setValue,
 }: AlbumSectionProps) {
+  const t = useTranslations("content");
+  const tt = useTranslations("track");
+  const tu = useTranslations("upload");
+  const tv = useTranslations("video");
   return (
     <Container>
       <Gap height={32} />
@@ -97,14 +102,14 @@ export default function AlbumSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="유통사"
-          placeholder="유통사명 입력"
+          label={t("distributor")}
+          placeholder={t("distributorPlaceholder")}
           size="small"
           {...register("distributionCompanyName", {})}
         />
         <CustomInput
-          label="레이블(기획사)"
-          placeholder="레이블명 입력"
+          label={t("label")}
+          placeholder={t("labelPlaceholder")}
           size="small"
           required
           blueRequired
@@ -158,8 +163,8 @@ export default function AlbumSection({
       <Gap height={56} />
       <RowWrapper>
         <CustomInput
-          label="유통 지역"
-          placeholder="유통 지역 입력"
+          label={t("distributionRegion")}
+          placeholder={t("distributionRegionPlaceholder")}
           size="small"
           locked={true}
           required
@@ -200,14 +205,14 @@ export default function AlbumSection({
         defaultValue={true}
         render={({ field }) => (
           <CustomRadioWithLabel
-            label="노출"
+            label={t("exposure")}
             leftOption={{
-              label: "해당",
+              label: tt("applicable"),
               value: true,
               checked: field.value === true,
             }}
             rightOption={{
-              label: "해당없음",
+              label: tt("notApplicable"),
               value: false,
               checked: field.value === false,
             }}
@@ -224,14 +229,14 @@ export default function AlbumSection({
         defaultValue={false}
         render={({ field }) => (
           <CustomRadioWithLabel
-            label="19금"
+            label={t("adultOnly")}
             leftOption={{
-              label: "해당",
+              label: tt("applicable"),
               value: true,
               checked: field.value === true,
             }}
             rightOption={{
-              label: "해당없음",
+              label: tt("notApplicable"),
               value: false,
               checked: field.value === false,
             }}
@@ -243,8 +248,8 @@ export default function AlbumSection({
       />
       <Gap height={56} />
       <CustomTextArea
-        label="앨범 소개"
-        placeholder="앨범 소개를 입력해주세요."
+        label={t("albumIntro")}
+        placeholder={t("albumIntroPlaceholder")}
         expand={true}
         {...register("albumIntroduction", { required: true })}
       />
@@ -262,7 +267,7 @@ export default function AlbumSection({
           control={control}
           render={({ field }) => (
             <ImageUpload
-              headerText="앨범 커버"
+              headerText={tu("albumCover")}
               onChange={field.onChange}
               value={field.value || []}
               fileType={FileType.IMAGES}
@@ -277,7 +282,7 @@ export default function AlbumSection({
           control={control}
           render={({ field }) => (
             <ImageUpload
-              headerText="부클릿 이미지"
+              headerText={tu("bookletImage")}
               onChange={field.onChange}
               value={field.value || []}
               fileType={FileType.IMAGES}
@@ -297,7 +302,7 @@ export default function AlbumSection({
             value={field.value || []}
             fileType={FileType.DOCS}
             dataCollectionName={DataCollectionName.ALBUMS}
-            headerText="기타 자료(저작권 승인서 등)"
+            headerText={tu("otherMaterials")}
           />
         )}
       />

@@ -12,6 +12,7 @@ import XIcon from "@/components/icons/XIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 import { useUploadStore } from "@/stores/use-upload-store";
 
 const Container = styled.div``;
@@ -133,6 +134,8 @@ export default function UploadTrackAudio({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { uploadToS3, uploadProgress, cancelUpload } = useUploadStore();
+  const t = useTranslations("content");
+  const tu = useTranslations("upload");
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -152,7 +155,7 @@ export default function UploadTrackAudio({
 
       // 오디오 파일 타입 체크
       if (!file.type.startsWith("audio/")) {
-        toast.error("오디오 파일만 업로드 가능합니다.");
+        toast.error(tu("audioOnly"));
         return;
       }
 
@@ -179,7 +182,7 @@ export default function UploadTrackAudio({
       });
 
       if (success) {
-        toast.success(`${file.name} 업로드가 완료되었습니다.`);
+        toast.success(t("uploadCompleteWithName", { name: file.name }));
 
         // Track의 trackFileList 업데이트 (함수형 업데이트로 변경)
         setTracks((prevTracks: Track[]) =>
@@ -204,7 +207,7 @@ export default function UploadTrackAudio({
       }
       return false;
     } catch (err) {
-      toast.error(`${file.name} 업로드 중 오류가 발생했습니다.`);
+      toast.error(t("uploadErrorWithName", { name: file.name }));
       return false;
     } finally {
       setIsLoading(false);
@@ -262,7 +265,7 @@ export default function UploadTrackAudio({
       {showLabel && (
         <>
           <Header>
-            음원파일 <span style={{ color: "red" }}>*</span>
+            {t("audioFile")} <span style={{ color: "red" }}>*</span>
           </Header>
           <Gap height={16} />
         </>
@@ -288,8 +291,8 @@ export default function UploadTrackAudio({
           <ButtonOutlinedPrimary
             label={
               isLoading
-                ? `업로드 중 ${Math.round(uploadProgress)}%`
-                : "파일 업로드"
+                ? t("uploadingPercent", { percent: Math.round(uploadProgress) })
+                : t("fileUpload")
             }
             size="small"
             leftIcon={<UploadIcon />}
@@ -297,7 +300,7 @@ export default function UploadTrackAudio({
             disabled={isLoading}
           />
           {isLoading && (
-            <CancelButton onClick={handleCancelUpload} title="업로드 취소">
+            <CancelButton onClick={handleCancelUpload} title={tu("uploadCancel")}>
               ×
             </CancelButton>
           )}

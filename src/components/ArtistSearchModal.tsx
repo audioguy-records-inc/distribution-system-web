@@ -17,6 +17,7 @@ import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useArtistStore } from "@/stores/use-artist-store";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -93,6 +94,9 @@ const ArtistSearchModal = ({
 }: ArtistSearchModalProps) => {
   const [searchValue, setSearchValue] = useState("");
   const { artists, searchArtists, isLoading } = useArtistStore();
+  const tArtist = useTranslations("artist");
+  const tCommon = useTranslations("common");
+  const tToastArtist = useTranslations("toast.artist");
 
   const handleSearch = async () => {
     if (!searchValue.trim()) return;
@@ -100,7 +104,7 @@ const ArtistSearchModal = ({
     try {
       await searchArtists(searchValue, "name,artistUniqueId");
     } catch (error) {
-      toast.error("아티스트 검색 중 오류가 발생했습니다.");
+      toast.error(tToastArtist("updateFail"));
     } finally {
     }
   };
@@ -112,28 +116,28 @@ const ArtistSearchModal = ({
 
   const columns: Column<Artist>[] = [
     {
-      header: "아티스트 코드",
+      header: tArtist("artistCode"),
       accessor: "artistUniqueId",
       type: "string",
       width: 140,
       align: "center",
     },
     {
-      header: "아티스트명",
+      header: tArtist("artistName"),
       accessor: "name",
       type: "string",
       width: 180,
       align: "center",
     },
     {
-      header: "영문명",
+      header: tArtist("englishName"),
       accessor: "nameEn",
       type: "string",
       width: 180,
       align: "center",
     },
     {
-      header: "국가",
+      header: tArtist("country"),
       accessor: "countryCode",
       type: "string",
       width: 100,
@@ -143,7 +147,7 @@ const ArtistSearchModal = ({
       },
     },
     {
-      header: "성별",
+      header: tArtist("gender"),
       accessor: "genderType",
       type: "string",
       width: 120,
@@ -153,7 +157,7 @@ const ArtistSearchModal = ({
       },
     },
     {
-      header: "유형",
+      header: tArtist("type"),
       accessor: "artistType",
       type: "string",
       width: 120,
@@ -176,15 +180,15 @@ const ArtistSearchModal = ({
         return (
           <ButtonOutlinedSecondary
             size="small"
-            label={isAlreadySelected ? "등록됨" : "등록"}
+            label={isAlreadySelected ? tCommon("registered") : tCommon("register")}
             onClick={() => {
               if (isAlreadySelected) {
-                toast.error("이미 등록된 아티스트입니다.");
+                toast.error(tToastArtist("alreadyRegistered"));
                 return;
               }
 
               onRegister?.(record);
-              toast.success("아티스트가 등록되었습니다.");
+              toast.success(tToastArtist("registered"));
             }}
             disabled={isAlreadySelected}
           />
@@ -212,7 +216,7 @@ const ArtistSearchModal = ({
         <Gap height={42} />
         <SearchWrapper>
           <SearchInput
-            placeholder={placeholder || "검색"}
+            placeholder={placeholder || tCommon("search")}
             size="small"
             isLoading={isLoading}
             value={searchValue}

@@ -13,22 +13,24 @@ import Gap from "@/components/basic/Gap";
 import styled from "styled-components";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
 const ServiceSection = ({ authLevel }: { authLevel: AuthLevel }) => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("sidebar");
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
-        서비스 현황
+        {t("service")}
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </MenuGroupButton>
 
       <MenuGroup $isOpen={isOpen}>
         <Gap height={12} />
-        <MenuLabel>정산 현황</MenuLabel>
+        <MenuLabel>{t("settlement")}</MenuLabel>
         <Gap height={16} />
         <MenuItemLink href="/service/settlement-status/list">
           <MenuItem
@@ -37,7 +39,7 @@ const ServiceSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               pathname.startsWith("/service/settlement-status/list/")
             }
           >
-            정산금 조회
+            {t("settlementView")}
           </MenuItem>
         </MenuItemLink>
         <Gap height={12} />
@@ -48,14 +50,14 @@ const ServiceSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               pathname.startsWith("/service/settlement-status/detail/")
             }
           >
-            상세내역 조회
+            {t("detailView")}
           </MenuItem>
         </MenuItemLink>
 
         {authLevel === AuthLevel.ADMIN && (
           <>
             <Gap height={20} />
-            <MenuLabel>관리자 정산</MenuLabel>
+            <MenuLabel>{t("adminSettlement")}</MenuLabel>
             <Gap height={16} />
             <MenuItemLink href="/service/admin-settlement/distribution">
               <MenuItem
@@ -64,7 +66,7 @@ const ServiceSection = ({ authLevel }: { authLevel: AuthLevel }) => {
                   pathname.startsWith("/service/admin-settlement/distribution/")
                 }
               >
-                유통 정산 현황
+                {t("distributionSettlement")}
               </MenuItem>
             </MenuItemLink>
           </>

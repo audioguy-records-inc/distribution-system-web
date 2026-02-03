@@ -14,6 +14,7 @@ import SettlementSearch from "./components/SettlementSearch";
 import SettlementUploadButton from "./components/fragment/SettlementUploadButton";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -28,6 +29,7 @@ const ButtonRow = styled.div`
 `;
 
 export default function AdminSettlementListPage() {
+  const tSettlement = useTranslations("settlement");
   const [statusCheckerKey, setStatusCheckerKey] = useState(0);
   const [isFileListModalOpen, setIsFileListModalOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
@@ -50,7 +52,7 @@ export default function AdminSettlementListPage() {
 
   return (
     <Container>
-      <PageHeader title="정산금 조회" />
+      <PageHeader title={tSettlement("settlementView")} />
       <SettlementSearch />
       <ButtonRow>
         {isAdmin && (

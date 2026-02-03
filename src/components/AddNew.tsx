@@ -1,14 +1,18 @@
+"use client";
+
 import ButtonOutlinedPrimary from "@/components/basic/buttons/ButtonOutlinedPrimary";
 import PlusIcon from "@/components/icons/PlusIcon";
+import { useTranslations } from "next-intl";
 
 const AddNew = ({
   size = "medium",
 }: {
   size?: "medium" | "small" | "large";
 }) => {
+  const t = useTranslations("common");
   return (
     <ButtonOutlinedPrimary
-      label="신규 등록"
+      label={t("newRegister")}
       leftIcon={<PlusIcon />}
       size={size}
     />

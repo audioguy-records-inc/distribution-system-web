@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import { STATUS_COLORS } from "@/constants/status-colors";
+import { useTranslations } from "next-intl";
 
 const StatusContainer = styled.div`
   display: flex;
@@ -32,17 +33,18 @@ interface StatusDisplayProps {
   isLoading?: boolean;
 }
 
-export default function StatusDisplay({ 
-  status, 
-  text, 
-  color, 
-  isLoading = false 
+export default function StatusDisplay({
+  status,
+  text,
+  color,
+  isLoading = false
 }: StatusDisplayProps) {
+  const t = useTranslations("common");
   return (
     <StatusContainer>
       <StatusIndicator color={color} />
       <StatusText color={color}>{text}</StatusText>
-      {isLoading && <span>로딩 중...</span>}
+      {isLoading && <span>{t("loading")}</span>}
     </StatusContainer>
   );
 }

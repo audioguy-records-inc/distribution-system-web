@@ -17,6 +17,7 @@ import styled from "styled-components";
 import toast from "react-hot-toast";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useTrackStore } from "@/stores/use-track-store";
 
@@ -39,6 +40,8 @@ export default function AlbumNewPage() {
     useAlbumStore();
   const { edittingTracks, resetEdittingTracks, createTrack, updateTrack } =
     useTrackStore();
+  const t = useTranslations("content");
+  const tc = useTranslations("common");
 
   const defaultValues = {
     titleList: [
@@ -124,12 +127,12 @@ export default function AlbumNewPage() {
       if (successNewTracks > 0 || successUpdatedTracks > 0) {
         if (successNewTracks > 0 && successUpdatedTracks > 0) {
           toast.success(
-            `${successNewTracks}개 트랙이 등록되고 ${successUpdatedTracks}개 트랙이 수정되었습니다.`,
+            t("tracksRegisteredAndUpdated", { newCount: successNewTracks, updatedCount: successUpdatedTracks }),
           );
         } else if (successNewTracks > 0) {
-          toast.success(`${successNewTracks}개 트랙이 등록되었습니다.`);
+          toast.success(t("tracksRegistered", { count: successNewTracks }));
         } else if (successUpdatedTracks > 0) {
-          toast.success(`${successUpdatedTracks}개 트랙이 수정되었습니다.`);
+          toast.success(t("tracksUpdated", { count: successUpdatedTracks }));
         }
       }
     } else {
@@ -164,7 +167,7 @@ export default function AlbumNewPage() {
 
           // 성공한 트랙에 대해서만 통합 알림
           if (successNewTracks > 0) {
-            toast.success(`${successNewTracks}개 트랙이 등록되었습니다.`);
+            toast.success(t("tracksRegistered", { count: successNewTracks }));
           }
         }
       }
@@ -192,14 +195,14 @@ export default function AlbumNewPage() {
   return (
     <Container key={resetKey}>
       <HeaderWrapper>
-        <PageHeader title={"신규 앨범 등록"} showRequiredInfo={true} />
+        <PageHeader title={t("newAlbumRegister")} showRequiredInfo={true} />
         <ButtonWrapper>
-          <ButtonOutlinedSecondary label="초기화" onClick={handleReset} />
+          <ButtonOutlinedSecondary label={tc("reset")} onClick={handleReset} />
           {isLoading ? (
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label={newAlbum ? "수정" : "등록"}
+              label={newAlbum ? tc("edit") : tc("register")}
               onClick={handleSubmit}
               disabled={!isFilled()}
             />
@@ -208,7 +211,7 @@ export default function AlbumNewPage() {
       </HeaderWrapper>
       <Gap height={32} />
       <CollapsibleHeader
-        title="1. 유통 정보"
+        title={t("sectionDistribution")}
         renderComponent={
           <DistributionSection
             control={control}
@@ -219,14 +222,14 @@ export default function AlbumNewPage() {
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="2. 아티스트 정보"
+        title={t("sectionArtist")}
         renderComponent={
           <ArtistSection control={control} watch={watch} register={register} />
         }
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="3. 앨범 정보"
+        title={t("sectionAlbum")}
         renderComponent={
           <AlbumSection
             control={control}
@@ -238,7 +241,7 @@ export default function AlbumNewPage() {
       />
       <Gap height={56} />
       <CollapsibleTrackHeader
-        title="4. 트랙 정보"
+        title={t("sectionTrack")}
         renderComponent={<TrackSection albumWatch={watch} />}
       />
       <Gap height={56} />

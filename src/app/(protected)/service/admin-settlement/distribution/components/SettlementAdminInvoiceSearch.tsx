@@ -8,6 +8,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -31,6 +32,7 @@ const DateDash = styled.div`
 `;
 
 export default function SettlementAdminInvoiceSearch() {
+  const tCommon = useTranslations("common");
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -64,7 +66,7 @@ export default function SettlementAdminInvoiceSearch() {
 
   return (
     <Container>
-      <DateLabel>기간 검색</DateLabel>
+      <DateLabel>{tCommon("periodSearch")}</DateLabel>
       <Gap height={8} />
       <RowWrapper>
         <CustomMonthCalendar
@@ -79,7 +81,7 @@ export default function SettlementAdminInvoiceSearch() {
           size="normal"
         />
         <ButtonFilledPrimary
-          label={isLoading ? "검색중..." : "검색"}
+          label={isLoading ? tCommon("searching") : tCommon("search")}
           onClick={handleSearch}
           disabled={isLoading}
         />

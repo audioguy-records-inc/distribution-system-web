@@ -1,11 +1,10 @@
-import { Geist, Geist_Mono } from "next/font/google";
-
 import CustomToaster from "@/components/CustomToaster";
-// import "./globals.css";
 import GlobalStyles from "@/styles/global-styles";
-import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
 import localFont from "next/font/local";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+import { TranslationsInitializer } from "@/i18n/TranslationsInitializer";
 
 const pretendard = localFont({
   src: "../fonts/PretendardVariable.woff2",
@@ -13,34 +12,25 @@ const pretendard = localFont({
   display: "swap",
 });
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-export const metadata: Metadata = {
-  title: "오디오가이 유통시스템",
-  description: "",
-};
-
-export default function LoginLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${pretendard.variable} antialiased`}>
-        <StyledComponentsRegistry>
-          <GlobalStyles />
-          {children}
-          <CustomToaster />
-        </StyledComponentsRegistry>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <TranslationsInitializer />
+          <StyledComponentsRegistry>
+            <GlobalStyles />
+            {children}
+            <CustomToaster />
+          </StyledComponentsRegistry>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

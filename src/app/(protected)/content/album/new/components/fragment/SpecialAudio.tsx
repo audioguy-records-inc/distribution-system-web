@@ -6,6 +6,7 @@ import { EditTrack } from "../TrackSection";
 import Gap from "@/components/basic/Gap";
 import UploadSpecialTrackAudio from "./UploadSpecialTrackAudio";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -27,18 +28,20 @@ export default function SpecialAudio({
   albumUPC?: string;
   readOnly?: boolean;
 }) {
+  const t = useTranslations("content");
+  const tt = useTranslations("track");
   return (
     <Container>
       <RowWrapper>
         <CustomRadioWithLabel
-          label="공간 음향 서비스"
+          label={t("spatialAudio")}
           leftOption={{
-            label: "해당",
+            label: tt("applicable"),
             value: true,
             checked: track.isSupportedSpatialAudio === true,
           }}
           rightOption={{
-            label: "해당없음",
+            label: tt("notApplicable"),
             value: false,
             checked: track.isSupportedSpatialAudio === false,
           }}
@@ -80,7 +83,7 @@ export default function SpecialAudio({
       {track.isSupportedSpatialAudio && (
         <RowWrapper>
           <CustomInput
-            label="공간 음향 음원 ISRC"
+            label={t("spatialAudioIsrc")}
             size="small"
             value={track.spatialAudioInfo?.ISRC || ""}
             readOnly={readOnly}

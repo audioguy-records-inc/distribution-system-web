@@ -1,5 +1,8 @@
+"use client";
+
 import CustomDropdown from "@/components/basic/CustomDropdown";
 import styled from "styled-components";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -19,22 +22,26 @@ export default function AlbumSearchTypeDropdown({
   selectedType: AlbumSearchType;
   setSelectedType: (type: AlbumSearchType) => void;
 }) {
+  const tc = useTranslations("common");
+  const t = useTranslations("content");
+  const ta = useTranslations("artist");
+  const tt = useTranslations("track");
   const items = [
     {
       key: "all",
-      value: "전체",
+      value: tc("all"),
     },
     {
       key: "releaseArtistList.name",
-      value: "아티스트명",
+      value: ta("artistName"),
     },
     {
       key: "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant",
-      value: "앨범명",
+      value: t("albumName"),
     },
     {
       key: "trackList.titleList.ko,trackList.titleList.en",
-      value: "트랙명",
+      value: tt("trackName"),
     },
     {
       key: "trackList.ISRC",
@@ -46,7 +53,7 @@ export default function AlbumSearchTypeDropdown({
     },
     {
       key: "agencyCompanyName",
-      value: "레이블(기획사)",
+      value: t("label"),
     },
   ];
   return (

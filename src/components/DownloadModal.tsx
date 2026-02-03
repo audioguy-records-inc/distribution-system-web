@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import XIcon from "./icons/XIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -65,6 +66,7 @@ const DownloadModal = ({
   onClickExcel,
   onClickCsv,
 }: CustomModalProps) => {
+  const t = useTranslations("common");
   return (
     <Modal
       isOpen={isOpen}
@@ -76,17 +78,17 @@ const DownloadModal = ({
         <CloseButton onClick={onRequestClose}>
           <XIcon />
         </CloseButton>
-        <Content>다운로드 방식을 선택해주세요.</Content>
+        <Content>{t("selectDownloadMethod")}</Content>
         <Gap height={32} />
         <ButtonContainer>
           <ButtonOutlinedPrimary
-            label="Excel 다운로드"
+            label={t("excelDownload")}
             onClick={onClickExcel}
             leftIcon={<DownloadIcon />}
             expand
           />
           <ButtonOutlinedPrimary
-            label="CSV 다운로드"
+            label={t("csvDownload")}
             onClick={onClickCsv}
             leftIcon={<DownloadIcon />}
             expand

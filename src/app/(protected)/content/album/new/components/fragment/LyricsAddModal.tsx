@@ -10,6 +10,7 @@ import ReactModal from "react-modal";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const ModalHeader = styled.div`
   display: flex;
@@ -37,6 +38,8 @@ export default function LyricsAddModal({
 }: LyricsAddModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [lyrics, setLyrics] = useState("");
+  const t = useTranslations("track");
+  const tc = useTranslations("common");
 
   useEffect(() => {
     if (isOpen && track && track.lyrics) {
@@ -94,14 +97,14 @@ export default function LyricsAddModal({
     >
       <ModalHeader>
         {track && Array.isArray(track.titleList) && track.titleList.length > 0
-          ? `${track.titleList[0].ko} - 가사 등록`
-          : "가사 등록"}
+          ? `${track.titleList[0].ko} - ${t("lyricsRegister")}`
+          : t("lyricsRegister")}
         <ButtonWrapper>
-          <ButtonOutlinedSecondary label="취소" onClick={onClose} />
+          <ButtonOutlinedSecondary label={tc("cancel")} onClick={onClose} />
           {isLoading ? (
             <ButtonSpinner />
           ) : (
-            <ButtonFilledPrimary label="등록" onClick={handleSubmit} />
+            <ButtonFilledPrimary label={tc("register")} onClick={handleSubmit} />
           )}
         </ButtonWrapper>
       </ModalHeader>
@@ -109,7 +112,7 @@ export default function LyricsAddModal({
       <CustomTextArea
         value={lyrics}
         onChange={(e) => setLyrics(e.target.value)}
-        placeholder="가사를 입력해주세요."
+        placeholder={t("lyricsPlaceholder")}
         expand={true}
         height="580px"
       />

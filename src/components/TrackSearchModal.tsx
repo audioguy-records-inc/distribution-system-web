@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { useArtistStore } from "@/stores/use-artist-store";
 import { useState } from "react";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div`
   display: flex;
@@ -96,6 +97,11 @@ const TrackSearchModal = ({
   const [searchedTrackList, setSearchedTrackList] = useState<Track[]>([]);
 
   const { searchTracks, isLoading } = useTrackStore();
+  const tTrack = useTranslations("track");
+  const tArtist = useTranslations("artist");
+  const tContent = useTranslations("content");
+  const tCommon = useTranslations("common");
+  const tToastTrack = useTranslations("toast.track");
 
   const handleSearch = async () => {
     if (!searchValue.trim()) return;
@@ -107,7 +113,7 @@ const TrackSearchModal = ({
       );
       setSearchedTrackList(res);
     } catch (error) {
-      toast.error("트랙 검색 중 오류가 발생했습니다.");
+      toast.error(tToastTrack("trackUpdateError"));
     } finally {
     }
   };
@@ -127,7 +133,7 @@ const TrackSearchModal = ({
     //   align: "center",
     // },
     {
-      header: "트랙명",
+      header: tTrack("trackName"),
       accessor: "titleList",
       type: "string",
       width: 300,
@@ -138,7 +144,7 @@ const TrackSearchModal = ({
       },
     },
     {
-      header: "아티스트명",
+      header: tTrack("trackArtist"),
       accessor: "releaseArtistList",
       type: "string",
       width: 100,
@@ -149,7 +155,7 @@ const TrackSearchModal = ({
       },
     },
     {
-      header: "발매일",
+      header: tContent("releaseDate"),
       accessor: "utcReleasedAt",
       type: "string",
       width: 120,
@@ -173,15 +179,15 @@ const TrackSearchModal = ({
         return (
           <ButtonOutlinedSecondary
             size="small"
-            label={isAlreadySelected ? "등록됨" : "등록"}
+            label={isAlreadySelected ? tCommon("registered") : tCommon("register")}
             onClick={() => {
               if (isAlreadySelected) {
-                toast.error("이미 등록된 트랙입니다.");
+                toast.error(tToastTrack("alreadyRegistered"));
                 return;
               }
 
               onRegister?.(record);
-              toast.success("트랙이 등록되었습니다.");
+              toast.success(tToastTrack("registered"));
             }}
             disabled={isAlreadySelected}
           />
@@ -206,7 +212,7 @@ const TrackSearchModal = ({
         <Gap height={42} />
         <SearchWrapper>
           <SearchInput
-            placeholder={placeholder || "검색"}
+            placeholder={placeholder || tCommon("search")}
             size="small"
             isLoading={isLoading}
             value={searchValue}

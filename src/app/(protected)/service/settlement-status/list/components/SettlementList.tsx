@@ -11,6 +11,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const Container = styled.div``;
@@ -108,19 +109,85 @@ const ExpandedRow = styled.div`
   border-top: 1px solid #e5e7eb;
 `;
 
+type SortField = "settlementFee" | "userSettlementFee";
+type SortDirection = "asc" | "desc";
+
+interface SortState {
+  field: SortField | null;
+  direction: SortDirection;
+}
+
+const ServiceHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  margin-bottom: 8px;
+`;
+
+const ServiceHeaderLeft = styled.div`
+  min-width: 120px;
+`;
+
+const ServiceHeaderRight = styled.div`
+  display: flex;
+  gap: 24px;
+`;
+
+const SortButton = styled.button<{ $active: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: ${({ $active }) => ($active ? theme.colors.purple[50] : "#f3f4f6")};
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: ${({ $active }) => ($active ? theme.colors.purple[600] : "#6b7280")};
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: ${({ $active }) => ($active ? theme.colors.purple[100] : "#e5e7eb")};
+  }
+`;
+
+const SortIndicator = styled.span<{ $active: boolean; $direction: SortDirection }>`
+  display: inline-flex;
+  flex-direction: column;
+  font-size: 10px;
+  line-height: 1;
+  gap: 1px;
+  color: ${({ $active }) => ($active ? theme.colors.purple[600] : "#9ca3af")};
+`;
+
 export default function SettlementList() {
+  const t = useTranslations("settlement");
   const { settlementSummaries } = useSettlementStore();
   const user = useAuthStore((state) => state.user);
+  const [sortState, setSortState] = useState<SortState>({
+    field: null,
+    direction: "desc",
+  });
+
+  const toggleSort = (field: SortField) => {
+    setSortState((prev) => {
+      if (prev.field === field) {
+        return { field, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { field, direction: "desc" };
+    });
+  };
 
   const columns: Column<SettlementSummary>[] = [
     {
-      header: "권리자명",
+      header: t("licensorName"),
       accessor: "userDisplayName",
       type: "string",
       align: "center",
     },
     {
-      header: "기간",
+      header: t("period"),
       accessor: "settlementStartMonth",
       type: "string",
       align: "center",
@@ -139,7 +206,7 @@ export default function SettlementList() {
       },
     },
     {
-      header: "서비스 매출",
+      header: t("serviceSales"),
       accessor: "settlementFee",
       type: "string",
       align: "center",
@@ -149,7 +216,7 @@ export default function SettlementList() {
       },
     },
     {
-      header: "정산금",
+      header: t("settlementAmount"),
       accessor: "userSettlementFee",
       type: "string",
       align: "center",
@@ -163,30 +230,64 @@ export default function SettlementList() {
   const renderExpandedContent = (summary: SettlementSummary) => {
     const isAdmin = user?.authLevel === AuthLevel.ADMIN;
 
+    const sortedServiceList = [...summary.serviceList].sort((a, b) => {
+      if (!sortState.field) return 0;
+      const diff = a[sortState.field] - b[sortState.field];
+      return sortState.direction === "asc" ? diff : -diff;
+    });
+
+    const renderSortArrow = (field: SortField) => {
+      const isActive = sortState.field === field;
+      return (
+        <SortIndicator $active={isActive} $direction={sortState.direction}>
+          <span style={{ opacity: isActive && sortState.direction === "asc" ? 1 : 0.5 }}>▲</span>
+          <span style={{ opacity: isActive && sortState.direction === "desc" ? 1 : 0.5 }}>▼</span>
+        </SortIndicator>
+      );
+    };
+
     return (
       <ExpandedContent>
-        <ExpandedTitle>플랫폼별 상세 내역</ExpandedTitle>
+        <ExpandedTitle>{t("platformDetail")}</ExpandedTitle>
+        <ServiceHeader>
+          <ServiceHeaderLeft />
+          <ServiceHeaderRight>
+            <SortButton
+              $active={sortState.field === "settlementFee"}
+              onClick={() => toggleSort("settlementFee")}
+            >
+              {t("salesAmount")} {renderSortArrow("settlementFee")}
+            </SortButton>
+            {isAdmin && <div style={{ width: 120 }} />}
+            <SortButton
+              $active={sortState.field === "userSettlementFee"}
+              onClick={() => toggleSort("userSettlementFee")}
+            >
+              {t("settlementAmount")} {renderSortArrow("userSettlementFee")}
+            </SortButton>
+          </ServiceHeaderRight>
+        </ServiceHeader>
         <ServiceList>
-          {summary.serviceList.map((service, index) => (
+          {sortedServiceList.map((service, index) => (
             <ServiceItem key={index}>
               <ServiceName>{service.service}</ServiceName>
               <ServiceAmounts>
                 <AmountItem>
-                  <AmountLabel>판매금액:</AmountLabel>
+                  <AmountLabel>{t("salesAmountLabel")}</AmountLabel>
                   <AmountValue>
                     {service.settlementFee.toLocaleString()}
                   </AmountValue>
                 </AmountItem>
                 {isAdmin && (
                   <AmountItem>
-                    <AmountLabel>유통수수료:</AmountLabel>
+                    <AmountLabel>{t("distributionFeeLabel")}</AmountLabel>
                     <AmountValue>
                       {service.distributionFee.toLocaleString()}
                     </AmountValue>
                   </AmountItem>
                 )}
                 <AmountItem>
-                  <AmountLabel>정산금:</AmountLabel>
+                  <AmountLabel>{t("settlementAmountLabel")}</AmountLabel>
                   <AmountValue>
                     {service.userSettlementFee.toLocaleString()}
                   </AmountValue>

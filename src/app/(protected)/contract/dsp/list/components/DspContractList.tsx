@@ -11,6 +11,7 @@ import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useDspContractStore } from "@/stores/use-dsp-contract-store";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -23,6 +24,8 @@ export default function DspContractList({
 }) {
   const { user } = useAuthStore();
   const { fetchDspContracts } = useDspContractStore();
+  const tContract = useTranslations("contract");
+  const tCommon = useTranslations("common");
 
   useEffect(() => {
     if (user) {
@@ -55,14 +58,14 @@ export default function DspContractList({
       },
     },
     {
-      header: "계약명",
+      header: tContract("contractName"),
       accessor: "dspContractName",
       type: "string",
       width: 417,
       align: "center",
     },
     {
-      header: "활성 여부",
+      header: tCommon("active"),
       accessor: "isContractEnabled",
       type: "component",
       width: 170,

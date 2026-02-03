@@ -17,6 +17,7 @@ import TrashIcon from "@/components/icons/TrashIcon";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useArtistStore } from "@/stores/use-artist-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -64,6 +65,7 @@ export default function ReleaseArtistSearch({
   required?: boolean;
 }) {
   const { fetchArtist } = useArtistStore();
+  const ta = useTranslations("artist");
   const [registeredArtistList, setRegisteredArtistList] = useState<Artist[]>(
     [],
   );
@@ -91,28 +93,28 @@ export default function ReleaseArtistSearch({
 
   const columns: Column<Artist>[] = [
     {
-      header: "아티스트 코드",
+      header: ta("artistCode"),
       accessor: "artistUniqueId",
       type: "string",
       width: 140,
       align: "center",
     },
     {
-      header: "아티스트명",
+      header: ta("artistName"),
       accessor: "name",
       type: "string",
       width: 200,
       align: "center",
     },
     {
-      header: "영문명",
+      header: ta("englishName"),
       accessor: "nameEn",
       type: "string",
       width: 200,
       align: "center",
     },
     {
-      header: "국가",
+      header: ta("country"),
       accessor: "countryCode",
       type: "string",
       width: 160,
@@ -122,7 +124,7 @@ export default function ReleaseArtistSearch({
       },
     },
     {
-      header: "성별",
+      header: ta("gender"),
       accessor: "genderType",
       type: "string",
       width: 120,
@@ -132,7 +134,7 @@ export default function ReleaseArtistSearch({
       },
     },
     {
-      header: "유형",
+      header: ta("type"),
       accessor: "artistType",
       type: "string",
       width: 120,

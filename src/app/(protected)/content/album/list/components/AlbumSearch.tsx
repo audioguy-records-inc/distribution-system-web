@@ -12,6 +12,7 @@ import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -41,6 +42,8 @@ export default function AlbumSearch() {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { searchAlbums, fetchAlbums, resetAlbums } = useAlbumStore();
+  const t = useTranslations("content");
+  const tc = useTranslations("common");
 
   const handleSearch = async () => {
     setIsLoading(true);
@@ -92,7 +95,7 @@ export default function AlbumSearch() {
 
   return (
     <Container>
-      <DateLabel>발매일 검색</DateLabel>
+      <DateLabel>{tc("dateSearch")}</DateLabel>
       <Gap height={8} />
       <RowWrapper>
         <CustomCalendar
@@ -150,7 +153,7 @@ export default function AlbumSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="아티스트명, 앨범명, 트랙명, UPC, ISRC, 레이블(기획사) 입력"
+          placeholder={t("albumSearchPlaceholder")}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}
@@ -158,7 +161,7 @@ export default function AlbumSearch() {
           isLoading={isLoading}
         />
         <ButtonOutlinedSecondary
-          label="초기화"
+          label={tc("reset")}
           onClick={handleReset}
           disabled={isLoading}
         />

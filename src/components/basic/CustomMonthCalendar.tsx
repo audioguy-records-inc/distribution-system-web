@@ -3,11 +3,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import CalendarIcon from "../icons/CalendarIcon";
 import CustomInput from "./CustomInput";
 import DatePicker from "react-datepicker";
-import { ko } from "date-fns/locale";
+import { enUS, ja, ko } from "date-fns/locale";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useLocale } from "next-intl";
 import { useRef, useState } from "react";
+
+const dateFnsLocaleMap: Record<string, typeof ko> = { ko, en: enUS, ja };
 
 const Container = styled.div`
   display: flex;
@@ -62,6 +65,7 @@ const CustomMonthCalendar = ({
   width = 320,
   size = "small",
 }: CustomMonthCalendarProps) => {
+  const currentLocale = useLocale();
   const datePickerRef = useRef<DatePicker>(null);
 
   const parseDate = (dateString: string | null) => {
@@ -97,7 +101,7 @@ const CustomMonthCalendar = ({
               onIconClick={handleIconClick}
             />
           }
-          locale={ko}
+          locale={dateFnsLocaleMap[currentLocale] || ko}
           selected={parseDate(value)}
           onChange={handleChange}
           dateFormat="yyyy/MM"

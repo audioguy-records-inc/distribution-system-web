@@ -12,6 +12,7 @@ import styled from "styled-components";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useArtistStore } from "@/stores/use-artist-store";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { useUserContractStore } from "@/stores/use-user-contract-store";
 
 const Container = styled.div`
@@ -23,6 +24,8 @@ export default function AlbumDownloadButton() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFullDownloadModalOpen, setIsFullDownloadModalOpen] = useState(false);
   const { albums, fetchAllAlbums } = useAlbumStore();
+  const tc = useTranslations("common");
+  const t = useTranslations("content");
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -55,44 +58,43 @@ export default function AlbumDownloadButton() {
       const albumBaseData = {
         UCI: album.UCI,
         UPC: album.UPC,
-        // 앨범코드: album.albumUniqueId,
-        아티스트이미지: album.artistImageList
+        [t("excelArtistImage")]: album.artistImageList
           ?.map((artist) => artist.imageOriginalPath)
           .join(","),
-        "앨범명(국문)": koreanTitle,
-        "앨범명(영문)": englishTitle,
-        아티스트: album.releaseArtistList
+        [t("excelAlbumNameKo")]: koreanTitle,
+        [t("excelAlbumNameEn")]: englishTitle,
+        [t("excelArtist")]: album.releaseArtistList
           ?.map((artist) => artist.name)
           .join(","),
-        참여아티스트: album.participateArtistList
+        [t("excelParticipateArtist")]: album.participateArtistList
           ?.map((artist) => artist.name)
           .join(","),
-        앨범유형: album.albumType || "",
-        메인장르: album.mainGenre || "",
-        서브장르: album.subGenre || "",
-        발매국가: album.releaseCountryCode || "",
-        디스크수: album.numberOfDiscs || "",
-        CD별수록곡: album.numberOfTracksPerDisc || "",
-        유통사: album.distributionCompanyName || "",
-        기획사: album.agencyCompanyName || "",
-        권리자: album.userInfo?.displayName || "",
-        발매일: album.utcReleasedAt
+        [t("excelAlbumType")]: album.albumType || "",
+        [t("excelMainGenre")]: album.mainGenre || "",
+        [t("excelSubGenre")]: album.subGenre || "",
+        [t("excelReleaseCountry")]: album.releaseCountryCode || "",
+        [t("excelNumberOfDiscs")]: album.numberOfDiscs || "",
+        [t("excelTracksPerDisc")]: album.numberOfTracksPerDisc || "",
+        [t("excelDistributor")]: album.distributionCompanyName || "",
+        [t("excelAgency")]: album.agencyCompanyName || "",
+        [t("excelLicensor")]: album.userInfo?.displayName || "",
+        [t("excelReleaseDate")]: album.utcReleasedAt
           ? new Date(album.utcReleasedAt).toLocaleDateString()
           : "",
-        서비스시간: album.utcServiceStartedAt
+        [t("excelServiceTime")]: album.utcServiceStartedAt
           ? new Date(album.utcServiceStartedAt).toLocaleDateString()
           : "",
-        노출: album.isExposed ? "노출" : "미노출",
-        성인: album.isAdultOnly ? "성인" : "일반",
-        소개: album.albumIntroduction || "",
-        요청사항: album.requestDetails || "",
-        커버이미지: album.coverImageList
+        [t("excelExposure")]: album.isExposed ? t("excelExposed") : t("excelNotExposed"),
+        [t("excelAdult")]: album.isAdultOnly ? t("excelAdultOnly") : t("excelGeneral"),
+        [t("excelIntroduction")]: album.albumIntroduction || "",
+        [t("excelRequestDetails")]: album.requestDetails || "",
+        [t("excelCoverImage")]: album.coverImageList
           ?.map((image) => getFullUrl(image.imageOriginalPath))
           .join(","),
-        부클릿이미지: album.bookletImageList
+        [t("excelBookletImage")]: album.bookletImageList
           ?.map((image) => getFullUrl(image.imageOriginalPath))
           .join(","),
-        기타파일: album.etcFileList
+        [t("excelEtcFile")]: album.etcFileList
           ?.map((file) => getFullUrl(file.filePath))
           .join(","),
       };
@@ -119,16 +121,16 @@ export default function AlbumDownloadButton() {
 
           trackRows.push({
             ...albumBaseData,
-            "트랙명(국문)": koreanTrackTitle,
-            "트랙명(영문)": englishTrackTitle,
+            [t("excelTrackNameKo")]: koreanTrackTitle,
+            [t("excelTrackNameEn")]: englishTrackTitle,
           });
         });
       } else {
         // 트랙이 없는 경우 앨범 정보만으로 행 생성
         trackRows.push({
           ...albumBaseData,
-          "트랙명(국문)": "",
-          "트랙명(영문)": "",
+          [t("excelTrackNameKo")]: "",
+          [t("excelTrackNameEn")]: "",
         });
       }
     });
@@ -140,7 +142,7 @@ export default function AlbumDownloadButton() {
     const data = await prepareDataForExport(albums);
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "앨범");
+    XLSX.utils.book_append_sheet(workbook, worksheet, t("excelSheetAlbum"));
 
     // 엑셀 파일 생성 및 다운로드
     const excelBuffer = XLSX.write(workbook, {
@@ -152,7 +154,7 @@ export default function AlbumDownloadButton() {
     });
     const res = await saveAs(
       blob,
-      `앨범_목록_${new Date().toISOString().split("T")[0]}.xlsx`,
+      `${t("excelFileAlbumList")}_${new Date().toISOString().split("T")[0]}.xlsx`,
     );
 
     setIsModalOpen(false);
@@ -165,7 +167,7 @@ export default function AlbumDownloadButton() {
 
     // CSV 파일 생성 및 다운로드
     const blob = new Blob([csvOutput], { type: "text/csv;charset=utf-8;" });
-    saveAs(blob, `앨범_목록_${new Date().toISOString().split("T")[0]}.csv`);
+    saveAs(blob, `${t("excelFileAlbumList")}_${new Date().toISOString().split("T")[0]}.csv`);
 
     setIsModalOpen(false);
   };
@@ -176,7 +178,7 @@ export default function AlbumDownloadButton() {
       const data = await prepareDataForExport(allAlbums);
       const worksheet = XLSX.utils.json_to_sheet(data);
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "전체앨범");
+      XLSX.utils.book_append_sheet(workbook, worksheet, t("excelSheetAllAlbums"));
 
       // 엑셀 파일 생성 및 다운로드
       const excelBuffer = XLSX.write(workbook, {
@@ -188,12 +190,12 @@ export default function AlbumDownloadButton() {
       });
       await saveAs(
         blob,
-        `전체_앨범_목록_${new Date().toISOString().split("T")[0]}.xlsx`,
+        `${t("excelFileAllAlbumList")}_${new Date().toISOString().split("T")[0]}.xlsx`,
       );
 
       setIsFullDownloadModalOpen(false);
     } catch (error) {
-      console.error("전체 앨범 다운로드 실패:", error);
+      console.error("Full album download failed:", error);
     }
   };
 
@@ -208,25 +210,25 @@ export default function AlbumDownloadButton() {
       const blob = new Blob([csvOutput], { type: "text/csv;charset=utf-8;" });
       saveAs(
         blob,
-        `전체_앨범_목록_${new Date().toISOString().split("T")[0]}.csv`,
+        `${t("excelFileAllAlbumList")}_${new Date().toISOString().split("T")[0]}.csv`,
       );
 
       setIsFullDownloadModalOpen(false);
     } catch (error) {
-      console.error("전체 앨범 다운로드 실패:", error);
+      console.error("Full album download failed:", error);
     }
   };
 
   return (
     <Container>
       <ButtonOutlinedPrimary
-        label="다운로드"
+        label={tc("download")}
         leftIcon={<DownloadIcon />}
         onClick={handleOpenModal}
         size="medium"
       />
       <ButtonOutlinedPrimary
-        label="전체 앨범 다운로드"
+        label={t("downloadAllAlbums")}
         leftIcon={<DownloadIcon />}
         onClick={handleOpenFullDownloadModal}
         size="medium"

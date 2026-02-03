@@ -12,22 +12,24 @@ import Gap from "@/components/basic/Gap";
 import styled from "styled-components";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
 const ContractSection = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const t = useTranslations("sidebar");
   return (
     <Container>
       <MenuGroupButton onClick={() => setIsOpen(!isOpen)}>
-        계약 관리
+        {t("contract")}
         {isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
       </MenuGroupButton>
 
       <MenuGroup $isOpen={isOpen}>
         <Gap height={12} />
-        <MenuLabel>DSP</MenuLabel>
+        <MenuLabel>{t("dsp")}</MenuLabel>
         <Gap height={16} />
 
         <MenuItemLink href="/contract/dsp/list">
@@ -37,12 +39,12 @@ const ContractSection = () => {
               pathname.startsWith("/contract/dsp/list/")
             }
           >
-            리스트 조회/등록
+            {t("listViewRegister")}
           </MenuItem>
         </MenuItemLink>
 
         <Gap height={20} />
-        <MenuLabel>권리자</MenuLabel>
+        <MenuLabel>{t("licensor")}</MenuLabel>
         <Gap height={16} />
 
         <MenuItemLink href="/contract/licensor/list">
@@ -52,7 +54,7 @@ const ContractSection = () => {
               pathname.startsWith("/contract/licensor/list/")
             }
           >
-            리스트 조회/등록
+            {t("listViewRegister")}
           </MenuItem>
         </MenuItemLink>
 
@@ -65,7 +67,7 @@ const ContractSection = () => {
               pathname.startsWith("/contract/licensor/contract-info/")
             }
           >
-            계약 정보 조회/등록
+            {t("contractInfoViewRegister")}
           </MenuItem>
         </MenuItemLink>
       </MenuGroup>

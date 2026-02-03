@@ -13,6 +13,7 @@ import VideoSection from "./components/VideoSection";
 import styled from "styled-components";
 import { useAuthStore } from "@/stores/use-auth-store";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useVideoStore } from "@/stores/use-video-store";
 
@@ -33,6 +34,8 @@ export default function VideoNewPage() {
   const { isLoading, newVideo, createVideo, updateVideo, resetNewVideo } =
     useVideoStore();
   const { user } = useAuthStore();
+  const tv = useTranslations("video");
+  const tc = useTranslations("common");
 
   const [resetKey, setResetKey] = useState(0);
 
@@ -186,14 +189,14 @@ export default function VideoNewPage() {
   return (
     <Container key={resetKey}>
       <HeaderWrapper>
-        <PageHeader title={"신규 영상 등록"} />
+        <PageHeader title={tv("newVideoRegister")} />
         <ButtonWrapper>
-          <ButtonOutlinedSecondary label="초기화" onClick={handleReset} />
+          <ButtonOutlinedSecondary label={tc("reset")} onClick={handleReset} />
           {isLoading ? (
             <ButtonSpinner />
           ) : (
             <ButtonFilledPrimary
-              label={newVideo ? "수정" : "등록"}
+              label={newVideo ? tc("edit") : tc("register")}
               onClick={handleSubmit}
               disabled={!isFilled()}
             />
@@ -202,7 +205,7 @@ export default function VideoNewPage() {
       </HeaderWrapper>
       <Gap height={32} />
       <CollapsibleHeader
-        title="1. 영상 정보"
+        title={tv("sectionVideoInfo")}
         renderComponent={
           <VideoSection
             control={control}
@@ -214,7 +217,7 @@ export default function VideoNewPage() {
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="2. 영상 트랙 정보"
+        title={tv("sectionVideoTrackInfo")}
         renderComponent={
           <CensorSection
             control={control}
@@ -227,7 +230,7 @@ export default function VideoNewPage() {
       />
       <Gap height={56} />
       <CollapsibleHeader
-        title="3. 영상 파일"
+        title={tv("sectionVideoFile")}
         renderComponent={
           <UploadSection
             control={control}

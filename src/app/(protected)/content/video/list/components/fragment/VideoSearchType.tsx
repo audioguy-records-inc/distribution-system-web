@@ -1,4 +1,5 @@
 import CustomDropdown from "@/components/basic/CustomDropdown";
+import { useTranslations } from "next-intl";
 import styled from "styled-components";
 
 const Container = styled.div``;
@@ -16,26 +17,30 @@ export default function VideoSearchTypeDropdown({
   selectedType: VideoSearchType;
   setSelectedType: (type: VideoSearchType) => void;
 }) {
+  const tc = useTranslations("common");
+  const tv = useTranslations("video");
+  const tt = useTranslations("track");
+  const ta = useTranslations("artist");
   const items = [
     {
       key: "all",
-      value: "전체",
+      value: tc("all"),
     },
     {
       key: "releaseArtistList.name",
-      value: "아티스트명",
+      value: ta("artistName"),
     },
     {
       key: "titleList.ko,titleList.en,titleList.ja,titleList.zh,titleList.zh-Hans,titleList.zh-Hant",
-      value: "영상명",
+      value: tv("videoName"),
     },
     {
       key: "trackList.title",
-      value: "트랙명",
+      value: tt("trackName"),
     },
     {
       key: "videoUniqueId",
-      value: "영상 코드",
+      value: tv("videoCode"),
     },
   ];
   return (

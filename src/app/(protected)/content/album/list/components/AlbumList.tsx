@@ -15,6 +15,7 @@ import theme from "@/styles/theme";
 import { useAlbumStore } from "@/stores/use-album-store";
 import { useRouter } from "next/navigation";
 import { useTrackStore } from "@/stores/use-track-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -41,12 +42,14 @@ export default function AlbumList() {
   } = useAlbumStore();
   const { resetTracks } = useTrackStore();
   const router = useRouter();
+  const t = useTranslations("content");
+  const tc = useTranslations("common");
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
   const [hasInitialLoad, setHasInitialLoad] = useState(false);
   const columns: Column<Album>[] = [
     {
-      header: "번호",
+      header: t("number"),
       accessor: "_id" as keyof Album,
       type: "string",
       width: 80,
@@ -63,7 +66,7 @@ export default function AlbumList() {
     //   align: "center",
     // },
     {
-      header: "앨범명",
+      header: t("albumName"),
       accessor: "titleList",
       type: "string",
       width: 103,
@@ -91,7 +94,7 @@ export default function AlbumList() {
       },
     },
     {
-      header: "아티스트",
+      header: t("artist"),
       accessor: "releaseArtistList",
       type: "string",
       width: 120,
@@ -106,7 +109,7 @@ export default function AlbumList() {
       },
     },
     {
-      header: "발매일",
+      header: t("releaseDate"),
       accessor: "utcReleasedAt",
       type: "string",
       width: 132,
@@ -121,7 +124,7 @@ export default function AlbumList() {
       },
     },
     {
-      header: "서비스 일시",
+      header: t("serviceDate"),
       accessor: "utcServiceStartedAt",
       type: "string",
       width: 132,
@@ -136,7 +139,7 @@ export default function AlbumList() {
       },
     },
     {
-      header: "권리자",
+      header: t("licensor"),
       accessor: "userInfo",
       type: "string",
       width: 120,
@@ -147,14 +150,14 @@ export default function AlbumList() {
       },
     },
     {
-      header: "레이블(기획사)",
+      header: t("label"),
       accessor: "agencyCompanyName",
       type: "string",
       width: 120,
       align: "center",
     },
     {
-      header: "DDEX 전송",
+      header: t("ddexSend"),
       accessor: "albumTransferHistoryList",
       type: "string",
       width: 180,
@@ -176,11 +179,11 @@ export default function AlbumList() {
         // 상태 한글 변환
         const stateText =
           latestHistory.state === "PENDING"
-            ? "대기중"
+            ? t("ddexWaiting")
             : latestHistory.state === "COMPLETED"
-            ? "완료"
+            ? t("ddexComplete")
             : latestHistory.state === "FAILED"
-            ? "실패"
+            ? t("ddexFail")
             : latestHistory.state;
 
         // 날짜 포맷팅
@@ -297,7 +300,7 @@ export default function AlbumList() {
             fontSize: "16px",
           }}
         >
-          검색 결과가 없습니다.
+          {tc("noSearchResults")}
         </div>
       )}
 
@@ -311,7 +314,7 @@ export default function AlbumList() {
             fontSize: "16px",
           }}
         >
-          등록된 앨범이 없습니다.
+          {t("noAlbums")}
         </div>
       )}
 
@@ -333,7 +336,7 @@ export default function AlbumList() {
               >
                 {isLoading && (
                   <div style={{ textAlign: "center", padding: "20px" }}>
-                    로딩 중...
+                    {t("loading")}
                   </div>
                 )}
               </div>
@@ -348,7 +351,7 @@ export default function AlbumList() {
                 color: theme.colors.gray[500],
               }}
             >
-              모든 앨범을 불러왔습니다.
+              {t("allAlbumsLoaded")}
             </div>
           )}
         </>

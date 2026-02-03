@@ -6,6 +6,7 @@ import { STATUS_COLORS } from "@/constants/status-colors";
 import StatusDisplay from "@/components/common/StatusDisplay";
 import { useFileStatusChecker } from "@/hooks/useFileStatusChecker";
 import { useAlbumStore } from "@/stores/use-album-store";
+import { useTranslations } from "next-intl";
 
 const getStatusColor = (status: AlbumFileState): string => {
   switch (status) {
@@ -22,18 +23,18 @@ const getStatusColor = (status: AlbumFileState): string => {
   }
 };
 
-const getStatusText = (status: AlbumFileState): string => {
+const getStatusTextKey = (status: AlbumFileState): string => {
   switch (status) {
     case ALBUM_FILE_STATE.PENDING:
-      return "대기 중...";
+      return "statusPending";
     case ALBUM_FILE_STATE.IN_PROGRESS:
-      return "처리 중...";
+      return "statusInProgress";
     case ALBUM_FILE_STATE.COMPLETED:
-      return "완료";
+      return "statusCompleted";
     case ALBUM_FILE_STATE.FAILED:
-      return "실패";
+      return "statusFailed";
     default:
-      return "알 수 없음";
+      return "statusUnknown";
   }
 };
 
@@ -49,6 +50,7 @@ const ALBUM_UPLOAD_STORAGE_KEY = "album_upload_in_progress";
 
 function AlbumFileStatusChecker() {
   const { albumFiles, fetchAlbumFiles, isLoading } = useAlbumStore();
+  const t = useTranslations("content");
 
   const currentStatus = useFileStatusChecker({
     files: albumFiles,
@@ -67,7 +69,7 @@ function AlbumFileStatusChecker() {
   return (
     <StatusDisplay
       status={status}
-      text={getStatusText(status)}
+      text={t(getStatusTextKey(status))}
       color={getStatusColor(status)}
       isLoading={isLoading}
     />

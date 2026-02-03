@@ -13,6 +13,7 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import toast from "react-hot-toast";
 import { useSettlementStore } from "@/stores/use-settlement-store";
+import { useTranslations } from "next-intl";
 
 const Container = styled.div``;
 
@@ -36,6 +37,8 @@ const DateDash = styled.div`
 `;
 
 export default function SettlementDetailSearch() {
+  const t = useTranslations("settlement");
+  const tCommon = useTranslations("common");
   const [dateType, setDateType] = useState<"settlement" | "sales">(
     "settlement",
   );
@@ -101,7 +104,7 @@ export default function SettlementDetailSearch() {
 
   return (
     <Container>
-      <DateLabel>기간 검색</DateLabel>
+      <DateLabel>{tCommon("periodSearch")}</DateLabel>
       <Gap height={8} />
       <RowWrapper>
         <SettlementDetailDateTypeDropdown
@@ -121,7 +124,7 @@ export default function SettlementDetailSearch() {
         />
       </RowWrapper>
       <Gap height={12} />
-      <DateLabel>검색 조건</DateLabel>
+      <DateLabel>{tCommon("searchCondition")}</DateLabel>
       <Gap height={8} />
       <RowWrapper>
         <SettlementDetailSearchTypeDropdown
@@ -129,7 +132,7 @@ export default function SettlementDetailSearch() {
           setSelectedType={setSelectedType}
         />
         <SearchInput
-          placeholder="앨범명, 트랙명, 아티스트명, 권리자명 입력"
+          placeholder={t("searchInputPlaceholder")}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onClickSearch={handleSearch}
@@ -137,7 +140,7 @@ export default function SettlementDetailSearch() {
           isLoading={isLoading}
         />
         <ButtonFilledPrimary
-          label={isLoading ? "검색중..." : "검색"}
+          label={isLoading ? tCommon("searching") : tCommon("search")}
           onClick={handleSearch}
           disabled={isLoading}
         />
