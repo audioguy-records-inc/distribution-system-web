@@ -20,7 +20,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     (set) => ({
       currency: "KRW",
       exchangeRates: {
-        USD: 1350,
+        USD: 1451,
         JPY: 9,
       },
       setCurrency: (currency) => set({ currency }),
