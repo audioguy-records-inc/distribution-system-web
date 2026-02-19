@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 
 import { AuthLevel } from "@/types/user";
+import CurrencySelector from "@/components/CurrencySelector";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SettlementDownloadButton from "./components/fragment/SettlementDownloadButton";
@@ -69,6 +70,7 @@ export default function AdminSettlementListPage() {
         <SettlementDownloadButton />
       </ButtonRow>
       <Gap height={32} />
+      <CurrencySelector />
       <SettlementList />
       {isAdmin && (
         <SettlementFileListModal

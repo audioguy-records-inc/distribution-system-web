@@ -1,26 +1,26 @@
 {
   "metadata": {
-    "title": "オーディオガイ 配信システム",
-    "titleAdmin": "オーディオガイ 配信システム - 管理者",
-    "titleLogin": "オーディオガイ 配信システム - ログイン"
+    "title": "Audioguy 配信システム",
+    "titleAdmin": "Audioguy 配信システム - 管理者",
+    "titleLogin": "Audioguy 配信システム - ログイン"
   },
   "sidebar": {
     "contract": "契約管理",
     "dsp": "DSP",
-    "listViewRegister": "リスト照会/登録",
+    "listViewRegister": "一覧/登録",
     "licensor": "権利者",
-    "contractInfoViewRegister": "契約情報 照会/登録",
+    "contractInfoViewRegister": "契約情報一覧/登録",
     "content": "コンテンツ管理",
     "album": "アルバム",
     "newAlbum": "新規アルバム登録",
-    "listView": "リスト照会",
+    "listView": "一覧",
     "video": "映像",
     "newVideo": "新規映像登録",
     "artist": "アーティスト",
     "artistManage": "アーティスト管理",
     "service": "サービス状況",
     "settlement": "精算状況",
-    "settlementView": "精算金照会",
+    "settlementView": "精算明細照会",
     "detailView": "詳細内訳照会",
     "adminSettlement": "管理者精算",
     "distributionSettlement": "配信精算状況",
@@ -31,7 +31,7 @@
     "contractManagement": "契約管理",
     "dsp": "DSP",
     "licensor": "権利者",
-    "listViewRegister": "リスト照会/登録",
+    "listViewRegister": "一覧/登録",
     "contractInfoViewRegister": "契約情報 照会/登録",
     "contentManagement": "コンテンツ管理",
     "album": "アルバム",
@@ -44,7 +44,7 @@
     "artistManage": "アーティスト管理",
     "serviceStatus": "サービス状況",
     "settlementStatus": "精算状況",
-    "settlementView": "精算金照会",
+    "settlementView": "精算明細照会",
     "detailView": "詳細内訳照会",
     "adminSettlement": "管理者精算",
     "distributionSettlement": "配信精算状況",
@@ -54,9 +54,9 @@
   "login": {
     "title": "ログイン",
     "id": "ID",
-    "idPlaceholder": "IDを入力してください。",
+    "idPlaceholder": "ID入力",
     "password": "パスワード",
-    "passwordPlaceholder": "パスワードを入力してください。",
+    "passwordPlaceholder": "パスワード入力",
     "loginButton": "ログイン",
     "loginError": "IDとパスワードを入力してください。",
     "loading": "読み込み中..."
@@ -64,11 +64,13 @@
   "loginInfo": {
     "label": "ログイン情報",
     "logout": "ログアウト",
-    "logoutConfirm": "本当にログアウトしますか？"
+    "logoutConfirm": "ログアウトしてもよろしいですか？"
   },
   "common": {
     "cancel": "キャンセル",
     "confirm": "確認",
+    "apply": "適用",
+    "appliedRate": "適用レート",
     "delete": "削除",
     "edit": "編集",
     "save": "保存",

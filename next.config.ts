@@ -21,6 +21,19 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async rewrites() {
+    return [
+      {
+        source: "/api-proxy/:path*",
+        destination: "https://api-v1-test-distribution.sovo360.com/:path*",
+      },
+      {
+        source: "/storage-proxy/:path*",
+        destination: "https://storage-test-distribution.sovo360.com/:path*",
+      },
+    ];
+  },
+
   compiler: {
     styledComponents: true,
   },

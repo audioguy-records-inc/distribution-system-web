@@ -1,5 +1,6 @@
 "use client";
 
+import CurrencySelector from "@/components/CurrencySelector";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SettlementAdminInvoiceDownloadButton from "./components/fragment/SettlementAdminInvoiceDownloadButton";
@@ -41,6 +42,7 @@ export default function SettlementStatusPage() {
         <SettlementAdminInvoiceDownloadButton />
       </ButtonRow>
       <Gap height={32} />
+      <CurrencySelector />
       <SettlementAdminInvoiceList />
     </Container>
   );

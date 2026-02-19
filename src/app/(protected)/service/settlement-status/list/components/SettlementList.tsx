@@ -6,10 +6,12 @@ import ArrowDownIcon from "@/components/icons/ArrowDownIcon";
 import ArrowUpIcon from "@/components/icons/ArrowUpIcon";
 import { AuthLevel } from "@/types/user";
 import { SettlementSummary } from "@/types/settlement-summary";
+import { formatCurrency } from "@/utils/format-currency";
 import moment from "moment";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
+import { useCurrencyStore } from "@/stores/use-currency-store";
 import { useSettlementStore } from "@/stores/use-settlement-store";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -165,6 +167,7 @@ export default function SettlementList() {
   const t = useTranslations("settlement");
   const { settlementSummaries } = useSettlementStore();
   const user = useAuthStore((state) => state.user);
+  const { currency, exchangeRates } = useCurrencyStore();
   const [sortState, setSortState] = useState<SortState>({
     field: null,
     direction: "desc",
@@ -212,7 +215,7 @@ export default function SettlementList() {
       align: "center",
       render: (value) => {
         const _value = value as number;
-        return _value.toLocaleString();
+        return formatCurrency(_value, currency, exchangeRates);
       },
     },
     {
@@ -222,7 +225,7 @@ export default function SettlementList() {
       align: "center",
       render: (value) => {
         const _value = value as number;
-        return _value.toLocaleString();
+        return formatCurrency(_value, currency, exchangeRates);
       },
     },
   ];
@@ -275,21 +278,21 @@ export default function SettlementList() {
                 <AmountItem>
                   <AmountLabel>{t("salesAmountLabel")}</AmountLabel>
                   <AmountValue>
-                    {service.settlementFee.toLocaleString()}
+                    {formatCurrency(service.settlementFee, currency, exchangeRates)}
                   </AmountValue>
                 </AmountItem>
                 {isAdmin && (
                   <AmountItem>
                     <AmountLabel>{t("distributionFeeLabel")}</AmountLabel>
                     <AmountValue>
-                      {service.distributionFee.toLocaleString()}
+                      {formatCurrency(service.distributionFee, currency, exchangeRates)}
                     </AmountValue>
                   </AmountItem>
                 )}
                 <AmountItem>
                   <AmountLabel>{t("settlementAmountLabel")}</AmountLabel>
                   <AmountValue>
-                    {service.userSettlementFee.toLocaleString()}
+                    {formatCurrency(service.userSettlementFee, currency, exchangeRates)}
                   </AmountValue>
                 </AmountItem>
               </ServiceAmounts>

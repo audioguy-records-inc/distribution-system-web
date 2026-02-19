@@ -1,5 +1,6 @@
 "use client";
 
+import CurrencySelector from "@/components/CurrencySelector";
 import Gap from "@/components/basic/Gap";
 import PageHeader from "@/components/PageHeader";
 import SettlementDetailDownloadButton from "./components/SettlementDetailDownloadButton";
@@ -37,6 +38,7 @@ export default function AdminSettlementDetailPage() {
         <SettlementDetailDownloadButton />
       </ButtonRow>
       <Gap height={32} />
+      <CurrencySelector />
       <TableLabel>{tSettlement("settlementDetail")}</TableLabel>
       <SettlementDetailList />
       <Gap height={32} />

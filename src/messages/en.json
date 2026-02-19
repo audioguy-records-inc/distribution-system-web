@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "AudioGuide Distribution System",
-    "titleAdmin": "AudioGuide Distribution System - Admin",
-    "titleLogin": "AudioGuide Distribution System - Login"
+    "title": "Audioguy Distribution System",
+    "titleAdmin": "Audioguy Distribution System - Admin",
+    "titleLogin": "AudioGuy Distribution System - Login"
   },
   "sidebar": {
     "contract": "Contract Management",
@@ -69,6 +69,8 @@
   "common": {
     "cancel": "Cancel",
     "confirm": "Confirm",
+    "apply": "Apply",
+    "appliedRate": "Applied rate",
     "delete": "Delete",
     "edit": "Edit",
     "save": "Save",

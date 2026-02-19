@@ -10,8 +10,12 @@ const DEV_STORAGE_URL = "https://storage-test-distribution.sovo360.com";
 // export const STORAGE_URL =
 //   process.env.NODE_ENV === "production" ? PROD_STORAGE_URL : DEV_STORAGE_URL;
 
-export const API_URL = DEV_API_URL;
-export const STORAGE_URL = DEV_STORAGE_URL;
+// 로컬 개발 시 CORS 우회를 위해 프록시 사용
+const IS_LOCAL =
+  typeof window !== "undefined" && window.location.hostname === "localhost";
+
+export const API_URL = IS_LOCAL ? "/api-proxy" : DEV_API_URL;
+export const STORAGE_URL = IS_LOCAL ? "/storage-proxy" : DEV_STORAGE_URL;
 
 // 이미지 URL을 생성하는 헬퍼 함수 추가
 export const getFullUrl = (path: string) => {

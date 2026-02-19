@@ -3,8 +3,10 @@ import CustomTable, {
 } from "@/components/basic/custom-table/CustomTable";
 
 import { SettlementDetail } from "@/types/settlement-matched-record";
+import { formatCurrency } from "@/utils/format-currency";
 import moment from "moment";
 import styled from "styled-components";
+import { useCurrencyStore } from "@/stores/use-currency-store";
 import { useSettlementStore } from "@/stores/use-settlement-store";
 import { useTranslations } from "next-intl";
 
@@ -13,6 +15,7 @@ const Container = styled.div``;
 export default function SettlementDetailList() {
   const t = useTranslations("settlement");
   const { settlementDetails } = useSettlementStore();
+  const { currency, exchangeRates } = useCurrencyStore();
 
   const columns: Column<SettlementDetail>[] = [
     {
@@ -96,7 +99,7 @@ export default function SettlementDetailList() {
       align: "center",
       render: (value) => {
         const amount = value as number;
-        return amount.toLocaleString();
+        return formatCurrency(amount, currency, exchangeRates);
       },
     },
   ];
