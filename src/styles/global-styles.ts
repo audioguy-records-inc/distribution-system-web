@@ -12,7 +12,7 @@ export const GlobalStyles = createGlobalStyle`
   html, body {
     width: 100%;
     height: 100%;
-    font-family: var(--font-pretendard);
+    font-family: var(--font-pretendard), var(--font-pretendard-jp), -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

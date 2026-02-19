@@ -12,6 +12,12 @@ const pretendard = localFont({
   display: "swap",
 });
 
+const pretendardJP = localFont({
+  src: "../fonts/PretendardJPVariable.woff2",
+  variable: "--font-pretendard-jp",
+  display: "swap",
+});
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -22,7 +28,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${pretendard.variable} antialiased`}>
+      <body className={`${pretendard.variable} ${pretendardJP.variable} antialiased`}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <TranslationsInitializer />
           <StyledComponentsRegistry>
