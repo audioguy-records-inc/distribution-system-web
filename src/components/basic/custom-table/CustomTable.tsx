@@ -21,6 +21,7 @@ export interface Column<T> {
   dropdownOptions?: { key: string; value: string }[];
   icon?: React.ReactNode;
   onClick?: (record: T, rowIndex: number) => void;
+  sortable?: boolean;
 }
 
 interface CustomTableProps<T> {
@@ -61,6 +62,7 @@ const HeaderCell = styled.th<{
   $width?: number;
   $align?: "left" | "center" | "right";
   $size?: "small" | "normal";
+  $sortable?: boolean;
 }>`
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium}
@@ -73,6 +75,45 @@ const HeaderCell = styled.th<{
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor: ${({ $sortable }) => ($sortable ? "pointer" : "default")};
+  user-select: ${({ $sortable }) => ($sortable ? "none" : "auto")};
+`;
+
+const SortBadge = styled.div<{ $active?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: ${({ $active }) => ($active ? theme.colors.purple[50] : "#f3f4f6")};
+  color: ${({ $active }) => ($active ? theme.colors.purple[600] : "#6b7280")};
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: ${({ $active }) => ($active ? theme.colors.purple[100] : "#e5e7eb")};
+  }
+`;
+
+const SortArrowGroup = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+`;
+
+const SortArrow = styled.span<{ $active?: boolean; $sortActive?: boolean }>`
+  font-size: 10px;
+  line-height: 1;
+  opacity: ${({ $active }) => ($active ? 1 : 0.5)};
+  color: ${({ $sortActive }) => ($sortActive ? theme.colors.purple[600] : "#9ca3af")};
+`;
+
+const SortPriority = styled.span<{ $active?: boolean }>`
+  font-size: 10px;
+  line-height: 1;
+  color: ${({ $active }) => ($active ? theme.colors.purple[600] : "#6b7280")};
+  font-weight: 600;
 `;
 
 const TableBody = styled.tbody``;
@@ -162,10 +203,57 @@ const CustomTable = <T extends Record<string, any>>({
   onClick,
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
+  const [sortConfigs, setSortConfigs] = useState<
+    { key: keyof T; order: "asc" | "desc" }[]
+  >([]);
 
   // columns나 data가 undefined이거나 배열이 아닌 경우를 처리
   const safeColumns = Array.isArray(columns) ? columns : [];
   const safeData = Array.isArray(data) ? data : [];
+
+  const handleSort = (accessor: keyof T) => {
+    setSortConfigs((prev) => {
+      const idx = prev.findIndex((s) => s.key === accessor);
+      if (idx === -1) {
+        return [...prev, { key: accessor, order: "asc" }];
+      }
+      if (prev[idx].order === "asc") {
+        const next = [...prev];
+        next[idx] = { key: accessor, order: "desc" };
+        return next;
+      }
+      return prev.filter((_, i) => i !== idx);
+    });
+  };
+
+  const compareValues = (aVal: unknown, bVal: unknown): number => {
+    if (aVal == null && bVal == null) return 0;
+    if (aVal == null) return 1;
+    if (bVal == null) return -1;
+    if (typeof aVal === "number" && typeof bVal === "number") return aVal - bVal;
+    if (Array.isArray(aVal) && Array.isArray(bVal))
+      return aVal.join(", ").localeCompare(bVal.join(", "));
+    return String(aVal).localeCompare(String(bVal));
+  };
+
+  const sortedData = (() => {
+    if (sortConfigs.length === 0) return safeData;
+    return [...safeData].sort((a, b) => {
+      for (const { key, order } of sortConfigs) {
+        const comparison = compareValues(a[key], b[key]);
+        if (comparison !== 0) return order === "asc" ? comparison : -comparison;
+      }
+      return 0;
+    });
+  })();
+
+  const getSortIndex = (accessor: keyof T): number =>
+    sortConfigs.findIndex((s) => s.key === accessor);
+
+  const getSortOrder = (accessor: keyof T): "asc" | "desc" | null => {
+    const config = sortConfigs.find((s) => s.key === accessor);
+    return config ? config.order : null;
+  };
 
   const toggleRow = (rowIndex: number) => {
     const newExpandedRows = new Set(expandedRows);
@@ -281,8 +369,31 @@ const CustomTable = <T extends Record<string, any>>({
                 $width={column.width}
                 $align={column.align}
                 $size={size}
+                $sortable={column.sortable}
+                onClick={column.sortable ? () => handleSort(column.accessor) : undefined}
               >
-                {column.renderHeader ? column.renderHeader() : column.header}
+                {column.renderHeader ? (
+                  column.renderHeader()
+                ) : column.sortable ? (
+                  <SortBadge $active={getSortOrder(column.accessor) !== null}>
+                    {column.header}
+                    <SortArrowGroup>
+                      <SortArrow
+                        $active={getSortOrder(column.accessor) === "asc"}
+                        $sortActive={getSortOrder(column.accessor) !== null}
+                      >▲</SortArrow>
+                      <SortArrow
+                        $active={getSortOrder(column.accessor) === "desc"}
+                        $sortActive={getSortOrder(column.accessor) !== null}
+                      >▼</SortArrow>
+                    </SortArrowGroup>
+                    {sortConfigs.length > 1 && getSortIndex(column.accessor) !== -1 && (
+                      <SortPriority $active>{getSortIndex(column.accessor) + 1}</SortPriority>
+                    )}
+                  </SortBadge>
+                ) : (
+                  column.header
+                )}
               </HeaderCell>
             ))}
             {expandable && (
@@ -291,7 +402,7 @@ const CustomTable = <T extends Record<string, any>>({
           </tr>
         </TableHeader>
         <TableBody>
-          {safeData.map((row, rowIndex) => (
+          {sortedData.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <TableRow
                 $isExpanded={expandedRows.has(rowIndex)}

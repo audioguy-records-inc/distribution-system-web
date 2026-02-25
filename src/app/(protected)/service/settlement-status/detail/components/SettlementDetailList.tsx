@@ -23,6 +23,7 @@ export default function SettlementDetailList() {
       accessor: "settlementMonth",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const month = value as number;
         const year = Math.floor(month / 100);
@@ -35,6 +36,7 @@ export default function SettlementDetailList() {
       accessor: "salesMonth",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const month = value as number;
         const year = Math.floor(month / 100);
@@ -47,24 +49,28 @@ export default function SettlementDetailList() {
       accessor: "service",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("albumName"),
       accessor: "albumTitle",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("trackName"),
       accessor: "trackTitle",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("artist"),
       accessor: "artistNameList",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const artists = value as string[];
         return artists.join(", ");
@@ -75,6 +81,7 @@ export default function SettlementDetailList() {
       accessor: "utcReleasedAt",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const date = value as string;
         return moment(date).format("YYYY.MM.DD");
@@ -85,18 +92,21 @@ export default function SettlementDetailList() {
       accessor: "agencyCompanyName",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("licensorName"),
       accessor: "userDisplayName",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("settlementAmount"),
       accessor: "userSettlementFee",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const amount = value as number;
         return formatCurrency(amount, currency, exchangeRates);
