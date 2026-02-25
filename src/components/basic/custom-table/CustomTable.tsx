@@ -127,10 +127,20 @@ const Text = styled.div<{ $size?: "small" | "normal" }>`
   ${({ $size }) =>
     $size === "small" ? theme.fonts.body2.medium : theme.fonts.body1.medium};
   color: ${theme.colors.gray[800]};
-  overflow: hidden;
+  overflow-x: auto;
   white-space: nowrap;
-  text-overflow: ellipsis;
   width: 100%;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${theme.colors.gray[300]};
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
 `;
 
 const RenderContainer = styled.div`

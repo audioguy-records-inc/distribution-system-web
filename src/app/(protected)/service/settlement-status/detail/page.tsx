@@ -9,6 +9,8 @@ import SettlementDetailSearch from "./components/SettlementDetailSearch";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/stores/use-auth-store";
+import { AuthLevel } from "@/types/user";
 
 const Container = styled.div`
   display: flex;
@@ -29,17 +31,19 @@ const TableLabel = styled.div`
 
 export default function AdminSettlementDetailPage() {
   const tSettlement = useTranslations("settlement");
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.authLevel === AuthLevel.ADMIN;
 
   return (
     <Container>
-      <PageHeader title={tSettlement("settlementDetail")} />
+      <PageHeader title={tSettlement(isAdmin ? "settlementDetailAdmin" : "settlementDetailUser")} />
       <SettlementDetailSearch />
       <ButtonRow>
         <SettlementDetailDownloadButton />
       </ButtonRow>
       <Gap height={32} />
       <CurrencySelector />
-      <TableLabel>{tSettlement("settlementDetail")}</TableLabel>
+      <TableLabel>{tSettlement(isAdmin ? "settlementDetailAdmin" : "settlementDetailUser")}</TableLabel>
       <SettlementDetailList />
       <Gap height={32} />
     </Container>

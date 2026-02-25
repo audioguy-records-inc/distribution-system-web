@@ -39,7 +39,7 @@ const ContractSection = () => {
               pathname.startsWith("/contract/dsp/list/")
             }
           >
-            {t("listViewRegister")}
+            {t("dspManagment")}
           </MenuItem>
         </MenuItemLink>
 
@@ -54,7 +54,7 @@ const ContractSection = () => {
               pathname.startsWith("/contract/licensor/list/")
             }
           >
-            {t("listViewRegister")}
+            {t("rightsManagement")}
           </MenuItem>
         </MenuItemLink>
 

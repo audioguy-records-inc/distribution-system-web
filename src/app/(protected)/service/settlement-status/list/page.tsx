@@ -53,7 +53,7 @@ export default function AdminSettlementListPage() {
 
   return (
     <Container>
-      <PageHeader title={tSettlement("settlementView")} />
+      <PageHeader title={tSettlement(isAdmin ? "settlementViewAdmin" : "settlementViewUser")} />
       <SettlementSearch />
       <ButtonRow>
         {isAdmin && (

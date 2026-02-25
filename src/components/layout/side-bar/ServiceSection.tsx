@@ -39,7 +39,7 @@ const ServiceSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               pathname.startsWith("/service/settlement-status/list/")
             }
           >
-            {t("settlementView")}
+            {t(authLevel === AuthLevel.ADMIN ? "settlementViewAdmin" : "settlementViewUser")}
           </MenuItem>
         </MenuItemLink>
         <Gap height={12} />
@@ -50,7 +50,7 @@ const ServiceSection = ({ authLevel }: { authLevel: AuthLevel }) => {
               pathname.startsWith("/service/settlement-status/detail/")
             }
           >
-            {t("detailView")}
+            {t(authLevel === AuthLevel.ADMIN ? "detailViewAdmin" : "detailViewUser")}
           </MenuItem>
         </MenuItemLink>
 

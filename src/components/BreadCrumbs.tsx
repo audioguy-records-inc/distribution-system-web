@@ -10,6 +10,8 @@ import styled from "styled-components";
 import theme from "@/styles/theme";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { useAuthStore } from "@/stores/use-auth-store";
+import { AuthLevel } from "@/types/user";
 
 const Container = styled.div`
   display: flex;
@@ -43,6 +45,8 @@ const CurrentBreadcrumb = styled.div`
 const Breadcrumbs = () => {
   const pathname = usePathname();
   const t = useTranslations("breadcrumbs");
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.authLevel === AuthLevel.ADMIN;
 
   const renderBreadcrumbs = () => {
     if (pathname.match(/^\/content\/album\/list\/[^\/]+$/)) {
@@ -179,7 +183,7 @@ const Breadcrumbs = () => {
             <ArrowRightIcon />
             <PrevBreadcrumb>{t("settlementStatus")}</PrevBreadcrumb>
             <ArrowRightIcon />
-            <CurrentBreadcrumb>{t("settlementView")}</CurrentBreadcrumb>
+            <CurrentBreadcrumb>{t(isAdmin ? "settlementViewAdmin" : "settlementViewUser")}</CurrentBreadcrumb>
           </BreadcrumbWrapper>
         );
 
@@ -190,7 +194,7 @@ const Breadcrumbs = () => {
             <ArrowRightIcon />
             <PrevBreadcrumb>{t("settlementStatus")}</PrevBreadcrumb>
             <ArrowRightIcon />
-            <CurrentBreadcrumb>{t("detailView")}</CurrentBreadcrumb>
+            <CurrentBreadcrumb>{t(isAdmin ? "detailViewAdmin" : "detailViewUser")}</CurrentBreadcrumb>
           </BreadcrumbWrapper>
         );
 
