@@ -111,7 +111,7 @@ const ExpandedRow = styled.div`
   border-top: 1px solid #e5e7eb;
 `;
 
-type SortField = "settlementFee" | "userSettlementFee";
+type SortField = "settlementFee" | "distributionFee" | "userSettlementFee";
 type SortDirection = "asc" | "desc";
 
 interface SortState {
@@ -188,6 +188,7 @@ export default function SettlementList() {
       accessor: "userDisplayName",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("period"),
@@ -213,6 +214,7 @@ export default function SettlementList() {
       accessor: "settlementFee",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const _value = value as number;
         return formatCurrency(_value, currency, exchangeRates);
@@ -223,6 +225,7 @@ export default function SettlementList() {
       accessor: "userSettlementFee",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const _value = value as number;
         return formatCurrency(_value, currency, exchangeRates);
@@ -261,7 +264,14 @@ export default function SettlementList() {
             >
               {t("salesAmount")} {renderSortArrow("settlementFee")}
             </SortButton>
-            {isAdmin && <div style={{ width: 120 }} />}
+            {isAdmin && (
+              <SortButton
+                $active={sortState.field === "distributionFee"}
+                onClick={() => toggleSort("distributionFee")}
+              >
+                {t("distributionFee")} {renderSortArrow("distributionFee")}
+              </SortButton>
+            )}
             <SortButton
               $active={sortState.field === "userSettlementFee"}
               onClick={() => toggleSort("userSettlementFee")}
@@ -308,6 +318,7 @@ export default function SettlementList() {
       <CustomTable
         columns={columns}
         data={settlementSummaries}
+        multiSort={false}
         expandable={{
           expandedRowRender: renderExpandedContent,
           expandColumnWidth: 50,

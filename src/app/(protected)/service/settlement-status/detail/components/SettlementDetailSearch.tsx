@@ -96,7 +96,7 @@ export default function SettlementDetailSearch() {
       __params.__searchKeyword = searchValue.trim();
     }
 
-    __params.__limit = 10000;
+    __params.__limit = 1000;
 
     await fetchSettlementDetails(__params);
     setIsLoading(false);

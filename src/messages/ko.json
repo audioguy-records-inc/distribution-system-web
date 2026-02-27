@@ -558,7 +558,10 @@
     "artist": "아티스트",
     "label": "레이블(기획사)",
     "distributionFeeRevenue": "유통수수료수익",
-    "licensorSettlementAmount": "권리자정산금액"
+    "licensorSettlementAmount": "권리자정산금액",
+    "loadingAllDetails": "전체 내역을 불러오는 중입니다.",
+    "loadedAllDetails": "전체 내역을 불러왔습니다.",
+    "loadAllDetailsFailed": "전체 내역 불러오기가 실패했습니다."
   },
   "announcement": {
     "title": "공지사항",

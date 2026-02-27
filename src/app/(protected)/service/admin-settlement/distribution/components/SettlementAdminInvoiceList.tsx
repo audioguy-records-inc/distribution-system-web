@@ -22,12 +22,14 @@ export default function SettlementAdminInvoiceList() {
       accessor: "settlementMonth",
       type: "string",
       align: "center",
+      sortable: true,
     },
     {
       header: t("salesAmount"),
       accessor: "totalSettlementFee",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const amount = value as number;
         return formatCurrency(amount, currency, exchangeRates);
@@ -38,6 +40,7 @@ export default function SettlementAdminInvoiceList() {
       accessor: "totalDistributionFee",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const amount = value as number;
         return formatCurrency(amount, currency, exchangeRates);
@@ -48,6 +51,7 @@ export default function SettlementAdminInvoiceList() {
       accessor: "totalUserSettlementFee",
       type: "string",
       align: "center",
+      sortable: true,
       render: (value) => {
         const amount = value as number;
         return formatCurrency(amount, currency, exchangeRates);
@@ -57,7 +61,7 @@ export default function SettlementAdminInvoiceList() {
 
   return (
     <Container>
-      <CustomTable columns={columns} data={settlementAdminInvoices} />
+      <CustomTable columns={columns} data={settlementAdminInvoices} multiSort={false} />
     </Container>
   );
 }

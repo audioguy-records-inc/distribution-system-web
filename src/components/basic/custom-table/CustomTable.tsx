@@ -37,6 +37,8 @@ interface CustomTableProps<T> {
   disabled?: boolean;
   readOnly?: boolean;
   onClick?: (record: T) => void;
+  multiSort?: boolean;
+  onSortChange?: (sortConfigs: { key: keyof T; order: "asc" | "desc" }[]) => void;
 }
 
 const TableContainer = styled.div`
@@ -201,6 +203,8 @@ const CustomTable = <T extends Record<string, any>>({
   disabled = false,
   readOnly = false,
   onClick,
+  multiSort = true,
+  onSortChange,
 }: CustomTableProps<T>) => {
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const [sortConfigs, setSortConfigs] = useState<
@@ -212,18 +216,33 @@ const CustomTable = <T extends Record<string, any>>({
   const safeData = Array.isArray(data) ? data : [];
 
   const handleSort = (accessor: keyof T) => {
+    let nextConfigs: { key: keyof T; order: "asc" | "desc" }[] = [];
     setSortConfigs((prev) => {
       const idx = prev.findIndex((s) => s.key === accessor);
-      if (idx === -1) {
-        return [...prev, { key: accessor, order: "asc" }];
+      if (multiSort) {
+        if (idx === -1) {
+          nextConfigs = [...prev, { key: accessor, order: "asc" }];
+        } else if (prev[idx].order === "asc") {
+          const next = [...prev];
+          next[idx] = { key: accessor, order: "desc" };
+          nextConfigs = next;
+        } else {
+          nextConfigs = prev.filter((_, i) => i !== idx);
+        }
+      } else {
+        if (idx === -1) {
+          nextConfigs = [{ key: accessor, order: "asc" }];
+        } else if (prev[idx].order === "asc") {
+          nextConfigs = [{ key: accessor, order: "desc" }];
+        } else {
+          nextConfigs = [];
+        }
       }
-      if (prev[idx].order === "asc") {
-        const next = [...prev];
-        next[idx] = { key: accessor, order: "desc" };
-        return next;
-      }
-      return prev.filter((_, i) => i !== idx);
+      return nextConfigs;
     });
+    if (onSortChange) {
+      onSortChange(nextConfigs);
+    }
   };
 
   const compareValues = (aVal: unknown, bVal: unknown): number => {
@@ -237,6 +256,7 @@ const CustomTable = <T extends Record<string, any>>({
   };
 
   const sortedData = (() => {
+    if (onSortChange) return safeData;
     if (sortConfigs.length === 0) return safeData;
     return [...safeData].sort((a, b) => {
       for (const { key, order } of sortConfigs) {

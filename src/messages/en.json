@@ -558,7 +558,10 @@
     "artist": "Artist",
     "label": "Label (Agency)",
     "distributionFeeRevenue": "Distribution Fee Revenue",
-    "licensorSettlementAmount": "Rights Holder Settlement Amount"
+    "licensorSettlementAmount": "Rights Holder Settlement Amount",
+    "loadingAllDetails": "Loading all details.",
+    "loadedAllDetails": "All details have been loaded.",
+    "loadAllDetailsFailed": "Failed to load all details."
   },
   "announcement": {
     "title": "Announcements",

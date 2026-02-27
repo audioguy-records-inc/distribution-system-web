@@ -558,7 +558,10 @@
     "artist": "アーティスト",
     "label": "レーベル（企画社）",
     "distributionFeeRevenue": "配信手数料収益",
-    "licensorSettlementAmount": "権利者精算金額"
+    "licensorSettlementAmount": "権利者精算金額",
+    "loadingAllDetails": "全件を読み込み中です。",
+    "loadedAllDetails": "全件を読み込みました。",
+    "loadAllDetailsFailed": "全件の読み込みに失敗しました。"
   },
   "announcement": {
     "title": "お知らせ",
