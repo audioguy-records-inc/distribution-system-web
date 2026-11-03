@@ -11,6 +11,7 @@ const HeaderContainer = styled.div`
 const Title = styled.div`
   ${theme.fonts.title1.medium};
   color: ${theme.colors.gray[800]};
+  letter-spacing: -0.03em;
 `;
 
 const RequiredInfo = styled.div`

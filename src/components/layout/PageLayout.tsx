@@ -2,12 +2,23 @@
 
 import styled from "styled-components";
 
-// 메인 콘텐츠 영역
 const PageLayout = styled.main`
   flex: 1;
-  padding: 32px 60px 100px 380px;
+  padding: 0 0 100px 320px;
+  background-color: #fafafa;
+  min-height: 100vh;
 
-  /* background-color: yellow; */
+  > :last-child {
+    padding: 8px 60px 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 0 64px 0;
+
+    > :last-child {
+      padding: 8px 0 0;
+    }
+  }
 `;
 
 export default PageLayout;

@@ -50,7 +50,7 @@ const InputContainer = styled.div<{
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid
     ${({ $isError, $disabled }) =>
       $isError

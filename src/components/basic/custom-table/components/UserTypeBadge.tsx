@@ -12,7 +12,7 @@ const Container = styled.div<{ $type: UserType }>`
   align-items: center;
   justify-content: center;
   padding: 2px 8px;
-  border-radius: 100px;
+  border-radius: 2px;
   background-color: ${({ $type }) =>
     $type === UserType.COMPANY
       ? theme.colors.blue[50]
@@ -21,7 +21,9 @@ const Container = styled.div<{ $type: UserType }>`
     $type === UserType.COMPANY
       ? theme.colors.blue[600]
       : theme.colors.purple[600]};
-  ${theme.fonts.label1.medium}
+  ${theme.fonts.mono};
+  font-size: 11px;
+  line-height: 16px;
   gap: 6px;
 `;
 

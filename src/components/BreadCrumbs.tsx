@@ -14,22 +14,50 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  gap: 24px;
+  background: #0a0a0a;
+  color: #fafafa;
+  padding: 18px 60px;
+  border-bottom: 1px solid #2a2a2a;
+  min-height: 76px;
+
+  @media (max-width: 768px) {
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
 `;
 
 const BreadcrumbWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #f2592a;
+    flex-shrink: 0;
+  }
+
+  svg path {
+    stroke: #6a6a6a;
+  }
 `;
 
 const PrevBreadcrumb = styled.div`
-  ${theme.fonts.heading2.regular};
-  color: ${theme.colors.gray[300]};
+  ${theme.fonts.mono};
+  font-size: 12px;
+  line-height: 16px;
+  color: #8a8a8a;
 `;
 
 const CurrentBreadcrumb = styled.div`
-  ${theme.fonts.heading2.medium};
-  color: ${theme.colors.gray[800]};
+  ${theme.fonts.mono};
+  font-size: 12px;
+  line-height: 16px;
+  color: #fafafa;
 `;
 
 const Breadcrumbs = () => {

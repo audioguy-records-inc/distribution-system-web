@@ -7,7 +7,7 @@
     "start-dev": "cross-env NODE_ENV=production NEXT_PUBLIC_API_ENV=production next dev --turbopack -p 3131",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@fontsource/pretendard": "^5.1.0",

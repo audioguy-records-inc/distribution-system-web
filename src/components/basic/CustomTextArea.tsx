@@ -43,7 +43,7 @@ const TextAreaContainer = styled.div<{
   width: ${({ $expand }) => ($expand ? "100%" : "320px")};
   height: ${({ $height }) => ($height ? $height : "auto")};
   min-height: ${({ $expand }) => ($expand ? "100%" : "160px")};
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid
     ${({ $isError, $disabled }) =>
       $isError

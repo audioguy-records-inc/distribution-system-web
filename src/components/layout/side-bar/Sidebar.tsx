@@ -1,39 +1,74 @@
-"use client"; // 이벤트 핸들링 등 클라이언트 컴포넌트 기능 사용 시
+"use client";
 
-import ArrowDownIcon from "../../icons/ArrowDownIcon";
-import ArrowUpIcon from "../../icons/ArrowUpIcon";
 import { AuthLevel } from "@/types/user";
 import CommunitySection from "./CommunitySection";
 import ContentSection from "./ContentSection";
 import ContractSection from "./ContractSection";
-import Gap from "../../basic/Gap";
-import Link from "next/link";
 import ServiceSection from "./ServiceSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
 import { useAuthStore } from "@/stores/use-auth-store";
-import { useState } from "react";
 
 const SidebarContainer = styled.nav`
   display: flex;
   flex-direction: column;
   width: 320px;
-  background-color: ${theme.colors.gray[25]};
-  padding: 100px 28px;
-  position: fixed; /* 사이드바 고정 */
-  height: 100vh; /* 전체 높이 사용 */
-  overflow-y: auto; /* 내용이 많을 경우 스크롤 가능하도록 */
+  background-color: #0a0a0a;
+  color: #fafafa;
+  padding: 28px 24px 48px;
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid #2a2a2a;
+  gap: 28px;
+
+  &::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+  }
 
   @media (max-width: 768px) {
     width: 100%;
     min-width: auto;
     border-right: none;
-    border-bottom: 1px solid #e5e7eb;
-    position: relative; /* 모바일에서는 고정하지 않음 */
-    height: auto; /* 모바일에서는 자동 높이 */
+    border-bottom: 1px solid #2a2a2a;
+    position: relative;
+    height: auto;
   }
+`;
 
-  gap: 32px;
+const Brand = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 8px 12px;
+`;
+
+const BrandMark = styled.div`
+  ${theme.fonts.heading2.medium};
+  color: #fafafa;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+`;
+
+const BrandMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  ${theme.fonts.mono};
+  font-size: 11px;
+  line-height: 16px;
+  color: #f2592a;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background: #f2592a;
+    flex-shrink: 0;
+  }
 `;
 
 export default function Sidebar() {
@@ -42,6 +77,14 @@ export default function Sidebar() {
 
   return (
     <SidebarContainer>
+      <Brand>
+        <BrandMark>
+          Audioguys
+          <br />
+          Music
+        </BrandMark>
+        <BrandMeta>Est. 2000 · Seoul</BrandMeta>
+      </Brand>
       {user.authLevel === AuthLevel.ADMIN && <ContractSection />}
       {user.authLevel === AuthLevel.ADMIN && (
         <ContentSection authLevel={user.authLevel} />

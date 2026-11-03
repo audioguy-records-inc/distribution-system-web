@@ -48,7 +48,7 @@ const DropdownContainer = styled.div<{
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid
     ${({ $disabled }) =>
       $disabled ? theme.colors.gray[25] : theme.colors.gray[50]};
@@ -129,7 +129,7 @@ const List = styled.ul`
   margin: 0;
   background: ${theme.colors.white};
   z-index: 1;
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid ${theme.colors.gray[50]};
   overflow: hidden;
   max-height: 300px;

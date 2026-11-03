@@ -11,21 +11,22 @@ const Container = styled.div<{ $isActive: boolean }>`
   align-items: center;
   justify-content: center;
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: 2px;
   background-color: ${({ $isActive }) =>
     $isActive ? theme.colors.green[100] : theme.colors.gray[50]};
-  color: ${({ $isActive }) =>
-    $isActive ? theme.colors.green[600] : theme.colors.gray[400]};
-  ${theme.fonts.label1.medium}
+  color: ${({ $isActive }) => ($isActive ? "#0e7a45" : theme.colors.gray[400])};
+  ${theme.fonts.mono};
+  font-size: 11px;
+  line-height: 16px;
   gap: 6px;
 `;
 
 const Dot = styled.div<{ $isActive: boolean }>`
   width: 4px;
   height: 4px;
-  border-radius: 50%;
+  border-radius: 1px;
   background-color: ${({ $isActive }) =>
-    $isActive ? theme.colors.green[600] : theme.colors.gray[400]};
+    $isActive ? "#4fe699" : theme.colors.gray[400]};
 `;
 
 const Badge = styled.div``;
