@@ -1,48 +1,30 @@
 "use client";
 
-import ButtonSection from "./components/ButtonSection";
-import CheckboxSection from "./components/CheckboxSection";
-import ChipSection from "./components/ChipSection";
-import CustomInput from "@/components/basic/CustomInput";
-import CustomTextArea from "@/components/basic/CustomTextArea";
-import DropdownSection from "./components/DropdownSection";
-import DspSection from "./components/DspSection";
-import IconSection from "./components/IconSection";
-import MusicLogoSection from "./components/MusicLogoSection";
-import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
-import RadioSection from "./components/RadioSection";
-import SnsSection from "./components/SnsSection";
-import TableSection from "./components/TableSection";
-import ToggleSection from "./components/ToggleSection";
-import UploadSection from "./components/UploadSection";
+// import ButtonSection from "./components/ButtonSection";
+// import CheckboxSection from "./components/CheckboxSection";
+// import ChipSection from "./components/ChipSection";
+// import CustomInput from "@/components/basic/CustomInput";
+// import CustomTextArea from "@/components/basic/CustomTextArea";
+// import DropdownSection from "./components/DropdownSection";
+// import DspSection from "./components/DspSection";
+// import IconSection from "./components/IconSection";
+// import MusicLogoSection from "./components/MusicLogoSection";
+// import PlaceholderIcon from "@/components/icons/PlaceholderIcon";
+// import RadioSection from "./components/RadioSection";
+// import SnsSection from "./components/SnsSection";
+// import TableSection from "./components/TableSection";
+// import ToggleSection from "./components/ToggleSection";
+// import UploadSection from "./components/UploadSection";
 import styled from "styled-components";
 import theme from "@/styles/theme";
+import { useState } from "react";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  padding: 48px 40px 120px;
-  background: #fafafa;
-  color: #1a1a1a;
-  min-height: 100vh;
-`;
-
-const Kicker = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  ${theme.fonts.mono};
-  font-size: 12px;
-  line-height: 16px;
-  color: #f2592a;
-
-  &::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    background: #f2592a;
-  }
+  gap: 20px;
+  padding: 20px;
+  padding-bottom: 500px;
 `;
 
 const Title1 = styled.div`
@@ -56,9 +38,8 @@ const Title2 = styled.div`
 export default function Samples() {
   return (
     <Container>
-      <Kicker>Components</Kicker>
-      <Title1>컴포넌트 모음</Title1>
-      <SnsSection />
+      컴포넌트 모음
+      {/* <SnsSection />
       <MusicLogoSection />
       <IconSection />
       <Title1>Title1</Title1>
@@ -69,6 +50,8 @@ export default function Samples() {
         placeholder="플레이스홀더 텍스트"
         required
         value="Value"
+        // disabled
+        // locked
         onChange={() => {}}
         icon={<PlaceholderIcon />}
       />
@@ -87,7 +70,9 @@ export default function Samples() {
         helpText="Help Text"
         placeholder="플레이스홀더 텍스트"
         required
+        // disabled
         hideScrollbar
+        // isError
       />
       <ButtonSection />
       <CheckboxSection />
@@ -97,7 +82,7 @@ export default function Samples() {
       <DropdownSection />
       <TableSection />
       <UploadSection />
-      <DspSection />
+      <DspSection /> */}
     </Container>
   );
 }

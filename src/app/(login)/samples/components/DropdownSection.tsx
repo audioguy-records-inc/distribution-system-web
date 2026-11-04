@@ -1,78 +1,109 @@
-import CustomDropdown from "@/components/basic/CustomDropdown";
-import styled from "styled-components";
-import { useState } from "react";
+// import CustomDropdown from "@/components/basic/CustomDropdown";
+// import styled from "styled-components";
+// import { useState } from "react";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
+// const Container = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+// `;
 
-const DropdownWrapper = styled.div`
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-`;
+// const DropdownWrapper = styled.div`
+//   display: flex;
+//   gap: 10px;
+// `;
 
-export default function DropdownSection() {
-  const [selectedItem, setSelectedItem] = useState<string>("");
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const items = [
-    { key: "1", value: "Item 1" },
-    { key: "2", value: "Item 2" },
-    { key: "3", value: "Item 3" },
-  ];
+// export default function DropdownSection() {
+//   const [selectedItem, setSelectedItem] = useState<string>("");
+//   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+//   const items = [
+//     { content: "Item 1", value: "1" },
+//     { content: "Item 2", value: "2" },
+//     { content: "Item 3", value: "3" },
+//   ];
 
-  return (
-    <Container>
-      <DropdownWrapper>
-        <CustomDropdown label="Label" required items={items} />
-        <CustomDropdown
-          label="Label"
-          required
-          selectedKey={selectedItem}
-          items={items}
-          onSelectKey={setSelectedItem}
-        />
-        <CustomDropdown label="Label" disabled items={items} />
-        <CustomDropdown label="Label" required disabled items={items} />
-        <CustomDropdown
-          label="Label"
-          required
-          multiple
-          items={items}
-          onMultiSelectKeys={setSelectedItems}
-          selectedKeys={selectedItems}
-        />
-      </DropdownWrapper>
-      <DropdownWrapper>
-        <CustomDropdown label="Label" required items={items} size="small" />
-        <CustomDropdown
-          label="Label"
-          required
-          selectedKey={selectedItem}
-          items={items}
-          onSelectKey={setSelectedItem}
-          size="small"
-        />
-        <CustomDropdown label="Label" disabled items={items} size="small" />
-        <CustomDropdown
-          label="Label"
-          required
-          disabled
-          items={items}
-          size="small"
-        />
-        <CustomDropdown
-          label="Label"
-          required
-          multiple
-          items={items}
-          onMultiSelectKeys={setSelectedItems}
-          selectedKeys={selectedItems}
-          size="small"
-        />
-      </DropdownWrapper>
-    </Container>
-  );
-}
+//   // content 표시를 위한 함수들
+//   const getSelectedContent = (value: string) => {
+//     return items.find((item) => item.value === value)?.content || "";
+//   };
+
+//   const getMultiSelectedContent = (values: string[]) => {
+//     return values.map((value) => getSelectedContent(value)).join(", ");
+//   };
+
+//   return (
+//     <Container>
+//       <DropdownWrapper>
+//         <CustomDropdown label="Label" content="Label" required items={items} />
+//         <CustomDropdown
+//           label="Label"
+//           content={getSelectedContent(selectedItem)}
+//           required
+//           selectedItem={selectedItem}
+//           items={items}
+//           onSelect={setSelectedItem}
+//         />
+//         <CustomDropdown label="Label" content="Label" disabled items={items} />
+//         <CustomDropdown
+//           label="Label"
+//           content="Label"
+//           required
+//           disabled
+//           items={items}
+//         />
+//         <CustomDropdown
+//           label="Label"
+//           content={getMultiSelectedContent(selectedItems)}
+//           required
+//           multiple
+//           items={items}
+//           onMultiSelect={setSelectedItems}
+//           selectedItems={selectedItems}
+//         />
+//       </DropdownWrapper>
+//       <DropdownWrapper>
+//         <CustomDropdown
+//           label="Label"
+//           content="Label"
+//           required
+//           items={items}
+//           size="small"
+//         />
+//         <CustomDropdown
+//           label="Label"
+//           content={getSelectedContent(selectedItem)}
+//           required
+//           selectedItem={selectedItem}
+//           items={items}
+//           onSelect={setSelectedItem}
+//           size="small"
+//         />
+//         <CustomDropdown
+//           label="Label"
+//           content="Label"
+//           disabled
+//           items={items}
+//           size="small"
+//         />
+//         <CustomDropdown
+//           label="Label"
+//           content="Label"
+//           required
+//           disabled
+//           items={items}
+//           size="small"
+//         />
+//         <CustomDropdown
+//           label="Label"
+//           content={getMultiSelectedContent(selectedItems)}
+//           required
+//           multiple
+//           items={items}
+//           onMultiSelect={setSelectedItems}
+//           selectedItems={selectedItems}
+//           size="small"
+//         />
+//       </DropdownWrapper>
+//     </Container>
+//   );
+// }
